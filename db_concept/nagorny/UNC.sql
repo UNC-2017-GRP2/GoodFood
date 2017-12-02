@@ -1,10 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 9.6.5
--- Dumped by pg_dump version 9.6.5
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -55,13 +48,29 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+CREATE SEQUENCE id_sequence;
+
+CREATE OR REPLACE FUNCTION id_generator(OUT result bigint) AS $$
+DECLARE
+  seq_id bigint;
+  now_millis bigint;
+BEGIN
+  SELECT nextval('id_sequence') % 1024 INTO seq_id;
+  SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+
+  result:= now_millis << 20;
+  result:= result | 1010111100011010010;
+  result:= result | seq_id;
+END;
+$$ LANGUAGE PLPGSQL;
+
 --
 -- Name: attr_object_types; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE attr_object_types (
-    object_type_id integer NOT NULL,
-    attr_id integer NOT NULL
+    object_type_id bigint NOT NULL,
+    attr_id bigint NOT NULL
 );
 
 
@@ -72,8 +81,8 @@ ALTER TABLE attr_object_types OWNER TO postgres;
 --
 
 CREATE TABLE attr_types (
-    attr_type_id integer NOT NULL,
-    name character varying(40) NOT NULL
+    attr_type_id bigint,
+    name character varying(200) NOT NULL
 );
 
 
@@ -84,9 +93,9 @@ ALTER TABLE attr_types OWNER TO postgres;
 --
 
 CREATE TABLE attributes (
-    attr_id integer NOT NULL,
-    name character varying(40) NOT NULL,
-    attr_type_id integer NOT NULL
+    attr_id bigint,
+    name character varying(200) NOT NULL,
+    attr_type_id bigint NOT NULL
 );
 
 
@@ -97,8 +106,8 @@ ALTER TABLE attributes OWNER TO postgres;
 --
 
 CREATE TABLE enum_types (
-    enum_type_id integer NOT NULL,
-    name character varying(40) NOT NULL
+    enum_type_id bigint,
+    name character varying(200) NOT NULL
 );
 
 
@@ -109,9 +118,9 @@ ALTER TABLE enum_types OWNER TO postgres;
 --
 
 CREATE TABLE enums (
-    enum_id integer NOT NULL,
-    name character varying(40) NOT NULL,
-    enum_type_id integer NOT NULL
+    enum_id bigint,
+    name character varying(200) NOT NULL,
+    enum_type_id bigint NOT NULL
 );
 
 
@@ -122,9 +131,9 @@ ALTER TABLE enums OWNER TO postgres;
 --
 
 CREATE TABLE object_types (
-    name character varying(40) NOT NULL,
-    object_type_id integer NOT NULL,
-    parent_type_id integer
+    name character varying(200) NOT NULL,
+    object_type_id bigint,
+    parent_type_id bigint
 );
 
 
@@ -135,10 +144,10 @@ ALTER TABLE object_types OWNER TO postgres;
 --
 
 CREATE TABLE objects (
-    name text NOT NULL,
-    object_id integer NOT NULL,
-    parent_id integer,
-    object_type_id integer NOT NULL
+    name character varying(200) NOT NULL,
+    object_id bigint,
+    parent_id bigint,
+    object_type_id bigint NOT NULL
 );
 
 
@@ -149,12 +158,12 @@ ALTER TABLE objects OWNER TO postgres;
 --
 
 CREATE TABLE parameters (
-    object_id integer NOT NULL,
-    attr_id integer NOT NULL,
-    text_value text,
+    object_id bigint NOT NULL,
+    attr_id bigint NOT NULL,
+    text_value character varying(200),
     date_value date,
-    reference_value integer,
-    enum_value integer
+    reference_value bigint,
+    enum_value bigint
 );
 
 
@@ -180,7 +189,7 @@ COPY attr_types (attr_type_id, name) FROM stdin;
 -- Data for Name: attributes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY attributes (attr_id, name, attr_type_id) FROM stdin;
+COPY attributes (name, attr_id, attr_type_id) FROM stdin;
 \.
 
 
@@ -188,7 +197,7 @@ COPY attributes (attr_id, name, attr_type_id) FROM stdin;
 -- Data for Name: enum_types; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY enum_types (enum_type_id, name) FROM stdin;
+COPY enum_types (name, enum_type_id) FROM stdin;
 \.
 
 
@@ -196,7 +205,7 @@ COPY enum_types (enum_type_id, name) FROM stdin;
 -- Data for Name: enums; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY enums (enum_id, name, enum_type_id) FROM stdin;
+COPY enums (name, enum_id, enum_type_id) FROM stdin;
 \.
 
 
@@ -222,7 +231,6 @@ COPY objects (name, object_id, parent_id, object_type_id) FROM stdin;
 
 COPY parameters (object_id, attr_id, text_value, date_value, reference_value, enum_value) FROM stdin;
 \.
-
 
 --
 -- Name: attr_types attr_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
