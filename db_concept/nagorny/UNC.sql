@@ -359,6 +359,23 @@ ALTER TABLE ONLY parameters
 ALTER TABLE ONLY parameters
     ADD CONSTRAINT parameters_object_id_fkey FOREIGN KEY (object_id) REFERENCES objects(object_id);
 
+--
+-- Adding basic rows
+--
+
+INSERT INTO object_types (name, object_type_id) VALUES ('User', 1);
+INSERT INTO object_types (name, object_type_id) VALUES ('Order', 2);
+INSERT INTO object_types (name, object_type_id) VALUES ('Food', 3);
+
+INSERT INTO attr_types (attr_type_id, name) VALUES (101, 'Text');
+INSERT INTO attr_types (attr_type_id, name) VALUES (102, 'Date');
+INSERT INTO attr_types (attr_type_id, name) VALUES (103, 'Reference');
+INSERT INTO attr_types (attr_type_id, name) VALUES (104, 'Number');
+INSERT INTO attr_types (attr_type_id, name) VALUES (105, 'Enum value');
+
+INSERT INTO attributes (attr_id, name, attr_type_id) VALUES (11, 'Username', 101);
+INSERT INTO attributes (attr_id, name, attr_type_id) VALUES (12, 'Password hash', 101);
+INSERT INTO attributes (attr_id, name, attr_type_id) VALUES (13, 'Role', 101);
 
 --
 -- PostgreSQL database dump complete
