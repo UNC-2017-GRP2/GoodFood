@@ -1,3 +1,10 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.5
+-- Dumped by pg_dump version 9.6.5
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -44,25 +51,32 @@ COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
 
 SET search_path = public, pg_catalog;
 
+--
+-- Name: id_generator(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION id_generator(OUT result bigint) RETURNS bigint
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  seq_id bigint;
+  now_millis bigint;
+BEGIN
+  SELECT nextval('id_sequence') % 1024 INTO seq_id;
+  SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+
+  result:= now_millis << 20;
+  result:= result | 1010111100011010010;
+  result:= result | seq_id;
+END;
+$$;
+
+
+ALTER FUNCTION public.id_generator(OUT result bigint) OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
-
-CREATE SEQUENCE id_sequence;
-
-CREATE OR REPLACE FUNCTION id_generator(OUT result bigint) AS $$
-DECLARE
-  seq_id bigint;
-  now_millis bigint;
-BEGIN
-  SELECT nextval('id_sequence') % 1024 INTO seq_id;
-  SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
-
-  result:= now_millis << 20;
-  result:= result | 1010111100011010010;
-  result:= result | seq_id;
-END;
-$$ LANGUAGE PLPGSQL;
 
 --
 -- Name: attr_object_types; Type: TABLE; Schema: public; Owner: postgres
@@ -81,7 +95,7 @@ ALTER TABLE attr_object_types OWNER TO postgres;
 --
 
 CREATE TABLE attr_types (
-    attr_type_id bigint,
+    attr_type_id bigint DEFAULT id_generator() NOT NULL,
     name character varying(200) NOT NULL
 );
 
@@ -93,7 +107,7 @@ ALTER TABLE attr_types OWNER TO postgres;
 --
 
 CREATE TABLE attributes (
-    attr_id bigint,
+    attr_id bigint DEFAULT id_generator() NOT NULL,
     name character varying(200) NOT NULL,
     attr_type_id bigint NOT NULL
 );
@@ -106,7 +120,7 @@ ALTER TABLE attributes OWNER TO postgres;
 --
 
 CREATE TABLE enum_types (
-    enum_type_id bigint,
+    enum_type_id bigint DEFAULT id_generator() NOT NULL,
     name character varying(200) NOT NULL
 );
 
@@ -118,7 +132,7 @@ ALTER TABLE enum_types OWNER TO postgres;
 --
 
 CREATE TABLE enums (
-    enum_id bigint,
+    enum_id bigint DEFAULT id_generator() NOT NULL,
     name character varying(200) NOT NULL,
     enum_type_id bigint NOT NULL
 );
@@ -127,12 +141,26 @@ CREATE TABLE enums (
 ALTER TABLE enums OWNER TO postgres;
 
 --
+-- Name: id_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE id_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE id_sequence OWNER TO postgres;
+
+--
 -- Name: object_types; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE object_types (
     name character varying(200) NOT NULL,
-    object_type_id bigint,
+    object_type_id bigint DEFAULT id_generator() NOT NULL,
     parent_type_id bigint
 );
 
@@ -145,7 +173,7 @@ ALTER TABLE object_types OWNER TO postgres;
 
 CREATE TABLE objects (
     name character varying(200) NOT NULL,
-    object_id bigint,
+    object_id bigint DEFAULT id_generator() NOT NULL,
     parent_id bigint,
     object_type_id bigint NOT NULL
 );
@@ -182,6 +210,11 @@ COPY attr_object_types (object_type_id, attr_id) FROM stdin;
 --
 
 COPY attr_types (attr_type_id, name) FROM stdin;
+101	Text
+102	Date
+103	Reference
+104	Number
+105	Enum value
 \.
 
 
@@ -189,7 +222,10 @@ COPY attr_types (attr_type_id, name) FROM stdin;
 -- Data for Name: attributes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY attributes (name, attr_id, attr_type_id) FROM stdin;
+COPY attributes (attr_id, name, attr_type_id) FROM stdin;
+11	Username	101
+12	Password hash	101
+13	Role	101
 \.
 
 
@@ -197,7 +233,7 @@ COPY attributes (name, attr_id, attr_type_id) FROM stdin;
 -- Data for Name: enum_types; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY enum_types (name, enum_type_id) FROM stdin;
+COPY enum_types (enum_type_id, name) FROM stdin;
 \.
 
 
@@ -205,7 +241,7 @@ COPY enum_types (name, enum_type_id) FROM stdin;
 -- Data for Name: enums; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY enums (name, enum_id, enum_type_id) FROM stdin;
+COPY enums (enum_id, name, enum_type_id) FROM stdin;
 \.
 
 
@@ -214,6 +250,9 @@ COPY enums (name, enum_id, enum_type_id) FROM stdin;
 --
 
 COPY object_types (name, object_type_id, parent_type_id) FROM stdin;
+User	1	\N
+Order	2	\N
+Food	3	\N
 \.
 
 
@@ -231,6 +270,7 @@ COPY objects (name, object_id, parent_id, object_type_id) FROM stdin;
 
 COPY parameters (object_id, attr_id, text_value, date_value, reference_value, enum_value) FROM stdin;
 \.
+
 
 --
 -- Name: attr_types attr_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -359,23 +399,6 @@ ALTER TABLE ONLY parameters
 ALTER TABLE ONLY parameters
     ADD CONSTRAINT parameters_object_id_fkey FOREIGN KEY (object_id) REFERENCES objects(object_id);
 
---
--- Adding basic rows
---
-
-INSERT INTO object_types (name, object_type_id) VALUES ('User', 1);
-INSERT INTO object_types (name, object_type_id) VALUES ('Order', 2);
-INSERT INTO object_types (name, object_type_id) VALUES ('Food', 3);
-
-INSERT INTO attr_types (attr_type_id, name) VALUES (101, 'Text');
-INSERT INTO attr_types (attr_type_id, name) VALUES (102, 'Date');
-INSERT INTO attr_types (attr_type_id, name) VALUES (103, 'Reference');
-INSERT INTO attr_types (attr_type_id, name) VALUES (104, 'Number');
-INSERT INTO attr_types (attr_type_id, name) VALUES (105, 'Enum value');
-
-INSERT INTO attributes (attr_id, name, attr_type_id) VALUES (11, 'Username', 101);
-INSERT INTO attributes (attr_id, name, attr_type_id) VALUES (12, 'Password hash', 101);
-INSERT INTO attributes (attr_id, name, attr_type_id) VALUES (13, 'Role', 101);
 
 --
 -- PostgreSQL database dump complete
