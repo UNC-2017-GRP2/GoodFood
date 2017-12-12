@@ -57,19 +57,19 @@ SET search_path = public, pg_catalog;
 
 CREATE FUNCTION id_generator(OUT result bigint) RETURNS bigint
     LANGUAGE plpgsql
-    AS $$
-DECLARE
-  seq_id bigint;
-  now_millis bigint;
-BEGIN
-  SELECT nextval('id_sequence') % 1024 INTO seq_id;
-  SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
-
-  result:= now_millis << 20;
-  result:= result | 1010111100011010010;
-  result:= result | seq_id;
-END;
-$$;
+    AS $$
+ DECLARE
+   seq_id int;
+   now_millis bigint;
+ BEGIN
+   SELECT nextval('id_sequence') % 1024 INTO seq_id;
+   SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+ 
+   result:= now_millis << 20;
+   result:= result | (10000000000);
+   result:= result | (seq_id);
+ END;
+ $$;
 
 
 ALTER FUNCTION public.id_generator(OUT result bigint) OWNER TO postgres;
@@ -225,7 +225,7 @@ COPY attr_types (attr_type_id, name) FROM stdin;
 COPY attributes (attr_id, name, attr_type_id) FROM stdin;
 11	Username	101
 12	Password hash	101
-13	Role	101
+13	Role	105
 \.
 
 
@@ -234,6 +234,7 @@ COPY attributes (attr_id, name, attr_type_id) FROM stdin;
 --
 
 COPY enum_types (enum_type_id, name) FROM stdin;
+1000	Role
 \.
 
 
@@ -242,6 +243,9 @@ COPY enum_types (enum_type_id, name) FROM stdin;
 --
 
 COPY enums (enum_id, name, enum_type_id) FROM stdin;
+1100	ROLE_ADMIN	1000
+1200	ROLE_DBA	1000
+1300	ROLE_USER	1000
 \.
 
 
