@@ -35,6 +35,7 @@ public class UserDaoImpl implements UserDao {
         String SQL = "select OBJECT_ID from PARAMETERS where ATTR_ID = 11 and TEXT_VALUE = '"
                 + username + "'";
         String parameters = "select * from PARAMETERS where object_id =";
+        String enums = "select * from ENUMS where ENUM_ID = ";
         UserInfo user = new UserInfo(0, "null", "null", "null");
         long objectId = 0;
 
@@ -50,23 +51,34 @@ public class UserDaoImpl implements UserDao {
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(parameters + objectId)) {
             String passHash = "0";
-            String role = "0";
+            String roleStr = "0";
+            long   role;
 
             while (rs.next()) {
 
                 switch (rs.getInt("attr_id")) {
                     case 12:
                         passHash = rs.getString("text_value");
+                        System.out.println(passHash);
                         break;
                     case 13:
-                        role = rs.getString("text_value");
+                        role = rs.getLong("ENUM_VALUE");
+                        try (Statement stmtEnum = conn.createStatement();
+                             ResultSet rsEnum = stmtEnum.executeQuery(enums + role)) {
+                            while(rsEnum.next()) {
+                                roleStr = rsEnum.getString("NAME");
+                                System.out.println(roleStr);
+                            }
+                        } catch (SQLException ex) {
+                            System.out.println(ex.getMessage());
+                        }
                         break;
                     default:
                         break;
                 }
                 if (!(passHash.equals(new String("0"))) &&
-                        !(role.equals(new String("0")))) {
-                    user = new UserInfo(objectId, username, passHash, role);
+                        !(roleStr.equals(new String("0")))) {
+                    user = new UserInfo(objectId, username, passHash, roleStr);
                 }
             }
         } catch (SQLException ex) {
@@ -80,6 +92,7 @@ public class UserDaoImpl implements UserDao {
         String count = "select count(*) from OBJECTS where OBJECT_TYPE_ID = 1";
         String objects = "select * from OBJECTS where OBJECT_TYPE_ID = 1"; // UserInfo type
         String parameters = "select * from PARAMETERS where object_id =";
+        String enums = "select * from ENUMS where ENUM_ID = ";
 
         long[] objectIds = new long[0];
         List<UserInfo> userList = new ArrayList<>();
@@ -111,7 +124,8 @@ public class UserDaoImpl implements UserDao {
                  ResultSet rs = stmt.executeQuery(parameters + objectIds[i])) {
                 String username = "0";
                 String passHash = "0";
-                String role = "0";
+                String roleStr = "0";
+                long   role = 0;
 
                 while (rs.next()) {
 
@@ -121,18 +135,29 @@ public class UserDaoImpl implements UserDao {
                             break;
                         case 12 : passHash = rs.getString("text_value");
                             break;
-                        case 13 : role = rs.getString("text_value");
+                        case 13:
+                            role = rs.getLong("ENUM_VALUE");
+                            try (Statement stmtEnum = conn.createStatement();
+                                 ResultSet rsEnum = stmtEnum.executeQuery(enums + role)) {
+                                while(rsEnum.next()) {
+                                    roleStr = rsEnum.getString("NAME");
+                                    System.out.println(roleStr);
+                                }
+                            } catch (SQLException ex) {
+                                System.out.println(ex.getMessage());
+                            }
                             break;
                         default: break;
                     }
                     if (!(username.equals(new String("0"))) &&
                         !(passHash.equals(new String("0"))) &&
-                        !(role.equals(new String("0")))) {
-                        UserInfo user = new UserInfo(objectIds[i], username, passHash, role);
+                        !(roleStr.equals(new String("0")))) {
+                        UserInfo user = new UserInfo(objectIds[i], username, passHash, roleStr);
                         userList.add(user);
                         username = "0";
                         passHash = "0";
-                        role = "0";
+                        role = 0;
+                        roleStr = "0";
 
                     }
                 }
