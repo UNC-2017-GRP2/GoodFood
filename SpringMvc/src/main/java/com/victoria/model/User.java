@@ -1,6 +1,5 @@
 package com.victoria.model;
 
-import com.sun.javafx.binding.StringFormatter;
 
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;

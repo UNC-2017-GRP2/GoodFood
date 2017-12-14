@@ -1,5 +1,6 @@
 package com.victoria.repository.impl;
 
+import com.victoria.config.Constant;
 import com.victoria.model.User;
 import com.victoria.repository.UserRepository;
 

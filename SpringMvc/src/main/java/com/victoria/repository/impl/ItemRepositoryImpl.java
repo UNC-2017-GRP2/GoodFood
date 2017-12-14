@@ -27,9 +27,9 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public List<Item> getAllItems() {
-        long categoryAttrId = getAttrId(SQL_SELECT_CATEGORY_ATTR_ID);
+        /*long categoryAttrId = getAttrId(SQL_SELECT_CATEGORY_ATTR_ID);
         long costAttrId = getAttrId(SQL_SELECT_COST_ATTR_ID);
-        long descriptionAttrId = getAttrId(SQL_SELECT_DESCRIPTION_ATTR_ID);
+        long descriptionAttrId = getAttrId(SQL_SELECT_DESCRIPTION_ATTR_ID);*/
         List<Item> result = new ArrayList<>();
         long itemObjTypeId = 0;
         try{

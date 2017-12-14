@@ -36,12 +36,16 @@ public class RegistrationController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginPage(@RequestParam(value = "error",required = false) String error) {
-
         ModelAndView model = new ModelAndView();
-        if (error != null) {
-            model.addObject("error", "Invalid Credentials provided.");
+        try{
+            if (error != null) {
+                model.addObject("error", "Invalid Credentials provided.");
+            }
+            model.setViewName("login");
+            return model;
+        }catch(Exception e){
+            System.out.println("method loginPage:" + e.getMessage());
         }
-        model.setViewName("login");
         return model;
     }
 
