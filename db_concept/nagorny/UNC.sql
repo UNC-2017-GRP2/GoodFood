@@ -57,19 +57,19 @@ SET search_path = public, pg_catalog;
 
 CREATE FUNCTION id_generator(OUT result bigint) RETURNS bigint
     LANGUAGE plpgsql
-    AS $$
-DECLARE
-  seq_id bigint;
-  now_millis bigint;
-BEGIN
-  SELECT nextval('id_sequence') % 1024 INTO seq_id;
-  SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
-
-  result:= now_millis << 20;
-  result:= result | 1010111100011010010;
-  result:= result | seq_id;
-END;
-$$;
+    AS $$
+ DECLARE
+   seq_id int;
+   now_millis bigint;
+ BEGIN
+   SELECT nextval('id_sequence') % 1024 INTO seq_id;
+   SELECT FLOOR(EXTRACT(EPOCH FROM clock_timestamp()) * 1000) INTO now_millis;
+ 
+   result:= now_millis << 20;
+   result:= result | (10000000000);
+   result:= result | (seq_id);
+ END;
+ $$;
 
 
 ALTER FUNCTION public.id_generator(OUT result bigint) OWNER TO postgres;
@@ -202,6 +202,26 @@ ALTER TABLE parameters OWNER TO postgres;
 --
 
 COPY attr_object_types (object_type_id, attr_id) FROM stdin;
+300	400
+300	401
+300	402
+300	403
+300	403
+300	404
+300	405
+300	406
+300	410
+300	411
+300	412
+305	403
+305	407
+305	410
+305	411
+305	415
+306	408
+306	409
+306	413
+306	414
 \.
 
 
@@ -210,11 +230,11 @@ COPY attr_object_types (object_type_id, attr_id) FROM stdin;
 --
 
 COPY attr_types (attr_type_id, name) FROM stdin;
-101	Text
-102	Date
-103	Reference
-104	Number
-105	Enum value
+51	Text
+52	Number
+53	Reference
+54	Date
+55	Enum value
 \.
 
 
@@ -223,9 +243,22 @@ COPY attr_types (attr_type_id, name) FROM stdin;
 --
 
 COPY attributes (attr_id, name, attr_type_id) FROM stdin;
-11	Username	101
-12	Password hash	101
-13	Role	101
+400	Full name	51
+401	Username	51
+402	Password hash	51
+403	Phone number	51
+404	Birthday	54
+405	User role	55
+406	E-mail	51
+407	Order's cost	52
+408	Item category	51
+409	Item's cost	52
+410	Address	51
+411	Bank card number	51
+412	Order	53
+413	Item name	51
+414	Item description	51
+415	Item	53
 \.
 
 
@@ -234,6 +267,7 @@ COPY attributes (attr_id, name, attr_type_id) FROM stdin;
 --
 
 COPY enum_types (enum_type_id, name) FROM stdin;
+700	User role
 \.
 
 
@@ -242,6 +276,8 @@ COPY enum_types (enum_type_id, name) FROM stdin;
 --
 
 COPY enums (enum_id, name, enum_type_id) FROM stdin;
+800	ROLE_ADMIN	700
+801	ROLE_USER	700
 \.
 
 
@@ -250,9 +286,10 @@ COPY enums (enum_id, name, enum_type_id) FROM stdin;
 --
 
 COPY object_types (name, object_type_id, parent_type_id) FROM stdin;
-User	1	\N
-Order	2	\N
-Food	3	\N
+User	300	\N
+Image	301	\N
+Order	305	\N
+Item	306	\N
 \.
 
 
