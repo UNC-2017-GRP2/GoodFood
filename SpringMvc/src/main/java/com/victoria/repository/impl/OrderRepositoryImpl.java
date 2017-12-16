@@ -12,11 +12,11 @@ public class OrderRepositoryImpl implements OrderRepository {
     private Connection connection;
 
     private String SQL_SELECT_OBJECT_ID = "select \"OBJECT_ID\" from \"OBJECTS\" where \"NAME\" = ?";
-    private String SQL_SELECT_ORDER_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Заказ\'";
+    private String SQL_SELECT_ORDER_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Order\'";
     private String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
 
-    private String SQL_SELECT_ORDER_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Заказ\'";
-    private String SQL_SELECT_PRODUCT_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Продукт\'";
+    private String SQL_SELECT_ORDER_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order\'";
+    private String SQL_SELECT_PRODUCT_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item\'";
     private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
 
     public OrderRepositoryImpl(DataSource dataSource) throws SQLException {

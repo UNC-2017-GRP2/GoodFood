@@ -20,17 +20,17 @@ public class UserRepositoryImpl implements UserRepository {
     private final String REFERENCE_VALUE = "REFERENCE_VALUE";
     private final String ENUM_VALUE = "ENUM_VALUE";*/
 
-    private String SQL_SELECT_LOGIN_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Логин\'";
-    private String SQL_SELECT_PASSWORD_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Пароль\'";
-    private String SQL_SELECT_ROLE_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Роль\'";
-    private String SQL_SELECT_FIO_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'ФИО\'";
+    private String SQL_SELECT_LOGIN_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Username\'";
+    private String SQL_SELECT_PASSWORD_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Password hash\'";
+    private String SQL_SELECT_ROLE_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'User role\'";
+    private String SQL_SELECT_FIO_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Full name\'";
     private String SQL_SELECT_EMAIL_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'E-mail\'";
-    private String SQL_SELECT_PHONE_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Телефон\'";
-    private String SQL_SELECT_BIRTHDAY_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Дата рождения\'";
-    private String SQL_SELECT_ADDRESS_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Адрес\'";
-    private String SQL_SELECT_CARD_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Банковская карта\'";
+    private String SQL_SELECT_PHONE_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Phone number\'";
+    private String SQL_SELECT_BIRTHDAY_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Birthday\'";
+    private String SQL_SELECT_ADDRESS_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Address\'";
+    private String SQL_SELECT_CARD_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Payment card number\'";
 
-    private String SQL_SELECT_USER_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Пользователь\'";
+    private String SQL_SELECT_USER_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'User\'";
 
     private String SQL_SELECT_USER_ID = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"TEXT_VALUE\" = ? ";
     private String SQL_SELECT_PARAMETERS = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";

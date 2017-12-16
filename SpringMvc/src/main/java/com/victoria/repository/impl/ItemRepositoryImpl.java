@@ -19,11 +19,11 @@ public class ItemRepositoryImpl implements ItemRepository {
     private String SQL_SELECT_PARAMETERS = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
     private String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";
     private String SQL_SELECT_OBJECT_BY_ID = "select * from \"OBJECTS\" where \"OBJECT_ID\" = ?";
-    private String SQL_SELECT_ITEM_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Продукт\'";
+    private String SQL_SELECT_ITEM_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Item\'";
 
-    private String SQL_SELECT_CATEGORY_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Категория продукта\'";
-    private String SQL_SELECT_COST_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Стоимость продукта\'";
-    private String SQL_SELECT_DESCRIPTION_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Описание продукта\'";
+    private String SQL_SELECT_CATEGORY_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item category\'";
+    private String SQL_SELECT_COST_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item cost\'";
+    private String SQL_SELECT_DESCRIPTION_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item description\'";
 
     @Override
     public List<Item> getAllItems() {
