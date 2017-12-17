@@ -1,5 +1,6 @@
 package com.victoria.repository.impl;
 
+import com.victoria.config.Constant;
 import com.victoria.model.Item;
 import com.victoria.repository.ItemRepository;
 
@@ -16,66 +17,26 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         super(dataSource);
     }
 
-    private String SQL_SELECT_PARAMETERS = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
-    private String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";
-    private String SQL_SELECT_OBJECT_BY_ID = "select * from \"OBJECTS\" where \"OBJECT_ID\" = ?";
-    private String SQL_SELECT_ITEM_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Item\'";
-
-    private String SQL_SELECT_CATEGORY_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item category\'";
-    private String SQL_SELECT_COST_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item cost\'";
-    private String SQL_SELECT_DESCRIPTION_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item description\'";
+    private String SQL_SELECT_PARAMETERS = "select * from \"parameters\" where \"object_id\" = ?";
+    private String SQL_SELECT_OBJECTS = "select * from \"objects\" where \"object_type_id\" = ?";
+    private String SQL_SELECT_OBJECT_BY_ID = "select * from \"objects\" where \"object_id\" = ?";
 
     @Override
     public List<Item> getAllItems() {
-        /*long categoryAttrId = getAttrId(SQL_SELECT_CATEGORY_ATTR_ID);
-        long costAttrId = getAttrId(SQL_SELECT_COST_ATTR_ID);
-        long descriptionAttrId = getAttrId(SQL_SELECT_DESCRIPTION_ATTR_ID);*/
         List<Item> result = new ArrayList<>();
-        long itemObjTypeId = 0;
+        ResultSet resultSet;
         try{
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ITEM_OBJ_TYPE_ID);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
+            preparedStatement.setLong(1, Constant.ITEM_OBJ_TYPE_ID);
+            resultSet = preparedStatement.executeQuery();
+
+            //идем по всем продуктам
             while (resultSet.next()){
-                itemObjTypeId = resultSet.getLong("OBJECT_TYPE_ID");
+                long itemId = resultSet.getLong("object_id");
+                Item newItem = getItemById(itemId);
+                result.add(newItem);
             }
-            statement.close();
-            resultSet.close();
-
-            if(itemObjTypeId != 0){
-                PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
-                preparedStatement.setLong(1,itemObjTypeId);
-                resultSet = preparedStatement.executeQuery();
-
-                //идем по всем продуктам
-                while (resultSet.next()){
-                    long itemId = resultSet.getLong("OBJECT_ID");
-                    Item newItem = getItemById(itemId);
-                    /*String itemName = resultSet.getString("NAME");
-                    String itemDescription = null;
-                    String itemCategory = null;
-                    BigDecimal itemCost = null;
-                    PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
-                    ps.setLong(1,itemId);
-                    ResultSet rs = ps.executeQuery();
-
-                    //идем по всем параметрам каждого продукта
-                    while(rs.next()){
-                        long curAttrId = rs.getLong("ATTR_ID");
-
-                        if(curAttrId == categoryAttrId){
-                            itemCategory = rs.getString("TEXT_VALUE");
-                        }
-                        if(curAttrId == descriptionAttrId){
-                            itemDescription = rs.getString("TEXT_VALUE");
-                        }
-                        if (curAttrId == costAttrId){
-                            itemCost = new BigDecimal(rs.getString("TEXT_VALUE"));
-                        }
-                    }
-                    Item newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost);*/
-                    result.add(newItem);
-                }
-            }
+            //}
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,16 +46,13 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
     @Override
     public Item getItemById(long itemId) {
         Item newItem = null;
-        long categoryAttrId = getAttrId(SQL_SELECT_CATEGORY_ATTR_ID);
-        long costAttrId = getAttrId(SQL_SELECT_COST_ATTR_ID);
-        long descriptionAttrId = getAttrId(SQL_SELECT_DESCRIPTION_ATTR_ID);
         String itemName = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_BY_ID);
             preparedStatement.setLong(1,itemId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                itemName = resultSet.getString("NAME");
+                itemName = resultSet.getString("name");
             }
             String itemDescription = null;
             String itemCategory = null;
@@ -104,16 +62,16 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             ResultSet rs = ps.executeQuery();
             //идем по всем параметрам продукта
             while(rs.next()){
-                long curAttrId = rs.getLong("ATTR_ID");
+                long curAttrId = rs.getLong("attr_id");
 
-                if(curAttrId == categoryAttrId){
-                    itemCategory = rs.getString("TEXT_VALUE");
+                if(curAttrId == Constant.ITEM_CATEGORY_ATTR_ID){
+                    itemCategory = rs.getString("text_value");
                 }
-                if(curAttrId == descriptionAttrId){
-                    itemDescription = rs.getString("TEXT_VALUE");
+                if(curAttrId == Constant.ITEM_DESCRIPTION_ATTR_ID){
+                    itemDescription = rs.getString("text_value");
                 }
-                if (curAttrId == costAttrId){
-                    itemCost = new BigDecimal(rs.getString("TEXT_VALUE"));
+                if (curAttrId == Constant.ITEMS_COST_ATTR_ID){
+                    itemCost = new BigDecimal(rs.getString("text_value"));
                 }
             }
             newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost);
@@ -121,17 +79,5 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             System.out.println(e.getMessage());
         }
         return newItem;
-    }
-
-    private long getAttrId(String sql){
-        try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql)){
-            while (resultSet.next()) {
-                return resultSet.getLong("ATTR_ID");
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOL4");
-        }
-        return 0;
     }
 }
