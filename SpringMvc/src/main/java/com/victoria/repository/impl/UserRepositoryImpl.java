@@ -9,11 +9,11 @@ import java.math.BigInteger;
 import java.sql.*;
 import java.util.List;
 
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRepository {
 
-    private Connection connection;
+    //private Connection connection;
     public UserRepositoryImpl(DataSource dataSource) throws SQLException {
-        connection = dataSource.getConnection();
+        super(dataSource);
     }
     /*private final String TEXT_VALUE = "TEXT_VALUE";
     private final String DATE_VALUE = "DATE_VALUE";
@@ -183,6 +183,7 @@ public class UserRepositoryImpl implements UserRepository {
         PreparedStatement preparedStatement;
         Statement statement;
         ResultSet resultSet;
+        long userId = 0;
         long userTypeId = 0;
         long loginAttrId = getAttrId(SQL_SELECT_LOGIN_ATTR_ID);
         long passwordAttrId = getAttrId(SQL_SELECT_PASSWORD_ATTR_ID);
@@ -201,23 +202,25 @@ public class UserRepositoryImpl implements UserRepository {
             statement.close();
             resultSet.close();
 
+            userId = getObjectId();
+
             //Добавляем пользователя в бд в таблицу OBJECTS
             if (userTypeId != 0 ){
                 preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_OBJECTS);
                 preparedStatement.setString(1,user.getLogin());
-                preparedStatement.setLong(2,24);
+                preparedStatement.setLong(2,userId);
                 preparedStatement.setInt(3,0);
                 preparedStatement.setLong(4,userTypeId);
                 preparedStatement.executeUpdate();
                 preparedStatement.close();
 
                 //ДОБАВЛЯЕМ ПАРАМЕТРЫ ЮЗЕРА
-                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,24,fioAttrId,user.getFio());
-                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,24,loginAttrId,user.getLogin());
-                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,24,passwordAttrId,user.getPasswordHash());
-                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,24,emailAttrId,user.getEmail());
-                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,24,phoneAttrId,user.getPhoneNumber());
-                saveEnumValue(SQL_INSERT_INTO_PARAMETERS,24,roleAttrId,roleEnumId);
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId,fioAttrId,user.getFio());
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId,loginAttrId,user.getLogin());
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId,passwordAttrId,user.getPasswordHash());
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId,emailAttrId,user.getEmail());
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId,phoneAttrId,user.getPhoneNumber());
+                saveEnumValue(SQL_INSERT_INTO_PARAMETERS,userId,roleAttrId,roleEnumId);
 
             }else{
                 System.out.println("OBJECT_TYPE_ID НЕ НАЙДЕН");

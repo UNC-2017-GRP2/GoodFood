@@ -9,11 +9,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemRepositoryImpl implements ItemRepository {
+public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRepository {
 
-    private Connection connection;
+    //private Connection connection;
     public ItemRepositoryImpl(DataSource dataSource) throws SQLException {
-        connection = dataSource.getConnection();
+        super(dataSource);
     }
 
     private String SQL_SELECT_PARAMETERS = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";

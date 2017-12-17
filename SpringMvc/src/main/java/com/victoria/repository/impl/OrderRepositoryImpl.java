@@ -7,9 +7,9 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class OrderRepositoryImpl implements OrderRepository {
+public class OrderRepositoryImpl extends AbstractRepositoryImpl implements OrderRepository {
 
-    private Connection connection;
+    //private Connection connection;
 
     private String SQL_SELECT_OBJECT_ID = "select \"OBJECT_ID\" from \"OBJECTS\" where \"NAME\" = ?";
     private String SQL_SELECT_ORDER_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Order\'";
@@ -20,13 +20,13 @@ public class OrderRepositoryImpl implements OrderRepository {
     private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
 
     public OrderRepositoryImpl(DataSource dataSource) throws SQLException {
-        connection = dataSource.getConnection();
+        super(dataSource);
     }
-
 
     @Override
     public void checkout(ArrayList<Item> items, String username) {
 
+        long orderId = 0;
         long userId = 0;
         long orderObjectTypeId = 0;
         long orderAttrId = getAttrId(SQL_SELECT_ORDER_ATTR_ID);
@@ -46,11 +46,13 @@ public class OrderRepositoryImpl implements OrderRepository {
                 orderObjectTypeId = resultSet.getLong("OBJECT_TYPE_ID");
             }
 
+            orderId = getObjectId();
+
             //Сохраняем заказ
             if (orderObjectTypeId != 0){
                 preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_OBJECTS);
-                preparedStatement.setString(1,"Заказ " + 25);
-                preparedStatement.setLong(2,25);
+                preparedStatement.setString(1,"Order " + orderId);
+                preparedStatement.setLong(2,orderId);
                 preparedStatement.setLong(3,0);
                 preparedStatement.setLong(4,orderObjectTypeId);
                 preparedStatement.executeUpdate();
@@ -63,14 +65,14 @@ public class OrderRepositoryImpl implements OrderRepository {
                     preparedStatement.setLong(2,orderAttrId);
                     preparedStatement.setString(3,null);
                     preparedStatement.setDate(4,null);
-                    preparedStatement.setLong(5,25);
+                    preparedStatement.setLong(5,orderId);
                     preparedStatement.setLong(6,0);
                     preparedStatement.executeUpdate();
 
                     //добавляем продукты
                     for(Item item:items){
                         preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
-                        preparedStatement.setLong(1,25);
+                        preparedStatement.setLong(1,orderId);
                         preparedStatement.setLong(2,productAttrId);
                         preparedStatement.setString(3,null);
                         preparedStatement.setDate(4,null);
