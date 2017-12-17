@@ -41,10 +41,10 @@ public class BasketController {
         if(basketItems != null && basketItems.size() != 0){
             orderService.checkout(basketItems,principal.getName());
             /*httpSession.removeAttribute("basketItems");*/
-            //sessionStatus.setComplete();
+            sessionStatus.setComplete();
             //httpSession.setAttribute("username",principal.getName());
             //httpSession.setAttribute("basketItems", new ArrayList<Item>());
         }
-        return "redirect:/basket";
+        return "redirect:/home";
     }
 }
