@@ -6,6 +6,7 @@ import com.victoria.repository.ItemRepository;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,8 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
 
             //идем по всем продуктам
             while (resultSet.next()){
-                long itemId = resultSet.getLong("object_id");
-                Item newItem = getItemById(itemId);
+                String itemId = resultSet.getString("object_id");
+                Item newItem = getItemById(new BigInteger(itemId));
                 result.add(newItem);
             }
             //}
@@ -44,12 +45,12 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
     }
 
     @Override
-    public Item getItemById(long itemId) {
+    public Item getItemById(BigInteger itemId) {
         Item newItem = null;
         String itemName = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_BY_ID);
-            preparedStatement.setLong(1,itemId);
+            preparedStatement.setObject(1, itemId, numericType);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 itemName = resultSet.getString("name");
@@ -58,7 +59,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             String itemCategory = null;
             BigDecimal itemCost = null;
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
-            ps.setLong(1,itemId);
+            ps.setObject(1, itemId, numericType);
             ResultSet rs = ps.executeQuery();
             //идем по всем параметрам продукта
             while(rs.next()){

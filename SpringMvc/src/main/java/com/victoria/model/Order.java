@@ -4,21 +4,21 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class Order {
-    private long orderId;
-    private long userId;
+    private BigInteger orderId;
+    private BigInteger userId;
     private BigDecimal orderCost;
 
-    public Order(long orderId, long userId, BigDecimal orderCost) {
+    public Order(BigInteger orderId, BigInteger userId, BigDecimal orderCost) {
         this.orderId = orderId;
         this.userId = userId;
         this.orderCost = orderCost;
     }
 
-    public long getOrderId() {
+    public BigInteger getOrderId() {
         return orderId;
     }
 
-    public long getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
@@ -26,11 +26,11 @@ public class Order {
         return orderCost;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(BigInteger orderId) {
         this.orderId = orderId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 

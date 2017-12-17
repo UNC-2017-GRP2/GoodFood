@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class Item {
-    private long productId;
+    private BigInteger productId;
     private String productName;
     private String productDescription;
     private String productCategory;
@@ -12,7 +12,7 @@ public class Item {
 
     public Item(){}
 
-    public Item(long productId, String productName, String productDescription, String productCategory, BigDecimal productCost) {
+    public Item(BigInteger productId, String productName, String productDescription, String productCategory, BigDecimal productCost) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -20,7 +20,7 @@ public class Item {
         this.productCost = productCost;
     }
 
-    public long getProductId() {
+    public BigInteger getProductId() {
         return productId;
     }
 
@@ -40,7 +40,7 @@ public class Item {
         return productCost;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(BigInteger productId) {
         this.productId = productId;
     }
 

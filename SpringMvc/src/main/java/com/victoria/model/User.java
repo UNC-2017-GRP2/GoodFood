@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class User {
-    private long userId;
+    private BigInteger userId;
     private String fio;
     private String login;
     private String passwordHash;
@@ -20,7 +20,7 @@ public class User {
     public User (){}
 
 
-    public User(long userId, String fio, String login, String passwordHash, String phoneNumber, Date birthday, String email, String address, String bankCard, String role) {
+    public User(BigInteger userId, String fio, String login, String passwordHash, String phoneNumber, Date birthday, String email, String address, String bankCard, String role) {
         this.userId = userId;
         this.fio = fio;
         this.login = login;
@@ -33,7 +33,7 @@ public class User {
         this.role = role;
     }
 
-    public long getUserId() {
+    public BigInteger getUserId() {
         return userId;
     }
 
@@ -73,7 +73,7 @@ public class User {
         return role;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
 
