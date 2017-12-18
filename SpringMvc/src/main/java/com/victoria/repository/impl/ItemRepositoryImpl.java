@@ -16,9 +16,9 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         super(dataSource);
     }
 
-    private String SQL_SELECT_PARAMETERS = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
+
     private String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";
-    private String SQL_SELECT_OBJECT_BY_ID = "select * from \"OBJECTS\" where \"OBJECT_ID\" = ?";
+
     private String SQL_SELECT_ITEM_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Item\'";
 
     private String SQL_SELECT_CATEGORY_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item category\'";
@@ -121,17 +121,5 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             System.out.println(e.getMessage());
         }
         return newItem;
-    }
-
-    private long getAttrId(String sql){
-        try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql)){
-            while (resultSet.next()) {
-                return resultSet.getLong("ATTR_ID");
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOL4");
-        }
-        return 0;
     }
 }

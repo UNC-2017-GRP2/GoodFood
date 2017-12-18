@@ -259,6 +259,8 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 413	Item name	51
 414	Item description	51
 415	Item	53
+416	Order courier	53
+417	Order status	55
 \.
 
 
@@ -268,6 +270,7 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 
 COPY "ENUM_TYPES" ("ENUM_TYPE_ID", "NAME") FROM stdin;
 700	User role
+701	Order state
 \.
 
 
@@ -278,6 +281,15 @@ COPY "ENUM_TYPES" ("ENUM_TYPE_ID", "NAME") FROM stdin;
 COPY "ENUMS" ("ENUM_ID", "NAME", "ENUM_TYPE_ID") FROM stdin;
 800	ROLE_ADMIN	700
 801	ROLE_USER	700
+802	ROLE_COURIER	700
+803	Created	701
+804	Without courier	701
+805	Linked with courier	701
+806	Delivered	701
+807	Delivery confirmed	701
+808	Not delivered	701
+809	Cancelled	701
+810	Paid	701
 \.
 
 

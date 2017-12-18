@@ -1,11 +1,14 @@
 package com.victoria.repository.impl;
 
 import com.victoria.model.Item;
+import com.victoria.model.Order;
 import com.victoria.repository.OrderRepository;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderRepositoryImpl extends AbstractRepositoryImpl implements OrderRepository {
 
@@ -16,8 +19,15 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     private String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
 
     private String SQL_SELECT_ORDER_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order\'";
+    private String SQL_SELECT_ORDER_COURIER_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order courier\'";
     private String SQL_SELECT_PRODUCT_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item\'";
     private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
+
+    private String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";
+    private String SQL_SELECT_COST_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order cost\'";
+    private String SQL_SELECT_STATUS_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order status\'";
+    private String SQL_SELECT_STATUS = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";
+    private String SQL_SELECT_USER_ID = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"REFERENCE_VALUE\" = ?";
 
     public OrderRepositoryImpl(DataSource dataSource) throws SQLException {
         super(dataSource);
@@ -84,21 +94,161 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             }
             preparedStatement.close();
             resultSet.close();
+            setStatus(orderId, 803);
 
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
 
-    private long getAttrId(String sql){
-        try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql)){
-            while (resultSet.next()) {
-                return resultSet.getLong("ATTR_ID");
+    @Override
+    public List<Order> getAllOrders() {
+        List<Order> result = new ArrayList<>();
+        long orderObjTypeId = 0;
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ORDER_OBJ_TYPE_ID);
+            while (resultSet.next()){
+                orderObjTypeId = resultSet.getLong("OBJECT_TYPE_ID");
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOL4");
+            statement.close();
+            resultSet.close();
+
+            if(orderObjTypeId != 0){
+                PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
+                preparedStatement.setLong(1,orderObjTypeId);
+                resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()){
+                    long orderId = resultSet.getLong("OBJECT_ID");
+                    Order newOrder = getOrderById(orderId);
+                    result.add(newOrder);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return 0;
+        return result;
     }
+
+    @Override
+    public Order getOrderById(long orderId) {
+        Order newOrder = null;
+        //long costAttrId = getAttrId(SQL_SELECT_COST_ATTR_ID);
+        long statusAttrId = getAttrId(SQL_SELECT_STATUS_ATTR_ID);
+        long userId = 0;
+        long courierId = 0;
+        long courierAttrId = getAttrId(SQL_SELECT_ORDER_COURIER_ATTR_ID);
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID);
+            preparedStatement.setLong(1, orderId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                userId = resultSet.getLong("OBJECT_ID");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOOOOOOOOOL2");
+        }
+        try {
+            String orderStatus = null;
+            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
+            ps.setLong(1,orderId);
+            ResultSet rs = ps.executeQuery();
+            //идем по всем параметрам продукта
+            while(rs.next()){
+                long curAttrId = rs.getLong("ATTR_ID");
+                if (curAttrId == courierAttrId) {
+                    courierId = rs.getLong("REFERENCE_VALUE");
+                }
+                if (curAttrId == statusAttrId) {
+                    long enumValue = rs.getLong("ENUM_VALUE");
+                    try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_STATUS)) {
+                        statement.setLong(1, enumValue);
+                        try (ResultSet resultSet1 = statement.executeQuery()) {
+                            while (resultSet1.next()) {
+                                orderStatus = resultSet1.getString("NAME");
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOOOOOOOOOL2");
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage() + "LOOOOOOOOL222");
+                    }
+                }
+            }
+            newOrder = new Order(orderId,userId,new BigDecimal(0), orderStatus, courierId);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return newOrder;
+    }
+
+    private void setStatus(long orderId, long statusId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setLong(1,orderId);
+            preparedStatement.setLong(2, 417);
+            preparedStatement.setString(3,null);
+            preparedStatement.setDate(4,null);
+            preparedStatement.setLong(5, 0);
+            preparedStatement.setLong(6,statusId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public void changeOrderStatus(long orderId, long statusId) {
+        try {
+            PreparedStatement preparedStatement1 = connection.prepareStatement(SQL_UPDATE_ENUM_PARAMETERS);
+            preparedStatement1.setLong(1, statusId);
+            preparedStatement1.setLong(2, orderId);
+            preparedStatement1.setLong(3, 417);
+            preparedStatement1.executeUpdate();
+            preparedStatement1.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        if (statusId == 803) {
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_REFERENCE_PARAMETERS);
+                preparedStatement.setLong(1, 0);
+                preparedStatement.setLong(2, orderId);
+                preparedStatement.setLong(3, 416); //order courier
+                preparedStatement.executeUpdate();
+
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+
+    public void setCourier(long orderId, String username) {
+        long courierId = 0;
+        long orderAttrId = getAttrId(SQL_SELECT_ORDER_COURIER_ATTR_ID);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_ID);
+            preparedStatement.setString(1,username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                courierId = resultSet.getLong("OBJECT_ID");
+            }
+            preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setLong(1,orderId);
+            preparedStatement.setLong(2,orderAttrId);
+            preparedStatement.setString(3,null);
+            preparedStatement.setDate(4,null);
+            preparedStatement.setLong(5, courierId);
+            preparedStatement.setLong(6,0);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        changeOrderStatus(orderId, 805);
+    }
+
 }

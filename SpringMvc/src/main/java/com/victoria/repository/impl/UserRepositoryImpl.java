@@ -33,21 +33,11 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     private String SQL_SELECT_USER_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'User\'";
 
     private String SQL_SELECT_USER_ID = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"TEXT_VALUE\" = ? ";
-    private String SQL_SELECT_PARAMETERS = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
-    private String SQL_SELECT_PARAMETERS_BY_OBJ_ATTR = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
     private String SQL_SELECT_ROLE = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";
     private String SQL_SELECT_ROLE_ID = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = \'ROLE_USER\'";
 
     private String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
     private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
-
-    private String SQL_UPDATE_OBJECT = "UPDATE \"OBJECTS\" SET \"NAME\"=?, \"OBJECT_ID\"=?, \"PARENT_ID\"=?, \"OBJECT_TYPE_ID\"=? WHERE \"OBJECT_ID\"=? and \"NAME\"=? ";
-    private String SQL_UPDATE_OBJECT_NAME = "UPDATE \"OBJECTS\" SET \"NAME\"=? WHERE \"OBJECT_ID\"=? and \"NAME\"=? ";
-    private String SQL_UPDATE_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"OBJECT_ID\"=?, \"ATTR_ID\"=?, \"TEXT_VALUE\"=?, \"DATE_VALUE\"=?, \"REFERENCE_VALUE\"=?, \"ENUM_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
-    private String SQL_UPDATE_TEXT_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"TEXT_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
-    private String SQL_UPDATE_DATE_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"DATE_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
-    private String SQL_UPDATE_REFERENCE_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"REFERENCE_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
-    private String SQL_UPDATE_ENUM_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"ENUM_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
 
     public User getUserByUsername(String username) {
         User user = null;
@@ -147,18 +137,6 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             System.out.println("loginAttId = 0 OR Username is empty!!");
         }
         return user;
-    }
-
-    private long getAttrId(String sql){
-        try(Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql)){
-            while (resultSet.next()) {
-                return resultSet.getLong("ATTR_ID");
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOL4");
-        }
-        return 0;
     }
 
     private long getEnumId(String sql){
@@ -311,14 +289,6 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
     }
 
-    private boolean checkAttribute(long objectId, long attrId) throws SQLException {
-
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_PARAMETERS_BY_OBJ_ATTR);
-        preparedStatement.setLong(1,objectId);
-        preparedStatement.setLong(2,attrId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return (resultSet.next())? true:false;
-    }
 
 
     private void saveTextParameter(String sql, long userId, long attrId, String parameter) {

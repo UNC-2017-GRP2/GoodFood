@@ -96,6 +96,18 @@
                 <a href="<c:url value='/basket'/>" >Перейти в корзину</a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <a href="<c:url value='/my-orders'/>" >Мои заказы</a>
+            </td>
+        </tr>
+        <sec:authorize access="hasRole('ROLE_COURIER')">
+        <tr>
+                <td>
+                    <a href="<c:url value='/free-orders'/>">Free orders</a>
+                </td>
+            </tr>
+        </sec:authorize >
     </table>
 </c:if>
 
