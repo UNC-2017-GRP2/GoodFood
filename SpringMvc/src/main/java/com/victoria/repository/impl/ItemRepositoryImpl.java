@@ -3,6 +3,7 @@ package com.victoria.repository.impl;
 import com.victoria.config.Constant;
 import com.victoria.model.Item;
 import com.victoria.repository.ItemRepository;
+import com.victoria.config.Constant;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -17,10 +18,6 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         super(dataSource);
     }
 
-    private String SQL_SELECT_PARAMETERS = "select * from \"parameters\" where \"object_id\" = ?";
-    private String SQL_SELECT_OBJECTS = "select * from \"objects\" where \"object_type_id\" = ?";
-    private String SQL_SELECT_OBJECT_BY_ID = "select * from \"objects\" where \"object_id\" = ?";
-
     @Override
     public List<Item> getAllItems() {
         List<Item> result = new ArrayList<>();
@@ -29,7 +26,6 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
             preparedStatement.setLong(1, Constant.ITEM_OBJ_TYPE_ID);
             resultSet = preparedStatement.executeQuery();
-
             //идем по всем продуктам
             while (resultSet.next()){
                 long itemId = resultSet.getLong("object_id");
@@ -65,13 +61,13 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 long curAttrId = rs.getLong("attr_id");
 
                 if(curAttrId == Constant.ITEM_CATEGORY_ATTR_ID){
-                    itemCategory = rs.getString("text_value");
+                    itemCategory = rs.getString("TEXT_VALUE");
                 }
                 if(curAttrId == Constant.ITEM_DESCRIPTION_ATTR_ID){
-                    itemDescription = rs.getString("text_value");
+                    itemDescription = rs.getString("TEXT_VALUE");
                 }
                 if (curAttrId == Constant.ITEMS_COST_ATTR_ID){
-                    itemCost = new BigDecimal(rs.getString("text_value"));
+                    itemCost = new BigDecimal(rs.getString("TEXT_VALUE"));
                 }
             }
             newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost);

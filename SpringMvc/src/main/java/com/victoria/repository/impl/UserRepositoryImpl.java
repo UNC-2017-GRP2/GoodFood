@@ -16,17 +16,11 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         super(dataSource);
     }
 
-    private String SQL_SELECT_USER_ID = "select \"object_id\" from \"parameters\" where \"attr_id\" = ? and \"text_value\" = ? ";
-    private String SQL_SELECT_PARAMETERS = "select * from \"parameters\" where \"object_id\" = ?";
-    private String SQL_SELECT_PARAMETERS_BY_OBJ_ATTR = "select * from \"parameters\" where \"object_id\" = ? and \"attr_id\" = ?";
-    private String SQL_SELECT_ROLE = "select \"name\" from \"enums\" where \"enum_id\" = ?";
-    private String SQL_INSERT_INTO_OBJECTS = "insert into \"objects\" (\"name\",\"object_id\", \"parent_id\", \"object_type_id\") values(?,?,?,?)";
-    private String SQL_INSERT_INTO_PARAMETERS = "insert into \"parameters\" (\"object_id\",\"attr_id\", \"text_value\", \"date_value\", \"reference_value\", \"enum_value\") values(?,?,?,?,?,?)";
-    private String SQL_UPDATE_OBJECT = "UPDATE \"objects\" SET \"name\"=?, \"object_id\"=?, \"parent_id\"=?, \"object_type_id\"=? WHERE \"object_id\"=? and \"name\"=? ";
-    private String SQL_UPDATE_OBJECT_NAME = "UPDATE \"objects\" SET \"name\"=? WHERE \"object_id\"=? and \"name\"=? ";
-    private String SQL_UPDATE_PARAMETERS = "UPDATE \"parameters\" SET \"object_id\"=?, \"attr_id\"=?, \"text_value\"=?, \"date_value\"=?, \"reference_value\"=?, \"enum_value\"=? WHERE \"object_id\"=? and \"attr_id\"=?";
-    private String SQL_UPDATE_TEXT_PARAMETERS = "UPDATE \"parameters\" SET \"text_value\"=? WHERE \"object_id\"=? and \"attr_id\"=?";
-    private String SQL_UPDATE_DATE_PARAMETERS = "UPDATE \"parameters\" SET \"text_value\"=? WHERE \"object_id\"=? and \"attr_id\"=?";
+    private String SQL_SELECT_USER_ID = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"TEXT_VALUE\" = ? ";
+    private String SQL_SELECT_ROLE = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";private String SQL_SELECT_ROLE_ID = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = \'ROLE_USER\'";
+
+    private String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
+    private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
 
     public User getUserByUsername(String username) {
         User user = null;
@@ -59,12 +53,12 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                     preparedStatement.setLong(1, userId);
                     resultSet = preparedStatement.executeQuery();
                     while (resultSet.next()) {
-                        long curAttrId = resultSet.getLong("attr_id");
+                        long curAttrId = resultSet.getLong("ATTR_ID");
                         if (curAttrId == Constant.PASSWORD_HASH_ATTR_ID) {
-                            password = resultSet.getString("text_value");
+                            password = resultSet.getString("TEXT_VALUE");
                         }
                         if (curAttrId == Constant.USER_ROLE_ATTR_ID) {
-                            long roleValue = resultSet.getLong("enum_value");
+                            long roleValue = resultSet.getLong("ENUM_VALUE");
                             try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ROLE)) {
                                 statement.setLong(1, roleValue);
                                 try (ResultSet rs = statement.executeQuery()) {
@@ -79,22 +73,22 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                             }
                         }
                         if (curAttrId == Constant.FULL_NAME_ATTR_ID){
-                            fio = resultSet.getString("text_value");
+                            fio = resultSet.getString("TEXT_VALUE");
                         }
                         if(curAttrId == Constant.EMAIL_ATTR_ID){
-                            email = resultSet.getString("text_value");
+                            email = resultSet.getString("TEXT_VALUE");
                         }
                         if (curAttrId == Constant.PHONE_NUMBER_ATTR_ID){
-                            phone = resultSet.getString("text_value");
+                            phone = resultSet.getString("TEXT_VALUE");
                         }
                         if (curAttrId == Constant.BIRTHDAY_ATTR_ID){
-                            birthday = resultSet.getDate("date_value");
+                            birthday = resultSet.getDate("DATE_VALUE");
                         }
                         if(curAttrId == Constant.ADDRESS_ATTR_ID){
-                            address = resultSet.getString("text_value");
+                            address = resultSet.getString("TEXT_VALUE");
                         }
                         if(curAttrId == Constant.BANK_CARD_NUMBER_ATTR_ID){
-                            card = resultSet.getString("text_value");
+                            card = resultSet.getString("TEXT_VALUE");
                         }
                     }
                     preparedStatement.close();
@@ -126,7 +120,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     public void saveUser(User user) {
         PreparedStatement preparedStatement;
         long userId = 0;
-        try {
+        try{
             userId = getObjectId();
             preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_OBJECTS);
             preparedStatement.setString(1, user.getLogin());
@@ -136,15 +130,14 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             preparedStatement.executeUpdate();
             preparedStatement.close();
 
-            //ДОБАВЛЯЕМ ПАРАМЕТРЫ ЮЗЕРА
-            saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.FULL_NAME_ATTR_ID, user.getFio());
-            saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.USERNAME_ATTR_ID, user.getLogin());
-            saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.PASSWORD_HASH_ATTR_ID, user.getPasswordHash());
-            saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.EMAIL_ATTR_ID, user.getEmail());
-            saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.PHONE_NUMBER_ATTR_ID, user.getPhoneNumber());
-            saveEnumValue(SQL_INSERT_INTO_PARAMETERS, userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLE_USER_ENUM_ID);
-
-        } catch (Exception e) {
+                //ДОБАВЛЯЕМ ПАРАМЕТРЫ ЮЗЕРА
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId, Constant.FULL_NAME_ATTR_ID,user.getFio());
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId, Constant.USERNAME_ATTR_ID,user.getLogin());
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId, Constant.PASSWORD_HASH_ATTR_ID,user.getPasswordHash());
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId, Constant.EMAIL_ATTR_ID,user.getEmail());
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS,userId, Constant.PHONE_NUMBER_ATTR_ID,user.getPhoneNumber());
+                saveEnumValue(SQL_INSERT_INTO_PARAMETERS,userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLE_USER_ENUM_ID);
+        }catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
@@ -163,23 +156,21 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             preparedStatement.close();
 
             //обновляем параметры,если параметра не было, то добавляем его
-            updateTextParameter(oldUser.getUserId(),Constant.USERNAME_ATTR_ID, newUser.getLogin());
-            updateTextParameter(oldUser.getUserId(),Constant.FULL_NAME_ATTR_ID, newUser.getFio());
-            updateTextParameter(oldUser.getUserId(),Constant.EMAIL_ATTR_ID,newUser.getEmail());
-            updateTextParameter(oldUser.getUserId(),Constant.PHONE_NUMBER_ATTR_ID,newUser.getPhoneNumber());
-            updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID, null);
-            updateTextParameter(oldUser.getUserId(),Constant.ADDRESS_ATTR_ID,newUser.getAddress());
-            updateTextParameter(oldUser.getUserId(),Constant.BANK_CARD_NUMBER_ATTR_ID,newUser.getBankCard());
-
+            updateTextParameter(oldUser.getUserId(), Constant.USERNAME_ATTR_ID, newUser.getLogin());
+            updateTextParameter(oldUser.getUserId(), Constant.FULL_NAME_ATTR_ID, newUser.getFio());
+            updateTextParameter(oldUser.getUserId(), Constant.EMAIL_ATTR_ID,newUser.getEmail());
+            updateTextParameter(oldUser.getUserId(), Constant.PHONE_NUMBER_ATTR_ID,newUser.getPhoneNumber());
+            updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID, null/*newUser.getBirthday()*/);
+            updateTextParameter(oldUser.getUserId(), Constant.ADDRESS_ATTR_ID,newUser.getAddress());
+            updateTextParameter(oldUser.getUserId(), Constant.BANK_CARD_NUMBER_ATTR_ID,newUser.getBankCard());
         }catch (Exception e){
             System.out.println(e.getMessage() + " UPDATE_OBJECT");
         }
     }
 
     private void updateTextParameter(long objectId, long attrId, String parameter){
-
         try {
-            //если парметр был, то обновляем,иначе добавим
+            //если параметр был, то обновляем,иначе добавим
             if (checkAttribute(objectId, attrId)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_TEXT_PARAMETERS);
                 preparedStatement.setString(1, (parameter == "")?null:parameter);
@@ -212,14 +203,6 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
     }
 
-    private boolean checkAttribute(long objectId, long attrId) throws SQLException {
-
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_PARAMETERS_BY_OBJ_ATTR);
-        preparedStatement.setLong(1,objectId);
-        preparedStatement.setLong(2,attrId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        return (resultSet.next())? true:false;
-    }
 
 
     private void saveTextParameter(String sql, long userId, long attrId, String parameter) {

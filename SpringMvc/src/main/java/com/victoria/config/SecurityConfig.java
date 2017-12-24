@@ -32,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/basket").authenticated()
                 .antMatchers("/items").permitAll()
+                .antMatchers("/free-orders").hasRole("COURIER")
+                .antMatchers("/my-orders").authenticated()
                 .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/home")
