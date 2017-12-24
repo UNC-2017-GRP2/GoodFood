@@ -232,10 +232,11 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             preparedStatement.setLong(6, parameter);
             preparedStatement.executeUpdate();
             preparedStatement.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
         }
     }
+
     private void saveDateParameter(String sql, BigInteger userId, long attrId, Date parameter) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

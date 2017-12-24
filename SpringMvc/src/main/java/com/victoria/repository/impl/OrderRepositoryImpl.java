@@ -208,7 +208,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             }
             preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setObject(1,orderId, numericType);
-            preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
+            preparedStatement.setLong(2, Constant.COURIER_ATTR_ID);
             preparedStatement.setString(3,null);
             preparedStatement.setDate(4,null);
             preparedStatement.setLong(5, courierId);
