@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,11 +54,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAllOrdersByCourier(String username) {
-        long userId = userRepository.getUserByUsername(username).getUserId();
+        BigInteger userId = userRepository.getUserByUsername(username).getUserId();
         List<Order> allOrders = orderRepository.getAllOrders();
         List<Order> allOrdersByUser = new ArrayList<>();
         for (Order newOrder : allOrders) {
-            if (newOrder.getCourierId() == userId) {
+            if (newOrder.getCourierId().equals(userId)) {
                 allOrdersByUser.add(newOrder);
             }
         }
@@ -65,11 +66,11 @@ public class OrderServiceImpl implements OrderService {
     }
     @Override
     public List<Order> getAllOrdersByUser(String username) {
-        long userId = userRepository.getUserByUsername(username).getUserId();
+        BigInteger userId = userRepository.getUserByUsername(username).getUserId();
         List<Order> allOrders = orderRepository.getAllOrders();
         List<Order> allOrdersByUser = new ArrayList<>();
         for (Order newOrder : allOrders) {
-            if (newOrder.getUserId() == userId) {
+            if (newOrder.getUserId().equals(userId)) {
                 allOrdersByUser.add(newOrder);
             }
         }
@@ -77,17 +78,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(long orderId) {
+    public Order getOrderById(BigInteger orderId) {
         return orderRepository.getOrderById(orderId);
     }
 
     @Override
-    public void changeOrderStatus(long orderId, long statusId) {
+    public void changeOrderStatus(BigInteger orderId, long statusId) {
         orderRepository.changeOrderStatus(orderId, statusId);
     }
 
     @Override
-    public void setCourier(long orderId, String username) {
+    public void setCourier(BigInteger orderId, String username) {
         orderRepository.setCourier(orderId, username);
     }
 

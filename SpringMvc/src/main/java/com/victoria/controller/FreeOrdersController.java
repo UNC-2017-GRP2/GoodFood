@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class FreeOrdersController {
         return model;
     }
     @RequestMapping(value = { "/free-orders/{id}"}, method = RequestMethod.POST)
-    public String takeOrder(@PathVariable long id,Principal principal) throws IOException {
+    public String takeOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
         Order order = orderService.getOrderById(id);
         if (order != null){
             orderService.setCourier(id, principal.getName());

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.Principal;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class MyOrdersController {
         return model;
     }
     @RequestMapping(value = { "/my-orders/{id}"}, method = RequestMethod.POST)
-    public String deleteOrder(@PathVariable long id,Principal principal) throws IOException {
+    public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
         Order order = orderService.getOrderById(id);
         if (order != null){
             if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {

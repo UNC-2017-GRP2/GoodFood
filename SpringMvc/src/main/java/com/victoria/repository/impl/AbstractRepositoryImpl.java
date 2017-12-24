@@ -1,6 +1,7 @@
 package com.victoria.repository.impl;
 
 import javax.sql.DataSource;
+import java.math.BigInteger;
 import java.sql.*;
 
 public class AbstractRepositoryImpl {
@@ -24,27 +25,28 @@ protected String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJ
     protected String SQL_UPDATE_REFERENCE_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"REFERENCE_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     protected String SQL_UPDATE_ENUM_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"ENUM_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
 
+    protected int numericType = Types.BIGINT;
 
     public AbstractRepositoryImpl(DataSource dataSource) throws SQLException {
         connection = dataSource.getConnection();
     }
 
-    protected long getObjectId() {
+    protected BigInteger getObjectId() {
         try(Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ID)){
             while (resultSet.next()) {
-                return resultSet.getLong("id_generator");
+                return new BigInteger(resultSet.getString("id_generator"));
             }
         }catch (Exception e){
             System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOL4");
         }
-        return 0;
+        return null;
     }
 
-    protected boolean checkAttribute(long objectId, long attrId) throws SQLException {
+    protected boolean checkAttribute(BigInteger objectId, long attrId) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_PARAMETERS_BY_OBJ_ATTR);
-        preparedStatement.setLong(1,objectId);
+        preparedStatement.setObject(1,objectId,numericType);
         preparedStatement.setLong(2,attrId);
         ResultSet resultSet = preparedStatement.executeQuery();
         return (resultSet.next())? true:false;

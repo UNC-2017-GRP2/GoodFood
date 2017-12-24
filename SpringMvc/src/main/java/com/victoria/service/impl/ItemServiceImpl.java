@@ -6,6 +6,7 @@ import com.victoria.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item getItemById(long itemId) {
+    public Item getItemById(BigInteger itemId) {
         return itemRepository.getItemById(itemId);
     }
 }

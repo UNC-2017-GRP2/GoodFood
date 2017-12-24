@@ -5,6 +5,7 @@ import com.victoria.model.Order;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,8 @@ public interface OrderService {
     void checkout(ArrayList<Item> items, String username);
     List<Order> getAllFreeOrders();
     List<Order> getAllOrdersByUser(String username);
-    Order getOrderById(long orderId);
+    Order getOrderById(BigInteger orderId);
     List<Order> getAllOrdersByCourier(String username);
-    void changeOrderStatus(long orderId, long statusId);
-    void setCourier(long orderId, String username);
+    void changeOrderStatus(BigInteger orderId, long statusId);
+    void setCourier(BigInteger orderId, String username);
 }

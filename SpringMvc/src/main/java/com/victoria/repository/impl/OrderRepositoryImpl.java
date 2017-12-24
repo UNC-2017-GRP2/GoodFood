@@ -8,6 +8,7 @@ import com.victoria.config.Constant;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,48 +29,50 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     @Override
     public void checkout(ArrayList<Item> items, String username) {
 
-        long userId = 0;
-        long orderId = 0;
+        BigInteger userId = null;
+        BigInteger orderId;
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_ID);
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                userId = resultSet.getLong("OBJECT_ID");
+                userId = new BigInteger(resultSet.getString("OBJECT_ID"));
             }
 
             orderId = getObjectId();
-            //Сохраняем заказ
 
+            if (orderId != null){
+                //Сохраняем заказ
                 preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_OBJECTS);
-                preparedStatement.setString(1,"Order " + orderId);
-                preparedStatement.setLong(2,orderId);
-                preparedStatement.setLong(3,0);
-                preparedStatement.setLong(4,Constant.ORDER_OBJ_TYPE_ID);
+                preparedStatement.setString(1, "Order " + orderId);
+                preparedStatement.setObject(2, orderId, numericType);
+                preparedStatement.setLong(3, 0);
+                preparedStatement.setLong(4, Constant.ORDER_OBJ_TYPE_ID);
                 preparedStatement.executeUpdate();
 
                 //Добавляем параметры
-                if (userId != 0){
+                if (userId != null) {
                     //добавляем пользователя
-                    preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
-                    preparedStatement.setLong(1,userId);
-                    preparedStatement.setLong(2,Constant.ORDER_ATTR_ID);
-                    preparedStatement.setString(3,null);
-                    preparedStatement.setDate(4,null);
-                    preparedStatement.setLong(5,orderId);
-                    preparedStatement.setLong(6,0);
-                    preparedStatement.executeUpdate();
-
-                    //добавляем продукты
-                    for(Item item:items){
                         preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
-                        preparedStatement.setLong(1,orderId);
-                        preparedStatement.setLong(2, Constant.ITEM_ATTR_ID);
+                    preparedStatement.setObject(1, userId, numericType);
+                    preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
                         preparedStatement.setString(3,null);
                         preparedStatement.setDate(4,null);
-                        preparedStatement.setLong(5,item.getProductId());
+                        preparedStatement.setObject(5, orderId, numericType);
                         preparedStatement.setLong(6,0);
                         preparedStatement.executeUpdate();
+
+                    //добавляем продукты
+                    for (Item item : items) {
+                        preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+                        preparedStatement.setObject(1, orderId, numericType);
+                        preparedStatement.setLong(2, Constant.ITEM_ATTR_ID);
+                        preparedStatement.setString(3, null);
+                        preparedStatement.setDate(4, null);
+                        preparedStatement.setObject(5, item.getProductId(), numericType);
+                        preparedStatement.setLong(6, 0);
+                        preparedStatement.executeUpdate();
+                        }
                 }
             }
             preparedStatement.close();
@@ -84,13 +87,14 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     @Override
     public List<Order> getAllOrders() {
         List<Order> result = new ArrayList<>();
+        BigInteger orderId;
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
             preparedStatement.setLong(1, Constant.ORDER_OBJ_TYPE_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                long orderId = resultSet.getLong("OBJECT_ID");
+                orderId = new BigInteger(resultSet.getString("OBJECT_ID"));
                 Order newOrder = getOrderById(orderId);
                 result.add(newOrder);
             }
@@ -101,17 +105,17 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     }
 
     @Override
-    public Order getOrderById(long orderId) {
+    public Order getOrderById(BigInteger orderId) {
         Order newOrder = null;
-        long userId = 0;
-        long courierId = 0;
+        BigInteger userId = new BigInteger("0");
+        BigInteger courierId = new BigInteger("0");
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID);
-            preparedStatement.setLong(1, orderId);
+            preparedStatement.setObject(1, orderId, numericType);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                userId = resultSet.getLong("OBJECT_ID");
+                userId = new BigInteger(resultSet.getString("OBJECT_ID"));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOOOOOOOOOL2");
@@ -119,13 +123,13 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         try {
             String orderStatus = null;
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
-            ps.setLong(1,orderId);
+            ps.setObject(1,orderId, numericType);
             ResultSet rs = ps.executeQuery();
             //идем по всем параметрам продукта
             while(rs.next()){
                 long curAttrId = rs.getLong("ATTR_ID");
                 if (curAttrId == Constant.COURIER_ATTR_ID) {
-                    courierId = rs.getLong("REFERENCE_VALUE");
+                    courierId = new BigInteger(rs.getString("REFERENCE_VALUE"));
                 }
                 if (curAttrId == Constant.STATUS_ATTR_ID) {
                     long enumValue = rs.getLong("ENUM_VALUE");
@@ -150,15 +154,15 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         return newOrder;
     }
 
-    private void setStatus(long orderId, long statusId) {
+    private void setStatus(BigInteger orderId, long statusId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
-            preparedStatement.setLong(1,orderId);
+            preparedStatement.setObject(1,orderId, numericType);
             preparedStatement.setLong(2, 417);
             preparedStatement.setString(3,null);
             preparedStatement.setDate(4,null);
             preparedStatement.setLong(5, 0);
-            preparedStatement.setLong(6,statusId);
+            preparedStatement.setLong(6, statusId);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         }catch (Exception e){
@@ -167,11 +171,11 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     }
 
 
-    public void changeOrderStatus(long orderId, long statusId) {
+    public void changeOrderStatus(BigInteger orderId, long statusId) {
         try {
             PreparedStatement preparedStatement1 = connection.prepareStatement(SQL_UPDATE_ENUM_PARAMETERS);
-            preparedStatement1.setLong(1, statusId);
-            preparedStatement1.setLong(2, orderId);
+            preparedStatement1.setObject(1, statusId, numericType);
+            preparedStatement1.setObject(2, orderId, numericType);
             preparedStatement1.setLong(3, 417);
             preparedStatement1.executeUpdate();
             preparedStatement1.close();
@@ -182,7 +186,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_REFERENCE_PARAMETERS);
                 preparedStatement.setLong(1, 0);
-                preparedStatement.setLong(2, orderId);
+                preparedStatement.setObject(2, orderId, numericType);
                 preparedStatement.setLong(3, 416); //order courier
                 preparedStatement.executeUpdate();
 
@@ -193,7 +197,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     }
 
 
-    public void setCourier(long orderId, String username) {
+    public void setCourier(BigInteger orderId, String username) {
         long courierId = 0;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_ID);
@@ -203,7 +207,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 courierId = resultSet.getLong("OBJECT_ID");
             }
             preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
-            preparedStatement.setLong(1,orderId);
+            preparedStatement.setObject(1,orderId, numericType);
             preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
             preparedStatement.setString(3,null);
             preparedStatement.setDate(4,null);

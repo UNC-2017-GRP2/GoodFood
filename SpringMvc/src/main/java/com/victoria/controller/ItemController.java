@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class ItemController {
         return model;
     }
     @RequestMapping(value = { "/items/{id}"}, method = RequestMethod.POST)
-    public String addItemInBasket(@PathVariable long id, @ModelAttribute ArrayList<Item> basketItems, HttpSession httpSession) throws IOException {
+    public String addItemInBasket(@PathVariable BigInteger id, @ModelAttribute ArrayList<Item> basketItems, HttpSession httpSession) throws IOException {
         Item item = itemService.getItemById(id);
         if (item != null){
             if (httpSession.getAttribute("basketItems") == null){
