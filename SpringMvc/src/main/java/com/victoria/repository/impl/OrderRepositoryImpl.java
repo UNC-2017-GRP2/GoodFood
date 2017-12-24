@@ -53,14 +53,14 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 //Добавляем параметры
                 if (userId != null) {
                     //добавляем пользователя
-                        preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+                    preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
                     preparedStatement.setObject(1, userId, numericType);
                     preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
-                        preparedStatement.setString(3,null);
-                        preparedStatement.setDate(4,null);
-                        preparedStatement.setObject(5, orderId, numericType);
-                        preparedStatement.setLong(6,0);
-                        preparedStatement.executeUpdate();
+                    preparedStatement.setString(3, null);
+                    preparedStatement.setDate(4, null);
+                    preparedStatement.setObject(5, orderId, numericType);
+                    preparedStatement.setLong(6, 0);
+                    preparedStatement.executeUpdate();
 
                     //добавляем продукты
                     for (Item item : items) {
@@ -72,7 +72,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                         preparedStatement.setObject(5, item.getProductId(), numericType);
                         preparedStatement.setLong(6, 0);
                         preparedStatement.executeUpdate();
-                        }
+                    }
                 }
             }
             preparedStatement.close();

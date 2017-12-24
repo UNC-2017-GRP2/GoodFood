@@ -46,7 +46,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         String itemName = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_BY_ID);
-            preparedStatement.setObject(1,itemId, numericType);
+            preparedStatement.setObject(1, itemId, numericType);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 itemName = resultSet.getString("name");
@@ -55,7 +55,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             String itemCategory = null;
             BigDecimal itemCost = null;
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
-            ps.setObject(1,itemId, numericType);
+            ps.setObject(1, itemId, numericType);
             ResultSet rs = ps.executeQuery();
             //идем по всем параметрам продукта
             while(rs.next()){

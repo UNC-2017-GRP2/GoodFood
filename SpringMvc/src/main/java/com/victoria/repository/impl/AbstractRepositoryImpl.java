@@ -7,6 +7,7 @@ import java.sql.*;
 public class AbstractRepositoryImpl {
     protected Connection connection;
     protected String SQL_SELECT_ID = "select id_generator()";
+    protected int numericType = Types.NUMERIC;
 
     protected String SQL_SELECT_OBJECT_BY_ID = "select * from \"OBJECTS\" where \"OBJECT_ID\" = ?";
     protected String SQL_SELECT_PARAMETERS = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
@@ -38,7 +39,7 @@ protected String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJ
                 return new BigInteger(resultSet.getString("id_generator"));
             }
         }catch (Exception e){
-            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOL4");
+            System.out.println(e.getMessage());
         }
         return null;
     }

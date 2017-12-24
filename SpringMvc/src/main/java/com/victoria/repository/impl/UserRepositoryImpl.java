@@ -11,6 +11,7 @@ import java.util.List;
 
 public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRepository {
 
+
     //private Connection connection;
     public UserRepositoryImpl(DataSource dataSource) throws SQLException {
         super(dataSource);
@@ -120,7 +121,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     public void saveUser(User user) {
         PreparedStatement preparedStatement;
         BigInteger userId;
-        try{
+        try {
             userId = getObjectId();
             if (userId != null){
                 preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_OBJECTS);
@@ -138,8 +139,8 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                 saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.EMAIL_ATTR_ID, user.getEmail());
                 saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.PHONE_NUMBER_ATTR_ID, user.getPhoneNumber());
                 saveEnumValue(SQL_INSERT_INTO_PARAMETERS, userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLE_USER_ENUM_ID);
-                }
-        }catch (Exception e){
+            }
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -148,6 +149,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     @Override
     public void updateUser(User oldUser, User newUser) {
         try {
+
             //Обновляем в objects логин пользователя
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_OBJECT_NAME);
             preparedStatement.setString(1,newUser.getLogin());
@@ -192,7 +194,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             if (checkAttribute(objectId, attrId)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_DATE_PARAMETERS);
                 preparedStatement.setDate(1, parameter);
-                preparedStatement.setObject(2, objectId,numericType);
+                preparedStatement.setObject(2,objectId, numericType);
                 preparedStatement.setLong(3, attrId);
                 preparedStatement.executeUpdate();
                 preparedStatement.close();
@@ -203,8 +205,6 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             System.out.println(e.getMessage());
         }
     }
-
-
 
     private void saveTextParameter(String sql, BigInteger userId, long attrId, String parameter) {
         try {

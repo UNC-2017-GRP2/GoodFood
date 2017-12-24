@@ -28,6 +28,7 @@ public class Order {
     public BigInteger getCourierId() {
         return courierId;
     }
+
     public BigInteger getUserId() {
         return userId;
     }
