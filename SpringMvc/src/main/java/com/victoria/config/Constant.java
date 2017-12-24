@@ -28,6 +28,8 @@ public class Constant {
     public static final long ITEM_NAME_ATTR_ID = 413;
     public static final long ITEM_DESCRIPTION_ATTR_ID = 414;
     public static final long ITEM_ATTR_ID = 415;
+    public static final long STATUS_ATTR_ID = 417;
+    public static final long COURIER_ATTR_ID = 416;
 
     /**Table attributes**/
     public static final long ROLE_ENUM_TYPE_ID = 700;

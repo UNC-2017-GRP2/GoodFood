@@ -3,6 +3,7 @@ package com.victoria.repository.impl;
 import com.victoria.model.Item;
 import com.victoria.model.Order;
 import com.victoria.repository.OrderRepository;
+import com.victoria.config.Constant;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -15,14 +16,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     //private Connection connection;
 
     private String SQL_SELECT_OBJECT_ID = "select \"OBJECT_ID\" from \"OBJECTS\" where \"NAME\" = ?";
-    private String SQL_SELECT_ORDER_OBJ_TYPE_ID = "select \"OBJECT_TYPE_ID\" from \"OBJECT_TYPES\" where \"NAME\" = \'Order\'";
-    private String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
-
-    private String SQL_SELECT_ORDER_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order\'";
     private String SQL_SELECT_ORDER_COURIER_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order courier\'";
-    private String SQL_SELECT_PRODUCT_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Item\'";
-    private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
-
     private String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";
     private String SQL_SELECT_COST_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order cost\'";
     private String SQL_SELECT_STATUS_ATTR_ID = "select \"ATTR_ID\" from \"ATTRIBUTES\" where \"NAME\" = \'Order status\'";
@@ -36,12 +30,8 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     @Override
     public void checkout(ArrayList<Item> items, String username) {
 
-        long orderId = 0;
         long userId = 0;
-        long orderObjectTypeId = 0;
-        long orderAttrId = getAttrId(SQL_SELECT_ORDER_ATTR_ID);
-        long productAttrId = getAttrId(SQL_SELECT_PRODUCT_ATTR_ID);
-
+        long orderId = 0;
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_ID);
             preparedStatement.setString(1,username);
@@ -50,29 +40,23 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 userId = resultSet.getLong("OBJECT_ID");
             }
 
-            preparedStatement = connection.prepareStatement(SQL_SELECT_ORDER_OBJ_TYPE_ID);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                orderObjectTypeId = resultSet.getLong("OBJECT_TYPE_ID");
-            }
-
             orderId = getObjectId();
 
             //Сохраняем заказ
-            if (orderObjectTypeId != 0){
+
                 preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_OBJECTS);
                 preparedStatement.setString(1,"Order " + orderId);
                 preparedStatement.setLong(2,orderId);
                 preparedStatement.setLong(3,0);
-                preparedStatement.setLong(4,orderObjectTypeId);
+                preparedStatement.setLong(4,Constant.ORDER_OBJ_TYPE_ID);
                 preparedStatement.executeUpdate();
 
                 //Добавляем параметры
-                if (userId != 0 && orderAttrId != 0){
+                if (userId != 0){
                     //добавляем пользователя
                     preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
                     preparedStatement.setLong(1,userId);
-                    preparedStatement.setLong(2,orderAttrId);
+                    preparedStatement.setLong(2,Constant.ORDER_ATTR_ID);
                     preparedStatement.setString(3,null);
                     preparedStatement.setDate(4,null);
                     preparedStatement.setLong(5,orderId);
@@ -83,13 +67,12 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                     for(Item item:items){
                         preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
                         preparedStatement.setLong(1,orderId);
-                        preparedStatement.setLong(2,productAttrId);
+                        preparedStatement.setLong(2, Constant.ITEM_ATTR_ID);
                         preparedStatement.setString(3,null);
                         preparedStatement.setDate(4,null);
                         preparedStatement.setLong(5,item.getProductId());
                         preparedStatement.setLong(6,0);
                         preparedStatement.executeUpdate();
-                    }
                 }
             }
             preparedStatement.close();
@@ -104,26 +87,15 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     @Override
     public List<Order> getAllOrders() {
         List<Order> result = new ArrayList<>();
-        long orderObjTypeId = 0;
         try{
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ORDER_OBJ_TYPE_ID);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
+            preparedStatement.setLong(1, Constant.ORDER_OBJ_TYPE_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()){
-                orderObjTypeId = resultSet.getLong("OBJECT_TYPE_ID");
-            }
-            statement.close();
-            resultSet.close();
-
-            if(orderObjTypeId != 0){
-                PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
-                preparedStatement.setLong(1,orderObjTypeId);
-                resultSet = preparedStatement.executeQuery();
-
-                while (resultSet.next()){
-                    long orderId = resultSet.getLong("OBJECT_ID");
-                    Order newOrder = getOrderById(orderId);
-                    result.add(newOrder);
-                }
+                long orderId = resultSet.getLong("OBJECT_ID");
+                Order newOrder = getOrderById(orderId);
+                result.add(newOrder);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,11 +106,8 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     @Override
     public Order getOrderById(long orderId) {
         Order newOrder = null;
-        //long costAttrId = getAttrId(SQL_SELECT_COST_ATTR_ID);
-        long statusAttrId = getAttrId(SQL_SELECT_STATUS_ATTR_ID);
         long userId = 0;
         long courierId = 0;
-        long courierAttrId = getAttrId(SQL_SELECT_ORDER_COURIER_ATTR_ID);
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID);
@@ -158,10 +127,10 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             //идем по всем параметрам продукта
             while(rs.next()){
                 long curAttrId = rs.getLong("ATTR_ID");
-                if (curAttrId == courierAttrId) {
+                if (curAttrId == Constant.COURIER_ATTR_ID) {
                     courierId = rs.getLong("REFERENCE_VALUE");
                 }
-                if (curAttrId == statusAttrId) {
+                if (curAttrId == Constant.STATUS_ATTR_ID) {
                     long enumValue = rs.getLong("ENUM_VALUE");
                     try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_STATUS)) {
                         statement.setLong(1, enumValue);
@@ -229,7 +198,6 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
 
     public void setCourier(long orderId, String username) {
         long courierId = 0;
-        long orderAttrId = getAttrId(SQL_SELECT_ORDER_COURIER_ATTR_ID);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_ID);
             preparedStatement.setString(1,username);
@@ -239,7 +207,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             }
             preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setLong(1,orderId);
-            preparedStatement.setLong(2,orderAttrId);
+            preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
             preparedStatement.setString(3,null);
             preparedStatement.setDate(4,null);
             preparedStatement.setLong(5, courierId);
