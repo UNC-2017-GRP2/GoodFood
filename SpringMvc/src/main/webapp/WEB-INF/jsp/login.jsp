@@ -19,9 +19,9 @@
         <div class="invalid-data">${error}</div>
     </c:if>
     <div class="form-group top-form-group">
-        <label for="inputLogin" class="col-xs-4 control-label">Login:</label>
+        <label for="inputLogin" class="col-xs-4 control-label">Username:</label>
         <div class="col-xs-6">
-            <input type="text" class="form-control" name='username' id="inputLogin" placeholder="Enter login">
+            <input type="text" class="form-control" name='username' id="inputLogin" placeholder="Enter username">
         </div>
     </div>
     <div class="form-group">
@@ -42,9 +42,7 @@
             <button type="submit" class="btn btn-default">Sign In</button>
         </div>
         <div class="col-xs-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formRegistrationModal">Sign
-                Up
-            </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formRegistrationModal">Sign Up</button>
         </div>
     </div>
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

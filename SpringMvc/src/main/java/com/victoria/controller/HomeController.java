@@ -42,7 +42,6 @@ public class HomeController {
     @RequestMapping(value = { "/edit"}, method = RequestMethod.GET)
     public ModelAndView editPage(ModelAndView model, Principal principal) throws IOException {
         User user  = userService.getByUsername(principal.getName());
-        /*ShaPasswordEncoder encoder = new ShaPasswordEncoder();*/
         if (user != null){
             model.addObject("user", user);
         }
@@ -50,14 +49,6 @@ public class HomeController {
         return model;
     }
 
-    /*@RequestMapping(value = { "/edit"}, method = RequestMethod.POST)
-    public ModelAndView edit(@ModelAttribute("user") User updatedUser, ModelAndView model, Principal principal) throws IOException {
-        User user  = userService.getByUsername(principal.getName());
-        userService.updateUser(user,updatedUser);
-        model.addObject("nullParameter", "Отсутствует");
-        model.setViewName("home");
-        return model;
-    }*/
     @RequestMapping(value = { "/edit"}, method = RequestMethod.POST)
     public String edit(@ModelAttribute("user") User updatedUser, ModelAndView model, Principal principal) throws IOException {
         User user  = userService.getByUsername(principal.getName());

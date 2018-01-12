@@ -26,10 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/home").authenticated()
+                .antMatchers("/profile").authenticated()
                 .antMatchers("/").authenticated()
                 .antMatchers("/edit").authenticated()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/registration").permitAll()
                 .antMatchers("/basket").authenticated()
                 .antMatchers("/items").permitAll()
                 .antMatchers("/free-orders").hasRole("COURIER")
