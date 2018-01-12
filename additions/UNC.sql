@@ -82,6 +82,14 @@ SET default_with_oids = false;
 -- Name: attr_object_types; Type: TABLE; Schema: public; Owner: postgres
 --
 
+CREATE TABLE persistent_logins (
+    username varchar(64) not null,
+    series varchar(64) not null,
+    token varchar(64) not null,
+    last_used timestamp not null,
+    PRIMARY KEY (series)
+);
+
 CREATE TABLE "ATTR_OBJECT_TYPES" (
     "OBJECT_TYPE_ID" bigint NOT NULL,
     "ATTR_ID" bigint NOT NULL
