@@ -8,4 +8,6 @@ public interface UserRepository {
     List<User> getAll();
     void saveUser(User user);
     void updateUser(User oldUser, User newUser);
+    boolean isLoginExist(String login);
+    boolean isEmailExist(String email);
 }
