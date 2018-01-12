@@ -10,6 +10,7 @@ public class User {
     private String fio;
     private String login;
     private String passwordHash;
+    private String confirmPassword;
     private String phoneNumber;
     private Date birthday;
     private String email;
@@ -20,11 +21,12 @@ public class User {
     public User (){}
 
 
-    public User(BigInteger userId, String fio, String login, String passwordHash, String phoneNumber, Date birthday, String email, String address, String bankCard, String role) {
+    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, Date birthday, String email, String address, String bankCard, String role) {
         this.userId = userId;
         this.fio = fio;
         this.login = login;
         this.passwordHash = passwordHash;
+        this.confirmPassword = confirmPassword;
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
         this.email = email;
@@ -47,6 +49,10 @@ public class User {
 
     public String getPasswordHash() {
         return passwordHash;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
     }
 
     public String getPhoneNumber() {
@@ -87,6 +93,10 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public void setPhoneNumber(String phoneNumber) {

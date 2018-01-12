@@ -1,0 +1,6 @@
+body{height: 100vh; width: 100vw; overflow: hidden;}
+.my-container{}
+.form-login{margin-left: auto; margin-right: auto;  margin-top: 10%; width: 40%; border: 1px solid #e1e1ea; border-radius: 5px;}
+.invalid-data{text-align: center;margin: auto; color: rgb(255, 0, 0);}
+.top-form-group{margin-top: 3%;}
+.validationMessage{margin-bottom: 2vh; color: rgb(255,0,0);}

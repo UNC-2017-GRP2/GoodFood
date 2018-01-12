@@ -64,7 +64,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                                 statement.setLong(1, roleValue);
                                 try (ResultSet rs = statement.executeQuery()) {
                                     while (rs.next()) {
-                                        role = rs.getString("name");
+                                        role = rs.getString("NAME");
                                     }
                                 } catch (Exception e) {
                                     System.out.println(e.getMessage());
@@ -100,7 +100,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                 }
 
                 if (!password.equals("") && !role.equals("")){
-                    user = new User(userId, fio, username, password, phone,birthday, email,address, card, role);
+                    user = new User(userId, fio, username, password,password, phone,birthday, email,address, card, role);
                 }else{
                     System.out.println("pass or role is empty!");
                 }

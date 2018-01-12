@@ -29,7 +29,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             resultSet = preparedStatement.executeQuery();
             //идем по всем продуктам
             while (resultSet.next()){
-                String itemId = resultSet.getString("object_id");
+                String itemId = resultSet.getString("OBJECT_ID");
                 Item newItem = getItemById(new BigInteger(itemId));
                 result.add(newItem);
             }
@@ -49,7 +49,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             preparedStatement.setObject(1, itemId, numericType);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                itemName = resultSet.getString("name");
+                itemName = resultSet.getString("NAME");
             }
             String itemDescription = null;
             String itemCategory = null;
@@ -59,7 +59,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             ResultSet rs = ps.executeQuery();
             //идем по всем параметрам продукта
             while(rs.next()){
-                long curAttrId = rs.getLong("attr_id");
+                long curAttrId = rs.getLong("ATTR_ID");
 
                 if(curAttrId == Constant.ITEM_CATEGORY_ATTR_ID){
                     itemCategory = rs.getString("TEXT_VALUE");
