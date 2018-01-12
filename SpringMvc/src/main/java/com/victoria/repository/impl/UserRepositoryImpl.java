@@ -11,8 +11,6 @@ import java.util.List;
 
 public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRepository {
 
-
-    //private Connection connection;
     public UserRepositoryImpl(DataSource dataSource) throws SQLException {
         super(dataSource);
     }
@@ -144,7 +142,6 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
     }
 
-    //////////////////////////////////////////////////////////Сделать проверку для логина
     @Override
     public void updateUser(User oldUser, User newUser) {
         try {

@@ -17,10 +17,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Autowired
+    private ApplicationContextConfig context;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         ShaPasswordEncoder encoder = new ShaPasswordEncoder();
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -35,11 +39,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/free-orders").hasRole("COURIER")
                 .antMatchers("/my-orders").authenticated()
                 .and()
-                .formLogin().loginPage("/login")
-                .defaultSuccessUrl("/home")
-                .failureUrl("/login?error")
-                .usernameParameter("username").passwordParameter("password")
+                    .formLogin()
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home")
+                        .failureUrl("/login?error")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                 .and()
-                .logout().logoutSuccessUrl("/login").logoutUrl("/logout");
+                    .logout()
+                        .logoutSuccessUrl("/login")
+                        .logoutUrl("/logout")
+                .and()
+                    .rememberMe()
+                        .tokenRepository(context.persistentTokenRepository())
+                        .key("rem-me-key")
+                        .tokenValiditySeconds(86400);
+
     }
+
 }

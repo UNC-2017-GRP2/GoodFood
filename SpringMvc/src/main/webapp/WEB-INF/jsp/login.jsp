@@ -33,7 +33,7 @@
     <div class="form-group">
         <div class="col-xs-offset-4 col-xs-4">
             <div class="checkbox">
-                <label><input type="checkbox"> Remember me</label>
+                <label><input type="checkbox" name="remember-me"> Remember me</label>
             </div>
         </div>
     </div>
