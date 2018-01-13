@@ -183,7 +183,7 @@
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="home">
-                        <form:form action="/edit" method="POST" modelAttribute="user" class="form-horizontal"
+                        <form:form action="/edit" method="POST" modelAttribute="userForUpdate" class="form-horizontal"
                                    id="editProfileForm" role="form">
                             <div class="modal-body">
                                 <div class="form-group">
