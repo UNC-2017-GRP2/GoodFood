@@ -34,6 +34,13 @@ public class RegistrationController {
 
     public static AuthenticationManager am = new AuthManager();
 
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public String registrationGet(Model model) {
+        model.addAttribute("userForm", new User());
+        model.addAttribute("flag","ToOpenRegistrationModal();");
+        return "login";
+    }
+
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView registrationPost(@ModelAttribute ("userForm") @Validated User userForm, BindingResult result) {
         validator.validate(userForm, result);
@@ -56,7 +63,7 @@ public class RegistrationController {
             }catch (Exception e){
                 System.out.println("Authentication failed: " + e.getMessage());
             }
-            model.setViewName("login");
+            model.setViewName("redirect:/login");
             model.addObject("flag","ToCleanRegistrationForm();");
             return model;
         }
@@ -77,7 +84,5 @@ public class RegistrationController {
         }
         return model;
     }
-
-
 }
 

@@ -35,4 +35,15 @@ public class UserServiceImpl implements UserService {
     public boolean isEmailExist(String email) {
         return userRepository.isEmailExist(email);
     }
+
+    @Override
+    public boolean isYourLoginForUpdateUser(String login, String password) {
+        return userRepository.isYourLoginForUpdateUser(login, password);
+    }
+
+    @Override
+    public boolean isYourEmailForUpdateUser(String email, String password) {
+        return userRepository.isYourEmailForUpdateUser(email,password);
+    }
+
 }

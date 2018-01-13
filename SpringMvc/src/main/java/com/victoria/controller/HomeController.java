@@ -39,23 +39,6 @@ public class HomeController {
         return model;
     }
 
-    @RequestMapping(value = { "/edit"}, method = RequestMethod.GET)
-    public ModelAndView editPage(ModelAndView model, Principal principal) throws IOException {
-        User user  = userService.getByUsername(principal.getName());
-        if (user != null){
-            model.addObject("user", user);
-        }
-        model.setViewName("edit");
-        return model;
-    }
 
-    @RequestMapping(value = { "/edit"}, method = RequestMethod.POST)
-    public String edit(@ModelAttribute("user") User updatedUser, ModelAndView model, Principal principal) throws IOException {
-        User user  = userService.getByUsername(principal.getName());
-        userService.updateUser(user,updatedUser);
-        model.addObject("nullParameter", "Отсутствует");
-        model.setViewName("home");
-        return "redirect:/home";
-    }
 }
 

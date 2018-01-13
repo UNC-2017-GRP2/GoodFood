@@ -3,18 +3,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
+    <title>Login</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/css/login-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-        <%@include file="/resources/js/login-js.js" %>
-    </script>
+    <script type="text/javascript"><%@include file="/resources/js/login-js.js" %></script>
 </head>
 <body>
 
-<form name='login' action="<c:url value='/login' />" method='POST' class="form-horizontal form-login" id="loginForm"
-      role="form">
+<form name='login' action="<c:url value='/login' />" method='POST' class="form-horizontal form-login" id="loginForm" role="form">
     <c:if test="${not empty error}">
         <div class="invalid-data">${error}</div>
     </c:if>
@@ -62,10 +60,10 @@
                        id="registrationForm" role="form">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="fio" class="col-xs-4 control-label">FIO:</label>
+                        <label for="fio" class="col-xs-4 control-label">Full Name:</label>
                         <div class="col-xs-6">
                             <form:input type='text' id='fio' path="fio" class="form-control"
-                                        placeholder="Enter FIO"></form:input>
+                                        placeholder="Enter Full Name"></form:input>
                         </div>
                     </div>
                     <div class="col-xs-offset-4 col-xs-8 validationMessage">

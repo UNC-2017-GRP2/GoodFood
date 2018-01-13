@@ -16,6 +16,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     }
 
     private String SQL_SELECT_USER_ID = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"TEXT_VALUE\" = ? ";
+    private String SQL_SELECT_PASSWORD_BY_ID = "select \"TEXT_VALUE\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"OBJECT_ID\" = ? ";
     private String SQL_SELECT_ROLE = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";private String SQL_SELECT_ROLE_ID = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = \'ROLE_USER\'";
     private String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
     private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
@@ -291,4 +292,64 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
         return false;
     }
+
+    @Override
+    public boolean isYourLoginForUpdateUser(String login, String password){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID);
+            preparedStatement.setLong(1, Constant.USERNAME_ATTR_ID);
+            preparedStatement.setString(2, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            BigInteger userId = null;
+            while (resultSet.next()){
+                userId = new BigInteger(resultSet.getString("OBJECT_ID"));
+                if (isEqualsPassword(password, userId)){
+                    return true;
+                }
+            }
+            preparedStatement.close();
+            resultSet.close();
+        }catch (Exception e){
+            System.out.println("isLoginExist:" + e.getMessage());
+        }
+        return false;
+    }
+
+    private boolean isEqualsPassword(String password, BigInteger userId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_PASSWORD_BY_ID);
+        preparedStatement.setLong(1, Constant.PASSWORD_HASH_ATTR_ID);
+        preparedStatement.setObject(2, userId, numericType);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        String getPass = "";
+        while (resultSet.next()){
+            getPass = resultSet.getString("TEXT_VALUE");
+        }
+        if(getPass.equals(password)){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isYourEmailForUpdateUser(String email, String password){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID);
+            preparedStatement.setLong(1, Constant.EMAIL_ATTR_ID);
+            preparedStatement.setString(2, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            BigInteger userId = null;
+            while (resultSet.next()){
+                userId = new BigInteger(resultSet.getString("OBJECT_ID"));
+                if (isEqualsPassword(password, userId)){
+                    return true;
+                }
+            }
+            preparedStatement.close();
+            resultSet.close();
+        }catch (Exception e){
+            System.out.println("isLoginExist:" + e.getMessage());
+        }
+        return false;
+    }
+
 }
