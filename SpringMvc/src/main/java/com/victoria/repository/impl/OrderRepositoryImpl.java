@@ -3,8 +3,10 @@ package com.victoria.repository.impl;
 import com.victoria.config.Constant;
 import com.victoria.model.Item;
 import com.victoria.model.Order;
+import com.victoria.repository.ItemRepository;
 import com.victoria.repository.OrderRepository;
 import com.victoria.config.Constant;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
@@ -14,7 +16,8 @@ import java.util.List;
 
 public class OrderRepositoryImpl extends AbstractRepositoryImpl implements OrderRepository {
 
-    //private Connection connection;
+    @Autowired
+    private ItemRepository itemRepository;
 
     private String SQL_SELECT_OBJECT_ID = "select \"OBJECT_ID\" from \"OBJECTS\" where \"NAME\" = ?";
     private String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";
@@ -108,6 +111,9 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         Order newOrder = null;
         BigInteger userId = new BigInteger("0");
         BigInteger courierId = new BigInteger("0");
+        BigInteger orderCost = new BigInteger("0");
+        String orderStatus = null;
+        List<Item> orderItems = new ArrayList<>();
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID);
@@ -120,7 +126,6 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOOOOOOOOOL2");
         }
         try {
-            String orderStatus = null;
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
             ps.setObject(1,orderId, numericType);
             ResultSet rs = ps.executeQuery();
@@ -129,6 +134,9 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 long curAttrId = rs.getLong("ATTR_ID");
                 if (curAttrId == Constant.COURIER_ATTR_ID) {
                     courierId = new BigInteger(rs.getString("REFERENCE_VALUE"));
+                }
+                if (curAttrId == Constant.ITEM_ATTR_ID) {
+                    orderItems.add(itemRepository.getItemById(new BigInteger(rs.getString("REFERENCE_VALUE"))));
                 }
                 if (curAttrId == Constant.STATUS_ATTR_ID) {
                     long enumValue = rs.getLong("ENUM_VALUE");
@@ -146,7 +154,10 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                     }
                 }
             }
-            newOrder = new Order(orderId,userId,new BigDecimal(0), orderStatus, courierId);
+            for(Item item:orderItems){
+                orderCost = orderCost.add(item.getProductCost());
+            }
+            newOrder = new Order(orderId,userId,orderCost, orderStatus, orderItems, courierId);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -169,7 +180,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         }
     }
 
-
+    @Override
     public void changeOrderStatus(BigInteger orderId, long statusId) {
         try {
             PreparedStatement preparedStatement1 = connection.prepareStatement(SQL_UPDATE_ENUM_PARAMETERS);
@@ -195,7 +206,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         }
     }
 
-
+    @Override
     public void setCourier(BigInteger orderId, String username) {
         long courierId = 0;
         try {

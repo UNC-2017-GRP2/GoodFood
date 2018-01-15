@@ -1,6 +1,7 @@
 package com.victoria.model;
 
 import java.math.BigInteger;
+import java.util.List;
 
 public class Order {
     private BigInteger orderId;
@@ -8,17 +9,19 @@ public class Order {
     private BigInteger orderCost;
     private String status;
     private BigInteger courierId;
+    private List<Item> orderItems;
 
-    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, BigInteger courierId) {
-        this(orderId, userId, orderCost, status);
+    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, List<Item> orderItems, BigInteger courierId) {
+        this(orderId, userId, orderCost, status, orderItems);
         this.courierId = courierId;
     }
 
-    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status) {
+    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, List<Item> orderItems) {
         this.orderId = orderId;
         this.userId = userId;
         this.orderCost = orderCost;
         this.status = status;
+        this.orderItems = orderItems;
     }
 
     public BigInteger getOrderId() {
@@ -41,6 +44,10 @@ public class Order {
         return status;
     }
 
+    public List<Item> getOrderItems() {
+        return orderItems;
+    }
+
     public void setOrderId(BigInteger orderId) {
         this.orderId = orderId;
     }
@@ -58,5 +65,9 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setOrderItems(List<Item> orderItems) {
+        this.orderItems = orderItems;
     }
 }
