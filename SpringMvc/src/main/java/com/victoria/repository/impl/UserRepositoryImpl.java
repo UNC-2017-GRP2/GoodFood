@@ -168,6 +168,15 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
     }
 
+    @Override
+    public void updatePassword(BigInteger userId, String password){
+        try{
+            updateTextParameter(userId, Constant.PASSWORD_HASH_ATTR_ID, password);
+        }catch (Exception e){
+            System.out.println(e.getMessage() + " UPDATE_PASSWORD");
+        }
+    }
+
 
     private void updateTextParameter(BigInteger objectId, long attrId, String parameter){
         try {
@@ -315,17 +324,22 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         return false;
     }
 
-    private boolean isEqualsPassword(String password, BigInteger userId) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_PASSWORD_BY_ID);
-        preparedStatement.setLong(1, Constant.PASSWORD_HASH_ATTR_ID);
-        preparedStatement.setObject(2, userId, numericType);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        String getPass = "";
-        while (resultSet.next()){
-            getPass = resultSet.getString("TEXT_VALUE");
-        }
-        if(getPass.equals(password)){
-            return true;
+    @Override
+    public boolean isEqualsPassword(String password, BigInteger userId) {
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_PASSWORD_BY_ID);
+            preparedStatement.setLong(1, Constant.PASSWORD_HASH_ATTR_ID);
+            preparedStatement.setObject(2, userId, numericType);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            String getPass = "";
+            while (resultSet.next()){
+                getPass = resultSet.getString("TEXT_VALUE");
+            }
+            if(getPass.equals(password)){
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println("is equals Password: " + e.getMessage());
         }
         return false;
     }

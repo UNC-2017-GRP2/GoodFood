@@ -4,3 +4,6 @@ function ToOpenEditModal() {
 function ToCleanEditProfileForm() {
     $(".editProfileForm").trigger('reset');
 }
+function putValueToErrorPasswordLabel(newValue) {
+    $(".errorOldPassword").text(newValue);
+}

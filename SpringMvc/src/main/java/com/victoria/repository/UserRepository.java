@@ -1,6 +1,8 @@
 package com.victoria.repository;
 
 import com.victoria.model.User;
+
+import java.math.BigInteger;
 import java.util.List;
 
 public interface UserRepository {
@@ -12,4 +14,6 @@ public interface UserRepository {
     boolean isEmailExist(String email);
     boolean isYourLoginForUpdateUser(String login, String password);
     boolean isYourEmailForUpdateUser(String email, String password);
+    boolean isEqualsPassword(String password, BigInteger userId);
+    void updatePassword(BigInteger userId, String password);
 }

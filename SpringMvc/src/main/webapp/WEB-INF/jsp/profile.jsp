@@ -254,42 +254,50 @@
                         </form:form>
                     </div>
                     <div class="tab-pane fade" id="profile">
-                        <form action="/editPassword" method="POST" class="form-horizontal" id="editPasswordForm" role="form">
+                        <form:form action="/editPassword" method="POST" class="form-horizontal" id="editPasswordForm" role="form" modelAttribute="userForUpdate">
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="oldPassword" class="col-xs-4 control-label">Old Password:</label>
                                     <div class="col-xs-6">
-                                        <input type='password' id='oldPassword' class="form-control">
+                                        <input type='password' id='oldPassword' name="oldPassword" class="form-control">
                                     </div>
                                 </div>
-                                <!--<div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <form:errors path="passwordHash"></form:errors>
-                                </div>-->
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
+                                    <label class="validationMessage errorOldPassword"></label>
+                                    <c:choose>
+                                        <c:when test="${errorOldPassword}">
+                                            <script>putValueToErrorPasswordLabel("Old password is not correct");</script>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <script>putValueToErrorPasswordLabel("");</script>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                                 <div class="form-group">
                                     <label for="passwordHash" class="col-xs-4 control-label">New Password:</label>
                                     <div class="col-xs-6">
-                                        <input type='password' id='passwordHash' path="passwordHash" class="form-control">
+                                        <form:input type='password' id='passwordHash' path="passwordHash" class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <!--<div class="col-xs-offset-4 col-xs-8 validationMessage">
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
                                     <form:errors path="passwordHash"></form:errors>
-                                </div>-->
+                                </div>
                                 <div class="form-group">
                                     <label for="confirmPassword" class="col-xs-4 control-label">Confirm Password:</label>
                                     <div class="col-xs-6">
-                                        <input type='password' id='confirmPassword' path="confirmPassword" class="form-control">
+                                        <form:input type='password' id='confirmPassword' path="confirmPassword" class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <!--<div class="col-xs-offset-4 col-xs-8 validationMessage">
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
                                     <form:errors path="confirmPassword"></form:errors>
-                                </div>-->
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Update</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        </form>
+                        </form:form>
                     </div>
                 </div>
             </div>

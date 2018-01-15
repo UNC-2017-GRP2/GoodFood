@@ -4,19 +4,18 @@ import com.victoria.config.AuthManager;
 import com.victoria.model.Item;
 import com.victoria.model.User;
 import com.victoria.service.UserService;
+import com.victoria.validation.EditPasswordValidator;
 import com.victoria.validation.EditProfileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -33,6 +32,9 @@ public class ProfileController {
 
     @Autowired
     private EditProfileValidator validator;
+
+    @Autowired
+    private EditPasswordValidator passValidator;
 
     public static AuthenticationManager am = new AuthManager();
 
@@ -94,7 +96,31 @@ public class ProfileController {
     }
 
     @RequestMapping(value = { "/editPassword"}, method = RequestMethod.POST)
-    public String editPassword(){
-        return "redirect:/home";
+    public ModelAndView editPassword(@RequestParam String oldPassword,@ModelAttribute("userForUpdate") @Validated User updatedUser,Principal principal, BindingResult result ){
+        passValidator.validate(updatedUser,result);
+        ModelAndView model = new ModelAndView();
+        User user = userService.getByUsername(principal.getName());
+        ShaPasswordEncoder encoder = new ShaPasswordEncoder();
+        String hashNewPassword = encoder.encodePassword(updatedUser.getPasswordHash(),null);
+        if (!userService.isEqualsPassword(encoder.encodePassword(oldPassword, null),user.getUserId()) || result.hasErrors()){
+            if (!userService.isEqualsPassword(encoder.encodePassword(oldPassword, null),user.getUserId())){
+                model.addObject("errorOldPassword", true);
+            }else{
+                model.addObject("errorOldPassword", false);
+            }
+            model.addObject("flag","ToOpenEditModal();");
+            model.addObject("user", user);
+            model.addObject("userForUpdate", updatedUser);
+            model.setViewName("profile");
+            return model;
+        }else{
+            userService.updatePassword(user.getUserId(), hashNewPassword);
+            Authentication request = new UsernamePasswordAuthenticationToken(principal.getName(), hashNewPassword);
+            Authentication authResult = am.authenticate(request);
+            SecurityContextHolder.getContext().setAuthentication(authResult);
+        }
+        model.addObject("flag","ToCleanEditProfileForm();");
+        model.setViewName("redirect:/profile");
+        return model;
     }
 }
