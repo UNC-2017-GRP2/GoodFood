@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class BasketController {
         //model.addObject(basketItems);
         model.addObject("rub","\u20BD");
         if(basketItems != null && basketItems.size() != 0){
-            BigDecimal summa = orderService.totalOrder(basketItems);
+            BigInteger summa = orderService.totalOrder(basketItems);
             model.addObject("totalOrder", summa);
         }
         model.setViewName("basket");

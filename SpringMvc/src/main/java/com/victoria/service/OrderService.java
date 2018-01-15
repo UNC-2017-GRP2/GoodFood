@@ -4,14 +4,13 @@ import com.victoria.model.Item;
 import com.victoria.model.Order;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public interface OrderService {
-    BigDecimal totalOrder(ArrayList<Item> items);
+    BigInteger totalOrder(ArrayList<Item> items);
     void checkout(ArrayList<Item> items, String username);
     List<Order> getAllFreeOrders();
     List<Order> getAllOrdersByUser(String username);
@@ -19,4 +18,4 @@ public interface OrderService {
     List<Order> getAllOrdersByCourier(String username);
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
-}
+};

@@ -1,6 +1,5 @@
 package com.victoria.model;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public class Item {
@@ -8,11 +7,11 @@ public class Item {
     private String productName;
     private String productDescription;
     private String productCategory;
-    private BigDecimal productCost;
+    private BigInteger productCost;
 
     public Item(){}
 
-    public Item(BigInteger productId, String productName, String productDescription, String productCategory, BigDecimal productCost) {
+    public Item(BigInteger productId, String productName, String productDescription, String productCategory, BigInteger productCost) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -36,7 +35,7 @@ public class Item {
         return productCategory;
     }
 
-    public BigDecimal getProductCost() {
+    public BigInteger getProductCost() {
         return productCost;
     }
 
@@ -56,7 +55,7 @@ public class Item {
         this.productCategory = productCategory;
     }
 
-    public void setProductCost(BigDecimal productCost) {
+    public void setProductCost(BigInteger productCost) {
         this.productCost = productCost;
     }
 

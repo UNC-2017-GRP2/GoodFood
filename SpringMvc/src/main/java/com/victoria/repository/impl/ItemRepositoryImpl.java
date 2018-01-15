@@ -6,7 +6,6 @@ import com.victoria.repository.ItemRepository;
 import com.victoria.config.Constant;
 
 import javax.sql.DataSource;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             }
             String itemDescription = null;
             String itemCategory = null;
-            BigDecimal itemCost = null;
+            BigInteger itemCost = null;
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
             ps.setObject(1, itemId, numericType);
             ResultSet rs = ps.executeQuery();
@@ -68,7 +67,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                     itemDescription = rs.getString("TEXT_VALUE");
                 }
                 if (curAttrId == Constant.ITEMS_COST_ATTR_ID){
-                    itemCost = new BigDecimal(rs.getString("TEXT_VALUE"));
+                    itemCost = new BigInteger(rs.getString("TEXT_VALUE"));
                 }
             }
             newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost);
