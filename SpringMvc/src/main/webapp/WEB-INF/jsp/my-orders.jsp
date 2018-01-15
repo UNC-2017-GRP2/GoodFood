@@ -1,23 +1,21 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: PC-Administrator
-  Date: 18.12.2017
-  Time: 3:46
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
     <title>My orders</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/resources/css/login-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
+
+<jsp:include page="navbar.jsp" />
+
+<body>
 <h2>My orders</h2>
 <div>
+
     <table class="table">
         <c:forEach items="${orders}" var="order">
             <form action="/my-orders/${order.orderId}" method="post">

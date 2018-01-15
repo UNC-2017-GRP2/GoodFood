@@ -1,5 +1,6 @@
 package com.victoria.controller;
 
+import com.victoria.model.Item;
 import com.victoria.model.Order;
 import com.victoria.model.User;
 import com.victoria.service.OrderService;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,8 +29,18 @@ public class MyOrdersController {
 
     @RequestMapping(value = { "/my-orders"}, method = RequestMethod.GET)
     public ModelAndView myOrdersPage(Principal principal) throws IOException {
+
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = null;
+        try {
+            User user  = userService.getByUsername(principal.getName());
+            if (user != null){
+                model.addObject("user", user);
+            }
+            model.addObject("nullParameter", "Отсутствует");
+        }catch (Exception e){
+            System.out.println("method homePage:" + e.getMessage());
+        }
         if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
             model.addObject("del","Drop the order");
             allOrders = orderService.getAllOrdersByCourier(principal.getName());
