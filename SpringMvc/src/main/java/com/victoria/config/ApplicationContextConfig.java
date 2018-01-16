@@ -9,17 +9,18 @@ import com.victoria.repository.impl.UserRepositoryImpl;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Locale;
 
 @Configuration
 @ComponentScan(basePackages = "com.victoria")
@@ -82,5 +83,34 @@ public class ApplicationContextConfig  extends WebMvcConfigurerAdapter {
         JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
         db.setDataSource(dataSource());
         return db;
+    }
+
+    @Bean
+    public ReloadableResourceBundleMessageSource messageSource(){
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+
+    @Bean
+    public CookieLocaleResolver localeResolver(){
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+        localeResolver.setDefaultLocale(Locale.ENGLISH);
+        localeResolver.setCookieName("my-locale-cookie");
+        localeResolver.setCookieMaxAge(3600);
+        return localeResolver;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeInterceptor(){
+        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+        interceptor.setParamName("lang");
+        return interceptor;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeInterceptor());
     }
 }

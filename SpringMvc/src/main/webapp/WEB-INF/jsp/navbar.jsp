@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <body>
 
@@ -19,7 +20,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="home">ProjectUNC</a>
+            <a class="navbar-brand" href="home"><spring:message code="general.projectName"/></a>
         </div>
 
         <ul class="nav navbar-nav navbar-right">
@@ -29,12 +30,12 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${user.login} <span class="caret"></span></a>
                 </c:if>
                 <ul class="dropdown-menu">
-                    <li><a href="home">Main page</a></li>
-                    <li><a href="profile">Profile</a></li>
-                    <li><a href="my-orders">My Orders</a></li>
-                    <li><a href="basket">Basket</a></li>
+                    <li><a href="home"><spring:message code="general.mainPage"/></a></li>
+                    <li><a href="profile"><spring:message code="general.profile"/></a></li>
+                    <li><a href="my-orders"><spring:message code="general.myOrders"/></a></li>
+                    <li><a href="basket"><spring:message code="general.basket"/></a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="javascript:document.getElementById('logout').submit()">Logout</a></li>
+                    <li><a href="javascript:document.getElementById('logout').submit()"><spring:message code="navbar.logout"/></a></li>
                 </ul>
             </li>
         </ul>
