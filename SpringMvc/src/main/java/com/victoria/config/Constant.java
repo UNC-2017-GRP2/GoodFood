@@ -30,6 +30,7 @@ public class Constant {
     public static final long ITEM_ATTR_ID = 415;
     public static final long STATUS_ATTR_ID = 417;
     public static final long COURIER_ATTR_ID = 416;
+    public static final long ITEM_IMAGE_ATTR_ID = 418;
 
     /**Table attributes**/
     public static final long ROLE_ENUM_TYPE_ID = 700;
@@ -37,6 +38,15 @@ public class Constant {
     /**Table enums**/
     public static final long ROLE_ADMIN_ENUM_ID = 800;
     public static final long ROLE_USER_ENUM_ID = 801;
+    public static final long ROLE_COURIER_ENUM_ID = 802;
+    public static final long PIZZA_ENUM_ID = 811;
+    public static final long SUSHI_ENUM_ID = 812;
+    public static final long BURGERS_ENUM_ID = 813;
+    public static final long SALADS_ENUM_ID = 814;
+    public static final long SNACKS_ENUM_ID = 815;
+    public static final long DESSERT_ENUM_ID = 816;
+    public static final long BEVERAGES_ENUM_ID = 817;
+
 
     /**Table object_types**/
     public static final long USER_OBJ_TYPE_ID = 300;

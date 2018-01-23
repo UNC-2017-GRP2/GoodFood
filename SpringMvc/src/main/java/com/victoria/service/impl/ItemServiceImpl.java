@@ -24,4 +24,9 @@ public class ItemServiceImpl implements ItemService {
     public Item getItemById(BigInteger itemId) {
         return itemRepository.getItemById(itemId);
     }
+
+    @Override
+    public List<Item> getItemsByCategory(String category) {
+        return itemRepository.getItemsByCategory(category);
+    }
 }

@@ -47,7 +47,6 @@ public class ItemController {
             List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
             curItems.add(item);
             httpSession.setAttribute("basketItems", curItems);
-
         }
         return "redirect:/items";
     }

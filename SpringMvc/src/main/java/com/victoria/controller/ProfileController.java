@@ -46,9 +46,12 @@ public class ProfileController {
                 model.addObject("user", user);
 
                 model.addObject("userForUpdate", user);
-
-                httpSession.setAttribute("username",principal.getName());
-                httpSession.setAttribute("basketItems", new ArrayList<Item>());
+                if (httpSession.getAttribute("username") == null){
+                    httpSession.setAttribute("username",principal.getName());
+                }
+                if (httpSession.getAttribute("basketItems") == null){
+                    httpSession.setAttribute("basketItems", new ArrayList<Item>());
+                }
             }
             model.addObject("nullParameter", "None");
             model.setViewName("profile");

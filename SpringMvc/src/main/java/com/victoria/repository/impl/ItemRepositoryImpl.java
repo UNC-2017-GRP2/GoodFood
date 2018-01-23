@@ -53,6 +53,9 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             String itemDescription = null;
             String itemCategory = null;
             BigInteger itemCost = null;
+            String itemImagePath = null;
+            BigInteger itemImageId = null;
+            BigInteger categoryId = null;
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
             ps.setObject(1, itemId, numericType);
             ResultSet rs = ps.executeQuery();
@@ -61,7 +64,8 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 long curAttrId = rs.getLong("ATTR_ID");
 
                 if(curAttrId == Constant.ITEM_CATEGORY_ATTR_ID){
-                    itemCategory = rs.getString("TEXT_VALUE");
+                    categoryId = new BigInteger(rs.getString("ENUM_VALUE"));
+                    itemCategory = getNameValueById(categoryId, SQL_SELECT_ENUMS);
                 }
                 if(curAttrId == Constant.ITEM_DESCRIPTION_ATTR_ID){
                     itemDescription = rs.getString("TEXT_VALUE");
@@ -69,11 +73,75 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 if (curAttrId == Constant.ITEMS_COST_ATTR_ID){
                     itemCost = new BigInteger(rs.getString("TEXT_VALUE"));
                 }
+                if (curAttrId == Constant.ITEM_IMAGE_ATTR_ID){
+                    itemImageId = new BigInteger(rs.getString("REFERENCE_VALUE"));
+                    itemImagePath = getNameValueById(itemImageId, SQL_SELECT_OBJECT_BY_ID);
+                }
             }
-            newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost);
+            newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost, itemImagePath);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
         return newItem;
+    }
+
+    private String getNameValueById(BigInteger id, String sql){
+        String result = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setObject(1, id, numericType);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                result = resultSet.getString("NAME");
+            }
+            return result;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+
+    @Override
+    public List<Item> getItemsByCategory(String category) {
+        List<Item> all = getAllItems();
+        List<Item> result = new ArrayList<>();
+        if (category == null){
+            result = getList(all,"Pizza");
+        }else{
+            switch (category){
+                case "Pizza":
+                    result = getList(all,"Pizza");
+                    break;
+                case "Sushi":
+                    result = getList(all,"Sushi");
+                    break;
+                case "Burgers":
+                    result = getList(all,"Burgers");
+                    break;
+                case "Salads":
+                    result = getList(all,"Salads");
+                    break;
+                case "Snacks":
+                    result = getList(all,"Snacks");
+                    break;
+                case "Dessert":
+                    result = getList(all,"Dessert");
+                    break;
+                case "Beverages":
+                    result = getList(all,"Beverages");
+                    break;
+            }
+        }
+        return result;
+    }
+    private List<Item>getList(List<Item>all, String category){
+        List<Item> result = new ArrayList<>();
+        for(Item item:all){
+            if(item.getProductCategory().equals(category)){
+                result.add(item);
+            }
+        }
+        return result;
     }
 }
