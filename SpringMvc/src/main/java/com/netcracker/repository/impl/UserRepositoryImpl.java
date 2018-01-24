@@ -1,12 +1,14 @@
 package com.netcracker.repository.impl;
 
 import com.netcracker.config.Constant;
+import com.netcracker.model.Order;
 import com.netcracker.model.User;
 import com.netcracker.repository.UserRepository;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRepository {
@@ -111,8 +113,24 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         return user;
     }
 
-    public List<User> getAll() {
-        return null;
+    @Override
+    public List<User> getAllUsers() {
+        List<User> result = new ArrayList<>();
+        String username;
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
+            preparedStatement.setLong(1, Constant.USER_OBJ_TYPE_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                username = resultSet.getString("NAME");
+                User newUser = getUserByUsername(username);
+                result.add(newUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override

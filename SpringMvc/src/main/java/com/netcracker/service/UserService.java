@@ -3,8 +3,10 @@ package com.netcracker.service;
 import com.netcracker.model.User;
 
 import java.math.BigInteger;
+import java.util.List;
 
 public interface UserService {
+    List<User> getAllUsers();
     User getByUsername(String username);
     void saveUser(User user);
     void updateUser(User oldUser, User newUser);

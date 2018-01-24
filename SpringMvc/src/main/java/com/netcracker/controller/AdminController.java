@@ -18,7 +18,6 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@SessionAttributes(value = {"username"})
 public class AdminController {
     @Autowired
     private OrderService orderService;
@@ -26,35 +25,21 @@ public class AdminController {
     private UserService userService;
 
     @RequestMapping(value = { "/admin"}, method = RequestMethod.GET)
-    public ModelAndView myOrdersPage(Principal principal) throws IOException {
-
+    public ModelAndView adminPanel() throws IOException {
         ModelAndView model = new ModelAndView();
-        List<Order> allOrders = null;
-        try {
-            User user  = userService.getByUsername(principal.getName());
-            if (user != null){
-                model.addObject("user", user);
-            }
-            model.addObject("nullParameter", "Отсутствует");
-        }catch (Exception e){
-            System.out.println("method homePage:" + e.getMessage());
-        }
-        if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
-            model.addObject("del","Drop the order");
-            allOrders = orderService.getAllOrdersByCourier(principal.getName());
-        }
-        else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
-            model.addObject("del","Delete the order");
-            allOrders = orderService.getAllOrdersByUser(principal.getName());
-        }
+        List<Order> allOrders = orderService.getAllOrders();
+        List<User> allUsers = userService.getAllUsers();
         model.addObject("rub","\u20BD");
-        model.setViewName("my-orders");
-
+        model.setViewName("admin");
         if (allOrders != null && allOrders.size()!=0){
             model.addObject("orders", allOrders);
         }
+        if (allUsers != null && allUsers.size()!=0){
+            model.addObject("users", allUsers);
+        }
         return model;
     }
+
     @RequestMapping(value = { "/admin/{id}"}, method = RequestMethod.POST)
     public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
         Order order = orderService.getOrderById(id);

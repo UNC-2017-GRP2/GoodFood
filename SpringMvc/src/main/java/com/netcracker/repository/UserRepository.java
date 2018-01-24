@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserRepository {
     User getUserByUsername(String username);
-    List<User> getAll();
+    List<User> getAllUsers();
     void saveUser(User user);
     void updateUser(User oldUser, User newUser);
     boolean isLoginExist(String login);

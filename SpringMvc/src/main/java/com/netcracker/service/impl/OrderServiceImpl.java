@@ -37,6 +37,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getAllOrders() {
+        return orderRepository.getAllOrders();
+    }
+    @Override
     public List<Order> getAllFreeOrders() {
         List<Order> allOrders = orderRepository.getAllOrders();
         List<Order> allFreeOrders = new ArrayList<>();

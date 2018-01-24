@@ -13,32 +13,88 @@
 
 <body>
 <h2><spring:message code="general.adminPanel"/></h2>
-<div>
 
-    <table class="table">
-        <c:forEach items="${orders}" var="order">
-            <form action="/my-orders/${order.orderId}" method="post">
+    <div class="well" style="height: auto!important;">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#orders" data-toggle="tab"><spring:message code="admin.orders"/></a></li>
+            <li><a href="#users" data-toggle="tab"><spring:message code="admin.users"/></a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane active in" id="orders">
+
+            <table class="table">
+
+
                 <tr>
-                    <th><spring:message code="orders.orderId"/></th>
-                    <th><spring:message code="orders.userId"/></th>
-                    <th><spring:message code="orders.status"/></th>
-                    <td>${order.orderId}</td>
+                    <thead>
+                        <tr>
+                            <th scope="col"><spring:message code="orders.orderId"/></th>
+                            <th scope="col"><spring:message code="general.userId"/></th>
+                            <th scope="col"><spring:message code="orders.status"/></th>
+                            <th scope="col"><spring:message code="orders.items"/></th>
+                            <th scope="col"><spring:message code="orders.cost"/></th>
+                        </tr>
+                    </thead>
+<tbody>
+<tr>
+    <c:forEach items="${orders}" var="order">
+    <th scope="row">${order.orderId}</th>
                     <td>${order.userId}</td>
                     <td>${order.status}</td>
                     <td><c:forEach items="${order.orderItems}" var="item">
                         ${item.productName}<br />
-                        ${item.productCost}<br />
+                        ${item.productCost} ${rub}<br />
                     </c:forEach>
                     </td>
                     <td style="text-align: center">${order.orderCost} ${rub}</td>
-                    <td><div class="col-xs-offset-4 col-xs-2">
-                        <button type="submit" class="btn btn-default">${del}</button>
-                    </div></td>
                 </tr>
+
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-            </form>
+
         </c:forEach>
+        </tbody>
     </table>
-</div>
+            </div>
+        <div class="tab-pane fade" id="users">
+            <table class="table">
+                    <tr>
+                        <thead>
+                        <tr>
+                            <th scope="col"><spring:message code="general.userId"/></th>
+                            <th scope="col"><spring:message code="users.fullname"/></th>
+                            <th scope="col"><spring:message code="users.username"/></th>
+                            <th scope="col"><spring:message code="users.phoneNumber"/></th>
+                            <th scope="col"><spring:message code="users.birthday"/></th>
+                            <th scope="col"><spring:message code="users.email"/></th>
+                            <th scope="col"><spring:message code="users.address"/></th>
+                            <th scope="col"><spring:message code="users.bankCard"/></th>
+                            <th scope="col"><spring:message code="users.role"/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <c:forEach items="${users}" var="user">
+                            <th scope="row">${user.userId}</th>
+                            <td>${user.fio}</td>
+                                <td>${user.login}</td>
+                                <td>${user.phoneNumber}</td>
+                                <td>${user.birthday}</td>
+                                <td>${user.email}</td>
+                                <td>${user.address}</td>
+                                <td>${user.bankCard}</td>
+                                <td>${user.role}</td>
+                        </tr>
+
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+
+
+
+
 </body>
 </html>

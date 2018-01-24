@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,6 +34,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.isLoginExist(login);
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers();
+    }
     @Override
     public boolean isEmailExist(String email) {
         return userRepository.isEmailExist(email);

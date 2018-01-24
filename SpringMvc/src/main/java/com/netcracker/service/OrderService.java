@@ -18,4 +18,5 @@ public interface OrderService {
     List<Order> getAllOrdersByCourier(String username);
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
+    List<Order> getAllOrders();
 };
