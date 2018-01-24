@@ -15,121 +15,99 @@
 </head>
 
 
-
 <body>
 
 <jsp:include page="navbar.jsp"/>
 
-<div>
-    <table class="menu">
-        <tr>
-            <td class="menu-td">
-                <div class="card">
-                    <a href="<c:url value='/home?value=Pizza'/>">
-                        <img class="card-img-top" src="/resources/img/category/pizza_main.png">
-                        <div class="card-block">
-                            <h5 class="text-bold">Pizza</h5>
-                        </div>
-                    </a>
-                </div>
-            </td>
-            <td class="menu-td">
-                <div class="card">
-                    <a href="<c:url value='/home?value=Sushi'/>">
-                        <img class="card-img-top" src="/resources/img/category/sushi_main.png">
-                        <div class="card-block">
-                            <h5 class="text-bold">Sushi</h5>
-                        </div>
-                    </a>
-                </div>
-            </td>
-            <td class="menu-td">
-                <div class="card">
-                    <a href="<c:url value='/home?value=Burgers'/>">
-                        <img class="card-img-top" src="/resources/img/category/burger_main.png">
-                        <div class="card-block">
-                            <h5 class="text-bold">Burgers</h5>
-                        </div>
-                    </a>
-                </div>
-            </td>
-            <td class="menu-td">
-                <div class="card">
-                    <a href="<c:url value='/home?value=Salads'/>">
-                        <img class="card-img-top" src="/resources/img/category/salad_main.jpg">
-                        <div class="card-block">
-                            <h5 class="text-bold">Salads</h5>
-                        </div>
-                    </a>
-                </div>
-            </td>
-            <td class="menu-td">
-                <div class="card">
-                    <a href="<c:url value='/home?value=Snacks'/>">
-                        <img class="card-img-top" src="/resources/img/category/snack_main.png">
-                        <div class="card-block">
-                            <h5 class="text-bold">Snacks</h5>
-                        </div>
-                    </a>
-                </div>
-            </td>
-            <td class="menu-td">
-                <div class="card">
-                    <a href="<c:url value='/home?value=Dessert'/>">
-                        <img class="card-img-top" src="/resources/img/category/dessert_main.png">
-                        <div class="card-block">
-                            <h5 class="text-bold">Dessert</h5>
-                        </div>
-                    </a>
-                </div>
-            </td>
-            <td class="menu-td">
-                <div class="card">
-                    <a href="<c:url value='/home?value=Beverages'/>">
-                        <img class="card-img-top" src="/resources/img/category/beverage_main.png">
-                        <div class="card-block">
-                            <h5 class="text-bold">Beverages</h5>
-                        </div>
-                    </a>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
+<%--<c:if test="${notification != null}">
+    <script>successNotification();</script>
+</c:if>
+<div class="alert alert-success" role="alert">
+    <strong>Well done!</strong> You successfully read this important alert message.
+</div>--%>
+
+
+<nav class="top-menu">
+    <ul class="menu-main">
+        <li><a href="<c:url value='/home?value=Pizza'/>">Pizza</a></li>
+        <li><a href="<c:url value='/home?value=Sushi'/>">Sushi</a></li>
+        <li><a href="<c:url value='/home?value=Burgers'/>">Burgers</a></li>
+        <li><a href="<c:url value='/home?value=Salads'/>">Salads</a></li>
+        <li><a href="<c:url value='/home?value=Snacks'/>">Snacks</a></li>
+        <li><a href="<c:url value='/home?value=Dessert'/>">Dessert</a></li>
+        <li><a href="<c:url value='/home?value=Beverages'/>">Beverages</a></li>
+    </ul>
+</nav>
+
 
 <div style="text-align: center;">
-    <p><h1>${value}</h1></p>
+    <p>
+    <h1>${value}</h1></p>
 </div>
 
-<div class="content">
-    <c:forEach items="${items}" var="item">
-        <div class="block">
-            <form action="/items/${item.productId}" method="post">
-                <div class="top">
-                    <ul>
-                        <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                        <li><span class="converse">${item.productName}</span></li>
-                    </ul>
-                </div>
-
-                <div class="middle">
-                    <img src="${item.productImage}"/>
-                </div>
-
-                <div class="bottom">
-                    <div class="heading">${item.productDescription}</div>
-                    <div class="price">${item.productCost} ${rub}</div>
-                    <div class="info">Quantity</div>
-                    <div class="style">
-                        <button type="submit" class="btn btn-primary">${add}</button>
+<c:if test="${items != null}">
+    <div class="content">
+        <c:forEach items="${items}" var="item">
+            <div class="block"
+                 onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="${rub}"/>');">
+                <form action="/addBasket?id=${item.productId}" method="post">
+                    <div class="top">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                            <li><strong><span class="converse">${item.productName}</span></strong></li>
+                        </ul>
                     </div>
-                </div>
-            </form>
+                    <div class="middle">
+                        <img src="${item.productImage}"/>
+                    </div>
+                    <div class="bottom">
+                        <strong>
+                            <div class="price">${item.productCost} ${rub}</div>
+                        </strong>
+                        <div class="info">
+                            <div class="number">
+                                <span class="minus">-</span>
+                                <input type="text" class="quantity" id="count" name="count" value="1" size="5"/>
+                                <span class="plus">+</span>
+                            </div>
+                        </div>
+                        <div class="style">
+                            <c:choose>
+                                <c:when test="${pageContext.request.userPrincipal.name != null}">
+                                    <button type="submit" class="btn btn-primary">${add}</button>
+                                </c:when>
+                                <c:when test="${pageContext.request.userPrincipal.name == null}">
+                                    <button type="submit" disabled="disabled" class="btn btn-primary">${add}</button>
+                                </c:when>
+                            </c:choose>
+
+                        </div>
+                    </div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+            </div>
+        </c:forEach>
+    </div>
+</c:if>
+<div class="modal fade" id="itemDetails" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top: 20vh;">
+    <div class="block" style="margin: auto;">
+        <div class="top">
+            <ul>
+                <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
+                <li id="itemName"><big><span class="converse"></span></big></li>
+            </ul>
         </div>
-    </c:forEach>
+        <div class="middle">
+            <img id="itemImage" src=""/>
+            <div class="heading style" style="margin-top: 15%;" id="itemDescription"></div>
+        </div>
+        <div class="bottom">
+            <strong><big>
+                <div class="price" id="itemCost"></div>
+            </big></strong>
+        </div>
+    </div>
 </div>
-
-
 </body>
 
 </html>

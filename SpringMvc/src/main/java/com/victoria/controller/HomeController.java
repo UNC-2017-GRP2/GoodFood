@@ -26,32 +26,53 @@ public class HomeController {
     @Autowired
     private ItemService itemService;
 
-    /*@RequestMapping(value = { "/home", "/"}, method = RequestMethod.GET)
-    public ModelAndView homePage(ModelAndView model) throws IOException {
-        List<Item> currentItems = itemService.getAllItems();
-        model.addObject("items",currentItems);
-        model.setViewName("home");
-        return model;
-    }*/
 
 
     @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
     public ModelAndView homeValue(ModelAndView model,@RequestParam(value = "value", required = false) String value,Principal principal, HttpSession httpSession) throws IOException {
-        if (httpSession.getAttribute("username") == null){
-            httpSession.setAttribute("username",principal.getName());
-        }
-        if (httpSession.getAttribute("basketItems") == null){
-            httpSession.setAttribute("basketItems", new ArrayList<Item>());
+        if (principal != null){
+            if (httpSession.getAttribute("username") == null){
+                httpSession.setAttribute("username",principal.getName());
+            }
+            if (httpSession.getAttribute("basketItems") == null){
+                httpSession.setAttribute("basketItems", new ArrayList<Item>());
+            }
         }
         List<Item> currentItems = itemService.getItemsByCategory(value);
+        if(value == null){
+            model.addObject("value", "Pizza");
+        }else{
+            model.addObject("value", value);
+        }
         if (currentItems == null){
             currentItems = itemService.getItemsByCategory("Pizza");
+
         }
         model.addObject("items", currentItems);
         model.addObject("rub","\u20BD");
         model.addObject("add","Add to Basket");
-        model.addObject("value", value);
+        //model.addObject("notification", null);
         model.setViewName("home");
+        return model;
+    }
+
+
+    @RequestMapping(value = { "/addBasket"}, method = RequestMethod.POST)
+    public ModelAndView addItemInBasket(@RequestParam("id") BigInteger id, @RequestParam("count") int count, HttpSession httpSession) throws IOException {
+        Item item = itemService.getItemById(id);
+        if (item != null){
+            if (httpSession.getAttribute("basketItems") == null){
+                httpSession.setAttribute("basketItems", new ArrayList<Item>());
+            }
+            List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
+            for (int i=0;i<count;i++){
+                curItems.add(item);
+            }
+            httpSession.setAttribute("basketItems", curItems);
+        }
+        ModelAndView model = new ModelAndView();
+        model.setViewName("redirect:/home?value="+item.getProductCategory());
+        //model.addObject("notification","Successfully added to the basket");
         return model;
     }
 

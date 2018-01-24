@@ -27,9 +27,14 @@
         <ul class="nav navbar-nav navbar-right">
             <!--<li><a href="#">Link</a></li>-->
             <li class="dropdown">
-                <c:if test="${pageContext.request.userPrincipal.name != null}">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= username %> <span class="caret"></span></a>
-                </c:if>
+                <c:choose>
+                    <c:when test="${pageContext.request.userPrincipal.name != null}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= username %> <span class="caret"></span></a>
+                    </c:when>
+                    <c:when test="${pageContext.request.userPrincipal.name == null}">
+                        <a class="navbar-brand" href="login">Войти/Зарегистрироваться</a>
+                    </c:when>
+                </c:choose>
                 <ul class="dropdown-menu">
                     <li><a href="home?value=Pizza"><spring:message code="general.mainPage"/></a></li>
                     <li><a href="profile"><spring:message code="general.profile"/></a></li>
