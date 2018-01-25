@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes(value = {"username"})
+@SessionAttributes(value = {"username","basketItems"})
 public class MyOrdersController {
     @Autowired
     private OrderService orderService;
@@ -28,8 +29,7 @@ public class MyOrdersController {
     private UserService userService;
 
     @RequestMapping(value = { "/my-orders"}, method = RequestMethod.GET)
-    public ModelAndView myOrdersPage(Principal principal) throws IOException {
-
+    public ModelAndView myOrdersPage(Principal principal, HttpSession httpSession) throws IOException {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = null;
         try {

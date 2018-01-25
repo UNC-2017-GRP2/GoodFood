@@ -1,17 +1,4 @@
-function openDetails(name, image, description, cost, rub){
-    $('#itemName').text(name);
-    $('#itemImage').attr("src", image);
-    $('#itemDescription').text(description);
-    $('#itemCost').text(cost + " " + rub);
-    $('#itemDetails').modal('show');
-}
 
-function successNotification() {
-    $(".alert").alert();
-    setTimeout(function () {
-        $(".alert").alert('close');
-    }, 3000);
-}
 
 
 $(document).ready(function() {
@@ -27,7 +14,9 @@ $(document).ready(function() {
         var $input = $(this).parent().find('input');
         $input.val(parseInt($input.val()) + 1);
         $input.change();
+       /* var itemId = $(this).attr("data-itemid");
+
+        var test = $(this).data("dataTest");*/
         return false;
     });
 });
-

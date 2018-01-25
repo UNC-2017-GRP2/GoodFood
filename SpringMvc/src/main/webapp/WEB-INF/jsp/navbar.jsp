@@ -32,7 +32,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= username %> <span class="caret"></span></a>
                     </c:when>
                     <c:when test="${pageContext.request.userPrincipal.name == null}">
-                        <a class="navbar-brand" href="login">Войти/Зарегистрироваться</a>
+                        <a class="navbar-brand" href="login">Sign In/Sign Up</a>
                     </c:when>
                 </c:choose>
                 <ul class="dropdown-menu">

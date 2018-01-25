@@ -86,12 +86,10 @@ h5 {
     -ms-flex-direction: column;
     flex-direction: column;
     box-shadow: 0 2px 55px rgba(0,0,0,0.1);
-    cursor: pointer;
 }
 
 .top {
     border-bottom: 1px solid #e5e5e5;
-    padding-bottom: 10px;
 }
 .top ul {
     display: -webkit-box;
@@ -113,6 +111,21 @@ h5 {
     text-transform: uppercase;
     font-size: 14px;
     text-align: center;
+}
+.item-img, .item-name{
+    cursor: pointer;
+}
+.item-name:after {
+    display: block;
+    content: "";
+    height: 1px;
+    width: 0%;
+    background-color: #000000;
+    transition: width .3s ease-in-out;
+}
+.item-name:hover:after,
+.item-name:focus:after {
+    width: 100%;
 }
 .middle {
     margin-bottom: 40px;
@@ -155,8 +168,13 @@ h5 {
 
 .quantity{
     border: 1px solid #b7b7b7;
-
     border-radius: 2px;
+}
+.minus, .plus {
+    cursor: pointer;
+}
+.minus:hover, .plus:hover{
+    opacity: 0.6;
 }
 
 
