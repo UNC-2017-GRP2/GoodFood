@@ -1,12 +1,13 @@
 .list-group-item {
     height:auto;
-    min-height: 190px;
+    min-height: 130px;
 }
 .list-group-item:hover{
     color: currentColor;
 }
-.stars {
-    margin:20px auto 1px;
+
+.container{
+    width: 70%;
 }
 
 * {
@@ -30,6 +31,7 @@
     cursor: pointer;
 }
 .remove-item:hover{
+    color: #bb0000;
     opacity: 0.6;
 }
 
@@ -45,6 +47,12 @@
 }
 .minus, .plus {
     cursor: pointer;
+}
+.plus{
+    color: #00a100;
+}
+.minus{
+    color: #bb0000;
 }
 .minus:hover, .plus:hover{
     opacity: 0.6;

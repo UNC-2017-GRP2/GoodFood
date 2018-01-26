@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public BigInteger totalOrder(ArrayList<Item> items) {
         BigInteger summ = new BigInteger("0");
-
         for(Item item:items){
-            summ = summ.add(item.getProductCost());
+            BigInteger quantity = BigInteger.valueOf(item.getProductQuantity());
+            summ = summ.add(item.getProductCost().multiply(quantity));
         }
-
         return summ;
     }
 

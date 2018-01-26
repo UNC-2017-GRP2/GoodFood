@@ -65,11 +65,18 @@ public class HomeController {
                 httpSession.setAttribute("basketItems", new ArrayList<Item>());
             }
             List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
-            item.setProductQuantity(count);
-            curItems.add(item);
-            /*for (int i=0;i<count;i++){
+            boolean itemIsInBasket = false;
+            for(Item itemInBasket : curItems){
+                if(itemInBasket.getProductId().equals(item.getProductId())){
+                    itemInBasket.setProductQuantity(itemInBasket.getProductQuantity() + count);
+                    itemIsInBasket = true;
+                    break;
+                }
+            }
+            if(!itemIsInBasket){
+                item.setProductQuantity(count);
                 curItems.add(item);
-            }*/
+            }
             httpSession.setAttribute("basketItems", curItems);
         }
         ModelAndView model = new ModelAndView();

@@ -66,14 +66,16 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
 
                     //добавляем продукты
                     for (Item item : items) {
-                        preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
-                        preparedStatement.setObject(1, orderId, numericType);
-                        preparedStatement.setLong(2, Constant.ITEM_ATTR_ID);
-                        preparedStatement.setString(3, null);
-                        preparedStatement.setDate(4, null);
-                        preparedStatement.setObject(5, item.getProductId(), numericType);
-                        preparedStatement.setLong(6, 0);
-                        preparedStatement.executeUpdate();
+                        for (int i=0;i<item.getProductQuantity();i++){
+                            preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+                            preparedStatement.setObject(1, orderId, numericType);
+                            preparedStatement.setLong(2, Constant.ITEM_ATTR_ID);
+                            preparedStatement.setString(3, null);
+                            preparedStatement.setDate(4, null);
+                            preparedStatement.setObject(5, item.getProductId(), numericType);
+                            preparedStatement.setLong(6, 0);
+                            preparedStatement.executeUpdate();
+                        }
                     }
                 }
             }
