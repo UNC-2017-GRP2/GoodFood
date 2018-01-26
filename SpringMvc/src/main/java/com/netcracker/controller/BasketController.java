@@ -13,21 +13,22 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
-@SessionAttributes(value = {"username","basketItems"})
+@SessionAttributes(value = {"basketItems"})
 public class BasketController {
 
     @Autowired
     private OrderService orderService;
 
     @RequestMapping(value = "/basket", method = RequestMethod.GET)
-    public ModelAndView toBasket(@SessionAttribute ArrayList<Item> basketItems) throws IOException {
-        ModelAndView model = new ModelAndView(/*"session_basket"*/);
-        //model.addObject(basketItems);
+    public ModelAndView toBasket(HttpSession httpSession){
+        ModelAndView model = new ModelAndView();
         model.addObject("rub","\u20BD");
+        List<Item> basketItems = (ArrayList<Item>) httpSession.getAttribute("basketItems");
         if(basketItems != null && basketItems.size() != 0){
-            BigInteger summa = orderService.totalOrder(basketItems);
+            BigInteger summa = orderService.totalOrder((ArrayList<Item>) basketItems);
             model.addObject("totalOrder", summa);
         }
         model.setViewName("basket");
@@ -36,14 +37,55 @@ public class BasketController {
 
 
     @RequestMapping(value = "/checkout", method = RequestMethod.GET)
-    public String checkout(@SessionAttribute ArrayList<Item> basketItems, Principal principal, HttpSession httpSession, SessionStatus sessionStatus){
+    public String checkout(Principal principal, HttpSession httpSession, SessionStatus sessionStatus){
+        ArrayList<Item> basketItems = (ArrayList<Item>)httpSession.getAttribute("basketItems");
         if(basketItems != null && basketItems.size() != 0){
             orderService.checkout(basketItems,principal.getName());
-            /*httpSession.removeAttribute("basketItems");*/
             sessionStatus.setComplete();
-            //httpSession.setAttribute("username",principal.getName());
-            //httpSession.setAttribute("basketItems", new ArrayList<Item>());
+            return "redirect:/my-orders";
+        }else{
+            return "redirect:/basket";
         }
-        return "redirect:/home";
+
     }
+
+    @RequestMapping(value = "/updateBasket", method = RequestMethod.GET)
+    public @ResponseBody void updateBasket(@RequestParam BigInteger itemId, @RequestParam int newQuantity, HttpSession httpSession){
+
+        List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
+        for(Item itemInBasket : curItems){
+            if(itemInBasket.getProductId().equals(itemId)){
+                itemInBasket.setProductQuantity(newQuantity);
+                break;
+            }
+        }
+        httpSession.setAttribute("basketItems", curItems);
+    }
+
+    @RequestMapping(value = "/removeItem", method = RequestMethod.GET)
+    public @ResponseBody String removeItem(@RequestParam BigInteger itemId, HttpSession httpSession){
+        List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
+        for(Item itemInBasket : curItems){
+            if(itemInBasket.getProductId().equals(itemId)){
+                curItems.remove(itemInBasket);
+                break;
+            }
+        }
+        httpSession.setAttribute("basketItems", curItems);
+        BigInteger summa = orderService.totalOrder((ArrayList<Item>) curItems);
+        return summa.toString();
+    }
+
+    @RequestMapping(value = "/isBasketEmpty", method = RequestMethod.GET)
+    public @ResponseBody String isBasketEmpty(HttpSession httpSession){
+        List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
+        if(curItems == null || curItems.size() == 0){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
+
+
 }
