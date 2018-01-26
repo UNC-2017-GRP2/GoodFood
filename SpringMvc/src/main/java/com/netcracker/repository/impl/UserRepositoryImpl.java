@@ -1,7 +1,6 @@
 package com.netcracker.repository.impl;
 
 import com.netcracker.config.Constant;
-import com.netcracker.model.Order;
 import com.netcracker.model.User;
 import com.netcracker.repository.UserRepository;
 

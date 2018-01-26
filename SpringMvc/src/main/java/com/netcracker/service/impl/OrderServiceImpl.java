@@ -23,11 +23,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public BigInteger totalOrder(ArrayList<Item> items) {
         BigInteger summ = new BigInteger("0");
-
         for(Item item:items){
-            summ = summ.add(item.getProductCost());
+            BigInteger quantity = BigInteger.valueOf(item.getProductQuantity());
+            summ = summ.add(item.getProductCost().multiply(quantity));
         }
-
         return summ;
     }
 

@@ -9,17 +9,20 @@ public class Item {
     private String productCategory;
     private BigInteger productCost;
     private String productImage;
+    private int productQuantity;
 
-    public Item(){}
-
-    public Item(BigInteger productId, String productName, String productDescription, String productCategory, BigInteger productCost, String productImage) {
+    public Item(BigInteger productId, String productName, String productDescription, String productCategory, BigInteger productCost, String productImage, int productQuantity) {
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productCategory = productCategory;
         this.productCost = productCost;
         this.productImage = productImage;
+        this.productQuantity = productQuantity;
     }
+
+    public Item(){}
+
 
     public BigInteger getProductId() {
         return productId;
@@ -45,6 +48,10 @@ public class Item {
         return productImage;
     }
 
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
     public void setProductId(BigInteger productId) {
         this.productId = productId;
     }
@@ -67,6 +74,10 @@ public class Item {
 
     public void setProductImage(String productImage) {
         this.productImage = productImage;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
     }
 
     @Override

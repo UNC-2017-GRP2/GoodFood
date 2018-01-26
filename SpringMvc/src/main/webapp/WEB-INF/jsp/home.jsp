@@ -48,17 +48,13 @@
 <c:if test="${items != null}">
     <div class="content">
         <c:forEach items="${items}" var="item">
-            <div class="block"
-                 onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="${rub}"/>');">
+            <div class="block">
                 <form action="/addBasket?id=${item.productId}" method="post">
                     <div class="top">
-                        <ul>
-                            <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                            <li><strong><span class="converse">${item.productName}</span></strong></li>
-                        </ul>
+                        <strong><span class="converse item-name" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="${rub}"/>');">${item.productName}</span></strong>
                     </div>
-                    <div class="middle">
-                        <img src="${item.productImage}"/>
+                    <div class="middle" >
+                        <img src="${item.productImage}" class="item-img" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="${rub}"/>');"/>
                     </div>
                     <div class="bottom">
                         <strong>
@@ -71,6 +67,7 @@
                                 <span class="plus">+</span>
                             </div>
                         </div>
+
                         <div class="style">
                             <c:choose>
                                 <c:when test="${pageContext.request.userPrincipal.name != null}">

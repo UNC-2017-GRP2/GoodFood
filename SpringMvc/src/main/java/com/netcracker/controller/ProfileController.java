@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +25,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 
 @Controller
-@SessionAttributes(value = {"username","basketItems"})
+@SessionAttributes(value = {"username"})
 public class ProfileController {
 
     @Autowired
@@ -73,7 +74,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = { "/edit"}, method = RequestMethod.POST)
-    public ModelAndView edit(@ModelAttribute("userForUpdate") @Validated User updatedUser,Principal principal, BindingResult result) throws IOException {
+    public ModelAndView edit(@ModelAttribute("userForUpdate") @Validated User updatedUser, Principal principal, HttpSession httpSession, SessionStatus sessionStatus, BindingResult result) throws IOException {
         User user  = userService.getByUsername(principal.getName());
         updatedUser.setPasswordHash(user.getPasswordHash());
         validator.validate(updatedUser, result);
@@ -94,6 +95,8 @@ public class ProfileController {
             model.addObject("nullParameter", "None");
             model.addObject("flag","ToCleanEditProfileForm();");
             model.setViewName("redirect:/profile");
+            sessionStatus.setComplete();
+            httpSession.setAttribute("username",updatedUser.getLogin());
             return model;
         }
     }

@@ -77,7 +77,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                     itemImagePath = getNameValueById(itemImageId, SQL_SELECT_OBJECT_BY_ID);
                 }
             }
-            newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost, itemImagePath);
+            newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost, itemImagePath,1);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
