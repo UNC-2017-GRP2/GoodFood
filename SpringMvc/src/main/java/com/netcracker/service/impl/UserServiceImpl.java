@@ -63,4 +63,8 @@ public class UserServiceImpl implements UserService {
         userRepository.updatePassword(userId,password);
     }
 
+    @Override
+    public void updateAddresses(BigInteger userId, List<String> addresses) {
+        userRepository.updateAddresses(userId,addresses);
+    }
 }

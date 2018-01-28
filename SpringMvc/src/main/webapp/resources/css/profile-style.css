@@ -15,3 +15,31 @@ input.hidden {position: absolute;left: -9999px;}
     letter-spacing: 1px;
     box-sizing: border-box;
 }
+
+.list-group-item {
+    height:auto;
+    min-height: 50px;
+    overflow-y: auto;
+}
+.list-group-item:hover{
+    color: currentColor;
+}
+
+#addressValid{
+    color: rgb(255,0,0);
+}
+
+.remove-address{
+    cursor: pointer;
+}
+.remove-address:hover{
+    color: #bb0000;
+    opacity: 0.6;
+}
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+

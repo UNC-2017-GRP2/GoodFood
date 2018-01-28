@@ -4,6 +4,7 @@ package com.netcracker.model;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private BigInteger userId;
@@ -14,14 +15,14 @@ public class User {
     private String phoneNumber;
     private Date birthday;
     private String email;
-    private String address;
-    private String bankCard;
+    private List<String> addresses;
+    private List<String> bankCards;
     private String role;
 
     public User (){}
 
 
-    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, Date birthday, String email, String address, String bankCard, String role) {
+    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, Date birthday, String email, List<String> addresses, List<String> bankCards, String role) {
         this.userId = userId;
         this.fio = fio;
         this.login = login;
@@ -30,8 +31,8 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
         this.email = email;
-        this.address = address;
-        this.bankCard = bankCard;
+        this.addresses = addresses;
+        this.bankCards = bankCards;
         this.role = role;
     }
 
@@ -67,12 +68,12 @@ public class User {
         return email;
     }
 
-    public String getAddress() {
-        return address;
+    public List<String> getAddresses() {
+        return addresses;
     }
 
-    public String getBankCard() {
-        return bankCard;
+    public List<String> getBankCards() {
+        return bankCards;
     }
 
     public String getRole() {
@@ -111,12 +112,13 @@ public class User {
         this.email = email;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddresses(List<String> addresses) {
+        this.addresses = addresses;
     }
 
-    public void setBankCard(String bankCard) {
-        this.bankCard = bankCard;
+
+    public void setBankCards(List<String> bankCards) {
+        this.bankCards = bankCards;
     }
 
     public void setRole(String role) {
@@ -133,8 +135,6 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", birthday=" + birthday +
                 ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", bankCard='" + bankCard + '\'' +
                 ", role='" + role + '\'' +
                 '}';
     }

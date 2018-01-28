@@ -21,6 +21,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     private String SQL_SELECT_ROLE = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";private String SQL_SELECT_ROLE_ID = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = \'ROLE_USER\'";
     private String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
     private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
+    private String SQL_DELETE_FROM_PARAMETERS = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
 
     public User getUserByUsername(String username) {
         User user = null;
@@ -32,8 +33,8 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         String email = null;
         String phone = null;
         Date birthday = null;
-        String address = null;
-        String card = null;
+        List<String> addresses = new ArrayList<>();
+        List<String> cards = new ArrayList<>();
 
         if (!username.equals("")){
             try{
@@ -85,10 +86,10 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                             birthday = resultSet.getDate("DATE_VALUE");
                         }
                         if(curAttrId == Constant.ADDRESS_ATTR_ID){
-                            address = resultSet.getString("TEXT_VALUE");
+                            addresses.add(resultSet.getString("TEXT_VALUE"));
                         }
                         if(curAttrId == Constant.BANK_CARD_NUMBER_ATTR_ID){
-                            card = resultSet.getString("TEXT_VALUE");
+                            cards.add(resultSet.getString("TEXT_VALUE"));
                         }
                     }
                     preparedStatement.close();
@@ -99,7 +100,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                 }
 
                 if (!password.equals("") && !role.equals("")){
-                    user = new User(userId, fio, username, password,password, phone,birthday, email,address, card, role);
+                    user = new User(userId, fio, username, password,password, phone,birthday, email,addresses, cards, role);
                 }else{
                     System.out.println("pass or role is empty!");
                 }
@@ -178,8 +179,8 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             updateTextParameter(oldUser.getUserId(), Constant.EMAIL_ATTR_ID,newUser.getEmail());
             updateTextParameter(oldUser.getUserId(), Constant.PHONE_NUMBER_ATTR_ID,newUser.getPhoneNumber());
             updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID, null/*newUser.getBirthday()*/);
-            updateTextParameter(oldUser.getUserId(), Constant.ADDRESS_ATTR_ID,newUser.getAddress());
-            updateTextParameter(oldUser.getUserId(), Constant.BANK_CARD_NUMBER_ATTR_ID,newUser.getBankCard());
+            /*updateTextParameter(oldUser.getUserId(), Constant.ADDRESS_ATTR_ID,newUser.getAddress());
+            updateTextParameter(oldUser.getUserId(), Constant.BANK_CARD_NUMBER_ATTR_ID,newUser.getBankCard());*/
         }catch (Exception e){
             System.out.println(e.getMessage() + " UPDATE_OBJECT");
         }
@@ -191,6 +192,30 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             updateTextParameter(userId, Constant.PASSWORD_HASH_ATTR_ID, password);
         }catch (Exception e){
             System.out.println(e.getMessage() + " UPDATE_PASSWORD");
+        }
+    }
+
+    @Override
+    public void updateAddresses(BigInteger userId, List<String> addresses){
+        removeParameter(SQL_DELETE_FROM_PARAMETERS,userId,Constant.ADDRESS_ATTR_ID);
+        try{
+            for(String address : addresses){
+                saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.ADDRESS_ATTR_ID, address);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage() + " UPDATE_PASSWORD");
+        }
+    }
+
+    private void removeParameter(String sql, BigInteger objectId, long attrId){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 

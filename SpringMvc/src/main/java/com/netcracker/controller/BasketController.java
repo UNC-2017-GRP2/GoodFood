@@ -72,8 +72,8 @@ public class BasketController {
             }
         }
         httpSession.setAttribute("basketItems", curItems);
-        BigInteger summa = orderService.totalOrder((ArrayList<Item>) curItems);
-        return summa.toString();
+        BigInteger sum = orderService.totalOrder((ArrayList<Item>) curItems);
+        return sum.toString();
     }
 
     @RequestMapping(value = "/isBasketEmpty", method = RequestMethod.GET)

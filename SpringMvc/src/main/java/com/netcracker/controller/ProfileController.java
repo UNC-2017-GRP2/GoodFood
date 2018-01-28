@@ -21,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @SessionAttributes(value = {"username"})
@@ -52,6 +54,12 @@ public class ProfileController {
                 }
                 if (httpSession.getAttribute("basketItems") == null){
                     httpSession.setAttribute("basketItems", new ArrayList<Item>());
+                }
+                if (httpSession.getAttribute("userAddresses") == null){
+                    httpSession.setAttribute("userAddresses", user.getAddresses());
+                }
+                if (httpSession.getAttribute("newAddresses") == null){
+                    httpSession.setAttribute("newAddresses", new ArrayList<>(user.getAddresses()));
                 }
             }
             model.addObject("nullParameter", "None");
@@ -126,6 +134,53 @@ public class ProfileController {
             SecurityContextHolder.getContext().setAuthentication(authResult);
         }
         model.addObject("flag","ToCleanEditProfileForm();");
+        model.setViewName("redirect:/profile");
+        return model;
+    }
+
+    @RequestMapping(value = "/addAddress", method = RequestMethod.GET)
+    public @ResponseBody String addAddress(@RequestParam String inputAddress, HttpSession httpSession){
+        List<String> newAddresses = (List<String>) httpSession.getAttribute("newAddresses");
+        //boolean isExists = false;
+        for(String address : newAddresses){
+            if (address.equals(inputAddress)){
+                /*isExists = true;
+                break;*/
+                return "isExist";
+            }
+        }
+        //if(!isExists){
+            newAddresses.add(inputAddress);
+            httpSession.setAttribute("newAddresses", newAddresses);
+            return "success";
+        //}
+    }
+
+    @RequestMapping(value = "/removeAddress", method = RequestMethod.GET)
+    public @ResponseBody void removeAddress(@RequestParam String removeAddress, HttpSession httpSession){
+        List<String> newAddresses = (List<String>) httpSession.getAttribute("newAddresses");
+        for(String address : newAddresses){
+            if (address.equals(removeAddress)){
+                newAddresses.remove(address);
+                break;
+            }
+        }
+        httpSession.setAttribute("newAddresses", newAddresses);
+    }
+
+    @RequestMapping(value = "/resetNewAddress", method = RequestMethod.GET)
+    public @ResponseBody void resetNewAddress(HttpSession httpSession){
+        List<String> newAddresses = (ArrayList<String>)httpSession.getAttribute("userAddresses");
+        httpSession.setAttribute("newAddresses", new ArrayList<>(newAddresses));
+    }
+
+    @RequestMapping(value = { "/editAddresses"}, method = RequestMethod.GET)
+    public ModelAndView editAddresses(Principal principal, HttpSession httpSession){
+        ModelAndView model = new ModelAndView();
+        BigInteger userId = userService.getByUsername(principal.getName()).getUserId();
+        List<String> newAddresses =  (ArrayList<String>)httpSession.getAttribute("newAddresses");
+        userService.updateAddresses(userId, newAddresses);
+        httpSession.setAttribute("userAddresses", new ArrayList<>(newAddresses));
         model.setViewName("redirect:/profile");
         return model;
     }
