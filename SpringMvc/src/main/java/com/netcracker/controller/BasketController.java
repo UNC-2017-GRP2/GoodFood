@@ -1,6 +1,7 @@
 package com.netcracker.controller;
 
 import com.netcracker.model.Item;
+import com.netcracker.model.User;
 import com.netcracker.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,10 +40,10 @@ public class BasketController {
 
 
     @RequestMapping(value = "/checkout", method = RequestMethod.GET)
-    public String checkout(@RequestParam("input-address") String inputAddress, Principal principal, HttpSession httpSession, SessionStatus sessionStatus) throws SQLException {
+    public String checkout(@RequestParam("input-address") String inputAddress, @RequestParam("input-phone") String inputPhone, Principal principal, HttpSession httpSession, SessionStatus sessionStatus) throws SQLException {
         ArrayList<Item> basketItems = (ArrayList<Item>)httpSession.getAttribute("basketItems");
         if(basketItems != null && basketItems.size() != 0){
-            orderService.checkout(basketItems,principal.getName(), inputAddress);
+            orderService.checkout(basketItems,principal.getName(), inputAddress, inputPhone);
             sessionStatus.setComplete();
             return "redirect:/my-orders";
         }else{

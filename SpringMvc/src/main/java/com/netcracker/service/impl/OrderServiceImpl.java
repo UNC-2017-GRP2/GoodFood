@@ -36,10 +36,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void checkout(ArrayList<Item> items, String username, String inputAddress) throws SQLException {
+    public void checkout(ArrayList<Item> items, String username, String inputAddress, String inputPhone) throws SQLException {
         /*BigInteger userId = userService.getByUsername(username).getUserId();
         BigInteger orderCost = totalOrder(items);*/
-        Order order = new Order(null, userService.getByUsername(username).getUserId(), totalOrder(items), null, inputAddress, items, null);
+        Order order = new Order(null, userService.getByUsername(username).getUserId(), totalOrder(items), null, inputAddress, inputPhone, items, null);
         //orderRepository.checkout(items, username, inputAddress);
         orderRepository.checkout(order);
     }

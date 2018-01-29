@@ -9,20 +9,22 @@ public class Order {
     private BigInteger orderCost;
     private String status;
     private String orderAddress;
+    private String orderPhone;
     private BigInteger courierId;
     private List<Item> orderItems;
 
-    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, String orderAddress, List<Item> orderItems, BigInteger courierId) {
-        this(orderId, userId, orderCost, status, orderAddress, orderItems);
+    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, String orderAddress, String orderPhone, List<Item> orderItems, BigInteger courierId) {
+        this(orderId, userId, orderCost, status, orderAddress, orderPhone, orderItems);
         this.courierId = courierId;
     }
 
-    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, String orderAddress, List<Item> orderItems) {
+    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, String orderAddress, String orderPhone, List<Item> orderItems) {
         this.orderId = orderId;
         this.userId = userId;
         this.orderCost = orderCost;
         this.status = status;
         this.orderAddress = orderAddress;
+        this.orderPhone = orderPhone;
         this.orderItems = orderItems;
     }
 /*
@@ -62,6 +64,10 @@ public class Order {
         return orderAddress;
     }
 
+    public String getOrderPhone() {
+        return orderPhone;
+    }
+
     public void setOrderId(BigInteger orderId) {
         this.orderId = orderId;
     }
@@ -88,5 +94,9 @@ public class Order {
 
     public void setOrderAddress(String orderAddress) {
         this.orderAddress = orderAddress;
+    }
+
+    public void setOrderPhone(String orderPhone) {
+        this.orderPhone = orderPhone;
     }
 }

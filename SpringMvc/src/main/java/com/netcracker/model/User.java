@@ -142,7 +142,7 @@ public class User {
     }
 
     private String birthdayToString(){
-        SimpleDateFormat sd = new SimpleDateFormat("dd-mm-yyyy");
+        SimpleDateFormat sd = new SimpleDateFormat("dd/mm/yyyy");
         return sd.format(birthday);
     }
 }

@@ -72,6 +72,8 @@ $(document).ready(function() {
         });
     });
 
+    $("#birth").val("");
+
     $( function() {
         $( "#birth" ).datepicker({
                 inline: true,
