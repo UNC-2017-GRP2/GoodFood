@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,25 +29,25 @@ public class BasketController {
         model.addObject("rub","\u20BD");
         List<Item> basketItems = (ArrayList<Item>) httpSession.getAttribute("basketItems");
         if(basketItems != null && basketItems.size() != 0){
-            BigInteger summa = orderService.totalOrder((ArrayList<Item>) basketItems);
-            model.addObject("totalOrder", summa);
+            BigInteger sum = orderService.totalOrder((ArrayList<Item>) basketItems);
+            model.addObject("totalOrder", sum);
         }
+        model.addObject("userAddresses", httpSession.getAttribute("userAddresses"));
         model.setViewName("basket");
         return model;
     }
 
 
     @RequestMapping(value = "/checkout", method = RequestMethod.GET)
-    public String checkout(Principal principal, HttpSession httpSession, SessionStatus sessionStatus){
+    public String checkout(@RequestParam("input-address") String inputAddress, Principal principal, HttpSession httpSession, SessionStatus sessionStatus) throws SQLException {
         ArrayList<Item> basketItems = (ArrayList<Item>)httpSession.getAttribute("basketItems");
         if(basketItems != null && basketItems.size() != 0){
-            orderService.checkout(basketItems,principal.getName());
+            orderService.checkout(basketItems,principal.getName(), inputAddress);
             sessionStatus.setComplete();
             return "redirect:/my-orders";
         }else{
             return "redirect:/basket";
         }
-
     }
 
     @RequestMapping(value = "/updateBasket", method = RequestMethod.GET)

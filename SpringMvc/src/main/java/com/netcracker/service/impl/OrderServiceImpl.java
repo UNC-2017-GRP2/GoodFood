@@ -5,10 +5,12 @@ import com.netcracker.model.Order;
 import com.netcracker.repository.OrderRepository;
 import com.netcracker.repository.UserRepository;
 import com.netcracker.service.OrderService;
+import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,19 +22,26 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public BigInteger totalOrder(ArrayList<Item> items) {
-        BigInteger summ = new BigInteger("0");
+        BigInteger sum = new BigInteger("0");
         for(Item item:items){
             BigInteger quantity = BigInteger.valueOf(item.getProductQuantity());
-            summ = summ.add(item.getProductCost().multiply(quantity));
+            sum = sum.add(item.getProductCost().multiply(quantity));
         }
-        return summ;
+        return sum;
     }
 
     @Override
-    public void checkout(ArrayList<Item> items, String username) {
-        orderRepository.checkout(items, username);
+    public void checkout(ArrayList<Item> items, String username, String inputAddress) throws SQLException {
+        /*BigInteger userId = userService.getByUsername(username).getUserId();
+        BigInteger orderCost = totalOrder(items);*/
+        Order order = new Order(null, userService.getByUsername(username).getUserId(), totalOrder(items), null, inputAddress, items, null);
+        //orderRepository.checkout(items, username, inputAddress);
+        orderRepository.checkout(order);
     }
 
     @Override

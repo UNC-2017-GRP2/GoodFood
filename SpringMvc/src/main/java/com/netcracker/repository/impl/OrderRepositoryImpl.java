@@ -28,62 +28,70 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     }
 
     @Override
-    public void checkout(ArrayList<Item> items, String username) {
-
-        BigInteger userId = null;
-        BigInteger orderId;
+    public void checkout(Order order) throws SQLException {
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_ID);
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                userId = new BigInteger(resultSet.getString("OBJECT_ID"));
-            }
+            order.setOrderId(getObjectId());
 
-            orderId = getObjectId();
+            connection.setAutoCommit(false); //начало транзакции, вроде бы
+            //Сохраняем заказ
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_OBJECTS);
+            preparedStatement.setString(1, "Order " + order.getOrderId());
+            preparedStatement.setObject(2, order.getOrderId(), numericType);
+            preparedStatement.setLong(3, 0);
+            preparedStatement.setLong(4, Constant.ORDER_OBJ_TYPE_ID);
+            preparedStatement.executeUpdate();
 
-            if (orderId != null){
-                //Сохраняем заказ
-                preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_OBJECTS);
-                preparedStatement.setString(1, "Order " + orderId);
-                preparedStatement.setObject(2, orderId, numericType);
-                preparedStatement.setLong(3, 0);
-                preparedStatement.setLong(4, Constant.ORDER_OBJ_TYPE_ID);
-                preparedStatement.executeUpdate();
+            //добавляем пользователя
+            preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, order.getUserId(), numericType);
+            preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
+            preparedStatement.setString(3, null);
+            preparedStatement.setDate(4, null);
+            preparedStatement.setObject(5, order.getOrderId(), numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.executeUpdate();
 
-                //Добавляем параметры
-                if (userId != null) {
-                    //добавляем пользователя
+            //продукты
+            for (Item item : order.getOrderItems()) {
+                for (int i=0;i<item.getProductQuantity();i++){
                     preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
-                    preparedStatement.setObject(1, userId, numericType);
-                    preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
+                    preparedStatement.setObject(1, order.getOrderId(), numericType);
+                    preparedStatement.setLong(2, Constant.ITEM_ATTR_ID);
                     preparedStatement.setString(3, null);
                     preparedStatement.setDate(4, null);
-                    preparedStatement.setObject(5, orderId, numericType);
+                    preparedStatement.setObject(5, item.getProductId(), numericType);
                     preparedStatement.setLong(6, 0);
                     preparedStatement.executeUpdate();
-
-                    //добавляем продукты
-                    for (Item item : items) {
-                        for (int i=0;i<item.getProductQuantity();i++){
-                            preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
-                            preparedStatement.setObject(1, orderId, numericType);
-                            preparedStatement.setLong(2, Constant.ITEM_ATTR_ID);
-                            preparedStatement.setString(3, null);
-                            preparedStatement.setDate(4, null);
-                            preparedStatement.setObject(5, item.getProductId(), numericType);
-                            preparedStatement.setLong(6, 0);
-                            preparedStatement.executeUpdate();
-                        }
-                    }
                 }
             }
-            preparedStatement.close();
-            resultSet.close();
-            setStatus(orderId, 803);
 
-        } catch (Exception e) {
+            //адрес
+            preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, order.getOrderId(), numericType);
+            preparedStatement.setLong(2, Constant.ORDER_ADDRESS_ATTR_ID);
+            preparedStatement.setString(3, order.getOrderAddress());
+            preparedStatement.setDate(4, null);
+            preparedStatement.setObject(5, 0, numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.executeUpdate();
+
+            //стоимость
+            preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, order.getOrderId(), numericType);
+            preparedStatement.setLong(2, Constant.ORDERS_COST_ATTR_ID);
+            preparedStatement.setString(3, order.getOrderCost().toString());
+            preparedStatement.setDate(4, null);
+            preparedStatement.setObject(5, 0, numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.executeUpdate();
+
+            setStatus(order.getOrderId(), Constant.STATUS_CREATED_ENUM_ID);
+            connection.commit();
+            preparedStatement.close();
+
+        }catch (Exception e){
             System.out.println(e.getMessage());
+            connection.rollback();
         }
     }
 
@@ -114,6 +122,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         BigInteger courierId = new BigInteger("0");
         BigInteger orderCost = new BigInteger("0");
         String orderStatus = null;
+        String orderAddress = null;
         List<Item> orderItems = new ArrayList<>();
 
         try {
@@ -124,13 +133,13 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 userId = new BigInteger(resultSet.getString("OBJECT_ID"));
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOOOOOOOOOL2");
+            System.out.println(e.getMessage());
         }
         try {
             PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
             ps.setObject(1,orderId, numericType);
             ResultSet rs = ps.executeQuery();
-            //идем по всем параметрам продукта
+            //идем по всем параметрам заказа
             while(rs.next()){
                 long curAttrId = rs.getLong("ATTR_ID");
                 if (curAttrId == Constant.COURIER_ATTR_ID) {
@@ -148,17 +157,20 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                                 orderStatus = resultSet1.getString("NAME");
                             }
                         } catch (Exception e) {
-                            System.out.println(e.getMessage() + "LOOOOOOOOOOOOOOOOOOOOOOOOL2");
+                            System.out.println(e.getMessage() + " inner try catch");
                         }
                     } catch (Exception e) {
-                        System.out.println(e.getMessage() + "LOOOOOOOOL222");
+                        System.out.println(e.getMessage());
                     }
+                }
+                if (curAttrId == Constant.ORDER_ADDRESS_ATTR_ID){
+                    orderAddress = rs.getString("TEXT_VALUE");
                 }
             }
             for(Item item:orderItems){
                 orderCost = orderCost.add(item.getProductCost());
             }
-            newOrder = new Order(orderId,userId,orderCost, orderStatus, orderItems, courierId);
+            newOrder = new Order(orderId,userId,orderCost, orderStatus, orderAddress, orderItems, courierId);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -169,7 +181,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setObject(1,orderId, numericType);
-            preparedStatement.setLong(2, 417);
+            preparedStatement.setLong(2, Constant.STATUS_ATTR_ID);
             preparedStatement.setString(3,null);
             preparedStatement.setDate(4,null);
             preparedStatement.setLong(5, 0);
@@ -187,18 +199,18 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             PreparedStatement preparedStatement1 = connection.prepareStatement(SQL_UPDATE_ENUM_PARAMETERS);
             preparedStatement1.setObject(1, statusId, numericType);
             preparedStatement1.setObject(2, orderId, numericType);
-            preparedStatement1.setLong(3, 417);
+            preparedStatement1.setLong(3, Constant.STATUS_ATTR_ID);
             preparedStatement1.executeUpdate();
             preparedStatement1.close();
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        if (statusId == 803) {
+        if (statusId == Constant.STATUS_CREATED_ENUM_ID) {
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_REFERENCE_PARAMETERS);
                 preparedStatement.setLong(1, 0);
                 preparedStatement.setObject(2, orderId, numericType);
-                preparedStatement.setLong(3, 416); //order courier
+                preparedStatement.setLong(3, Constant.COURIER_ATTR_ID); //order courier
                 preparedStatement.executeUpdate();
 
             }catch (Exception e){
@@ -228,6 +240,6 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        changeOrderStatus(orderId, 805);
+        changeOrderStatus(orderId, Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
     }
 }

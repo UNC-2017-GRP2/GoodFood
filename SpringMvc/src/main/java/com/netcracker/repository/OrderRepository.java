@@ -4,11 +4,12 @@ import com.netcracker.model.Item;
 import com.netcracker.model.Order;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public interface OrderRepository {
-    void checkout(ArrayList<Item> items, String username);
+    void checkout(Order order) throws SQLException;
     List<Order> getAllOrders();
     Order getOrderById(BigInteger orderId);
     void changeOrderStatus(BigInteger orderId, long statusId);

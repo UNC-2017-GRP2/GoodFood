@@ -63,6 +63,8 @@ $(document).ready(function() {
             type: 'GET',
             success: function () {
                 $(".new-address-list").remove();
+                $("#addressValid").text("");
+                $("#input-address").val("");
             },
             error: function () {
                 alert("error");

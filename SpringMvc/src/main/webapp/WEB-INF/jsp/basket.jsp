@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Корзина</title>
+    <title>Project</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/css/basket-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
@@ -19,6 +19,7 @@
         <div class="well">
             <h1 class="text-center">Current order</h1>
             <div class="list-group">
+                <form action="/checkout" method="get">
                 <ul>
                     <c:forEach items="${basketItems}" var="item">
                         <li class="list-group-item">
@@ -51,27 +52,38 @@
                             </div>
                         </li>
                     </c:forEach>
-                    <li class="list-group-item" style="min-height: 120px!important;">
-                        <div class="media col-md-6">
+                    <li class="list-group-item list-group-address">
+                        <div class="col-md-4">
+                            <input type='text' id='input-address' name="input-address" class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder="Enter the address...">
+                            <div class="list-group">
+                                <ul class="ul-my-addresses">
+                                    <c:forEach items="${userAddresses}" var="address">
+                                        <li class="list-group-item list-group-item-address" onclick="addressSelection('${address}');">${address}</li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                            <label id="address-valid"></label>
+                        </div>
+                    </li>
+                    <li class="list-group-item list-group-total-order">
+                        <div class="col-md-6">
                             <h3>Total order cost: <span class="total-order-cost">${totalOrder}</span> ${rub}</h3>
                             <p>
-                            <form action="/checkout" method="get">
-                            <c:choose>
-                                <c:when test="${basketItems.size() == 0}">
-                                    <input type="submit" class="btn btn-primary toOrder" disabled="disabled" value="To order">
-                                </c:when>
-                                <c:when test="${basketItems.size() != 0}">
-                                    <input type="submit" class="btn btn-primary to-order" value="To order">
-                                </c:when>
-                            </c:choose>
-                            </form>
+                            <input type="submit" class="btn btn-primary to-order-btn" disabled="disabled" value="To order">
                             </p>
                         </div>
                     </li>
                 </ul>
+                </form>
             </div>
         </div>
     </div>
 </div>
+<c:if test="${basketItems == null}">
+    <script>disabledInputAddress();</script>
+</c:if>
+<c:if test="${basketItems.size() == 0}">
+    <script>disabledInputAddress();</script>
+</c:if>
 </body>
 </html>

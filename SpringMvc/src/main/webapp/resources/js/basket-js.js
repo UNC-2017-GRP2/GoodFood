@@ -1,4 +1,12 @@
 
+function addressSelection(address) {
+     $("#input-address").val(address);
+    $(".to-order-btn").prop('disabled',false);
+    $("#address-valid").text("");
+}
+function disabledInputAddress() {
+    $("#input-address").prop('disabled',true);
+}
 
 $(document).ready(function() {
 
@@ -25,14 +33,14 @@ $(document).ready(function() {
         $.ajax({
             url : 'updateBasket',
             type: 'GET',
-            contentType: 'application/json',
-            mimeType: 'application/json',
+            /*contentType: 'application/json',
+            mimeType: 'application/json',*/
             data : ({
                 itemId: itemId,
                 newQuantity: count
             }),
-            success: function (data) {
-                alert(data);
+            success: function () {
+                //alert(data);
             }
         });
         return false;
@@ -60,14 +68,14 @@ $(document).ready(function() {
         $.ajax({
             url : 'updateBasket',
             type: 'GET',
-            contentType: 'application/json',
-            mimeType: 'application/json',
+            /*contentType: 'application/json',
+            mimeType: 'application/json',*/
             data : ({
                 itemId: itemId,
                 newQuantity: count
             }),
-            success: function (data) {
-                alert(data);
+            success: function () {
+                //alert(data);
             }
         });
 
@@ -95,6 +103,12 @@ $(document).ready(function() {
             }),
             success: function (data) {
                 $(".total-order-cost").text(data);
+                if (data == "0"){
+                    $("#input-address").val("");
+                    $("#input-address").prop('disabled',true);
+                    $(".to-order-btn").prop('disabled',true);
+                    $("#address-valid").text("");
+                }
             }
         });
 
@@ -114,4 +128,30 @@ $(document).ready(function() {
             }
         });
     });
+
+    $("#input-address").keyup(function(){
+        var value = $("#input-address").val();
+        if (value == ""){
+            $("#address-valid").text("Address field must not be empty.");
+            $(".to-order-btn").prop('disabled',true);
+
+        }else{
+            $("#address-valid").text("");
+            $(".to-order-btn").prop('disabled',false);
+        }
+    });
+
+    $("#input-address").focus(function () {
+        $(".ul-my-addresses").css('visibility', 'visible');
+        $(".ul-my-addresses").css('height', 'auto');
+    });
+    $("#input-address").blur(function () {
+        setTimeout(function () {
+            $(".ul-my-addresses").css('visibility', 'hidden');
+            $(".ul-my-addresses").css('height', '0');
+        },100);
+
+    });
+
+
 });

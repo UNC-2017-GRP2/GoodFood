@@ -29,14 +29,25 @@ public class Constant {
     public static final long STATUS_ATTR_ID = 417;
     public static final long COURIER_ATTR_ID = 416;
     public static final long ITEM_IMAGE_ATTR_ID = 418;
+    public static final long ORDER_ADDRESS_ATTR_ID = 419;
 
-    /**Table attributes**/
-    public static final long ROLE_ENUM_TYPE_ID = 700;
+    /**Table enum_types**/
+    public static final long USER_ROLE_ENUM_TYPE_ID = 700;
+    public static final long ORDER_STATE_ENUM_TYPE_ID = 701;
+    public static final long ITEM_CATEGORY_ENUM_TYPE_ID = 702;
 
     /**Table enums**/
     public static final long ROLE_ADMIN_ENUM_ID = 800;
     public static final long ROLE_USER_ENUM_ID = 801;
     public static final long ROLE_COURIER_ENUM_ID = 802;
+    public static final long STATUS_CREATED_ENUM_ID = 803;
+    public static final long STATUS_WITHOUT_COURIER_ENUM_ID = 804;
+    public static final long STATUS_LINKED_WITH_COURIER_ENUM_ID = 805;
+    public static final long STATUS_DELIVERED_ENUM_ID = 806;
+    public static final long STATUS_DELIVERY_CONFIRMED_ENUM_ID = 807;
+    public static final long STATUS_NOT_DELIVERED_ENUM_ID = 808;
+    public static final long STATUS_CANCELLED_ENUM_ID = 809;
+    public static final long STATUS_PAID_ENUM_ID = 810;
     public static final long PIZZA_ENUM_ID = 811;
     public static final long SUSHI_ENUM_ID = 812;
     public static final long BURGERS_ENUM_ID = 813;
