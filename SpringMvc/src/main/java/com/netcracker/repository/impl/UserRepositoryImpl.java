@@ -178,7 +178,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             updateTextParameter(oldUser.getUserId(), Constant.FULL_NAME_ATTR_ID, newUser.getFio());
             updateTextParameter(oldUser.getUserId(), Constant.EMAIL_ATTR_ID,newUser.getEmail());
             updateTextParameter(oldUser.getUserId(), Constant.PHONE_NUMBER_ATTR_ID,newUser.getPhoneNumber());
-            updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID, null/*newUser.getBirthday()*/);
+            updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID, new java.sql.Date(newUser.getBirthday().getTime()));
             /*updateTextParameter(oldUser.getUserId(), Constant.ADDRESS_ATTR_ID,newUser.getAddress());
             updateTextParameter(oldUser.getUserId(), Constant.BANK_CARD_NUMBER_ATTR_ID,newUser.getBankCard());*/
         }catch (Exception e){

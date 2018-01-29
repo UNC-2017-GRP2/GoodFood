@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/css/profile-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
+
     <script type="text/javascript">
         <%@include file="/resources/js/profile-js.js" %>
     </script>
@@ -195,6 +197,17 @@
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage">
                                     <form:errors path="phoneNumber"></form:errors>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="birth" class="col-xs-4 control-label">Date Of Birth:</label>
+                                    <div class="col-xs-6">
+                                        <form:input type='text' id='birth' path="birthday"
+                                                    class="form-control"></form:input>
+                                    </div>
+                                </div>
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
+                                    <form:errors path="birthday"></form:errors>
                                 </div>
                                     <%--<div class="form-group">
                                         <label for="address1" class="col-xs-4 control-label">Address:</label>
