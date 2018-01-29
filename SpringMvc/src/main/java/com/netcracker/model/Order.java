@@ -8,21 +8,31 @@ public class Order {
     private BigInteger userId;
     private BigInteger orderCost;
     private String status;
+    private String orderAddress;
     private BigInteger courierId;
     private List<Item> orderItems;
 
-    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, List<Item> orderItems, BigInteger courierId) {
-        this(orderId, userId, orderCost, status, orderItems);
+    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, String orderAddress, List<Item> orderItems, BigInteger courierId) {
+        this(orderId, userId, orderCost, status, orderAddress, orderItems);
         this.courierId = courierId;
     }
 
+    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, String orderAddress, List<Item> orderItems) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.orderCost = orderCost;
+        this.status = status;
+        this.orderAddress = orderAddress;
+        this.orderItems = orderItems;
+    }
+/*
     public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, List<Item> orderItems) {
         this.orderId = orderId;
         this.userId = userId;
         this.orderCost = orderCost;
         this.status = status;
         this.orderItems = orderItems;
-    }
+    }*/
 
     public BigInteger getOrderId() {
         return orderId;
@@ -48,6 +58,10 @@ public class Order {
         return orderItems;
     }
 
+    public String getOrderAddress() {
+        return orderAddress;
+    }
+
     public void setOrderId(BigInteger orderId) {
         this.orderId = orderId;
     }
@@ -59,6 +73,7 @@ public class Order {
     public void setCourierId(BigInteger userId) {
         this.courierId = userId;
     }
+
     public void setOrderCost(BigInteger orderCost) {
         this.orderCost = orderCost;
     }
@@ -69,5 +84,9 @@ public class Order {
 
     public void setOrderItems(List<Item> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public void setOrderAddress(String orderAddress) {
+        this.orderAddress = orderAddress;
     }
 }

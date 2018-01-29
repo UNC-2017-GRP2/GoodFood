@@ -2,6 +2,7 @@ package com.netcracker.controller;
 
 
 import com.netcracker.model.Item;
+import com.netcracker.model.User;
 import com.netcracker.service.ItemService;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,15 @@ public class HomeController {
     @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
     public ModelAndView homeValue(ModelAndView model,@RequestParam(value = "value", required = false) String value,Principal principal, HttpSession httpSession) throws IOException {
         if (principal != null){
+            User user  = userService.getByUsername(principal.getName());
             if (httpSession.getAttribute("username") == null){
                 httpSession.setAttribute("username",principal.getName());
             }
             if (httpSession.getAttribute("basketItems") == null){
                 httpSession.setAttribute("basketItems", new ArrayList<Item>());
+            }
+            if (httpSession.getAttribute("userAddresses") == null){
+                httpSession.setAttribute("userAddresses", user.getAddresses());
             }
         }
         List<Item> currentItems = itemService.getItemsByCategory(value);

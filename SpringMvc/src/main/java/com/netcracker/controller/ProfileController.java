@@ -143,7 +143,7 @@ public class ProfileController {
         List<String> newAddresses = (List<String>) httpSession.getAttribute("newAddresses");
         //boolean isExists = false;
         for(String address : newAddresses){
-            if (address.equals(inputAddress)){
+            if (address.equals(inputAddress.trim())){
                 /*isExists = true;
                 break;*/
                 return "isExist";
