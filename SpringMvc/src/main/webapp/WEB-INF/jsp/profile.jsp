@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/resources/css/profile-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
     <script type="text/javascript">
         <%@include file="/resources/js/profile-js.js" %>
     </script>
@@ -189,7 +190,7 @@
                                     <label for="phoneNumber1" class="col-xs-4 control-label">Phone Number:</label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='phoneNumber1' path="phoneNumber"
-                                                    class="form-control"></form:input>
+                                                    class="form-control input-medium bfh-phone" data-format="+7 (ddd) ddd-dddd"></form:input>
                                     </div>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage">
@@ -335,5 +336,6 @@
         </c:if>
 
         <script>${flag}</script>
+
 </body>
 </html>
