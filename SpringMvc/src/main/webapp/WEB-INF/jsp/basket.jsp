@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/resources/css/basket-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
     <script type="text/javascript">
         <%@include file="/resources/js/basket-js.js" %>
     </script>
@@ -63,6 +64,9 @@
                                 </ul>
                             </div>
                             <label id="address-valid"></label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type='text' id='input-phone' name="input-phone" value="${userPhone}" class="form-control input-medium bfh-phone" data-format="+7 (ddd) ddd-dddd">
                         </div>
                     </li>
                     <li class="list-group-item list-group-total-order">

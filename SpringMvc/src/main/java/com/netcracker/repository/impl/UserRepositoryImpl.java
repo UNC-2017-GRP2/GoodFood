@@ -7,7 +7,9 @@ import com.netcracker.repository.UserRepository;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRepository {
@@ -83,7 +85,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                             phone = resultSet.getString("TEXT_VALUE");
                         }
                         if (curAttrId == Constant.BIRTHDAY_ATTR_ID){
-                            birthday = resultSet.getDate("DATE_VALUE");
+                            birthday = new Date(resultSet.getDate("DATE_VALUE").getTime());
                         }
                         if(curAttrId == Constant.ADDRESS_ATTR_ID){
                             addresses.add(resultSet.getString("TEXT_VALUE"));
@@ -178,7 +180,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             updateTextParameter(oldUser.getUserId(), Constant.FULL_NAME_ATTR_ID, newUser.getFio());
             updateTextParameter(oldUser.getUserId(), Constant.EMAIL_ATTR_ID,newUser.getEmail());
             updateTextParameter(oldUser.getUserId(), Constant.PHONE_NUMBER_ATTR_ID,newUser.getPhoneNumber());
-            updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID, null/*newUser.getBirthday()*/);
+            updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID, new java.sql.Date(newUser.getBirthday().getTime()));
             /*updateTextParameter(oldUser.getUserId(), Constant.ADDRESS_ATTR_ID,newUser.getAddress());
             updateTextParameter(oldUser.getUserId(), Constant.BANK_CARD_NUMBER_ATTR_ID,newUser.getBankCard());*/
         }catch (Exception e){
@@ -242,7 +244,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             //если парметр был, то обновляем,иначе добавим
             if (checkAttribute(objectId, attrId)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_DATE_PARAMETERS);
-                preparedStatement.setDate(1, parameter);
+                preparedStatement.setDate(1, new java.sql.Date(parameter.getTime()));
                 preparedStatement.setObject(2,objectId, numericType);
                 preparedStatement.setLong(3, attrId);
                 preparedStatement.executeUpdate();
@@ -292,7 +294,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             preparedStatement.setObject(1, userId, numericType);
             preparedStatement.setLong(2, attrId);
             preparedStatement.setString(3, null);
-            preparedStatement.setDate(4, parameter);
+            preparedStatement.setDate(4, new java.sql.Date(parameter.getTime()));
             preparedStatement.setLong(5, 0);
             preparedStatement.setLong(6, 0);
             preparedStatement.executeUpdate();

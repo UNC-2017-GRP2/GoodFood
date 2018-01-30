@@ -70,7 +70,15 @@ $(document).ready(function() {
                 alert("error");
             }
         });
-
     });
 
+    $("#birth").val("");
+
+    $( function() {
+        $( "#birth" ).datepicker({
+                inline: true,
+                showOtherMonths: true,
+                dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+            });
+    } );
 });

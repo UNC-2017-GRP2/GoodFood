@@ -41,6 +41,9 @@ public class HomeController {
             if (httpSession.getAttribute("userAddresses") == null){
                 httpSession.setAttribute("userAddresses", user.getAddresses());
             }
+            if (httpSession.getAttribute("userPhone") == null){
+                httpSession.setAttribute("userPhone", user.getPhoneNumber());
+            }
         }
         List<Item> currentItems = itemService.getItemsByCategory(value);
         if(value == null){

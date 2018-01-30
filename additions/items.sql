@@ -383,3 +383,7 @@ INSERT INTO public."ATTRIBUTES"(
 	"ATTR_ID", "NAME", "ATTR_TYPE_ID")
 	VALUES (419, 'Order address', 51);
 
+INSERT INTO public."ATTRIBUTES"(
+	"ATTR_ID", "NAME", "ATTR_TYPE_ID")
+	VALUES (420, 'Order phone', 51);
+

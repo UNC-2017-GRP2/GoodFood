@@ -105,6 +105,7 @@ public class ProfileController {
             model.setViewName("redirect:/profile");
             sessionStatus.setComplete();
             httpSession.setAttribute("username",updatedUser.getLogin());
+            httpSession.setAttribute("userPhone", updatedUser.getPhoneNumber());
             return model;
         }
     }

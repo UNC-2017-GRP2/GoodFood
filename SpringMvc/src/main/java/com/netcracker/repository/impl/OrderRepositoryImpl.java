@@ -85,6 +85,16 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             preparedStatement.setLong(6, 0);
             preparedStatement.executeUpdate();
 
+            //телефон
+            preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, order.getOrderId(), numericType);
+            preparedStatement.setLong(2, Constant.ORDER_PHONE_ATTR_ID);
+            preparedStatement.setString(3, order.getOrderPhone());
+            preparedStatement.setDate(4, null);
+            preparedStatement.setObject(5, 0, numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.executeUpdate();
+
             setStatus(order.getOrderId(), Constant.STATUS_CREATED_ENUM_ID);
             connection.commit();
             preparedStatement.close();
@@ -123,6 +133,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         BigInteger orderCost = new BigInteger("0");
         String orderStatus = null;
         String orderAddress = null;
+        String orderPhone = null;
         List<Item> orderItems = new ArrayList<>();
 
         try {
@@ -163,14 +174,17 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                         System.out.println(e.getMessage());
                     }
                 }
+                if (curAttrId == Constant.ORDERS_COST_ATTR_ID){
+                    orderCost = new BigInteger(rs.getString("TEXT_VALUE"));
+                }
                 if (curAttrId == Constant.ORDER_ADDRESS_ATTR_ID){
                     orderAddress = rs.getString("TEXT_VALUE");
                 }
+                if (curAttrId == Constant.ORDER_PHONE_ATTR_ID){
+                    orderPhone = rs.getString("TEXT_VALUE");
+                }
             }
-            for(Item item:orderItems){
-                orderCost = orderCost.add(item.getProductCost());
-            }
-            newOrder = new Order(orderId,userId,orderCost, orderStatus, orderAddress, orderItems, courierId);
+            newOrder = new Order(orderId,userId,orderCost, orderStatus, orderAddress, orderPhone, orderItems, courierId);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

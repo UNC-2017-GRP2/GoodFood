@@ -30,6 +30,7 @@ public class Constant {
     public static final long COURIER_ATTR_ID = 416;
     public static final long ITEM_IMAGE_ATTR_ID = 418;
     public static final long ORDER_ADDRESS_ATTR_ID = 419;
+    public static final long ORDER_PHONE_ATTR_ID = 420;
 
     /**Table enum_types**/
     public static final long USER_ROLE_ENUM_TYPE_ID = 700;
