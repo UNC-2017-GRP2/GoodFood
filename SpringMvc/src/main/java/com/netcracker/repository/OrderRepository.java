@@ -14,4 +14,5 @@ public interface OrderRepository {
     Order getOrderById(BigInteger orderId);
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
+    List<Order> getOrdersByUserId(BigInteger userId);
 }

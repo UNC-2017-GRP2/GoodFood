@@ -7,7 +7,6 @@ import com.netcracker.repository.UserRepository;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
