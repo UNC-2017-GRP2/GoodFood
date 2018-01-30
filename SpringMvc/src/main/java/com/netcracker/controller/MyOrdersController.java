@@ -1,5 +1,6 @@
 package com.netcracker.controller;
 
+import com.netcracker.config.Constant;
 import com.netcracker.model.Order;
 import com.netcracker.model.User;
 import com.netcracker.service.OrderService;
@@ -45,7 +46,7 @@ public class MyOrdersController {
         }
         else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
             model.addObject("del","Delete the order");
-            allOrders = orderService.getAllOrdersByUser(principal.getName());
+            allOrders = orderService.getOrdersByUsername(principal.getName());
         }
         model.addObject("rub","\u20BD");
         model.setViewName("my-orders");
@@ -55,15 +56,16 @@ public class MyOrdersController {
         }
         return model;
     }
+
     @RequestMapping(value = { "/my-orders/{id}"}, method = RequestMethod.POST)
     public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
         Order order = orderService.getOrderById(id);
         if (order != null){
             if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
-                orderService.changeOrderStatus(id, 803); //created
+                orderService.changeOrderStatus(id, Constant.STATUS_CREATED_ENUM_ID); //created
             }
             if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
-                orderService.changeOrderStatus(id, 809); //cancelled
+                orderService.changeOrderStatus(id, Constant.STATUS_CANCELLED_ENUM_ID); //cancelled
             }
         }
         return "redirect:/my-orders";

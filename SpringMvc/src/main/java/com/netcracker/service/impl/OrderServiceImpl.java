@@ -48,13 +48,18 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getAllOrders() {
         return orderRepository.getAllOrders();
     }
+
+    @Override
+    public List<Order> getOrdersByUsername(String username) {
+        return orderRepository.getOrdersByUserId(userService.getByUsername(username).getUserId());
+    }
+
     @Override
     public List<Order> getAllFreeOrders() {
-        List<Order> allOrders = orderRepository.getAllOrders();
+        List<Order> allOrders = getAllOrders();
         List<Order> allFreeOrders = new ArrayList<>();
         for (Order newOrder : allOrders) {
-            if (newOrder.getStatus().equals("Created") ||
-                    newOrder.getStatus().equals("Without courier")) {
+            if (newOrder.getStatus().equals("Created") || newOrder.getStatus().equals("Without courier")) {
                 allFreeOrders.add(newOrder);
             }
         }
@@ -64,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrdersByCourier(String username) {
         BigInteger userId = userRepository.getUserByUsername(username).getUserId();
-        List<Order> allOrders = orderRepository.getAllOrders();
+        List<Order> allOrders = getAllOrders();
         List<Order> allOrdersByUser = new ArrayList<>();
         for (Order newOrder : allOrders) {
             if (newOrder.getCourierId().equals(userId)) {
@@ -73,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
         }
         return allOrdersByUser;
     }
-    @Override
+  /*  @Override
     public List<Order> getAllOrdersByUser(String username) {
         BigInteger userId = userRepository.getUserByUsername(username).getUserId();
         List<Order> allOrders = orderRepository.getAllOrders();
@@ -84,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return allOrdersByUser;
-    }
+    }*/
 
     @Override
     public Order getOrderById(BigInteger orderId) {

@@ -23,6 +23,8 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     private String SQL_SELECT_STATUS = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";
     private String SQL_SELECT_USER_ID = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"REFERENCE_VALUE\" = ?";
 
+    private String SQL_SELECT_ORDERS_BY_USER_ID = "select \"REFERENCE_VALUE\" from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
+
     public OrderRepositoryImpl(DataSource dataSource) throws SQLException {
         super(dataSource);
     }
@@ -121,6 +123,26 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<Order> getOrdersByUserId(BigInteger userId) {
+        List<Order> result = new ArrayList<>();
+        BigInteger orderId;
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_ORDERS_BY_USER_ID);
+            preparedStatement.setObject(1, userId, numericType);
+            preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                orderId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
+                result.add(getOrderById(orderId));
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
         return result;
     }
@@ -256,4 +278,6 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         }
         changeOrderStatus(orderId, Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
     }
+
+
 }

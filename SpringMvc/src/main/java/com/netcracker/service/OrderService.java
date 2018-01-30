@@ -14,10 +14,11 @@ public interface OrderService {
     BigInteger totalOrder(ArrayList<Item> items);
     void checkout(ArrayList<Item> items, String username, String inputAddress, String inputPhone) throws SQLException;
     List<Order> getAllFreeOrders();
-    List<Order> getAllOrdersByUser(String username);
+    //List<Order> getAllOrdersByUser(String username);
     Order getOrderById(BigInteger orderId);
     List<Order> getAllOrdersByCourier(String username);
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
     List<Order> getAllOrders();
+    List<Order> getOrdersByUsername(String username);
 };
