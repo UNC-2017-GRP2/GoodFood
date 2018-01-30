@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Project</title>
@@ -29,9 +30,16 @@
                     </c:forEach>
             </td>
                     <td style="text-align: center">${order.orderCost} ${rub}</td>
-                    <td><div class="col-xs-offset-4 col-xs-2">
+                    <td>
+                        <c:choose>
+                            <c:when test="${order.status.equals('Created') || order.status.equals('Linked with courier')}">
+                                <div class="col-xs-offset-4 col-xs-2">
                                     <button type="submit" class="btn btn-default">${del}</button>
-                                </div></td>
+                                </div>
+                            </c:when>
+                            <c:otherwise></c:otherwise>
+                        </c:choose>
+                    </td>
                 </tr>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
