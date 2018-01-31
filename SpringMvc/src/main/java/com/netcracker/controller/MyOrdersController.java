@@ -20,7 +20,6 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@SessionAttributes(value = {"username","basketItems"})
 public class MyOrdersController {
     @Autowired
     private OrderService orderService;
@@ -28,7 +27,7 @@ public class MyOrdersController {
     private UserService userService;
 
     @RequestMapping(value = { "/my-orders"}, method = RequestMethod.GET)
-    public ModelAndView myOrdersPage(Principal principal, HttpSession httpSession) throws IOException {
+    public ModelAndView myOrdersPage(Principal principal) throws IOException {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = null;
         try {
@@ -41,11 +40,13 @@ public class MyOrdersController {
             System.out.println("method homePage:" + e.getMessage());
         }
         if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
-            model.addObject("del","Drop the order");
+            model.addObject("remove","Drop the order");
+            model.addObject("role", "ROLE_COURIER");
             allOrders = orderService.getAllOrdersByCourier(principal.getName());
         }
         else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
-            model.addObject("del","Delete the order");
+            model.addObject("remove","Delete the order");
+            model.addObject("role", "ROLE_USER");
             allOrders = orderService.getOrdersByUsername(principal.getName());
         }
         model.addObject("rub","\u20BD");
@@ -57,7 +58,7 @@ public class MyOrdersController {
         return model;
     }
 
-    @RequestMapping(value = { "/my-orders/{id}"}, method = RequestMethod.POST)
+    @RequestMapping(value = { "/my-orders/remove/{id}"}, method = RequestMethod.POST)
     public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
         Order order = orderService.getOrderById(id);
         if (order != null){
@@ -67,6 +68,15 @@ public class MyOrdersController {
             if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
                 orderService.changeOrderStatus(id, Constant.STATUS_CANCELLED_ENUM_ID); //cancelled
             }
+        }
+        return "redirect:/my-orders";
+    }
+
+    @RequestMapping(value = { "/my-orders/markAsDeliv/{id}"}, method = RequestMethod.POST)
+    public String markOrderAsDelivered(@PathVariable BigInteger id) throws IOException {
+        Order order = orderService.getOrderById(id);
+        if (order != null){
+                orderService.changeOrderStatus(id, Constant.STATUS_DELIVERED_ENUM_ID); //delivered
         }
         return "redirect:/my-orders";
     }

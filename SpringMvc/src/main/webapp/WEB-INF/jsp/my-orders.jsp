@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Project</title>
@@ -19,7 +20,7 @@
 
     <table class="table">
         <c:forEach items="${orders}" var="order">
-            <form action="/my-orders/${order.orderId}" method="post">
+
                 <tr>
                     <td>Order ${order.orderId}</td>
                     <td>${order.userId}</td>
@@ -33,16 +34,27 @@
                     <td>
                         <c:choose>
                             <c:when test="${order.status.equals('Created') || order.status.equals('Linked with courier')}">
-                                <div class="col-xs-offset-4 col-xs-2">
-                                    <button type="submit" class="btn btn-default">${del}</button>
-                                </div>
+                                <form action="/my-orders/remove/${order.orderId}" method="post">
+                                    <button type="submit" class="btn btn-default">${remove}</button>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                </form>
+                            </c:when>
+                            <c:otherwise></c:otherwise>
+                        </c:choose>
+                        <br />
+                        <c:choose>
+                            <c:when test="${role.equals('ROLE_COURIER') && order.status.equals('Linked with courier')}">
+                                <form action="/my-orders/markAsDeliv/${order.orderId}" method="post">
+                                    <button type="submit" class="btn btn-default"><spring:message code="orders.delivered"/></button>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                </form>
                             </c:when>
                             <c:otherwise></c:otherwise>
                         </c:choose>
                     </td>
                 </tr>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-            </form>
+
+
         </c:forEach>
     </table>
 </div>
