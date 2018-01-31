@@ -1,6 +1,10 @@
 package com.netcracker.model;
 
+import org.springframework.cglib.core.Local;
+
 import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class Order {
@@ -12,13 +16,29 @@ public class Order {
     private String orderPhone;
     private BigInteger courierId;
     private List<Item> orderItems;
+    private LocalDateTime orderCreationDate;
 
-    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, String orderAddress, String orderPhone, List<Item> orderItems, BigInteger courierId) {
-        this(orderId, userId, orderCost, status, orderAddress, orderPhone, orderItems);
+    public Order(BigInteger orderId,
+                 BigInteger userId,
+                 BigInteger orderCost,
+                 String status,
+                 String orderAddress,
+                 String orderPhone,
+                 List<Item> orderItems,
+                 LocalDateTime orderCreationDate,
+                 BigInteger courierId) {
+        this(orderId, userId, orderCost, status, orderAddress, orderPhone, orderItems, orderCreationDate);
         this.courierId = courierId;
     }
 
-    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, String orderAddress, String orderPhone, List<Item> orderItems) {
+    public Order(BigInteger orderId,
+                 BigInteger userId,
+                 BigInteger orderCost,
+                 String status,
+                 String orderAddress,
+                 String orderPhone,
+                 List<Item> orderItems,
+                 LocalDateTime orderCreationDate) {
         this.orderId = orderId;
         this.userId = userId;
         this.orderCost = orderCost;
@@ -26,6 +46,7 @@ public class Order {
         this.orderAddress = orderAddress;
         this.orderPhone = orderPhone;
         this.orderItems = orderItems;
+        this.orderCreationDate = orderCreationDate;
     }
 /*
     public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, List<Item> orderItems) {
@@ -66,6 +87,14 @@ public class Order {
 
     public String getOrderPhone() {
         return orderPhone;
+    }
+
+    public LocalDateTime getOrderCreationDate() {
+        return orderCreationDate;
+    }
+
+    public void setOrderCreationDate(LocalDateTime orderCreationDate) {
+        this.orderCreationDate = orderCreationDate;
     }
 
     public void setOrderId(BigInteger orderId) {

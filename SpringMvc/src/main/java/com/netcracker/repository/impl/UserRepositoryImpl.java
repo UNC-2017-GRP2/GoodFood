@@ -243,7 +243,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             //если парметр был, то обновляем,иначе добавим
             if (checkAttribute(objectId, attrId)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_DATE_PARAMETERS);
-                preparedStatement.setDate(1, new java.sql.Date(parameter.getTime()));
+                preparedStatement.setTimestamp(1, new java.sql.Timestamp(parameter.getTime()));
                 preparedStatement.setObject(2,objectId, numericType);
                 preparedStatement.setLong(3, attrId);
                 preparedStatement.executeUpdate();
@@ -293,7 +293,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             preparedStatement.setObject(1, userId, numericType);
             preparedStatement.setLong(2, attrId);
             preparedStatement.setString(3, null);
-            preparedStatement.setDate(4, new java.sql.Date(parameter.getTime()));
+            preparedStatement.setTimestamp(4, new java.sql.Timestamp(parameter.getTime()));
             preparedStatement.setLong(5, 0);
             preparedStatement.setLong(6, 0);
             preparedStatement.executeUpdate();

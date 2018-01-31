@@ -21,6 +21,7 @@
                 <tr>
                     <td>Order ${order.orderId}</td>
                     <td>${order.userId}</td>
+                    <td>${order.orderCreationDate.toString()}</td>
                     <td>${order.status}</td>
                     <td style="text-align: center">${order.orderCost} ${rub}</td>
                     <td><input type="submit" value="${add}"></td>

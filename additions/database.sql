@@ -197,7 +197,7 @@ CREATE TABLE "PARAMETERS" (
     "OBJECT_ID" bigint NOT NULL,
     "ATTR_ID" bigint NOT NULL,
     "TEXT_VALUE" text,
-    "DATE_VALUE" date,
+    "DATE_VALUE" timestamp(0),
     "REFERENCE_VALUE" bigint,
     "ENUM_VALUE" bigint
 );
@@ -269,6 +269,10 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 415	Item	53
 416	Order courier	53
 417	Order status	55
+418	Item image	53
+419	Order address	51
+420	Order phone	51
+421	Order creation date	54
 \.
 
 

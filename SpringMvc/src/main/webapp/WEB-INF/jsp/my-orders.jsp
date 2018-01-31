@@ -24,6 +24,7 @@
                 <tr>
                     <td>Order ${order.orderId}</td>
                     <td>${order.userId}</td>
+                    <td>${order.orderCreationDate.toString()}</td>
                     <td>${order.status}</td>
                     <td><c:forEach items="${order.orderItems}" var="item">
                         ${item.productName}<br />

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +99,16 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             preparedStatement.executeUpdate();
 
             setStatus(order.getOrderId(), Constant.STATUS_CREATED_ENUM_ID);
+
+            preparedStatement = connection.prepareStatement(SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, order.getOrderId(), numericType);
+            preparedStatement.setLong(2, Constant.ORDER_CREATION_DATE_ATTR_ID);
+            preparedStatement.setString(3, null);
+            preparedStatement.setTimestamp(4, new java.sql.Timestamp(System.currentTimeMillis()));
+            preparedStatement.setLong(5, 0);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.executeUpdate();
+
             connection.commit();
             preparedStatement.close();
 
@@ -157,6 +168,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         String orderAddress = null;
         String orderPhone = null;
         List<Item> orderItems = new ArrayList<>();
+        LocalDateTime orderCreationDate = null;
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_USER_ID);
@@ -205,8 +217,12 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 if (curAttrId == Constant.ORDER_PHONE_ATTR_ID){
                     orderPhone = rs.getString("TEXT_VALUE");
                 }
+                if (curAttrId == Constant.ORDER_CREATION_DATE_ATTR_ID){
+                    System.out.println(rs.getTimestamp("DATE_VALUE").toLocalDateTime().toString());
+                    orderCreationDate = rs.getTimestamp("DATE_VALUE").toLocalDateTime();
+                }
             }
-            newOrder = new Order(orderId,userId,orderCost, orderStatus, orderAddress, orderPhone, orderItems, courierId);
+            newOrder = new Order(orderId, userId, orderCost, orderStatus, orderAddress, orderPhone, orderItems, orderCreationDate, courierId);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
