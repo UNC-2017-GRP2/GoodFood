@@ -299,7 +299,7 @@ COPY "ENUMS" ("ENUM_ID", "NAME", "ENUM_TYPE_ID") FROM stdin;
 805	Linked with courier	701
 806	Delivered	701
 807	Delivery confirmed	701
-808	Not delivered	701
+808	Expired	701
 809	Cancelled	701
 810	Paid	701
 \.

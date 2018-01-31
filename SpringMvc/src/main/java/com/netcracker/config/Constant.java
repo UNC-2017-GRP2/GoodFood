@@ -2,6 +2,9 @@ package com.netcracker.config;
 
 public class Constant {
 
+    public static final long START_EXPIRATION_TIME = 3;
+    public static final long END_EXPIRATION_TIME = 12;
+
     /**Table attr_types**/
     public static final long TEXT_ATTR_TYPE_ID = 51;
     public static final long NUMBER_ATTR_TYPE_ID = 52;
@@ -47,7 +50,7 @@ public class Constant {
     public static final long STATUS_LINKED_WITH_COURIER_ENUM_ID = 805;
     public static final long STATUS_DELIVERED_ENUM_ID = 806;
     public static final long STATUS_DELIVERY_CONFIRMED_ENUM_ID = 807;
-    public static final long STATUS_NOT_DELIVERED_ENUM_ID = 808;
+    public static final long STATUS_EXPIRED_ENUM_ID = 808;
     public static final long STATUS_CANCELLED_ENUM_ID = 809;
     public static final long STATUS_PAID_ENUM_ID = 810;
     public static final long PIZZA_ENUM_ID = 811;

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Controller
@@ -49,6 +51,9 @@ public class MyOrdersController {
             model.addObject("role", "ROLE_USER");
             allOrders = orderService.getOrdersByUsername(principal.getName());
         }
+        model.addObject("now", LocalDateTime.now());
+        model.addObject("chr", ChronoUnit.HOURS);
+
         model.addObject("rub","\u20BD");
         model.setViewName("my-orders");
 
@@ -77,6 +82,15 @@ public class MyOrdersController {
         Order order = orderService.getOrderById(id);
         if (order != null){
                 orderService.changeOrderStatus(id, Constant.STATUS_DELIVERED_ENUM_ID); //delivered
+        }
+        return "redirect:/my-orders";
+    }
+
+    @RequestMapping(value = { "/my-orders/markAsExp/{id}"}, method = RequestMethod.POST)
+    public String markOrderAsExpired(@PathVariable BigInteger id) throws IOException {
+        Order order = orderService.getOrderById(id);
+        if (order != null){
+            orderService.changeOrderStatus(id, Constant.STATUS_EXPIRED_ENUM_ID); //expired
         }
         return "redirect:/my-orders";
     }

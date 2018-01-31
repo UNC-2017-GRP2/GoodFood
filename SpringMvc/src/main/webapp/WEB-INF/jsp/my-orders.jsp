@@ -25,6 +25,7 @@
                     <td>Order ${order.orderId}</td>
                     <td>${order.userId}</td>
                     <td>${order.orderCreationDate.toString()}</td>
+                    <td>${order.orderCreationDate.until(now, chr)}</td>
                     <td>${order.status}</td>
                     <td><c:forEach items="${order.orderItems}" var="item">
                         ${item.productName}<br />
@@ -47,6 +48,18 @@
                             <c:when test="${role.equals('ROLE_COURIER') && order.status.equals('Linked with courier')}">
                                 <form action="/my-orders/markAsDeliv/${order.orderId}" method="post">
                                     <button type="submit" class="btn btn-default"><spring:message code="orders.delivered"/></button>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                </form>
+                            </c:when>
+                            <c:otherwise></c:otherwise>
+                        </c:choose>
+                        <br />
+                        <c:choose>
+                            <c:when test="${role.equals('ROLE_USER')
+                                && (order.status.equals('Linked with courier') || order.status.equals('Created'))
+                                && (order.orderCreationDate.until(now, chr) > 5)}">
+                                <form action="/my-orders/markAsExp/${order.orderId}" method="post">
+                                    <button type="submit" class="btn btn-default"><spring:message code="orders.expired"/></button>
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                 </form>
                             </c:when>
