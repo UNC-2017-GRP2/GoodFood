@@ -1,5 +1,6 @@
 package com.netcracker.controller;
 
+import com.netcracker.config.Constant;
 import com.netcracker.model.Order;
 import com.netcracker.model.User;
 import com.netcracker.service.OrderService;
@@ -15,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Controller
@@ -29,6 +32,8 @@ public class AdminController {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders();
         List<User> allUsers = userService.getAllUsers();
+        model.addObject("now", LocalDateTime.now());
+        model.addObject("chr", ChronoUnit.HOURS);
         model.addObject("rub","\u20BD");
         model.setViewName("admin");
         if (allOrders != null && allOrders.size()!=0){
@@ -40,19 +45,14 @@ public class AdminController {
         return model;
     }
 
-    @RequestMapping(value = { "/admin/{id}"}, method = RequestMethod.POST)
-    public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
-        Order order = orderService.getOrderById(id);
-        if (order != null){
-            if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
-                orderService.changeOrderStatus(id, 803); //created
-            }
-            if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
-                orderService.changeOrderStatus(id, 809); //cancelled
+    @RequestMapping(value = { "/admin/actualize"}, method = RequestMethod.POST)
+    public String markOrderAsExpired() throws IOException {
+        List<Order> allOrders = orderService.getAllOrders();
+        for (Order order : allOrders) {
+            if (order.getOrderCreationDate().until(LocalDateTime.now(), ChronoUnit.HOURS) > Constant.END_EXPIRATION_TIME) {
+                orderService.changeOrderStatus(order.getOrderId(), Constant.STATUS_EXPIRED_ENUM_ID);
             }
         }
-        return "redirect:/my-orders";
+        return "redirect:/admin";
     }
-
-
 }

@@ -57,7 +57,7 @@
                         <c:choose>
                             <c:when test="${role.equals('ROLE_USER')
                                 && (order.status.equals('Linked with courier') || order.status.equals('Created'))
-                                && (order.orderCreationDate.until(now, chr) > 5)}">
+                                && (order.orderCreationDate.until(now, chr) > start_exp_time)}">
                                 <form action="/my-orders/markAsExp/${order.orderId}" method="post">
                                     <button type="submit" class="btn btn-default"><spring:message code="orders.expired"/></button>
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

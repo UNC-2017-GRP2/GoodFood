@@ -14,7 +14,11 @@
 <body>
 <h2><spring:message code="general.adminPanel"/></h2>
 
-    <div class="well" style="height: auto!important;">
+    <div class="well" style="height: auto!important;"><form action="/admin/actualize" method="post">
+        <p align="right" ><button type="submit" class="btn btn-default"><spring:message code="admin.actualize"/></button></p>
+
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    </form>
         <ul class="nav nav-tabs">
             <li class="active"><a href="#orders" data-toggle="tab"><spring:message code="admin.orders"/></a></li>
             <li><a href="#users" data-toggle="tab"><spring:message code="admin.users"/></a></li>
@@ -32,6 +36,8 @@
                             <th scope="col"><spring:message code="general.userId"/></th>
                             <th scope="col"><spring:message code="orders.status"/></th>
                             <th scope="col"><spring:message code="orders.items"/></th>
+                            <th scope="col"><spring:message code="orders.orderCreationDate"/></th>
+                            <th scope="col"><spring:message code="orders.timeSinceCreation"/></th>
                             <th scope="col"><spring:message code="orders.cost"/></th>
                         </tr>
                     </thead>
@@ -46,7 +52,10 @@
                         ${item.productCost} ${rub}<br />
                     </c:forEach>
                     </td>
-                    <td style="text-align: center">${order.orderCost} ${rub}</td>
+        <td>${order.orderCreationDate.toString()}</td>
+        <td>${order.orderCreationDate.until(now, chr)}</td>
+
+        <td style="text-align: center">${order.orderCost} ${rub}</td>
                 </tr>
 
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -80,8 +89,12 @@
                                 <td>${user.phoneNumber}</td>
                                 <td>${user.birthday}</td>
                                 <td>${user.email}</td>
-                                <td>${user.address}</td>
-                                <td>${user.bankCard}</td>
+                                <td><c:forEach items="${user.addresses}" var="item">
+                                        ${item}<br />
+                                </c:forEach></td>
+                                <td><c:forEach items="${user.bankCards}" var="item">
+                                    ${item}<br />
+                                </c:forEach></td>
                                 <td>${user.role}</td>
                         </tr>
 

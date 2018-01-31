@@ -53,7 +53,7 @@ public class MyOrdersController {
         }
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
-
+        model.addObject("start_exp_time", Constant.START_EXPIRATION_TIME);
         model.addObject("rub","\u20BD");
         model.setViewName("my-orders");
 
