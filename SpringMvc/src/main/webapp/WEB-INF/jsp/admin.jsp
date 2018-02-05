@@ -49,13 +49,13 @@
                     <td>${order.status}</td>
                     <td><c:forEach items="${order.orderItems}" var="item">
                         ${item.productName}<br />
-                        ${item.productCost} ${rub}<br />
+                        ${item.productCost} ₽<br />
                     </c:forEach>
                     </td>
         <td>${order.orderCreationDate.toString()}</td>
         <td>${order.orderCreationDate.until(now, chr)}</td>
 
-        <td style="text-align: center">${order.orderCost} ${rub}</td>
+        <td style="text-align: center">${order.orderCost} ₽</td>
                 </tr>
 
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

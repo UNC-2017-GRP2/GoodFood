@@ -34,7 +34,7 @@ public class AdminController {
         List<User> allUsers = userService.getAllUsers();
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
-        model.addObject("rub","\u20BD");
+        //model.addObject("rub","");
         model.setViewName("admin");
         if (allOrders != null && allOrders.size()!=0){
             model.addObject("orders", allOrders);

@@ -27,7 +27,7 @@ public class BasketController {
     @RequestMapping(value = "/basket", method = RequestMethod.GET)
     public ModelAndView toBasket(HttpSession httpSession){
         ModelAndView model = new ModelAndView();
-        model.addObject("rub","\u20BD");
+        //model.addObject("rub","\u20BD");
         List<Item> basketItems = (ArrayList<Item>) httpSession.getAttribute("basketItems");
         if(basketItems != null && basketItems.size() != 0){
             BigInteger sum = orderService.totalOrder((ArrayList<Item>) basketItems);

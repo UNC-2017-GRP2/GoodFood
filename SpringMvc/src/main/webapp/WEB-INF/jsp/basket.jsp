@@ -34,7 +34,7 @@
                                 <p><h4 class="list-group-item-heading"> ${item.productName} </h4></p>
                                 <%--<p class="list-group-item-text"> ${item.productDescription} </p>--%>
                                 <p>
-                                <h4> ${item.productCost} ${rub} </h4>
+                                <h4> ${item.productCost} ₽ </h4>
                                 </p>
                             </div>
                             <div class="col-md-2 text-center">
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 text-left">
-                                <h4 class="final-items-cost"><span class="final-item-cost-span">${item.productQuantity*item.productCost}</span> ${rub}</h4>
+                                <h4 class="final-items-cost"><span class="final-item-cost-span">${item.productQuantity*item.productCost}</span> ₽</h4>
                                 <span aria-hidden="true" class="remove-item" item-id="${item.productId}" item-cost="${item.productCost}" item-quantity="${item.productQuantity}">&times;</span>
                             </div>
                         </li>
@@ -73,7 +73,7 @@
                     </li>
                     <li class="list-group-item list-group-total-order">
                         <div class="col-md-6">
-                            <h3>Total order cost: <span class="total-order-cost">${totalOrder}</span> ${rub}</h3>
+                            <h3>Total order cost: <span class="total-order-cost">${totalOrder}</span> ₽</h3>
                             <p>
                                 <spring:message code="basket.checkout" var="placeholder"/>
                                 <input type="submit" class="btn btn-primary to-order-btn" disabled="disabled" value='${placeholder}'>

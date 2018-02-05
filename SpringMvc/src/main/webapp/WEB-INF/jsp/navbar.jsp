@@ -46,6 +46,11 @@
                                         <a href="<c:url value='/free-orders'/>"><spring:message code="orders.freeOrders"/></a>
                                     </li>
                             </sec:authorize>
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                            <li>
+                                <a href="<c:url value='/admin'/>"><spring:message code="general.adminPanel"/></a>
+                            </li>
+                        </sec:authorize>
                     </c:if>
                     <li role="separator" class="divider"></li>
                     <li><a href="javascript:document.getElementById('logout').submit()"><spring:message code="navbar.logout"/></a></li>

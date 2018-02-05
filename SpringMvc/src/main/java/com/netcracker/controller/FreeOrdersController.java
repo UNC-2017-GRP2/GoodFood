@@ -21,8 +21,8 @@ public class FreeOrdersController {
     @RequestMapping(value = { "/free-orders"}, method = RequestMethod.GET)
     public ModelAndView freeOrdersPage() throws IOException {
         ModelAndView model = new ModelAndView();
-        model.addObject("add","Take the order");
-        model.addObject("rub","\u20BD");
+        //model.addObject("add","Take the order");
+        //model.addObject("rub","\u20BD");
         model.setViewName("free-orders");
 
         List<Order> allOrders = orderService.getAllFreeOrders();

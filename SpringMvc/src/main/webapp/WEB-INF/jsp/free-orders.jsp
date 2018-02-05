@@ -30,8 +30,9 @@
                     <td>${order.userId}</td>
                     <td>${order.orderCreationDate.toString()}</td>
                     <td>${order.status}</td>
-                    <td style="text-align: center">${order.orderCost} ${rub}</td>
-                    <td><input type="submit" value="${add}"></td>
+                    <td style="text-align: center">${order.orderCost} ₽</td>
+                    <spring:message code="orders.takeOrder" var="placeholder"/>
+                    <td><input type="submit" value="${placeholder}"></td>
                 </tr>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </form>
