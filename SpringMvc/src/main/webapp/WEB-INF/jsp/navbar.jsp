@@ -40,6 +40,13 @@
                     <li><a href="profile"><spring:message code="general.profile"/></a></li>
                     <li><a href="my-orders"><spring:message code="general.myOrders"/></a></li>
                     <li><a href="basket"><spring:message code="general.basket"/></a></li>
+                    <c:if test="${pageContext.request.userPrincipal.name != null}">
+                            <sec:authorize access="hasRole('ROLE_COURIER')">
+                                    <li>
+                                        <a href="<c:url value='/free-orders'/>"><spring:message code="orders.freeOrders"/></a>
+                                    </li>
+                            </sec:authorize>
+                    </c:if>
                     <li role="separator" class="divider"></li>
                     <li><a href="javascript:document.getElementById('logout').submit()"><spring:message code="navbar.logout"/></a></li>
                 </ul>

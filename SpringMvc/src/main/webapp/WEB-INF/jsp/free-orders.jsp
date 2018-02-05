@@ -8,12 +8,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Free orders</title>
+    <title><spring:message code="orders.freeOrders"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/css/basket-style.css">
+    <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
 </head>
 <body>
-<h2>List of orders without a courier</h2>
+<jsp:include page="navbar.jsp"/>
+<h2><spring:message code="orders.freeOrdersDesc"/></h2>
 <div>
     <table>
         <c:forEach items="${orders}" var="order">
@@ -30,9 +37,6 @@
             </form>
         </c:forEach>
     </table>
-</div>
-<div>
-    <a href="<c:url value='/home'/>" >Перейти в профиль</a>
 </div>
 
 </body>

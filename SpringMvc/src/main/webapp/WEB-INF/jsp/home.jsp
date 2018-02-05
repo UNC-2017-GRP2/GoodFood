@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Project</title>
+    <title><spring:message code="general.projectName"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/css/home-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>

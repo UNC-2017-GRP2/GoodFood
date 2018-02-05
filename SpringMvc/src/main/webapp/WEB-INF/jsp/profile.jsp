@@ -2,9 +2,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Project</title>
+    <title><spring:message code="general.profile"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/css/profile-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
@@ -27,11 +28,11 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-4">
-                            <h4>User Profile</h4>
+                            <h4><spring:message code="general.profile"/></h4>
                         </div>
                         <div class="col-md-4 col-md-offset-4" style="text-align: right;">
                             <button type="button" class="btn btn-default" data-toggle="modal"
-                                    data-target="#formEditProfileModal">Edit profile
+                                    data-target="#formEditProfileModal"><spring:message code="profile.edit"/>
                             </button>
                         </div>
                     </div>
@@ -40,11 +41,12 @@
                     <div class="box box-info">
                         <div class="box-body">
                             <div class="col-sm-6">
-                                <div align="center"><img alt="User Pic"
+                                <spring:message code="profile.photo" var="placeholder"/>
+                                <div align="center"><img alt='${placeholder}'
                                                          src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg"
                                                          id="profile-image1" class="img-circle img-responsive">
                                     <input id="profile-image-upload" class="hidden" type="file">
-                                    <div style="color:#999;">click here to change profile image</div>
+                                    <div style="color:#999;"><spring:message code="profile.changePhoto"/></div>
                                     <!--Upload Image Js And Css-->
                                 </div>
                                 <br>
@@ -57,22 +59,22 @@
                             <div class="clearfix"></div>
                             <hr style="margin:5px 0 5px 0;">
 
-                            <div class="col-sm-5 col-xs-6 tital ">Full Name:</div>
+                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.fullname"/>:</div>
                             <div class="col-sm-7 col-xs-6 ">${user.fio}</div>
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
-                            <div class="col-sm-5 col-xs-6 tital ">Username:</div>
+                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.username"/>:</div>
                             <div class="col-sm-7">${user.login}</div>
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
-                            <div class="col-sm-5 col-xs-6 tital ">E-mail:</div>
+                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.email"/>:</div>
                             <div class="col-sm-7">${user.email}</div>
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
-                            <div class="col-sm-5 col-xs-6 tital ">Phone Number:</div>
+                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.phoneNumber"/>:</div>
                             <c:choose>
                                 <c:when test="${user.phoneNumber != null}">
                                     <div class="col-sm-7">${user.phoneNumber}</div>
@@ -84,7 +86,7 @@
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
-                            <div class="col-sm-5 col-xs-6 tital ">Date Of Birth:</div>
+                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.birthday"/>:</div>
                             <c:choose>
                                 <c:when test="${user.birthday != null}">
                                     <div class="col-sm-7">${user.birthday}</div>
@@ -96,7 +98,7 @@
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
-                            <div class="col-sm-5 col-xs-6 tital ">My Address:</div>
+                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.address"/>:</div>
                             <c:choose>
                                 <c:when test="${userAddresses != null}">
                                     <div class="col-sm-7">
@@ -113,7 +115,7 @@
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
-                            <div class="col-sm-5 col-xs-6 tital ">My Bank Card:</div>
+                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.bankCard"/>:</div>
                             <%--<c:choose>
                                 <c:when test="${user.bankCard != null}">
                                     <div class="col-sm-7">${user.bankCard}</div>
@@ -142,17 +144,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle"><spring:message code="profile.editProfile"/></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="resetNewAddress">&times;</span>
                 </button>
             </div>
             <div class="well" style="height: auto!important;">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#editProfile" data-toggle="tab">Profile</a></li>
-                    <li><a href="#editPassword" data-toggle="tab">Password</a></li>
-                    <li><a href="#editAddress" data-toggle="tab">Addresses</a></li>
-                    <li><a href="#editBankCard" data-toggle="tab">Bank Cards</a></li>
+                    <li class="active"><a href="#editProfile" data-toggle="tab"><spring:message code="profile.basicInfo"/></a></li>
+                    <li><a href="#editPassword" data-toggle="tab"><spring:message code="users.password"/></a></li>
+                    <li><a href="#editAddress" data-toggle="tab"><spring:message code="users.addresses"/></a></li>
+                    <li><a href="#editBankCard" data-toggle="tab"><spring:message code="users.bankCards"/></a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="editProfile">
@@ -160,7 +162,7 @@
                                    id="editProfileForm" role="form">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="login" class="col-xs-4 control-label">Username:</label>
+                                    <label for="login" class="col-xs-4 control-label"><spring:message code="users.username"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='login' path="login"
                                                     class="form-control"></form:input>
@@ -170,7 +172,7 @@
                                     <form:errors path="login"></form:errors>
                                 </div>
                                 <div class="form-group">
-                                    <label for="fio" class="col-xs-4 control-label">Full Name:</label>
+                                    <label for="fio" class="col-xs-4 control-label"><spring:message code="users.fullname"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='fio' path="fio" class="form-control"></form:input>
                                     </div>
@@ -179,7 +181,7 @@
                                     <form:errors path="fio"></form:errors>
                                 </div>
                                 <div class="form-group">
-                                    <label for="email" class="col-xs-4 control-label">E-mail:</label>
+                                    <label for="email" class="col-xs-4 control-label"><spring:message code="users.email"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='email' path="email"
                                                     class="form-control"></form:input>
@@ -189,7 +191,7 @@
                                     <form:errors path="email"></form:errors>
                                 </div>
                                 <div class="form-group">
-                                    <label for="phoneNumber1" class="col-xs-4 control-label">Phone Number:</label>
+                                    <label for="phoneNumber1" class="col-xs-4 control-label"><spring:message code="users.phoneNumber"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='phoneNumber1' path="phoneNumber"
                                                     class="form-control input-medium bfh-phone" data-format="+7 (ddd) ddd-dddd"></form:input>
@@ -200,7 +202,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="birth" class="col-xs-4 control-label">Date Of Birth:</label>
+                                    <label for="birth" class="col-xs-4 control-label"><spring:message code="users.birthday"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='birth' path="birthday"
                                                     class="form-control"></form:input>
@@ -231,8 +233,8 @@
                                     </div>--%>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary"><spring:message code="profile.save"/></button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><spring:message code="general.cancel"/></button>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
@@ -242,7 +244,7 @@
                                    role="form" modelAttribute="userForUpdate">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="oldPassword" class="col-xs-4 control-label">Old Password:</label>
+                                    <label for="oldPassword" class="col-xs-4 control-label"><spring:message code="profile.oldPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <input type='password' id='oldPassword' name="oldPassword" class="form-control">
                                     </div>
@@ -251,7 +253,8 @@
                                     <label class="validationMessage errorOldPassword"></label>
                                     <c:choose>
                                         <c:when test="${errorOldPassword}">
-                                            <script>putValueToErrorPasswordLabel("Old password is not correct");</script>
+                                            <spring:message code="errors.oldPassIsntCorrect" var="placeholder"/>
+                                            <script>putValueToErrorPasswordLabel('${placeholder}');</script>
                                         </c:when>
                                         <c:otherwise>
                                             <script>putValueToErrorPasswordLabel("");</script>
@@ -259,7 +262,7 @@
                                     </c:choose>
                                 </div>
                                 <div class="form-group">
-                                    <label for="passwordHash" class="col-xs-4 control-label">New Password:</label>
+                                    <label for="passwordHash" class="col-xs-4 control-label"><spring:message code="profile.newPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='password' id='passwordHash' path="passwordHash"
                                                     class="form-control"></form:input>
@@ -269,8 +272,7 @@
                                     <form:errors path="passwordHash"></form:errors>
                                 </div>
                                 <div class="form-group">
-                                    <label for="confirmPassword" class="col-xs-4 control-label">Confirm
-                                        Password:</label>
+                                    <label for="confirmPassword" class="col-xs-4 control-label"><spring:message code="users.confirmPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='password' id='confirmPassword' path="confirmPassword"
                                                     class="form-control"></form:input>
@@ -281,8 +283,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary"><spring:message code="profile.save"/></button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><spring:message code="general.cancel"/></button>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
@@ -310,11 +312,12 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-6">
+                                        <spring:message code="enter.address" var="placeholder"/>
                                         <input type='text' id='input-address' class="form-control"
-                                               placeholder="Enter the address...">
+                                               placeholder='${placeholder}'>
                                     </div>
                                     <div class="col-xs-2">
-                                        <button type="button" class="btn btn-default" onclick="addAddress();">Add address</button>
+                                        <button type="button" class="btn btn-default" onclick="addAddress();"><spring:message code="profile.addAddress"/></button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -324,8 +327,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <button type="button" class="btn btn-secondary resetNewAddress" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary"><spring:message code="profile.save"/></button>
+                                <button type="button" class="btn btn-secondary resetNewAddress" data-dismiss="modal"><spring:message code="general.cancel"/></button>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
@@ -336,17 +339,7 @@
                 </div>
             </div>
         </div>
-        <c:if test="${pageContext.request.userPrincipal.name != null}">
-        <table>
-            <sec:authorize access="hasRole('ROLE_COURIER')">
-                <tr>
-                    <td>
-                        <a href="<c:url value='/free-orders'/>">Free orders</a>
-                    </td>
-                </tr>
-            </sec:authorize>
-        </table>
-        </c:if>
+
 
         <script>${flag}</script>
 

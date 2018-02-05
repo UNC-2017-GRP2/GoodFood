@@ -5,7 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Project</title>
+    <title><spring:message code="general.myOrders"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -15,7 +15,7 @@
 <jsp:include page="navbar.jsp" />
 
 <body>
-<h2>My orders</h2>
+<h2><spring:message code="general.myOrders"/></h2>
 <div>
 
     <table class="table">
@@ -72,9 +72,5 @@
         </c:forEach>
     </table>
 </div>
-<div>
-    <a href="<c:url value='/home'/>" >Перейти в профиль</a>
-</div>
-
 </body>
 </html>

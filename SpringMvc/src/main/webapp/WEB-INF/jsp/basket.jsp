@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Project</title>
+    <title><spring:message code="general.basket"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/resources/css/basket-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
@@ -18,7 +19,7 @@
 <div class="container">
     <div class="row">
         <div class="well">
-            <h1 class="text-center">Current order</h1>
+            <h1 class="text-center"><spring:message code="basket.currentOrder"/></h1>
             <div class="list-group">
                 <form action="/checkout" method="get">
                 <ul>
@@ -55,7 +56,8 @@
                     </c:forEach>
                     <li class="list-group-item list-group-address">
                         <div class="col-md-4">
-                            <input type='text' id='input-address' name="input-address" class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder="Enter the address...">
+                            <spring:message code="enter.address" var="placeholder"/>
+                            <input type='text' id='input-address' name="input-address" class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder='${placeholder}'>
                             <div class="list-group">
                                 <ul class="ul-my-addresses">
                                     <c:forEach items="${userAddresses}" var="address">
@@ -73,7 +75,8 @@
                         <div class="col-md-6">
                             <h3>Total order cost: <span class="total-order-cost">${totalOrder}</span> ${rub}</h3>
                             <p>
-                            <input type="submit" class="btn btn-primary to-order-btn" disabled="disabled" value="To order">
+                                <spring:message code="basket.checkout" var="placeholder"/>
+                                <input type="submit" class="btn btn-primary to-order-btn" disabled="disabled" value='${placeholder}'>
                             </p>
                         </div>
                     </li>
