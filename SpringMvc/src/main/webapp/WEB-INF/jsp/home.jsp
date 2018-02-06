@@ -51,14 +51,14 @@
             <div class="block">
                 <form action="/addBasket?id=${item.productId}" method="post">
                     <div class="top">
-                        <strong><span class="converse item-name" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="${rub}"/>');">${item.productName}</span></strong>
+                        <strong><span class="converse item-name" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="₽"/>');">${item.productName}</span></strong>
                     </div>
                     <div class="middle" >
-                        <img src="${item.productImage}" class="item-img" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="${rub}"/>');"/>
+                        <img src="${item.productImage}" class="item-img" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="₽"/>');"/>
                     </div>
                     <div class="bottom">
                         <strong>
-                            <div class="price">${item.productCost} ${rub}</div>
+                            <div class="price">${item.productCost} ₽</div>
                         </strong>
                         <div class="info">
                             <div class="number">
@@ -69,6 +69,7 @@
                         </div>
 
                         <div class="style">
+                            <spring:message code="general.addToCart" var="add"/>
                             <c:choose>
                                 <c:when test="${pageContext.request.userPrincipal.name != null}">
                                     <button type="submit" class="btn btn-primary">${add}</button>

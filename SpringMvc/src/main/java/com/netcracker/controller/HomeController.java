@@ -56,8 +56,8 @@ public class HomeController {
 
         }
         model.addObject("items", currentItems);
-        model.addObject("rub","\u20BD");
-        model.addObject("add","Add to Basket");
+        //model.addObject("rub","\u20BD");
+        //model.addObject("add","Add to Basket");
         //model.addObject("notification", null);
         model.setViewName("home");
         return model;

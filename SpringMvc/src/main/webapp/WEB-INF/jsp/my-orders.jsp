@@ -32,18 +32,25 @@
                         ${item.productCost}<br />
                     </c:forEach>
             </td>
-                    <td style="text-align: center">${order.orderCost} ${rub}</td>
+                    <td style="text-align: center">${order.orderCost} ₽</td>
                     <td>
                         <c:choose>
-                            <c:when test="${order.status.equals('Created') || order.status.equals('Linked with courier')}">
+                            <c:when test="${role.equals('ROLE_USER')
+                                && (order.status.equals('Linked with courier') || order.status.equals('Created'))}">
                                 <form action="/my-orders/remove/${order.orderId}" method="post">
-                                    <button type="submit" class="btn btn-default">${remove}</button>
+                                    <button type="submit" class="btn btn-default"><spring:message code="orders.cancel"/></button>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                </form>
+                            </c:when>
+                            <c:when test="${role.equals('ROLE_COURIER')
+                                && (order.status.equals('Linked with courier') || order.status.equals('Created'))}">
+                                <form action="/my-orders/remove/${order.orderId}" method="post">
+                                    <button type="submit" class="btn btn-default"><spring:message code="orders.drop"/></button>
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                 </form>
                             </c:when>
                             <c:otherwise></c:otherwise>
                         </c:choose>
-                        <br />
                         <c:choose>
                             <c:when test="${role.equals('ROLE_COURIER') && order.status.equals('Linked with courier')}">
                                 <form action="/my-orders/markAsDeliv/${order.orderId}" method="post">
@@ -51,10 +58,6 @@
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                 </form>
                             </c:when>
-                            <c:otherwise></c:otherwise>
-                        </c:choose>
-                        <br />
-                        <c:choose>
                             <c:when test="${role.equals('ROLE_USER')
                                 && (order.status.equals('Linked with courier') || order.status.equals('Created'))
                                 && (order.orderCreationDate.until(now, chr) > start_exp_time)}">
