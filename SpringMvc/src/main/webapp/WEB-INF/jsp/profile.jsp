@@ -12,6 +12,7 @@
     <script type="text/javascript" src="webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 
     <script type="text/javascript">
         <%@include file="/resources/js/profile-js.js" %>
@@ -114,16 +115,6 @@
                             </c:choose>
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
-
-                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.bankCard"/>:</div>
-                            <%--<c:choose>
-                                <c:when test="${user.bankCard != null}">
-                                    <div class="col-sm-7">${user.bankCard}</div>
-                                </c:when>
-                                <c:when test="${user.bankCard == null}">
-                                    <div class="col-sm-7">${nullParameter}</div>
-                                </c:when>
-                            </c:choose>--%>
                         </div>
                     </div>
                 </div>
@@ -137,6 +128,8 @@
             });
         </script>
     </div>
+
+    <div id="map" style="width: 600px; height: 400px"></div>
 </div>
 
 
@@ -154,7 +147,6 @@
                     <li class="active"><a href="#editProfile" data-toggle="tab"><spring:message code="profile.basicInfo"/></a></li>
                     <li><a href="#editPassword" data-toggle="tab"><spring:message code="users.password"/></a></li>
                     <li><a href="#editAddress" data-toggle="tab"><spring:message code="users.addresses"/></a></li>
-                    <li><a href="#editBankCard" data-toggle="tab"><spring:message code="users.bankCards"/></a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="editProfile">
@@ -211,26 +203,6 @@
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage">
                                     <form:errors path="birthday"></form:errors>
                                 </div>
-                                    <%--<div class="form-group">
-                                        <label for="address1" class="col-xs-4 control-label">Address:</label>
-                                        <div class="col-xs-6">
-                                            <form:input type='text' id='address1' path="address"
-                                                        class="form-control"></form:input>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                        <form:errors path="address"></form:errors>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="bankCard1" class="col-xs-4 control-label">Bank Card:</label>
-                                        <div class="col-xs-6">
-                                            <form:input type='text' id='bankCard1' path="bankCard"
-                                                        class="form-control"></form:input>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                        <form:errors path="bankCard"></form:errors>
-                                    </div>--%>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary"><spring:message code="profile.save"/></button>
@@ -333,15 +305,11 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
                     </div>
-                    <div class="tab-pane fade" id="editBankCard">
-
-                    </div>
                 </div>
             </div>
         </div>
-
-
         <script>${flag}</script>
-
+    </div>
+</div>
 </body>
 </html>
