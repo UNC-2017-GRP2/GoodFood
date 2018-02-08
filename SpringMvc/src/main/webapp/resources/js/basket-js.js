@@ -8,7 +8,50 @@ function disabledInputAddress() {
     $("#input-address").prop('disabled',true);
 }
 
+function geocode(address) {
+    ymaps.geocode(address).then(function (res) {
+        var geoAddress;
+        var  error;
+
+        if (res.geoObjects.get(0) != null) {
+            geoAddress = res.geoObjects.get(0);
+            var  coords = geoAddress.geometry.getCoordinates();
+            switch (geoAddress.properties.get('metaDataProperty.GeocoderMetaData.precision')) {
+                case 'exact':
+                    break;
+                case 'number':
+                case 'near':
+                case 'range':
+                    error = 'Inaccurate address, clarification required.';
+                    break;
+                case 'street':
+                    error = 'Inaccurate address, clarification required.';
+                    break;
+                case 'other':
+                default:
+                    error = 'Inaccurate address, clarification required.';
+            }
+        } else {
+            error = 'Address not found';
+        }
+        if (error) {
+            $("#address-valid").text(error);
+            $(".to-order-btn").prop('disabled',true);
+        }else{
+            $(".to-order-btn").prop('disabled',false);
+            $("#address-valid").text("");
+        }
+    });
+}
+
+
 $(document).ready(function() {
+
+    ymaps.ready(initAddressList);
+
+    function initAddressList() {
+        var addressList = new ymaps.SuggestView('input-address');
+    }
 
     $('.minus').click(function () {
         var $input = $(this).parent().find('input');
@@ -132,18 +175,25 @@ $(document).ready(function() {
     $("#input-address").keyup(function(){
         var value = $("#input-address").val();
         if (value == ""){
+            $(".ul-my-addresses").css('visibility', 'visible');
+            $(".ul-my-addresses").css('height', 'auto');
             $("#address-valid").text("Address field must not be empty.");
             $(".to-order-btn").prop('disabled',true);
 
         }else{
-            $("#address-valid").text("");
-            $(".to-order-btn").prop('disabled',false);
+            $(".ul-my-addresses").css('visibility', 'hidden');
+            $(".ul-my-addresses").css('height', '0');
+            //$("#address-valid").text("");
+            geocode(value);
         }
     });
 
     $("#input-address").focus(function () {
-        $(".ul-my-addresses").css('visibility', 'visible');
-        $(".ul-my-addresses").css('height', 'auto');
+        var value = $("#input-address").val();
+        if (value == ""){
+            $(".ul-my-addresses").css('visibility', 'visible');
+            $(".ul-my-addresses").css('height', 'auto');
+        }
     });
     $("#input-address").blur(function () {
         setTimeout(function () {

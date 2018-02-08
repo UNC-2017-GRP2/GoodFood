@@ -9,6 +9,7 @@
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
         <%@include file="/resources/js/basket-js.js" %>
     </script>
@@ -61,7 +62,7 @@
                             <div class="list-group">
                                 <ul class="ul-my-addresses">
                                     <c:forEach items="${userAddresses}" var="address">
-                                        <li class="list-group-item list-group-item-address" onclick="addressSelection('${address}');">${address}</li>
+                                        <li class="list-group-item list-group-item-address" onclick="addressSelection('${address}');">${address.latitude} ${address.longitude}</li>
                                     </c:forEach>
                                 </ul>
                             </div>

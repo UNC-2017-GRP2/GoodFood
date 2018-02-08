@@ -3,6 +3,7 @@ package com.netcracker.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.awt.*;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,14 +18,13 @@ public class User {
     private String phoneNumber;
     private Date birthday;
     private String email;
-    private List<String> addresses;
-    private List<String> bankCards;
+    private List<Address> addresses;
     private String role;
 
     public User (){}
 
 
-    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, Date birthday, String email, List<String> addresses, List<String> bankCards, String role) {
+    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, Date birthday, String email, List<Address> addresses, String role) {
         this.userId = userId;
         this.fio = fio;
         this.login = login;
@@ -34,7 +34,6 @@ public class User {
         this.birthday = birthday;
         this.email = email;
         this.addresses = addresses;
-        this.bankCards = bankCards;
         this.role = role;
     }
 
@@ -70,13 +69,10 @@ public class User {
         return email;
     }
 
-    public List<String> getAddresses() {
+    public List<Address> getAddresses() {
         return addresses;
     }
 
-    public List<String> getBankCards() {
-        return bankCards;
-    }
 
     public String getRole() {
         return role;
@@ -114,13 +110,8 @@ public class User {
         this.email = email;
     }
 
-    public void setAddresses(List<String> addresses) {
+    public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
-    }
-
-
-    public void setBankCards(List<String> bankCards) {
-        this.bankCards = bankCards;
     }
 
     public void setRole(String role) {

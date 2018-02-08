@@ -45,19 +45,26 @@ function geocode(address) {
         } else {
             //alert (geoAddress.getAddressLine());
             //alert(coords[0] + " ! " + coords[1]);
-
-            /*$.ajax({
+            $.ajax({
            url: 'addAddress',
            type: 'GET',
            data: ({
-               inputAddress: inputAddress
+               latitude: coords[0],
+               longitude: coords[1]
            }),
            dataType: "text",
            success: function (data) {
                if(data == "success"){
                    $("#input-address").val("");
-                   var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + inputAddress + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" address=\"" + inputAddress + "\" onclick=\"removeAddress('" + inputAddress + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";
-                   $(".forNewAddress").replaceWith(newHTML);
+                   ymaps.geocode([coords[0],coords[1]]).then(function(res){
+                       if (res.geoObjects.get(0) != null){
+                           var obj = res.geoObjects.get(0);
+                           var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + obj.getAddressLine() + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" onclick=\"removeAddress('" + coords[0] + "','" + coords[1] + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";
+                           $(".forNewAddress").replaceWith(newHTML);
+                           //alert(obj.getAddressLine());
+                       }
+                   });
+                   /*var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + inputAddress + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" address=\"" + inputAddress + "\" onclick=\"removeAddress('" + inputAddress + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";*/
                }else{
                    $("#addressValid").text("This address already exists.");
                }
@@ -65,22 +72,29 @@ function geocode(address) {
            error: function () {
                alert("error");
            }
-       });*/
-
-
-            /*ymaps.geocode(coords).then(function(res){
-                if (res.geoObjects.get(0) != null){
-                    var obj = res.geoObjects.get(0);
-                    alert(obj.getAddressLine());
-                }
-            });*/
+       });
 
         }
     });
-
+}
+function removeAddress(latitude, longitude, thisElem) {
+    $.ajax({
+        url: 'removeAddress',
+        type: 'GET',
+        data: ({
+            latitude: latitude,
+            longitude: longitude
+        }),
+        success: function () {
+            $(thisElem).parent().parent().remove();
+        },
+        error: function () {
+            alert("error");
+        }
+    });
 }
 
-function removeAddress(removeAddress, thisElem) {
+/*function removeAddress(removeAddress, thisElem) {
     $.ajax({
         url: 'removeAddress',
         type: 'GET',
@@ -94,10 +108,17 @@ function removeAddress(removeAddress, thisElem) {
             alert("error");
         }
     });
+}*/
+
+function getAddressByCoordinates(latitude, longitude){
+    var coords = [latitude, longitude];
+    ymaps.geocode(coords).then(function(res){
+        if (res.geoObjects.get(0) != null){
+            var obj = res.geoObjects.get(0);
+            alert(obj.getAddressLine());
+        }
+    });
 }
-
-
-
 
 $(document).ready(function() {
 

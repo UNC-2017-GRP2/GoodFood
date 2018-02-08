@@ -1,5 +1,6 @@
 package com.netcracker.service.impl;
 
+import com.netcracker.model.Address;
 import com.netcracker.model.User;
 import com.netcracker.repository.UserRepository;
 import com.netcracker.service.UserService;
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateAddresses(BigInteger userId, List<String> addresses) {
+    public void updateAddresses(BigInteger userId, List<Address> addresses) {
         userRepository.updateAddresses(userId,addresses);
     }
 }

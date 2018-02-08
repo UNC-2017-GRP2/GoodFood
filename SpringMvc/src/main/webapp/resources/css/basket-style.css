@@ -80,6 +80,9 @@
 .list-group-item-address:hover{
     background-color: rgb(245,245,245);
 }
+#address-valid{
+    color: rgb(255,0,0);
+}
 
 ::-webkit-scrollbar {
     display: none;

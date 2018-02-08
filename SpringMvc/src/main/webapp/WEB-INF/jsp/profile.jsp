@@ -1,3 +1,6 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.netcracker.model.Address" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -102,9 +105,11 @@
                             <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.address"/>:</div>
                             <c:choose>
                                 <c:when test="${userAddresses != null}">
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-7" id="user-addresses">
                                         <c:forEach items="${userAddresses}" var="address">
-                                            ${address}
+                                            <%--<button type="button" class="btn btn-primary" onclick="getAddressByCoordinates(${address.latitude},${address.longitude});">${address.latitude}</button>
+                                            <script>getAddressByCoordinates(${address.latitude},${address.longitude});</script>--%>
+                                            ${address.latitude} ${address.longitude}
                                             <br>
                                         </c:forEach>
                                     </div>
@@ -128,8 +133,6 @@
             });
         </script>
     </div>
-
-    <div id="map" style="width: 600px; height: 400px"></div>
 </div>
 
 
@@ -271,10 +274,11 @@
                                             <c:forEach items="${newAddresses}" var="address">
                                                 <li class="list-group-item">
                                                     <div class="col-xs-11 text-left">
-                                                        <h4>${address}</h4>
+                                                        <h4>${address.latitude} ${address.longitude}</h4>
                                                     </div>
                                                     <div class="col-xs-1 text-right">
-                                                        <span aria-hidden="true" class="remove-address" address="${address}" onclick="removeAddress('${address}',this);">&times;</span>
+                                                        <%--<span aria-hidden="true" class="remove-address" address="${address}" onclick="removeAddress('${address}',this);">&times;</span>--%>
+                                                            <span aria-hidden="true" class="remove-address" onclick="removeAddress('${address.latitude}','${address.longitude}',this);">&times;</span>
                                                     </div>
                                                 </li>
                                             </c:forEach>

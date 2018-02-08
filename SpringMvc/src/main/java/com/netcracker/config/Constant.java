@@ -11,6 +11,7 @@ public class Constant {
     public static final long REFERENCE_ATTR_TYPE_ID = 53;
     public static final long DATE_ATTR_TYPE_ID = 54;
     public static final long ENUM_VALUE_ATTR_TYPE_ID = 55;
+    public static final long POINT_VALUE_ATTR_TYPE_ID = 56;
 
     /**Table attributes**/
     public static final long FULL_NAME_ATTR_ID = 400;
@@ -24,7 +25,7 @@ public class Constant {
     public static final long ITEM_CATEGORY_ATTR_ID = 408;
     public static final long ITEMS_COST_ATTR_ID = 409;
     public static final long ADDRESS_ATTR_ID = 410;
-    public static final long BANK_CARD_NUMBER_ATTR_ID = 411;
+    //public static final long BANK_CARD_NUMBER_ATTR_ID = 411;
     public static final long ORDER_ATTR_ID = 412;
     public static final long ITEM_NAME_ATTR_ID = 413;
     public static final long ITEM_DESCRIPTION_ATTR_ID = 414;

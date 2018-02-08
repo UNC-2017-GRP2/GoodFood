@@ -1,5 +1,6 @@
 package com.netcracker.repository;
 
+import com.netcracker.model.Address;
 import com.netcracker.model.User;
 
 import java.math.BigInteger;
@@ -16,5 +17,5 @@ public interface UserRepository {
     boolean isYourEmailForUpdateUser(String email, String password);
     boolean isEqualsPassword(String password, BigInteger userId);
     void updatePassword(BigInteger userId, String password);
-    void updateAddresses(BigInteger userId, List<String> addresses);
+    void updateAddresses(BigInteger userId, List<Address> addresses);
 }

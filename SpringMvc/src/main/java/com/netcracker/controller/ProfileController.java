@@ -1,6 +1,7 @@
 package com.netcracker.controller;
 
 import com.netcracker.config.AuthManager;
+import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.User;
 import com.netcracker.service.UserService;
@@ -140,28 +141,34 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/addAddress", method = RequestMethod.GET)
-    public @ResponseBody String addAddress(@RequestParam String inputAddress, HttpSession httpSession){
-        List<String> newAddresses = (List<String>) httpSession.getAttribute("newAddresses");
+    public @ResponseBody String addAddress(@RequestParam double latitude, @RequestParam double longitude, HttpSession httpSession){
+        List<Address> newAddresses = (List<Address>) httpSession.getAttribute("newAddresses");
         //boolean isExists = false;
-        for(String address : newAddresses){
-            if (address.equals(inputAddress.trim())){
+        for(Address address : newAddresses){
+            /*if (address.equals(inputAddress.trim())){
+                *//*isExists = true;
+                break;*//*
+                return "isExist";
+            }*/
+            if (address.getLatitude() == latitude && address.getLongitude() == longitude){
                 /*isExists = true;
                 break;*/
                 return "isExist";
             }
         }
         //if(!isExists){
-            newAddresses.add(inputAddress);
+           // newAddresses.add(inputAddress);
+            newAddresses.add(new Address(latitude, longitude));
             httpSession.setAttribute("newAddresses", newAddresses);
             return "success";
         //}
     }
 
     @RequestMapping(value = "/removeAddress", method = RequestMethod.GET)
-    public @ResponseBody void removeAddress(@RequestParam String removeAddress, HttpSession httpSession){
-        List<String> newAddresses = (List<String>) httpSession.getAttribute("newAddresses");
-        for(String address : newAddresses){
-            if (address.equals(removeAddress)){
+    public @ResponseBody void removeAddress(@RequestParam double latitude, @RequestParam double longitude, HttpSession httpSession){
+        List<Address> newAddresses = (List<Address>) httpSession.getAttribute("newAddresses");
+        for(Address address : newAddresses){
+            if (address.getLatitude() == latitude && address.getLongitude() == longitude){
                 newAddresses.remove(address);
                 break;
             }
@@ -171,7 +178,7 @@ public class ProfileController {
 
     @RequestMapping(value = "/resetNewAddress", method = RequestMethod.GET)
     public @ResponseBody void resetNewAddress(HttpSession httpSession){
-        List<String> newAddresses = (ArrayList<String>)httpSession.getAttribute("userAddresses");
+        List<Address> newAddresses = (ArrayList<Address>)httpSession.getAttribute("userAddresses");
         httpSession.setAttribute("newAddresses", new ArrayList<>(newAddresses));
     }
 
@@ -179,7 +186,7 @@ public class ProfileController {
     public ModelAndView editAddresses(Principal principal, HttpSession httpSession){
         ModelAndView model = new ModelAndView();
         BigInteger userId = userService.getByUsername(principal.getName()).getUserId();
-        List<String> newAddresses =  (ArrayList<String>)httpSession.getAttribute("newAddresses");
+        List<Address> newAddresses =  (ArrayList<Address>)httpSession.getAttribute("newAddresses");
         userService.updateAddresses(userId, newAddresses);
         httpSession.setAttribute("userAddresses", new ArrayList<>(newAddresses));
         model.setViewName("redirect:/profile");

@@ -1,10 +1,13 @@
 package com.netcracker.repository.impl;
 
 import com.netcracker.config.Constant;
+import com.netcracker.model.Address;
 import com.netcracker.model.User;
 import com.netcracker.repository.UserRepository;
+import org.postgresql.geometric.PGpoint;
 
 import javax.sql.DataSource;
+import java.awt.*;
 import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,7 +24,8 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     private String SQL_SELECT_PASSWORD_BY_ID = "select \"TEXT_VALUE\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"OBJECT_ID\" = ? ";
     private String SQL_SELECT_ROLE = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";private String SQL_SELECT_ROLE_ID = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = \'ROLE_USER\'";
     private String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
-    private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\") values(?,?,?,?,?,?)";
+    private String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\", \"POINT_VALUE\") values(?,?,?,?,?,?,?)";
+    private String SQL_INSERT_INTO_ADDRESS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\", \"POINT_VALUE\") values(?,?,?,?,?,?,point(?,?))";
     private String SQL_DELETE_FROM_PARAMETERS = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
 
     public User getUserByUsername(String username) {
@@ -34,8 +38,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         String email = null;
         String phone = null;
         Date birthday = null;
-        List<String> addresses = new ArrayList<>();
-        List<String> cards = new ArrayList<>();
+        List<Address> addresses = new ArrayList<>();
 
         if (!username.equals("")){
             try{
@@ -87,10 +90,8 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                             birthday = new Date(resultSet.getDate("DATE_VALUE").getTime());
                         }
                         if(curAttrId == Constant.ADDRESS_ATTR_ID){
-                            addresses.add(resultSet.getString("TEXT_VALUE"));
-                        }
-                        if(curAttrId == Constant.BANK_CARD_NUMBER_ATTR_ID){
-                            cards.add(resultSet.getString("TEXT_VALUE"));
+                            PGpoint address = (PGpoint)resultSet.getObject("POINT_VALUE");
+                            addresses.add( new Address(address.x, address.y));
                         }
                     }
                     preparedStatement.close();
@@ -101,7 +102,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                 }
 
                 if (!password.equals("") && !role.equals("")){
-                    user = new User(userId, fio, username, password,password, phone,birthday, email,addresses, cards, role);
+                    user = new User(userId, fio, username, password, password, phone, birthday, email, addresses, role);
                 }else{
                     System.out.println("pass or role is empty!");
                 }
@@ -197,14 +198,14 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     }
 
     @Override
-    public void updateAddresses(BigInteger userId, List<String> addresses){
+    public void updateAddresses(BigInteger userId, List<Address> addresses){
         removeParameter(SQL_DELETE_FROM_PARAMETERS,userId,Constant.ADDRESS_ATTR_ID);
         try{
-            for(String address : addresses){
-                saveTextParameter(SQL_INSERT_INTO_PARAMETERS, userId, Constant.ADDRESS_ATTR_ID, address);
+            for(Address address : addresses){
+                savePointParameter(SQL_INSERT_INTO_ADDRESS, userId, Constant.ADDRESS_ATTR_ID, address);
             }
         }catch (Exception e){
-            System.out.println(e.getMessage() + " UPDATE_PASSWORD");
+            System.out.println(e.getMessage() + " UPDATE_ADDRESS");
         }
     }
 
@@ -256,30 +257,32 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
     }
 
-    private void saveTextParameter(String sql, BigInteger userId, long attrId, String parameter) {
+    private void saveTextParameter(String sql, BigInteger objectId, long attrId, String parameter) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setObject(1, userId, numericType);
+            preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
             preparedStatement.setString(3, parameter);
             preparedStatement.setDate(4, null);
             preparedStatement.setLong(5, 0);
             preparedStatement.setLong(6, 0);
+            preparedStatement.setObject(7,null);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
         }
     }
-    private void saveEnumValue(String sql, BigInteger userId, long attrId, long parameter){
+    private void saveEnumValue(String sql, BigInteger objectId, long attrId, long parameter){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setObject(1, userId, numericType);
+            preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
             preparedStatement.setString(3, null);
             preparedStatement.setDate(4, null);
             preparedStatement.setLong(5, 0);
             preparedStatement.setLong(6, parameter);
+            preparedStatement.setObject(7,null);
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (Exception e) {
@@ -287,15 +290,36 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
     }
 
-    private void saveDateParameter(String sql, BigInteger userId, long attrId, Date parameter) {
+
+
+    private void saveDateParameter(String sql, BigInteger objectId, long attrId, Date parameter) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setObject(1, userId, numericType);
+            preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
             preparedStatement.setString(3, null);
             preparedStatement.setTimestamp(4, new java.sql.Timestamp(parameter.getTime()));
             preparedStatement.setLong(5, 0);
             preparedStatement.setLong(6, 0);
+            preparedStatement.setObject(7,null);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (Exception e){
+            System.out.println(e.getMessage() + " SAVE_PARAMETER");
+        }
+    }
+
+    private void savePointParameter(String sql, BigInteger objectId, long attrId, Address address) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.setString(3, null);
+            preparedStatement.setTimestamp(4, null);
+            preparedStatement.setLong(5, 0);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.setDouble(7, address.getLatitude());
+            preparedStatement.setDouble(8, address.getLongitude());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (Exception e){
