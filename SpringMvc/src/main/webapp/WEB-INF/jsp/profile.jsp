@@ -20,6 +20,14 @@
     <script type="text/javascript">
         <%@include file="/resources/js/profile-js.js" %>
     </script>
+    <script type="text/javascript">
+        ymaps.ready(getUserAddresses);
+        function getUserAddresses() {
+            <c:forEach items="${userAddresses}" var="address">
+            getAddressByCoordinates(${address.latitude}, ${address.longitude});
+            </c:forEach>
+        }
+    </script>
 </head>
 <body>
 
@@ -103,21 +111,8 @@
                             <div class="bot-border"></div>
 
                             <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.address"/>:</div>
-                            <c:choose>
-                                <c:when test="${userAddresses != null}">
-                                    <div class="col-sm-7" id="user-addresses">
-                                        <c:forEach items="${userAddresses}" var="address">
-                                            <%--<button type="button" class="btn btn-primary" onclick="getAddressByCoordinates(${address.latitude},${address.longitude});">${address.latitude}</button>
-                                            <script>getAddressByCoordinates(${address.latitude},${address.longitude});</script>--%>
-                                            ${address.latitude} ${address.longitude}
-                                            <br>
-                                        </c:forEach>
-                                    </div>
-                                </c:when>
-                                <c:when test="${userAddresses == null}">
-                                    <div class="col-sm-7">${nullParameter}</div>
-                                </c:when>
-                            </c:choose>
+                            <div class="col-sm-7" id="user-addresses">
+                            </div>
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
                         </div>
@@ -269,22 +264,10 @@
                                    role="form">
                             <div class="modal-body">
                                 <div class="list-group">
-                                    <ul>
-                                        <c:if test="${newAddresses != null}">
-                                            <c:forEach items="${newAddresses}" var="address">
-                                                <li class="list-group-item">
-                                                    <div class="col-xs-11 text-left">
-                                                        <h4>${address.latitude} ${address.longitude}</h4>
-                                                    </div>
-                                                    <div class="col-xs-1 text-right">
-                                                        <%--<span aria-hidden="true" class="remove-address" address="${address}" onclick="removeAddress('${address}',this);">&times;</span>--%>
-                                                            <span aria-hidden="true" class="remove-address" onclick="removeAddress('${address.latitude}','${address.longitude}',this);">&times;</span>
-                                                    </div>
-                                                </li>
-                                            </c:forEach>
-                                        </c:if>
+                                    <ul id="user-addresses-for-edit">
                                         <li class="forNewAddress"></li>
                                     </ul>
+
                                 </div>
                                 <div class="form-group">
                                     <div class="col-xs-6">
@@ -315,5 +298,6 @@
         <script>${flag}</script>
     </div>
 </div>
+<script>getUserAddresses();</script>
 </body>
 </html>

@@ -115,29 +115,28 @@ function getAddressByCoordinates(latitude, longitude){
     ymaps.geocode(coords).then(function(res){
         if (res.geoObjects.get(0) != null){
             var obj = res.geoObjects.get(0);
-            alert(obj.getAddressLine());
+            var html = $("#user-addresses").html() + obj.getAddressLine() + "<br>";
+            $("#user-addresses").html(html);
+            var newHTML = "<li class=\"list-group-item new-address-list\"> " +
+                "<div class=\"col-xs-11 text-left\"> " +
+                "   <h4>" + obj.getAddressLine() + "</h4> " +
+                "</div> " +
+                "<div class=\"col-xs-1 text-right\"> " +
+                "   <span aria-hidden=\"true\" class=\"remove-address\" onclick=\"removeAddress('" + coords[0] + "','" + coords[1] + "',this);\">&times;</span> " +
+                "</div>  </li> <li class=\"forNewAddress\">" +
+                "</li>";
+            $(".forNewAddress").replaceWith(newHTML);
         }
     });
 }
 
+
 $(document).ready(function() {
 
-    var map;
-
-    /*ymaps.ready(
-        function() {
-        map = new ymaps.Map("map", {
-            center: [51.6720400, 39.1843000 ],
-            zoom: 13,
-            controls: ['smallMapDefaultSet']
-        });
-    });*/
     ymaps.ready(initAddressList);
-
     function initAddressList() {
         var addressList = new ymaps.SuggestView('input-address');
     }
-
 
     $(".resetNewAddress").click(function () {
         $.ajax({
