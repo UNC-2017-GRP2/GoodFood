@@ -199,7 +199,8 @@ CREATE TABLE "PARAMETERS" (
     "TEXT_VALUE" text,
     "DATE_VALUE" timestamp(0),
     "REFERENCE_VALUE" bigint,
-    "ENUM_VALUE" bigint
+    "ENUM_VALUE" bigint,
+	"POINT_VALUE" point
 );
 
 
