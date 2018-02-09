@@ -44,6 +44,16 @@ function geocode(address) {
     });
 }
 
+function getAddressByCoordinates(latitude, longitude){
+    var coords = [latitude, longitude];
+    ymaps.geocode(coords).then(function(res){
+        if (res.geoObjects.get(0) != null){
+            var obj = res.geoObjects.get(0);
+            $(".ul-my-addresses").append("<li class=\"list-group-item list-group-item-address\" onclick=\"addressSelection('" +obj.getAddressLine() +  "');\">" + obj.getAddressLine() + "</li>")
+        }
+    });
+}
+
 
 $(document).ready(function() {
 
@@ -199,7 +209,7 @@ $(document).ready(function() {
         setTimeout(function () {
             $(".ul-my-addresses").css('visibility', 'hidden');
             $(".ul-my-addresses").css('height', '0');
-        },100);
+        },200);
 
     });
 
