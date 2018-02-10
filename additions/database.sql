@@ -244,6 +244,7 @@ COPY "ATTR_TYPES" ("ATTR_TYPE_ID", "NAME") FROM stdin;
 53	Reference
 54	Date
 55	Enum value
+56	Point 
 \.
 
 
@@ -262,7 +263,7 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 407	Order cost	52
 408	Item category	51
 409	Item cost	52
-410	Address	51
+410	Address	56
 411	Payment card number	51
 412	Order	53
 413	Item name	51
@@ -271,7 +272,7 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 416	Order courier	53
 417	Order status	55
 418	Item image	53
-419	Order address	51
+419	Order address	56
 420	Order phone	51
 421	Order creation date	54
 \.
