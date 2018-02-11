@@ -1,5 +1,6 @@
 package com.netcracker.controller;
 
+import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.User;
 import com.netcracker.service.OrderService;
@@ -38,12 +39,12 @@ public class BasketController {
         return model;
     }
 
-
     @RequestMapping(value = "/checkout", method = RequestMethod.GET)
-    public String checkout(@RequestParam("input-address") String inputAddress, @RequestParam("input-phone") String inputPhone, Principal principal, HttpSession httpSession, SessionStatus sessionStatus) throws SQLException {
+    public String checkout(@RequestParam("input-address-latitude") String latitude,@RequestParam("input-address-longitude") String longitude, @RequestParam("input-phone") String inputPhone, Principal principal, HttpSession httpSession, SessionStatus sessionStatus) throws SQLException {
         ArrayList<Item> basketItems = (ArrayList<Item>)httpSession.getAttribute("basketItems");
         if(basketItems != null && basketItems.size() != 0){
-            orderService.checkout(basketItems,principal.getName(), inputAddress, inputPhone);
+            Address orderAddress = new Address(Double.parseDouble(latitude), Double.parseDouble(longitude));
+            orderService.checkout(basketItems,principal.getName(), orderAddress, inputPhone);
             sessionStatus.setComplete();
             return "redirect:/my-orders";
         }else{

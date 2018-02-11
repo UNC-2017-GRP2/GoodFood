@@ -66,7 +66,9 @@
                     <li class="list-group-item list-group-address">
                         <div class="col-md-4">
                             <spring:message code="enter.address" var="placeholder"/>
-                            <input type='text' id='input-address' name="input-address" class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder='${placeholder}'>
+                            <input type='text' id='input-address' class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder='${placeholder}'>
+                            <input type='hidden' id="input-address-latitude" name="input-address-latitude">
+                            <input type='hidden' id="input-address-longitude" name="input-address-longitude">
                             <div class="list-group">
 
                                 <ul class="ul-my-addresses">

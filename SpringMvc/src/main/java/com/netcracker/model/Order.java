@@ -12,7 +12,7 @@ public class Order {
     private BigInteger userId;
     private BigInteger orderCost;
     private String status;
-    private String orderAddress;
+    private Address orderAddress;
     private String orderPhone;
     private BigInteger courierId;
     private List<Item> orderItems;
@@ -22,7 +22,7 @@ public class Order {
                  BigInteger userId,
                  BigInteger orderCost,
                  String status,
-                 String orderAddress,
+                 Address orderAddress,
                  String orderPhone,
                  List<Item> orderItems,
                  LocalDateTime orderCreationDate,
@@ -35,7 +35,7 @@ public class Order {
                  BigInteger userId,
                  BigInteger orderCost,
                  String status,
-                 String orderAddress,
+                 Address orderAddress,
                  String orderPhone,
                  List<Item> orderItems,
                  LocalDateTime orderCreationDate) {
@@ -81,7 +81,7 @@ public class Order {
         return orderItems;
     }
 
-    public String getOrderAddress() {
+    public Address getOrderAddress() {
         return orderAddress;
     }
 
@@ -121,7 +121,7 @@ public class Order {
         this.orderItems = orderItems;
     }
 
-    public void setOrderAddress(String orderAddress) {
+    public void setOrderAddress(Address orderAddress) {
         this.orderAddress = orderAddress;
     }
 

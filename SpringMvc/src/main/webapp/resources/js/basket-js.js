@@ -3,6 +3,7 @@ function addressSelection(address) {
      $("#input-address").val(address);
     $(".to-order-btn").prop('disabled',false);
     $("#address-valid").text("");
+    geocode(address);
 }
 function disabledInputAddress() {
     $("#input-address").prop('disabled',true);
@@ -12,7 +13,6 @@ function geocode(address) {
     ymaps.geocode(address).then(function (res) {
         var geoAddress;
         var  error;
-
         if (res.geoObjects.get(0) != null) {
             geoAddress = res.geoObjects.get(0);
             var  coords = geoAddress.geometry.getCoordinates();
@@ -37,9 +37,13 @@ function geocode(address) {
         if (error) {
             $("#address-valid").text(error);
             $(".to-order-btn").prop('disabled',true);
+
         }else{
             $(".to-order-btn").prop('disabled',false);
             $("#address-valid").text("");
+            $("#input-address-latitude").val(coords[0]);
+            $("#input-address-longitude").val(coords[1]);
+            alert($("#input-address-latitude").val() + " " + $("#input-address-longitude").val());
         }
     });
 }
@@ -183,7 +187,13 @@ $(document).ready(function() {
     });
 
     $("#input-address").keyup(function(){
-        var value = $("#input-address").val();
+        var address = $("#input-address").val();
+        if (address != ""){
+            $(".ul-my-addresses").css('visibility', 'hidden');
+            $(".ul-my-addresses").css('height', '0');
+        }
+        geocode(address);
+        /*var value = $("#input-address").val();
         if (value == ""){
             $(".ul-my-addresses").css('visibility', 'visible');
             $(".ul-my-addresses").css('height', 'auto');
@@ -195,7 +205,7 @@ $(document).ready(function() {
             $(".ul-my-addresses").css('height', '0');
             //$("#address-valid").text("");
             geocode(value);
-        }
+        }*/
     });
 
     $("#input-address").focus(function () {
@@ -210,8 +220,5 @@ $(document).ready(function() {
             $(".ul-my-addresses").css('visibility', 'hidden');
             $(".ul-my-addresses").css('height', '0');
         },200);
-
     });
-
-
 });
