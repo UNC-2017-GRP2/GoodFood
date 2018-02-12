@@ -76,7 +76,6 @@
                             <th scope="col"><spring:message code="users.birthday"/></th>
                             <th scope="col"><spring:message code="users.email"/></th>
                             <th scope="col"><spring:message code="users.address"/></th>
-                            <th scope="col"><spring:message code="users.bankCard"/></th>
                             <th scope="col"><spring:message code="users.role"/></th>
                         </tr>
                         </thead>
@@ -91,9 +90,6 @@
                                 <td>${user.email}</td>
                                 <td><c:forEach items="${user.addresses}" var="item">
                                         ${item}<br />
-                                </c:forEach></td>
-                                <td><c:forEach items="${user.bankCards}" var="item">
-                                    ${item}<br />
                                 </c:forEach></td>
                                 <td>${user.role}</td>
                         </tr>
