@@ -83,7 +83,7 @@
                     </li>
                     <li class="list-group-item list-group-total-order">
                         <div class="col-md-6">
-                            <h3>Total order cost: <span class="total-order-cost">${totalOrder}</span> ₽</h3>
+                            <h3><spring:message code="orders.totalOrderCost"/>: <span class="total-order-cost">${totalOrder}</span> ₽</h3>
                             <p>
                                 <spring:message code="basket.checkout" var="placeholder"/>
                                 <input type="submit" class="btn btn-primary to-order-btn" disabled="disabled" value='${placeholder}'>

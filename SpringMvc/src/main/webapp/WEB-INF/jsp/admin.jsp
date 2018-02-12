@@ -12,6 +12,8 @@
 </head>
 
 <body>
+<jsp:include page="navbar.jsp"/>
+
 <h2><spring:message code="general.adminPanel"/></h2>
 
     <div class="well" style="height: auto!important;"><form action="/admin/actualize" method="post">
@@ -91,7 +93,7 @@
                                 <td><c:forEach items="${user.addresses}" var="item">
                                         ${item}<br />
                                 </c:forEach></td>
-                                <td>${user.role}</td>
+                                <td><spring:message code="users.role.${user.role}"/></td>
                         </tr>
 
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

@@ -29,20 +29,20 @@
 
 <nav class="top-menu">
     <ul class="menu-main">
-        <li><a href="<c:url value='/home?value=Pizza'/>">Pizza</a></li>
-        <li><a href="<c:url value='/home?value=Sushi'/>">Sushi</a></li>
-        <li><a href="<c:url value='/home?value=Burgers'/>">Burgers</a></li>
-        <li><a href="<c:url value='/home?value=Salads'/>">Salads</a></li>
-        <li><a href="<c:url value='/home?value=Snacks'/>">Snacks</a></li>
-        <li><a href="<c:url value='/home?value=Dessert'/>">Dessert</a></li>
-        <li><a href="<c:url value='/home?value=Beverages'/>">Beverages</a></li>
+        <li><a href="<c:url value='/home?value=Pizza'/>"><spring:message code="item.category.Pizza"/></a></li>
+        <li><a href="<c:url value='/home?value=Sushi'/>"><spring:message code="item.category.Sushi"/></a></li>
+        <li><a href="<c:url value='/home?value=Burgers'/>"><spring:message code="item.category.Burgers"/></a></li>
+        <li><a href="<c:url value='/home?value=Salads'/>"><spring:message code="item.category.Salads"/></a></li>
+        <li><a href="<c:url value='/home?value=Snacks'/>"><spring:message code="item.category.Snacks"/></a></li>
+        <li><a href="<c:url value='/home?value=Dessert'/>"><spring:message code="item.category.Dessert"/></a></li>
+        <li><a href="<c:url value='/home?value=Beverages'/>"><spring:message code="item.category.Beverages"/></a></li>
     </ul>
 </nav>
 
 
 <div style="text-align: center;">
     <p>
-    <h1>${value}</h1></p>
+    <h1><spring:message code="item.category.${value}"/></h1></p>
 </div>
 
 <c:if test="${items != null}">

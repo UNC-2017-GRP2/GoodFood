@@ -10,6 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Controller
@@ -21,8 +23,8 @@ public class FreeOrdersController {
     @RequestMapping(value = { "/free-orders"}, method = RequestMethod.GET)
     public ModelAndView freeOrdersPage() throws IOException {
         ModelAndView model = new ModelAndView();
-        //model.addObject("add","Take the order");
-        //model.addObject("rub","\u20BD");
+        model.addObject("now", LocalDateTime.now());
+        model.addObject("chr", ChronoUnit.HOURS);
         model.setViewName("free-orders");
 
         List<Order> allOrders = orderService.getAllFreeOrders();
