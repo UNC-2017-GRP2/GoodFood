@@ -26,8 +26,6 @@ public class HomeController {
     @Autowired
     private ItemService itemService;
 
-
-
     @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
     public ModelAndView homeValue(ModelAndView model,@RequestParam(value = "value", required = false) String value,Principal principal, HttpSession httpSession) throws IOException {
         if (principal != null){
