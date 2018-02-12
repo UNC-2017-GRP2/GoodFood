@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @SessionAttributes(value = {"username","basketItems"})
@@ -27,7 +28,7 @@ public class HomeController {
     private ItemService itemService;
 
     @RequestMapping(value = {"/home", "/"}, method = RequestMethod.GET)
-    public ModelAndView homeValue(ModelAndView model,@RequestParam(value = "value", required = false) String value,Principal principal, HttpSession httpSession) throws IOException {
+    public ModelAndView homeValue(ModelAndView model, @RequestParam(value = "value", required = false) String value, Locale locale, Principal principal, HttpSession httpSession) throws IOException {
         if (principal != null){
             User user  = userService.getByUsername(principal.getName());
             if (httpSession.getAttribute("username") == null){
@@ -43,14 +44,14 @@ public class HomeController {
                 httpSession.setAttribute("userPhone", user.getPhoneNumber());
             }
         }
-        List<Item> currentItems = itemService.getItemsByCategory(value);
+        List<Item> currentItems = itemService.getItemsByCategory(value, locale);
         if(value == null){
             model.addObject("value", "Pizza");
         }else{
             model.addObject("value", value);
         }
         if (currentItems == null){
-            currentItems = itemService.getItemsByCategory("Pizza");
+            currentItems = itemService.getItemsByCategory("Pizza", locale);
 
         }
         model.addObject("items", currentItems);
@@ -61,8 +62,8 @@ public class HomeController {
 
 
     @RequestMapping(value = { "/addBasket"}, method = RequestMethod.POST)
-    public ModelAndView addItemInBasket(@RequestParam("id") BigInteger id, @RequestParam("count") int count, HttpSession httpSession) throws IOException {
-        Item item = itemService.getItemById(id);
+    public ModelAndView addItemInBasket(@RequestParam("id") BigInteger id, @RequestParam("count") int count, Locale locale, HttpSession httpSession) throws IOException {
+        Item item = itemService.getItemById(id, locale);
         if (item != null){
             if (httpSession.getAttribute("basketItems") == null){
                 httpSession.setAttribute("basketItems", new ArrayList<Item>());

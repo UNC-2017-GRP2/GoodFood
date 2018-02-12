@@ -89,6 +89,20 @@ public class AbstractRepositoryImpl {
         }
     }
 
+    protected ResultSet getLocStringsByObjectId(BigInteger objectId, long langId){
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_LOC_STRINGS_BY_OBJECT_ID);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, langId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     protected void saveObject(String name, BigInteger objectId, BigInteger parentId, long objTypeId){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_OBJECTS);

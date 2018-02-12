@@ -5,6 +5,11 @@ public class Constant {
     public static final long START_EXPIRATION_TIME = 3;
     public static final long END_EXPIRATION_TIME = 12;
 
+    /**Languages**/
+    public static final long LANG_RUSSIAN = 81;
+    public static final long LANG_UKRAINIAN = 82;
+
+
     /**Table attr_types**/
     public static final long TEXT_ATTR_TYPE_ID = 51;
     public static final long NUMBER_ATTR_TYPE_ID = 52;
@@ -78,6 +83,7 @@ public class Constant {
 
     public static final String SQL_SELECT_PARAMETERS_BY_OBJ_ATTR = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
     public static final String SQL_SELECT_PARAMETERS_BY_OBJECT_ID = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
+    public static final String SQL_SELECT_LOC_STRINGS_BY_OBJECT_ID = "select * from \"LOC_STRINGS\" where \"OBJECT_ID\" = ? and \"LANG_ID\" = ?";
     public static final String SQL_SELECT_OBJECT_ID_BY_REFERENCE_VAL = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"REFERENCE_VALUE\" = ?";
     public static final String SQL_SELECT_OBJECT_ID_BY_TEXT_VAL_AND_ATTR_ID = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"TEXT_VALUE\" = ?";
     public static final String SQL_SELECT_REFERENCE_VAL_BY_OBJ_ID_AND_ATTR_ID = "select \"REFERENCE_VALUE\" from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";

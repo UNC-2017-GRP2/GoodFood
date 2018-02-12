@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRepository {
 
@@ -37,19 +38,15 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
     @Override
     public Item getItemById(BigInteger itemId) {
         Item newItem = null;
-        String itemName = null;
         try {
-            ResultSet resultSet = getObjectById(itemId);
-            while (resultSet.next()){
-                itemName = resultSet.getString("NAME");
-            }
+            String itemName = null;
             String itemDescription = null;
             String itemCategory = null;
             BigInteger itemCost = null;
             String itemImagePath = null;
             BigInteger itemImageId = null;
             BigInteger categoryId = null;
-            resultSet = getParametersByObjectId(itemId);
+            ResultSet resultSet = getParametersByObjectId(itemId);
             //идем по всем параметрам продукта
             while(resultSet.next()){
                 long curAttrId = resultSet.getLong("ATTR_ID");
@@ -63,6 +60,9 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 }
                 if (curAttrId == Constant.ITEMS_COST_ATTR_ID){
                     itemCost = new BigInteger(resultSet.getString("TEXT_VALUE"));
+                }
+                if (curAttrId == Constant.ITEM_NAME_ATTR_ID) {
+                    itemName = resultSet.getString("TEXT_VALUE");
                 }
                 if (curAttrId == Constant.ITEM_IMAGE_ATTR_ID){
                     itemImageId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
@@ -135,7 +135,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         }
         return result;
     }
-    private List<Item>getList(List<Item>all, String category){
+    private List<Item> getList(List<Item>all, String category){
         List<Item> result = new ArrayList<>();
         for(Item item:all){
             if(item.getProductCategory().equals(category)){
@@ -143,5 +143,41 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             }
         }
         return result;
+    }
+
+    public Item getLocalizedItem(Item item, Locale locale) {
+        long langId;
+        if (locale.toString().equals("ru")) {
+            langId = Constant.LANG_RUSSIAN;
+        }
+        else if (locale.toString().equals("uk")) {
+            langId = Constant.LANG_UKRAINIAN;
+        }
+        else {
+            return item;
+        }
+        String itemName = item.getProductName();
+        String itemDescription = item.getProductDescription();
+        try {
+            ResultSet resultSet = getLocStringsByObjectId(item.getProductId(), langId);
+            while(resultSet.next()){
+                long curAttrId = resultSet.getLong("ATTR_ID");
+
+                if(curAttrId == Constant.ITEM_DESCRIPTION_ATTR_ID){
+                    itemDescription = resultSet.getString("LOC_TEXT_VALUE");
+                }
+                if (curAttrId == Constant.ITEM_NAME_ATTR_ID) {
+                    itemName = resultSet.getString("LOC_TEXT_VALUE");
+                }
+            }
+            item.setProductName(itemName);
+            item.setProductDescription(itemDescription);
+            if (resultSet != null){
+                resultSet.close();
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return item;
     }
 }
