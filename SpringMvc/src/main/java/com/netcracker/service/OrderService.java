@@ -1,5 +1,6 @@
 package com.netcracker.service;
 
+import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.Order;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 @Service
 public interface OrderService {
     BigInteger totalOrder(ArrayList<Item> items);
-    void checkout(ArrayList<Item> items, String username, String inputAddress, String inputPhone) throws SQLException;
+    void checkout(ArrayList<Item> items, String username, Address orderAddress, String inputPhone) throws SQLException;
     List<Order> getAllFreeOrders();
     //List<Order> getAllOrdersByUser(String username);
     Order getOrderById(BigInteger orderId);

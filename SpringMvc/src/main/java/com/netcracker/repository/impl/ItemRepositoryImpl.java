@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRepository {
 
-    //private Connection connection;
     public ItemRepositoryImpl(DataSource dataSource) throws SQLException {
         super(dataSource);
     }
@@ -20,11 +19,8 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
     @Override
     public List<Item> getAllItems() {
         List<Item> result = new ArrayList<>();
-        ResultSet resultSet;
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECTS);
-            preparedStatement.setLong(1, Constant.ITEM_OBJ_TYPE_ID);
-            resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = getObjectsByObjectTypeId(Constant.ITEM_OBJ_TYPE_ID);
             //идем по всем продуктам
             while (resultSet.next()){
                 String itemId = resultSet.getString("OBJECT_ID");
@@ -43,9 +39,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         Item newItem = null;
         String itemName = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_OBJECT_BY_ID);
-            preparedStatement.setObject(1, itemId, numericType);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = getObjectById(itemId);
             while (resultSet.next()){
                 itemName = resultSet.getString("NAME");
             }
@@ -55,29 +49,30 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             String itemImagePath = null;
             BigInteger itemImageId = null;
             BigInteger categoryId = null;
-            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_PARAMETERS);
-            ps.setObject(1, itemId, numericType);
-            ResultSet rs = ps.executeQuery();
+            resultSet = getParametersByObjectId(itemId);
             //идем по всем параметрам продукта
-            while(rs.next()){
-                long curAttrId = rs.getLong("ATTR_ID");
+            while(resultSet.next()){
+                long curAttrId = resultSet.getLong("ATTR_ID");
 
                 if(curAttrId == Constant.ITEM_CATEGORY_ATTR_ID){
-                    categoryId = new BigInteger(rs.getString("ENUM_VALUE"));
-                    itemCategory = getNameValueById(categoryId, SQL_SELECT_ENUMS);
+                    categoryId = new BigInteger(resultSet.getString("ENUM_VALUE"));
+                    itemCategory = getNameValueById(categoryId, Constant.SQL_SELECT_ENUMS);
                 }
                 if(curAttrId == Constant.ITEM_DESCRIPTION_ATTR_ID){
-                    itemDescription = rs.getString("TEXT_VALUE");
+                    itemDescription = resultSet.getString("TEXT_VALUE");
                 }
                 if (curAttrId == Constant.ITEMS_COST_ATTR_ID){
-                    itemCost = new BigInteger(rs.getString("TEXT_VALUE"));
+                    itemCost = new BigInteger(resultSet.getString("TEXT_VALUE"));
                 }
                 if (curAttrId == Constant.ITEM_IMAGE_ATTR_ID){
-                    itemImageId = new BigInteger(rs.getString("REFERENCE_VALUE"));
-                    itemImagePath = getNameValueById(itemImageId, SQL_SELECT_OBJECT_BY_ID);
+                    itemImageId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
+                    itemImagePath = getNameValueById(itemImageId, Constant.SQL_SELECT_OBJECT_BY_ID);
                 }
             }
             newItem = new Item(itemId,itemName,itemDescription,itemCategory,itemCost, itemImagePath,1);
+            if (resultSet != null){
+                resultSet.close();
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -92,6 +87,12 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 result = resultSet.getString("NAME");
+            }
+            if (preparedStatement != null){
+                preparedStatement.close();
+            }
+            if (resultSet != null){
+                resultSet.close();
             }
             return result;
         }catch (Exception e){

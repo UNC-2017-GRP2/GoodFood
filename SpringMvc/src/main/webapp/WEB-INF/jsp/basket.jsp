@@ -13,6 +13,14 @@
     <script type="text/javascript">
         <%@include file="/resources/js/basket-js.js" %>
     </script>
+    <script type="text/javascript">
+        ymaps.ready(getUserAddresses);
+        function getUserAddresses() {
+            <c:forEach items="${userAddresses}" var="address">
+            getAddressByCoordinates(${address.latitude}, ${address.longitude});
+            </c:forEach>
+        }
+    </script>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
@@ -58,13 +66,14 @@
                     <li class="list-group-item list-group-address">
                         <div class="col-md-4">
                             <spring:message code="enter.address" var="placeholder"/>
-                            <input type='text' id='input-address' name="input-address" class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder='${placeholder}'>
+                            <input type='text' id='input-address' class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder='${placeholder}'>
+                            <input type='hidden' id="input-address-latitude" name="input-address-latitude">
+                            <input type='hidden' id="input-address-longitude" name="input-address-longitude">
                             <div class="list-group">
+
                                 <ul class="ul-my-addresses">
-                                    <c:forEach items="${userAddresses}" var="address">
-                                        <li class="list-group-item list-group-item-address" onclick="addressSelection('${address}');">${address.latitude} ${address.longitude}</li>
-                                    </c:forEach>
                                 </ul>
+
                             </div>
                             <label id="address-valid"></label>
                         </div>
@@ -93,5 +102,6 @@
 <c:if test="${basketItems.size() == 0}">
     <script>disabledInputAddress();</script>
 </c:if>
+<script>getUserAddresses();</script>
 </body>
 </html>

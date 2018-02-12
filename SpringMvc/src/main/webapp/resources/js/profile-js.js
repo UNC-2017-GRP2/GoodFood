@@ -117,7 +117,7 @@ function getAddressByCoordinates(latitude, longitude){
             var obj = res.geoObjects.get(0);
             var html = $("#user-addresses").html() + obj.getAddressLine() + "<br>";
             $("#user-addresses").html(html);
-            var newHTML = "<li class=\"list-group-item new-address-list\"> " +
+            var newHTML = "<li class=\"list-group-item\"> " +
                 "<div class=\"col-xs-11 text-left\"> " +
                 "   <h4>" + obj.getAddressLine() + "</h4> " +
                 "</div> " +
