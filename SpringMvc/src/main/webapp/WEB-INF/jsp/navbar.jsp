@@ -3,10 +3,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<c:set var="username">
-    <sec:authentication property="principal.username" />
-</c:set>
-
 <html>
 <body>
 
@@ -33,7 +29,10 @@
             <li class="dropdown">
                 <c:choose>
                     <c:when test="${pageContext.request.userPrincipal.name != null}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${username}<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <c:out value="${pageContext.request.remoteUser}"/>
+                            <span class="caret"></span>
+                        </a>
                     </c:when>
                     <c:when test="${pageContext.request.userPrincipal.name == null}">
                         <a class="navbar-brand" href="login">Sign In/Sign Up</a>
