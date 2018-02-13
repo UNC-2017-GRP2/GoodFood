@@ -42,7 +42,6 @@ function geocode(address) {
             $("#address-valid").text("");
             $("#input-address-latitude").val(coords[0]);
             $("#input-address-longitude").val(coords[1]);
-            alert($("#input-address-latitude").val() + " " + $("#input-address-longitude").val());
         }
     });
 }

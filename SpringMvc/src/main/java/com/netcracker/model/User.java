@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.awt.*;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class User {
     private String passwordHash;
     private String confirmPassword;
     private String phoneNumber;
-    private Date birthday;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthday;
     private String email;
     private List<Address> addresses;
     private String role;
@@ -24,7 +26,7 @@ public class User {
     public User (){}
 
 
-    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, Date birthday, String email, List<Address> addresses, String role) {
+    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, LocalDate birthday, String email, List<Address> addresses, String role) {
         this.userId = userId;
         this.fio = fio;
         this.login = login;
@@ -61,7 +63,7 @@ public class User {
         return phoneNumber;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
@@ -102,7 +104,7 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

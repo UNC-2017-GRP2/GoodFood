@@ -9,6 +9,7 @@ import org.postgresql.geometric.PGpoint;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         String fio = null;
         String email = null;
         String phone = null;
-        Date birthday = null;
+        LocalDate birthday = null;
         List<Address> addresses = new ArrayList<>();
         ResultSet resultSet = null;
         if (!username.equals("")){
@@ -70,7 +71,8 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                             phone = resultSet.getString("TEXT_VALUE");
                         }
                         if (curAttrId == Constant.BIRTHDAY_ATTR_ID){
-                            birthday = new Date(resultSet.getDate("DATE_VALUE").getTime());
+                            //birthday = new Date(resultSet.getDate("DATE_VALUE").getTime());
+                            birthday = (resultSet.getTimestamp("DATE_VALUE")!=null)?resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toLocalDate():null;
                         }
                         if(curAttrId == Constant.ADDRESS_ATTR_ID){
                             PGpoint address = (PGpoint)resultSet.getObject("POINT_VALUE");
@@ -153,7 +155,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             updateTextParameter(oldUser.getUserId(), Constant.FULL_NAME_ATTR_ID, newUser.getFio());
             updateTextParameter(oldUser.getUserId(), Constant.EMAIL_ATTR_ID,newUser.getEmail());
             updateTextParameter(oldUser.getUserId(), Constant.PHONE_NUMBER_ATTR_ID,newUser.getPhoneNumber());
-            updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID, new java.sql.Timestamp(newUser.getBirthday().getTime()));
+            updateDateParameter(oldUser.getUserId(), Constant.BIRTHDAY_ATTR_ID,(newUser.getBirthday()!=null)?Timestamp.valueOf(newUser.getBirthday().atStartOfDay()):null);
         }catch (Exception e){
             System.out.println(e.getMessage() + " UPDATE_OBJECT");
         }
