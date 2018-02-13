@@ -11,6 +11,7 @@ public interface UserRepository {
     List<User> getAllUsers();
     void saveUser(User user);
     void updateUser(User oldUser, User newUser);
+    void changeRole(BigInteger userId, String role);
     boolean isLoginExist(String login);
     boolean isEmailExist(String email);
     boolean isYourLoginForUpdateUser(String login, String password);

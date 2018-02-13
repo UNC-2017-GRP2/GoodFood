@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        <%@include file="/resources/js/admin-js.js" %>
+    </script>
 </head>
 
 <body>
@@ -93,13 +96,34 @@
                                 <td><c:forEach items="${user.addresses}" var="item">
                                         ${item}<br />
                                 </c:forEach></td>
-                                <td><spring:message code="users.role.${user.role}"/></td>
+                                <%--<td><spring:message code="users.role.${user.role}"/></td>--%>
+                            <td>
+                                <select id="dropdown-${user.userId}">
+                                    <option value="ROLE_COURIER"><spring:message code="users.role.ROLE_COURIER"/></option>
+                                    <option value="ROLE_ADMIN"><spring:message code="users.role.ROLE_ADMIN"/></option>
+                                    <option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></option>
+                                </select>
+                                <c:choose>
+                                    <c:when test="${user.role.equals('ROLE_USER')}">
+                                        <script>selectOption('dropdown-${user.userId}', 'ROLE_USER');</script>
+                                    </c:when>
+                                    <c:when test="${user.role.equals('ROLE_COURIER')}">
+                                        <script>selectOption('dropdown-${user.userId}', 'ROLE_COURIER');</script>
+                                    </c:when>
+                                    <c:when test="${user.role.equals('ROLE_ADMIN')}">
+                                        <script>selectOption('dropdown-${user.userId}', 'ROLE_ADMIN');</script>
+                                    </c:when>
+                                    <c:otherwise></c:otherwise>
+                                </c:choose>
+                                <button type="button" class="btn btn-default" onclick="dropdownButton('${user.userId}', 'dropdown-${user.userId}');">Change role</button>
+                            </td>
                         </tr>
 
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 </c:forEach>
                 </tbody>
             </table>
+
         </div>
         </div>
     </div>

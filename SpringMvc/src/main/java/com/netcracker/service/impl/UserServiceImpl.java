@@ -68,4 +68,9 @@ public class UserServiceImpl implements UserService {
     public void updateAddresses(BigInteger userId, List<Address> addresses) {
         userRepository.updateAddresses(userId,addresses);
     }
+
+    @Override
+    public void changeRole(BigInteger userId, String role) {
+        userRepository.changeRole(userId, role);
+    }
 }

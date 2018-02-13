@@ -285,4 +285,19 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
         return false;
     }
+
+    @Override
+    public void changeRole(BigInteger userId, String role) {
+        if (role.equals("ROLE_ADMIN")) {
+            updateEnumParameter(userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLE_ADMIN_ENUM_ID);
+        }
+        else     if (role.equals("ROLE_COURIER")) {
+            updateEnumParameter(userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLE_COURIER_ENUM_ID);
+        }
+        else    if (role.equals("ROLE_USER")) {
+            updateEnumParameter(userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLE_USER_ENUM_ID);
+        }
+
+
+    }
 }

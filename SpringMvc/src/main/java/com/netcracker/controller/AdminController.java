@@ -7,15 +7,14 @@ import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -45,7 +44,7 @@ public class AdminController {
         return model;
     }
 
-    @RequestMapping(value = { "/admin/actualize"}, method = RequestMethod.POST)
+    @RequestMapping(value = { "/admin/actualize"}, method = RequestMethod.GET)
     public String markOrderAsExpired() throws IOException {
         List<Order> allOrders = orderService.getAllOrders();
         for (Order order : allOrders) {
@@ -53,6 +52,13 @@ public class AdminController {
                 orderService.changeOrderStatus(order.getOrderId(), Constant.STATUS_EXPIRED_ENUM_ID);
             }
         }
+        return "redirect:/admin";
+    }
+
+    @RequestMapping(value = "/changeRole", method = RequestMethod.GET)
+    public @ResponseBody
+    String changeRole(@RequestParam BigInteger userId, @RequestParam String role){
+        userService.changeRole(userId, role);
         return "redirect:/admin";
     }
 }

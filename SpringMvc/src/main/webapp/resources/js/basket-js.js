@@ -1,6 +1,5 @@
-
 function addressSelection(address) {
-     $("#input-address").val(address);
+    $("#input-address").val(address);
     $(".to-order-btn").prop('disabled',false);
     $("#address-valid").text("");
     geocode(address);
