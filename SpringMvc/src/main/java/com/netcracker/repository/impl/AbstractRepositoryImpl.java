@@ -243,7 +243,7 @@ public class AbstractRepositoryImpl {
             //если парметр был, то обновляем,иначе добавим
             if (checkAttribute(objectId, attrId)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_DATE_PARAMETERS);
-                preparedStatement.setTimestamp(1, new java.sql.Timestamp(parameter.getTime()));
+                preparedStatement.setTimestamp(1, (parameter!=null)?new java.sql.Timestamp(parameter.getTime()):null);
                 preparedStatement.setObject(2,objectId, numericType);
                 preparedStatement.setLong(3, attrId);
                 preparedStatement.executeUpdate();

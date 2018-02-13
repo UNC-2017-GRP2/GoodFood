@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="/resources/css/profile-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.min.js"></script>
+    <script type="text/javascript" src="webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
+    <script type="text/javascript" src="webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.js"></script>
+    <script type="text/javascript" src="webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.date.extensions.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
@@ -24,6 +27,7 @@
             getAddressByCoordinates(${address.latitude}, ${address.longitude});
             </c:forEach>
         }
+
     </script>
 </head>
 <body>
@@ -190,9 +194,10 @@
 
                                 <div class="form-group">
                                     <label for="birth" class="col-xs-4 control-label"><spring:message code="users.birthday"/>:</label>
+                                    <spring:message code="enter.birthday" var="placeholder"/>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='birth' path="birthday"
-                                                    class="form-control"></form:input>
+                                                    class="form-control" placeholder='${placeholder}'></form:input>
                                     </div>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage">
@@ -200,7 +205,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary"><spring:message code="profile.save"/></button>
+                                <button type="submit" class="btn btn-primary" id="btn-save-user-data"><spring:message code="profile.save"/></button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><spring:message code="general.cancel"/></button>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
