@@ -160,7 +160,6 @@ $(document).ready(function () {
 
         $('#birth').inputmask({
                 'mask': '9999-99-99',
-                //'placeholder': 'yyyy-mm-dd',
                 'oncomplete': function (e) {
                     var inputValue = e.target.value;
                     var dateArray = inputValue.split('-');

@@ -126,7 +126,18 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                     courierId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
                 }
                 if (curAttrId == Constant.ITEM_ATTR_ID) {
-                    orderItems.add(itemRepository.getItemById(new BigInteger(resultSet.getString("REFERENCE_VALUE"))));
+                    BigInteger itemId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
+                    boolean flag = false;
+                    for(Item item:orderItems){
+                        if (item.getProductId().compareTo(itemId) == 0){  // они равны
+                            flag = true;
+                            item.setProductQuantity(item.getProductQuantity()+1);
+                            break;
+                        }
+                    }
+                    if(!flag){
+                        orderItems.add(itemRepository.getItemById(new BigInteger(resultSet.getString("REFERENCE_VALUE"))));
+                    }
                 }
                 if (curAttrId == Constant.STATUS_ATTR_ID) {
                     long enumValue = resultSet.getLong("ENUM_VALUE");

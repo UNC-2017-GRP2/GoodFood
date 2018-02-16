@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title><spring:message code="general.myOrders"/></title>
@@ -20,15 +21,15 @@
 
     <table class="table">
         <c:forEach items="${orders}" var="order">
-
+            <fmt:parseDate value="${ order.orderCreationDate }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                 <tr>
                     <td>Order ${order.orderId}</td>
                     <td>${order.userId}</td>
-                    <td>${order.orderCreationDate.toString()}</td>
+                    <td>Оформлен <fmt:formatDate pattern="dd.MM.yyyy в HH:mm" value="${ parsedDateTime }" /></td>
                     <td>${order.orderCreationDate.until(now, chr)}</td>
                     <td>${order.status}</td>
                     <td><c:forEach items="${order.orderItems}" var="item">
-                        ${item.productName}<br />
+                        ${item.productName} ${item.productQuantity}<br />
                         ${item.productCost}<br />
                     </c:forEach>
             </td>

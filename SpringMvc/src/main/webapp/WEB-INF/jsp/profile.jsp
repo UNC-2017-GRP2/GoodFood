@@ -1,10 +1,9 @@
-<%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="com.netcracker.model.User" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title><spring:message code="general.profile"/></title>
@@ -104,12 +103,8 @@
                             <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.birthday"/>:</div>
                             <c:choose>
                                 <c:when test="${user.birthday != null}">
-                                    <%
-                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-YYYY");
-                                        User user = (User)request.getAttribute("user");
-                                        String formattedString = user.getBirthday().format(formatter);
-                                    %>
-                                    <div class="col-sm-7"><%=formattedString%></div>
+                                    <fmt:parseDate value="${user.birthday}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
+                                    <div class="col-sm-7"><fmt:formatDate pattern="dd.MM.yyyy" value="${ parsedDate }" /></div>
                                 </c:when>
                                 <c:when test="${user.birthday == null}">
                                     <div class="col-sm-7">${nullParameter}</div>
