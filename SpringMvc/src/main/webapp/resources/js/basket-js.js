@@ -102,6 +102,20 @@ $(document).ready(function() {
     });
 
     $('.plus').click(function () {
+
+      /*  var n = new noty({
+            type: 'success',
+            layout: 'top',
+            text: 'bla bla bla :)'
+        }).show();
+*/
+       /* noty({
+            text: 'yee!',
+            layout: 'center',
+            timeout: 500,
+            type: 'success'
+        });*/
+
         var $input = $(this).parent().find('input');
         var count = parseInt($input.val()) + 1;
         var previousCount = parseInt($input.val());

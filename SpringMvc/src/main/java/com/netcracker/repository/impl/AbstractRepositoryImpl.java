@@ -1,12 +1,11 @@
 package com.netcracker.repository.impl;
 
 import com.netcracker.config.Constant;
-
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
 
-public class AbstractRepositoryImpl {
+public class AbstractRepositoryImpl{
     protected Connection connection;
 
     protected int numericType = Types.NUMERIC;

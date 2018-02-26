@@ -2,10 +2,9 @@ package com.netcracker.config;
 
 import com.netcracker.repository.ItemRepository;
 import com.netcracker.repository.OrderRepository;
+import com.netcracker.repository.Repository;
 import com.netcracker.repository.UserRepository;
-import com.netcracker.repository.impl.ItemRepositoryImpl;
-import com.netcracker.repository.impl.OrderRepositoryImpl;
-import com.netcracker.repository.impl.UserRepositoryImpl;
+import com.netcracker.repository.impl.*;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -77,6 +76,12 @@ public class ApplicationContextConfig  extends WebMvcConfigurerAdapter {
     public OrderRepository getOrderRepository() throws ClassNotFoundException, SQLException {
         return new OrderRepositoryImpl(dataSource());
     }
+
+    @Bean
+    public Repository getRepository() throws ClassNotFoundException, SQLException {
+        return new RepositoryImpl(dataSource());
+    }
+
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {

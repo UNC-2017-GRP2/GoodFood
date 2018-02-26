@@ -5,6 +5,7 @@ import com.netcracker.model.User;
 import com.netcracker.service.UserService;
 import com.netcracker.validation.SignUpValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -16,6 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 @Controller
 public class RegistrationController {
@@ -66,6 +69,10 @@ public class RegistrationController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginPage(@RequestParam(value = "error",required = false) String error) {
         ModelAndView model = new ModelAndView();
+        if(!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
+            model.setViewName("redirect:/home");
+            return model;
+        }
         try{
             if (error != null) {
                 model.addObject("error", "Invalid Credentials provided.");

@@ -6,6 +6,7 @@
 <head>
     <title><spring:message code="general.projectName"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/bootstrap-checkbox-x/1.5.4/css/checkbox-x.min.css">
     <link rel="stylesheet" href="/resources/css/login-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -13,115 +14,117 @@
 </head>
 <body>
 
-<form name='login' action="<c:url value='/login' />" method='POST' class="form-horizontal form-login" id="loginForm" role="form">
-    <c:if test="${not empty error}">
-        <div class="invalid-data">${error}</div>
-    </c:if>
-    <div class="form-group top-form-group">
-        <label for="inputLogin" class="col-xs-4 control-label"><spring:message code="users.username"/>:</label>
-        <div class="col-xs-6">
-            <spring:message code="enter.username" var="placeholder"/>
-            <input type="text" class="form-control" name='username' id="inputLogin" placeholder='${placeholder}'>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputPassword" class="col-xs-4 control-label"><spring:message code="users.password"/>:</label>
-        <div class="col-xs-6">
-            <spring:message code="enter.password" var="placeholder"/>
-            <input type="password" class="form-control" name='password' id="inputPassword" placeholder='${placeholder}'>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-xs-offset-4 col-xs-4">
-            <div class="checkbox">
-                <label><input type="checkbox" name="remember-me"> <spring:message code="profile.rememberMe"/></label>
+<div class="container">
+    <div class="row row-rotate">
+        <form class="form-signin mg-btm" action="<c:url value='/login' />" method="post" id="loginForm">
+            <h3 class="heading-desc"><spring:message code="general.signInForm"></spring:message></h3>
+            <div class="social-box">
+                <div class="row mg-btm">
+                    <div class="col-md-12">
+                        <a href="#" class="btn btn-primary btn-block">
+                            <i class="icon-facebook"></i>    Login with Facebook
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="#" class="btn btn-info btn-block" >
+                            <i class="icon-twitter"></i>    Login with Twitter
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-xs-offset-4 col-xs-2">
-            <button type="submit" class="btn btn-default"><spring:message code="profile.signIn"/></button>
-        </div>
-        <div class="col-xs-2">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formRegistrationModal"><spring:message code="profile.signUp"/></button>
-        </div>
-    </div>
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-</form>
+            <div class="main">
+                <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12">
+                    <c:if test="${not empty error}">
+                        <script>showErrorMessage();</script>
+                        ${error}
+                    </c:if>
+                </div>
+                <spring:message code="enter.username" var="placeholder"/>
+                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder='${placeholder}'>
+                <spring:message code="enter.password" var="placeholder"/>
+                <input id="login-password" type="password" class="form-control" name="password" placeholder='${placeholder}'>
+                <div class="checkbox">
+                    <label>
+                        <%--<input id="login-remember" type="checkbox" name="remember-me" value="1"> <span class="label-text"><spring:message code="profile.rememberMe"/></span>--%>
+                        <input id="login-remember" type="checkbox" name="remember-me" value="1"><spring:message code="profile.rememberMe"/>
+                    </label>
+                </div>
+                <span class="clearfix"></span>
+            </div>
+            <div class="login-footer">
+                <div class="row">
+                    <div class="col-xs-6 col-md-6">
+                        <div class="left-section">
+                            <%--<a href="">Forgot your password?</a>--%>
+                            <a href="#" id="sign-up-reference"><spring:message code="profile.signUp"/></a>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-md-6 pull-right">
+                        <button type="submit" class="btn btn-large btn-danger pull-right"><spring:message code="profile.signIn"/></button>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
 
-<!-- Modal -->
-<div class="modal fade" id="formRegistrationModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle"><spring:message code="profile.registrationForm"/></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <form:form action="/registration" method="POST" modelAttribute="userForm" class="form-signup mg-btm"
+                   id="registrationForm" role="form">
+            <h3 class="heading-desc"><spring:message code="general.signUpForm"></spring:message></h3>
+            <div class="main">
+                <spring:message code="enter.fullname" var="placeholder"/>
+                <form:input type='text' id='fio' path="fio" class="form-control" placeholder='${placeholder}'></form:input>
+            <%--    <div style="display:block;" class="alert alert-danger col-sm-12">
+                    <form:errors path="fio"></form:errors>
+                </div>--%>
+
+                <spring:message code="enter.username" var="placeholder"/>
+                <form:input type='text' id='login' path="login" class="form-control" placeholder='${placeholder}'></form:input>
+                <%--<div style="display:inline-block" class="alert alert-danger col-sm-12">
+                    <form:errors path="login"></form:errors>
+                </div>--%>
+
+                <spring:message code="enter.email" var="placeholder"/>
+                <form:input type='text' id='email' path="email" class="form-control" placeholder='${placeholder}'></form:input>
+                <%--<div style="display:inline-block" class="alert alert-danger col-sm-12">
+                    <form:errors path="email"></form:errors>
+                </div>--%>
+
+                <spring:message code="enter.password" var="placeholder"/>
+                <form:input type='password' id='passwordHash' path="passwordHash" class="form-control" placeholder='${placeholder}'></form:input>
+                <%--<div style="display:inline-block" class="alert alert-danger col-sm-12">
+                    <form:errors path="passwordHash"></form:errors>
+                </div>--%>
+
+                <spring:message code="users.confirmPassword" var="placeholder"/>
+                <form:input type='password' id='confirmPassword' path="confirmPassword" class="form-control" placeholder='${placeholder}'></form:input>
+                <div style="display: none; height: min-content;" class="alert alert-registration alert-danger col-sm-12">
+                    <form:errors path="fio"></form:errors><br>
+                    <form:errors path="login"></form:errors><br>
+                    <form:errors path="email"></form:errors><br>
+                    <form:errors path="passwordHash"></form:errors><br>
+                    <form:errors path="confirmPassword"></form:errors>
+                </div>
+                <span class="clearfix"></span>
             </div>
-            <form:form action="/registration" method="POST" modelAttribute="userForm" class="form-horizontal"
-                       id="registrationForm" role="form">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="fio" class="col-xs-4 control-label"><spring:message code="users.fullname"/>:</label>
-                        <div class="col-xs-6">
-                            <spring:message code="enter.fullname" var="placeholder"/>
-                            <form:input type='text' id='fio' path="fio" class="form-control" placeholder='${placeholder}'></form:input>
+            <div class="login-footer">
+                <div class="row">
+                    <div class="col-xs-6 col-md-6">
+                        <div class="left-section">
+                            <a href="#" id="sign-in-reference"><spring:message code="profile.signIn"/></a>
                         </div>
                     </div>
-                    <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                        <form:errors path="fio"></form:errors>
-                    </div>
-                    <div class="form-group">
-                        <label for="login" class="col-xs-4 control-label"><spring:message code="users.username"/>:</label>
-                        <div class="col-xs-6">
-                            <spring:message code="enter.username" var="placeholder"/>
-                            <form:input type='text' id='login' path="login" class="form-control" placeholder='${placeholder}'></form:input>
-                        </div>
-                    </div>
-                    <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                        <form:errors path="login"></form:errors>
-                    </div>
-                    <div class="form-group">
-                        <label for="email" class="col-xs-4 control-label"><spring:message code="users.email"/>:</label>
-                        <div class="col-xs-6">
-                            <spring:message code="enter.email" var="placeholder"/>
-                            <form:input type='text' id='email' path="email" class="form-control" placeholder='${placeholder}'></form:input>
-                        </div>
-                    </div>
-                    <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                        <form:errors path="email"></form:errors>
-                    </div>
-                    <div class="form-group">
-                        <label for="passwordHash" class="col-xs-4 control-label"><spring:message code="users.password"/>:</label>
-                        <div class="col-xs-6">
-                            <spring:message code="enter.password" var="placeholder"/>
-                            <form:input type='password' id='passwordHash' path="passwordHash" class="form-control" placeholder='${placeholder}'></form:input>
-                        </div>
-                    </div>
-                    <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                        <form:errors path="passwordHash"></form:errors>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword" class="col-xs-4 control-label"><spring:message code="users.confirmPassword"/>:</label>
-                        <div class="col-xs-6">
-                            <spring:message code="users.confirmPassword" var="placeholder"/>
-                            <form:input type='password' id='confirmPassword' path="confirmPassword" class="form-control" placeholder='${placeholder}'></form:input>
-                        </div>
-                    </div>
-                    <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                        <form:errors path="confirmPassword"></form:errors>
+                    <div class="col-xs-6 col-md-6 pull-right">
+                        <button type="submit" class="btn btn-large btn-danger pull-right"><spring:message code="profile.signUp"/></button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"><spring:message code="profile.signUp"/></button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><spring:message code="general.cancel"/></button>
-                </div>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            </form:form>
-        </div>
+            </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form:form>
     </div>
 </div>
 <script>${flag}</script>
+
 </body>
 </html>

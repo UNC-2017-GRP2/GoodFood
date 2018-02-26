@@ -80,6 +80,10 @@ public class Constant {
     public static final String SQL_SELECT_OBJECT_BY_ID = "select * from \"OBJECTS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";
     public static final String SQL_SELECT_OBJECT_ID_BY_NAME = "select \"OBJECT_ID\" from \"OBJECTS\" where \"NAME\" = ?";
+    public static final String SQL_SELECT_OBJECT_ID_BY_NAME_AND_TYPE = "select \"OBJECT_ID\" from \"OBJECTS\" where \"NAME\" = ? and \"OBJECT_TYPE_ID\" = ?";
+    public static final String SQL_SELECT_NAME_BY_OBJECT_ID = "select \"NAME\" from \"OBJECTS\" where \"OBJECT_ID\" = ?";
+    public static final String SQL_SELECT_ATTRS_OBJECT_TYPE_ID = "select \"ATTR_ID\" from \"ATTR_OBJECT_TYPES\" where \"OBJECT_TYPE_ID\" = ?";
+    public static final String SQL_SELECT_ATTR_TYPE_ID = "select \"ATTR_TYPE_ID\" from \"ATTRIBUTES\" where \"ATTR_ID\" = ?";
 
     public static final String SQL_SELECT_PARAMETERS_BY_OBJ_ATTR = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
     public static final String SQL_SELECT_PARAMETERS_BY_OBJECT_ID = "select * from \"PARAMETERS\" where \"OBJECT_ID\" = ?";

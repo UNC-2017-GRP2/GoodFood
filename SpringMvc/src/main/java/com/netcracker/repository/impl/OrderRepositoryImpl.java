@@ -94,6 +94,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         return result;
     }
 
+
     @Override
     public Order getOrderById(BigInteger orderId) {
         Order newOrder = null;
@@ -167,7 +168,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                     orderPhone = resultSet.getString("TEXT_VALUE");
                 }
                 if (curAttrId == Constant.ORDER_CREATION_DATE_ATTR_ID){
-                    System.out.println(resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toString());
+                    //System.out.println(resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toString());
                     orderCreationDate = resultSet.getTimestamp("DATE_VALUE").toLocalDateTime();
                 }
             }

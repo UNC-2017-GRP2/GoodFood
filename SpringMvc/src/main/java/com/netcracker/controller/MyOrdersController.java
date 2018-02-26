@@ -1,6 +1,7 @@
 package com.netcracker.controller;
 
 import com.netcracker.config.Constant;
+import com.netcracker.model.Entity;
 import com.netcracker.model.Order;
 import com.netcracker.model.User;
 import com.netcracker.service.OrderService;
@@ -31,6 +32,11 @@ public class MyOrdersController {
     @RequestMapping(value = { "/my-orders"}, method = RequestMethod.GET)
     public ModelAndView myOrdersPage(Principal principal) throws IOException {
         ModelAndView model = new ModelAndView();
+
+        List<Entity> orders = null;
+
+
+
         List<Order> allOrders = null;
         try {
             User user  = userService.getByUsername(principal.getName());
