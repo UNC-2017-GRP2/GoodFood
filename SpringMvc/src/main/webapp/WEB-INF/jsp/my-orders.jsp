@@ -19,15 +19,15 @@
 
 <div class="container main-container">
     <div class="row">
-        <div class="well">
+        <div class="well  orders-group">
             <h1 class="text-center"><spring:message code="general.myOrders"/></h1>
             <div class="list-group">
                 <c:forEach items="${orders}" var="order">
                 <fmt:parseDate value="${ order.orderCreationDate }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime"
                                type="both"/>
-                <div class="container" style="margin-left: 20%;">
+                <div class="container sub-container">
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-12">
                             <c:choose>
                             <c:when test="${order.status.equals('Delivered')}">
                             <div class="panel panel-success">
@@ -86,19 +86,9 @@
                                                     <div class="clearfix"></div>
                                                     <div class="bot-border"></div>
 
-                                                    <div class="col-sm-3 col-xs-3 tital "></div>
-                                                    <div class="col-sm-4 text-right">
+                                                    <div class="col-sm-6 col-xs-6 tital "></div>
+                                                    <div class="col-sm-3 text-right">
                                                         <c:choose>
-                                                            <c:when test="${role.equals('ROLE_COURIER') && order.status.equals('Linked with courier')}">
-                                                                <form action="/my-orders/markAsDeliv/${order.orderId}"
-                                                                      method="post">
-                                                                    <button type="submit" class="btn btn-success">
-                                                                        <spring:message
-                                                                                code="orders.delivered"/></button>
-                                                                    <input type="hidden" name="${_csrf.parameterName}"
-                                                                           value="${_csrf.token}"/>
-                                                                </form>
-                                                            </c:when>
                                                             <c:when test="${role.equals('ROLE_USER')
                                 && (order.status.equals('Linked with courier') || order.status.equals('Created'))
                                 && (order.orderCreationDate.until(now, chr) > start_exp_time)}">
@@ -113,8 +103,8 @@
                                                             <c:otherwise></c:otherwise>
                                                         </c:choose>
                                                     </div>
-                                                    <div class="col-sm-1"></div>
-                                                    <div class="col-sm-4 text-left">
+                                                    <%--<div class="col-sm-1"></div>--%>
+                                                    <div class="col-sm-3 text-center">
                                                         <c:choose>
                                                             <c:when test="${role.equals('ROLE_USER')
                                 && (order.status.equals('Linked with courier') || order.status.equals('Created'))}">
@@ -122,16 +112,6 @@
                                                                       method="post">
                                                                     <button type="submit" class="btn btn-danger">
                                                                         <spring:message code="orders.cancel"/></button>
-                                                                    <input type="hidden" name="${_csrf.parameterName}"
-                                                                           value="${_csrf.token}"/>
-                                                                </form>
-                                                            </c:when>
-                                                            <c:when test="${role.equals('ROLE_COURIER')
-                                && (order.status.equals('Linked with courier') || order.status.equals('Created'))}">
-                                                                <form action="/my-orders/remove/${order.orderId}"
-                                                                      method="post">
-                                                                    <button type="submit" class="btn btn-danger">
-                                                                        <spring:message code="orders.drop"/></button>
                                                                     <input type="hidden" name="${_csrf.parameterName}"
                                                                            value="${_csrf.token}"/>
                                                                 </form>
@@ -152,7 +132,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <%--<div>
@@ -217,6 +196,5 @@
 
         </c:forEach>
     </table>--%>
-</div>
 </body>
 </html>

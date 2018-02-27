@@ -254,7 +254,7 @@ public class AbstractRepositoryImpl{
         }
     }
 
-    protected void updateReferenceParameter(BigInteger objectId, long attrId, long parameter){
+    protected void updateReferenceParameter(BigInteger objectId, long attrId, BigInteger parameter){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_REFERENCE_PARAMETERS);
             preparedStatement.setObject(1, parameter, numericType);
@@ -276,5 +276,21 @@ public class AbstractRepositoryImpl{
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    protected boolean isReferenceParameterExist(BigInteger objectId, long attrId){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_PARAMETERS_BY_OBJ_ATTR);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return false;
     }
 }

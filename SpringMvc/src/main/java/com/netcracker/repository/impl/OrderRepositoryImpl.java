@@ -186,7 +186,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     public void changeOrderStatus(BigInteger orderId, long statusId) {
         updateEnumParameter(orderId, Constant.STATUS_ATTR_ID, statusId);
         if (statusId == Constant.STATUS_CREATED_ENUM_ID) {
-            updateReferenceParameter(orderId, Constant.COURIER_ATTR_ID, 0);
+            updateReferenceParameter(orderId, Constant.COURIER_ATTR_ID, new BigInteger("0"));
         }
     }
 
@@ -203,8 +203,11 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             }
             preparedStatement.close();
             resultSet.close();
-
-            saveReferenceParameter(orderId,Constant.COURIER_ATTR_ID,courierId);
+            if (isReferenceParameterExist(orderId,Constant.COURIER_ATTR_ID)){
+                updateReferenceParameter(orderId,Constant.COURIER_ATTR_ID,courierId);
+            }else{
+                saveReferenceParameter(orderId,Constant.COURIER_ATTR_ID,courierId);
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

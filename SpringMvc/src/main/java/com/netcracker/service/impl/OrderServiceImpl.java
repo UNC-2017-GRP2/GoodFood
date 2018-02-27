@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -64,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
                 allFreeOrders.add(newOrder);
             }
         }
+
         return allFreeOrders;
     }
 
@@ -79,6 +81,34 @@ public class OrderServiceImpl implements OrderService {
         }
         return allOrdersByUser;
     }
+
+    @Override
+    public List<Order> getCompletedOrdersByCourier(String username) {
+        BigInteger userId = userRepository.getUserByUsername(username).getUserId();
+        List<Order> allOrders = getAllOrders();
+        List<Order> completedOrders = new ArrayList<>();
+        for (Order newOrder : allOrders) {
+            if (newOrder.getCourierId().equals(userId) && newOrder.getStatus().equals("Delivered") || newOrder.getStatus().equals("Not delivered") || newOrder.getStatus().equals("Cancelled")) {
+                completedOrders.add(newOrder);
+            }
+        }
+        return completedOrders;
+    }
+
+    @Override
+    public List<Order> getNotCompletedOrdersByCourier(String username) {
+        BigInteger userId = userRepository.getUserByUsername(username).getUserId();
+        List<Order> allOrders = getAllOrders();
+        List<Order> withCourier = new ArrayList<>();
+        for (Order newOrder : allOrders) {
+            if (newOrder.getCourierId().equals(userId) && newOrder.getStatus().equals("Linked with courier")) {
+                withCourier.add(newOrder);
+            }
+        }
+        return withCourier;
+    }
+
+
   /*  @Override
     public List<Order> getAllOrdersByUser(String username) {
         BigInteger userId = userRepository.getUserByUsername(username).getUserId();

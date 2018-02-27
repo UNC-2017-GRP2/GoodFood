@@ -34,8 +34,10 @@ public class HomeController {
             if (httpSession.getAttribute("username") == null){
                 httpSession.setAttribute("username",principal.getName());
             }
-            if (httpSession.getAttribute("basketItems") == null){
-                httpSession.setAttribute("basketItems", new ArrayList<Item>());
+            if (!user.getRole().equals("ROLE_COURIER")){
+                if (httpSession.getAttribute("basketItems") == null){
+                    httpSession.setAttribute("basketItems", new ArrayList<Item>());
+                }
             }
             if (httpSession.getAttribute("userAddresses") == null){
                 httpSession.setAttribute("userAddresses", user.getAddresses());
@@ -43,7 +45,12 @@ public class HomeController {
             if (httpSession.getAttribute("userPhone") == null){
                 httpSession.setAttribute("userPhone", user.getPhoneNumber());
             }
+            if (user.getRole().equals("ROLE_COURIER")) {
+                model.setViewName("redirect:/my-orders");
+                return model;
+            }
         }
+
         List<Item> currentItems = itemService.getItemsByCategory(value, locale);
         if(value == null){
             model.addObject("value", "Pizza");
@@ -55,6 +62,7 @@ public class HomeController {
 
         }
         model.addObject("items", currentItems);
+
         //model.addObject("notification", null);
         model.setViewName("home");
         return model;

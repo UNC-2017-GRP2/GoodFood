@@ -34,9 +34,6 @@ public class MyOrdersController {
         ModelAndView model = new ModelAndView();
 
         List<Entity> orders = null;
-
-
-
         List<Order> allOrders = null;
         try {
             User user  = userService.getByUsername(principal.getName());
@@ -50,7 +47,8 @@ public class MyOrdersController {
         if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
             //model.addObject("remove","Drop the order");
             model.addObject("role", "ROLE_COURIER");
-            allOrders = orderService.getAllOrdersByCourier(principal.getName());
+            //allOrders = orderService.getAllOrdersByCourier(principal.getName());
+            allOrders = orderService.getCompletedOrdersByCourier(principal.getName());
         }
         else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
             //model.addObject("remove","Delete the order");
@@ -73,9 +71,6 @@ public class MyOrdersController {
     public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
         Order order = orderService.getOrderById(id);
         if (order != null){
-            if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
-                orderService.changeOrderStatus(id, Constant.STATUS_CREATED_ENUM_ID); //created
-            }
             if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
                 orderService.changeOrderStatus(id, Constant.STATUS_CANCELLED_ENUM_ID); //cancelled
             }
@@ -83,14 +78,6 @@ public class MyOrdersController {
         return "redirect:/my-orders";
     }
 
-    @RequestMapping(value = { "/my-orders/markAsDeliv/{id}"}, method = RequestMethod.POST)
-    public String markOrderAsDelivered(@PathVariable BigInteger id) throws IOException {
-        Order order = orderService.getOrderById(id);
-        if (order != null){
-                orderService.changeOrderStatus(id, Constant.STATUS_DELIVERED_ENUM_ID); //delivered
-        }
-        return "redirect:/my-orders";
-    }
 
     @RequestMapping(value = { "/my-orders/markAsExp/{id}"}, method = RequestMethod.POST)
     public String markOrderAsExpired(@PathVariable BigInteger id) throws IOException {

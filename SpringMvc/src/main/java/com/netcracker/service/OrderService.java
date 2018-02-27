@@ -18,6 +18,8 @@ public interface OrderService {
     //List<Order> getAllOrdersByUser(String username);
     Order getOrderById(BigInteger orderId);
     List<Order> getAllOrdersByCourier(String username);
+    List<Order> getCompletedOrdersByCourier(String username);
+    List<Order> getNotCompletedOrdersByCourier(String username);
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
     List<Order> getAllOrders();
