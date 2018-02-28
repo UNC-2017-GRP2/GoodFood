@@ -60,7 +60,7 @@ public class Entity {
 
     public Object getParameterById(long attrId){
         for(MapParameter param : parameters){
-            if (param.getAtttributeId() == attrId){
+            if (param.getAttributeId() == attrId){
                 return param.getValue();
             }
         }
@@ -69,7 +69,7 @@ public class Entity {
     public List<Object> getListParametersById(long attrId){
         List<Object> params = new ArrayList<>();
         for(MapParameter param : parameters){
-            if (param.getAtttributeId() == attrId){
+            if (param.getAttributeId() == attrId){
                 params.add(param.getValue());
             }
         }

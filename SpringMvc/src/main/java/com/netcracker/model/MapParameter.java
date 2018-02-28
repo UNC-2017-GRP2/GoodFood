@@ -1,24 +1,24 @@
 package com.netcracker.model;
 
 public class MapParameter {
-    private long atttributeId;
+    private long attributeId;
     private Object value;
 
-    public MapParameter(long atttributeId, Object value) {
-        this.atttributeId = atttributeId;
+    public MapParameter(long attributeId, Object value) {
+        this.attributeId = attributeId;
         this.value = value;
     }
 
-    public long getAtttributeId() {
-        return atttributeId;
+    public long getAttributeId() {
+        return attributeId;
     }
 
     public Object getValue() {
         return value;
     }
 
-    public void setAtttributeId(long atttributeId) {
-        this.atttributeId = atttributeId;
+    public void setAttributeId(long attributeId) {
+        this.attributeId = attributeId;
     }
 
     public void setValue(Object value) {

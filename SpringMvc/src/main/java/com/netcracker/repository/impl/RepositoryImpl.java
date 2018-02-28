@@ -6,6 +6,7 @@ import com.netcracker.model.Entity;
 import com.netcracker.model.MapParameter;
 import com.netcracker.repository.Repository;
 import org.postgresql.geometric.PGpoint;
+import org.springframework.cache.support.NullValue;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
@@ -36,6 +37,12 @@ public class RepositoryImpl implements Repository {
         return null;
     }
 
+    /**
+     * GET OBJECTS
+     * @param objectId
+     * @param objectTypeId
+     * @return
+     */
     @Override
     public Entity getEntityById(BigInteger objectId, long objectTypeId){
         try {
@@ -100,7 +107,6 @@ public class RepositoryImpl implements Repository {
             while (resultSet.next()){
                 BigInteger objectId = new BigInteger(resultSet.getString("OBJECT_ID"));
                 String name = resultSet.getString("NAME");
-                // Map<Long, Object> params = getParameters(objectId, attrs);
                 List<MapParameter> params = getParameters(objectId, attrs);
                 Entity entity = new Entity(objectId, objectTypeId, name, params);
                 entities.add(entity);
@@ -125,15 +131,16 @@ public class RepositoryImpl implements Repository {
             while(resultSet.next()){
                 long attrId = resultSet.getLong("ATTR_ID");
                 long attrTypeId = 0;
-                PreparedStatement ps = connection.prepareStatement(Constant.SQL_SELECT_ATTR_TYPE_ID);
+                /*PreparedStatement ps = connection.prepareStatement(Constant.SQL_SELECT_ATTR_TYPE_ID);
                 ps.setLong(1, attrId);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()){
                     attrTypeId = rs.getLong("ATTR_TYPE_ID");
-                }
+                }*/
+                attrTypeId = getAttrTypeId(attrId);
                 attrs.put(attrId, attrTypeId);
-                rs.close();
-                ps.close();
+                /*rs.close();
+                ps.close();*/
             }
             resultSet.close();
             preparedStatement.close();
@@ -144,30 +151,40 @@ public class RepositoryImpl implements Repository {
         }
     }
 
+    private long getAttrTypeId(long attrId) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(Constant.SQL_SELECT_ATTR_TYPE_ID);
+        ps.setLong(1, attrId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()){
+            return rs.getLong("ATTR_TYPE_ID");
+        }
+        return 0;
+    }
+
     private List<MapParameter> getParameters(BigInteger objectId, Map<Long,Long> attrs) throws SQLException {
         // Map<Long, Object> parameters = new HashMap<>();
         List<MapParameter> parameters = new ArrayList<>();
         for(Map.Entry<Long, Long> attr : attrs.entrySet()){
             ResultSet resultSet = getParameter(objectId, attr.getKey());
-            Long attr_type = attr.getValue();
+            Long attrType = attr.getValue();
             Object attrValue = null;
             while (resultSet.next()){
-                if (attr_type == Constant.TEXT_ATTR_TYPE_ID || attr_type == Constant.NUMBER_ATTR_TYPE_ID) {
+                if (attrType == Constant.TEXT_ATTR_TYPE_ID || attrType == Constant.NUMBER_ATTR_TYPE_ID) {
                     attrValue = resultSet.getString("TEXT_VALUE");
                 }
-                /*if (attr_type == Constant.NUMBER_ATTR_TYPE_ID) {
+                /*if (attrType == Constant.NUMBER_ATTR_TYPE_ID) {
                     attrValue = resultSet.getString("NUMBER_VALUE");
                 }*/
-                if (attr_type == Constant.REFERENCE_ATTR_TYPE_ID) {
+                if (attrType == Constant.REFERENCE_ATTR_TYPE_ID) {
                     attrValue = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
                 }
-                if (attr_type == Constant.DATE_ATTR_TYPE_ID) {
+                if (attrType == Constant.DATE_ATTR_TYPE_ID) {
                     attrValue = (resultSet.getTimestamp("DATE_VALUE")!=null)?resultSet.getTimestamp("DATE_VALUE").toLocalDateTime():null;
                 }
-                if (attr_type == Constant.ENUM_VALUE_ATTR_TYPE_ID) {
+                if (attrType == Constant.ENUM_VALUE_ATTR_TYPE_ID) {
                     attrValue = getEnumValueById(resultSet.getLong("ENUM_VALUE"));
                 }
-                if (attr_type == Constant.POINT_VALUE_ATTR_TYPE_ID) {
+                if (attrType == Constant.POINT_VALUE_ATTR_TYPE_ID) {
                     PGpoint address = (PGpoint)resultSet.getObject("POINT_VALUE");
                     attrValue = (address != null)?new Address(address.x, address.y):null;
                     //attrValue = new Address(address.x, address.y);
@@ -207,4 +224,169 @@ public class RepositoryImpl implements Repository {
         }
         return null;
     }
+
+
+    /**
+     * SAVE OBJECT
+     * @param entity
+     */
+    private void saveObject(Entity entity){
+        try{
+            BigInteger objectId = getObjectId();
+            //OBJECTS
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_OBJECTS);
+            preparedStatement.setString(1, entity.getName());
+            preparedStatement.setObject(2, objectId, numericType);
+            preparedStatement.setObject(3, new BigInteger("0"), numericType);
+            preparedStatement.setLong(4, entity.getObjectTypeId());
+            preparedStatement.executeUpdate();
+            //PARAMETERS
+            for(MapParameter parameter : entity.getParameters()){
+                if (parameter.getAttributeId() == Constant.TEXT_ATTR_TYPE_ID || parameter.getAttributeId() == Constant.NUMBER_ATTR_TYPE_ID){
+                    saveTextParameter(objectId, parameter.getAttributeId(), (String) parameter.getValue());
+                }
+                if (parameter.getAttributeId() == Constant.REFERENCE_ATTR_TYPE_ID){
+                    saveReferenceParameter(objectId, parameter.getAttributeId(), (BigInteger) parameter.getValue());
+                }
+                if (parameter.getAttributeId() == Constant.DATE_ATTR_TYPE_ID) {
+                    saveDateParameter(objectId, parameter.getAttributeId(), (Timestamp) parameter.getValue());
+                }
+                if (parameter.getAttributeId() == Constant.ENUM_VALUE_ATTR_TYPE_ID) {
+                    saveEnumValue(objectId, parameter.getAttributeId(), (Long) parameter.getValue());
+                }
+                if (parameter.getAttributeId() == Constant.POINT_VALUE_ATTR_TYPE_ID) {
+                    if (parameter.getValue() instanceof Address){
+                        Address address = (Address) parameter.getValue();
+                        if (address != null){
+                            savePointParameter(objectId, parameter.getAttributeId(), address.getLatitude(), address.getLongitude());
+                        }else{
+                            saveNullPointParameter(objectId, parameter.getAttributeId());
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void saveTextParameter(BigInteger objectId, long attrId, String parameter) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.setString(3, parameter);
+            preparedStatement.setDate(4, null);
+            preparedStatement.setObject(5, 0, numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.setObject(7,null);
+            preparedStatement.executeUpdate();
+        } catch (Exception e){
+            System.out.println(e.getMessage() + " SAVE_PARAMETER");
+        }
+    }
+
+    private void saveDateParameter(BigInteger objectId, long attrId, Timestamp parameter) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.setString(3, null);
+            preparedStatement.setTimestamp(4, parameter);
+            preparedStatement.setObject(5, 0, numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.setObject(7,null);
+            preparedStatement.executeUpdate();
+        } catch (Exception e){
+            System.out.println(e.getMessage() + " SAVE_PARAMETER");
+        }
+    }
+
+    private void saveReferenceParameter(BigInteger objectId, long attrId, BigInteger parameter) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.setString(3, null);
+            preparedStatement.setTimestamp(4, null);
+            preparedStatement.setObject(5, parameter, numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.setObject(7,null);
+            preparedStatement.executeUpdate();
+        } catch (Exception e){
+            System.out.println(e.getMessage() + " SAVE_PARAMETER");
+        }
+    }
+
+
+    private void saveEnumValue(BigInteger objectId, long attrId, long parameter){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.setString(3, null);
+            preparedStatement.setDate(4, null);
+            preparedStatement.setObject(5, 0, numericType);
+            preparedStatement.setLong(6, parameter);
+            preparedStatement.setObject(7,null);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + " SAVE_PARAMETER");
+        }
+    }
+
+    private void savePointParameter(BigInteger objectId, long attrId, double x, double y) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS_POINT_VALUE);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.setString(3, null);
+            preparedStatement.setTimestamp(4, null);
+            preparedStatement.setObject(5, 0, numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.setDouble(7, x);
+            preparedStatement.setDouble(8, y);
+            preparedStatement.executeUpdate();
+        } catch (Exception e){
+            System.out.println(e.getMessage() + " SAVE_PARAMETER");
+        }
+    }
+
+    private void saveNullPointParameter(BigInteger objectId, long attrId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.setString(3, null);
+            preparedStatement.setTimestamp(4, null);
+            preparedStatement.setObject(5, 0, numericType);
+            preparedStatement.setLong(6, 0);
+            preparedStatement.setObject(7, null);
+            preparedStatement.executeUpdate();
+        } catch (Exception e){
+            System.out.println(e.getMessage() + " SAVE_PARAMETER");
+        }
+    }
+
+    /**
+     * UPDATE OBJECTS
+     * @param objectId
+     * @param newName
+     */
+    private void updateObjectName (BigInteger objectId, String newName){
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_OBJECT_NAME);
+            preparedStatement.setString(1,newName);
+            preparedStatement.setObject(2,objectId,numericType);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 }
