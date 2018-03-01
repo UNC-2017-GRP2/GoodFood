@@ -230,7 +230,7 @@ public class RepositoryImpl implements Repository {
      * SAVE OBJECT
      * @param entity
      */
-    private void saveObject(Entity entity){
+    private void saveEntity(Entity entity){
         try{
             BigInteger objectId = getObjectId();
             //OBJECTS
@@ -240,6 +240,7 @@ public class RepositoryImpl implements Repository {
             preparedStatement.setObject(3, new BigInteger("0"), numericType);
             preparedStatement.setLong(4, entity.getObjectTypeId());
             preparedStatement.executeUpdate();
+            preparedStatement.close();
             //PARAMETERS
             for(MapParameter parameter : entity.getParameters()){
                 if (parameter.getAttributeId() == Constant.TEXT_ATTR_TYPE_ID || parameter.getAttributeId() == Constant.NUMBER_ATTR_TYPE_ID){
@@ -252,7 +253,7 @@ public class RepositoryImpl implements Repository {
                     saveDateParameter(objectId, parameter.getAttributeId(), (Timestamp) parameter.getValue());
                 }
                 if (parameter.getAttributeId() == Constant.ENUM_VALUE_ATTR_TYPE_ID) {
-                    saveEnumValue(objectId, parameter.getAttributeId(), (Long) parameter.getValue());
+                    saveEnumValue(objectId, parameter.getAttributeId(), getEnumIdByValue(parameter.getValue()));
                 }
                 if (parameter.getAttributeId() == Constant.POINT_VALUE_ATTR_TYPE_ID) {
                     if (parameter.getValue() instanceof Address){
@@ -268,6 +269,21 @@ public class RepositoryImpl implements Repository {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private long getEnumIdByValue (Object enumValue){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_ENUM_ID_BY_ENUM_VALUE);
+            preparedStatement.setString(1, (String) enumValue);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                return resultSet.getLong("ENUM_ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return 0;
     }
 
     private void saveTextParameter(BigInteger objectId, long attrId, String parameter) {
@@ -369,24 +385,178 @@ public class RepositoryImpl implements Repository {
     }
 
     /**
-     * UPDATE OBJECTS
-     * @param objectId
-     * @param newName
+     *
+     * @param oldEntity
+     * @param newEntity
      */
-    private void updateObjectName (BigInteger objectId, String newName){
-        PreparedStatement preparedStatement = null;
+     public void updateEntity (Entity oldEntity, Entity newEntity) {
         try {
-            preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_OBJECT_NAME);
-            preparedStatement.setString(1,newName);
-            preparedStatement.setObject(2,objectId,numericType);
+            //OBJECTS
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_OBJECT_NAME);
+            preparedStatement.setString(1, newEntity.getName());
+            preparedStatement.setObject(2, oldEntity.getObjectId(), numericType);
             preparedStatement.executeUpdate();
+
+            //PARAMETERS
+            for(MapParameter parameter : newEntity.getParameters()){
+                if (parameter.getAttributeId() == Constant.TEXT_ATTR_TYPE_ID || parameter.getAttributeId() == Constant.NUMBER_ATTR_TYPE_ID){
+                    updateTextParameter(oldEntity.getObjectId(), parameter.getAttributeId(), (String) parameter.getValue());
+                }
+                if (parameter.getAttributeId() == Constant.REFERENCE_ATTR_TYPE_ID){
+                    updateReferenceParameter(oldEntity.getObjectId(), parameter.getAttributeId(), (BigInteger) parameter.getValue());
+                }
+                if (parameter.getAttributeId() == Constant.DATE_ATTR_TYPE_ID) {
+                    updateDateParameter(oldEntity.getObjectId(), parameter.getAttributeId(), (Timestamp) parameter.getValue());
+                }
+                if (parameter.getAttributeId() == Constant.ENUM_VALUE_ATTR_TYPE_ID) {
+                    updateEnumParameter(oldEntity.getObjectId(), parameter.getAttributeId(), getEnumIdByValue(parameter.getValue()));
+                }
+               /* if (parameter.getAttributeId() == Constant.POINT_VALUE_ATTR_TYPE_ID) {
+
+                }*/
+            }
+            updatePointListParameters(oldEntity.getObjectId(), Constant.POINT_VALUE_ATTR_TYPE_ID, newEntity.getListParametersById(Constant.POINT_VALUE_ATTR_TYPE_ID));
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    private void updateTextParameter(BigInteger objectId, long attrId, String parameter){
+        try {
+            //если параметр был, то обновляем,иначе добавим
+            if (checkAttribute(objectId, attrId)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_TEXT_PARAMETERS);
+                preparedStatement.setString(1, (parameter == "")?null:parameter);
+                preparedStatement.setObject(2, objectId,numericType);
+                preparedStatement.setLong(3, attrId);
+                preparedStatement.executeUpdate();
+            }else{
+                saveTextParameter(objectId,attrId,parameter);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void updateDateParameter(BigInteger objectId, long attrId, Timestamp parameter){
+        try {
+            if (checkAttribute(objectId, attrId)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_DATE_PARAMETERS);
+                preparedStatement.setTimestamp(1, (parameter!=null)?new java.sql.Timestamp(parameter.getTime()):null);
+                preparedStatement.setObject(2,objectId, numericType);
+                preparedStatement.setLong(3, attrId);
+                preparedStatement.executeUpdate();
+            }else{
+                saveDateParameter(objectId,attrId,parameter);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void updateReferenceParameter(BigInteger objectId, long attrId, BigInteger parameter) {
+        try {
+            if (checkAttribute(objectId, attrId)){
+                PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_REFERENCE_PARAMETERS);
+                preparedStatement.setObject(1, parameter, numericType);
+                preparedStatement.setObject(2, objectId, numericType);
+                preparedStatement.setLong(3, attrId);
+                preparedStatement.executeUpdate();
+            } else {
+                saveReferenceParameter(objectId, attrId, parameter);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void updateEnumParameter(BigInteger objectId, long attrId, long parameter){
+        try {
+            if (checkAttribute(objectId, attrId)){
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_ENUM_PARAMETERS);
+            preparedStatement.setObject(1, parameter, numericType);
+            preparedStatement.setObject(2, objectId, numericType);
+            preparedStatement.setLong(3, attrId);
+            preparedStatement.executeUpdate();
+            } else {
+                saveEnumValue(objectId, attrId, parameter);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void updatePointListParameters(BigInteger objectId, long attrId, Object parameters){
+
+         if (parameters instanceof List){
+             removeParameter(objectId, attrId);
+            for(Address item : (List<Address>)parameters){
+                if (item != null){
+                    savePointParameter(objectId, attrId, item.getLatitude(), item.getLongitude());
+                }else{
+                    saveNullPointParameter(objectId, attrId);
+                }
+            }
+         }
+    }
+
+    private void updatePointParameter(BigInteger objectId, long attrId, double x, double y){
+        try {
+            if (checkAttribute(objectId, attrId)){
+                PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_POINT_PARAMETERS);
+                preparedStatement.setDouble(1, x);
+                preparedStatement.setDouble(2, y);
+                preparedStatement.setObject(3, objectId, numericType);
+                preparedStatement.setLong(4, attrId);
+                preparedStatement.executeUpdate();
+            } else {
+                savePointParameter(objectId, attrId, x, y);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void updateNullPointParameter(BigInteger objectId, long attrId){
+        try {
+            if (checkAttribute(objectId, attrId)){
+                PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_NULL_POINT_PARAMETERS);
+                preparedStatement.setObject(1, null);
+                preparedStatement.setObject(2, objectId, numericType);
+                preparedStatement.setLong(3, attrId);
+                preparedStatement.executeUpdate();
+            } else {
+                saveNullPointParameter(objectId, attrId);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 
 
 
+    private boolean checkAttribute(BigInteger objectId, long attrId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_PARAMETERS_BY_OBJ_ATTR);
+        preparedStatement.setObject(1,objectId,numericType);
+        preparedStatement.setLong(2,attrId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return (resultSet.next())? true:false;
+    }
 
+
+    /**
+     * REMOVE
+     * @param objectId
+     * @param attrId
+     */
+    private void removeParameter(BigInteger objectId, long attrId){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_FROM_PARAMETERS);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
 }

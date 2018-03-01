@@ -95,6 +95,7 @@ public class Constant {
 
     public static final String SQL_SELECT_ENUMS = "select * from \"ENUMS\" where \"ENUM_ID\" = ?";
     public static final String SQL_SELECT_ENUM_NAME_BY_ID = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";
+    public static final String SQL_SELECT_ENUM_ID_BY_ENUM_VALUE = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = ?";
     public static final String SQL_SELECT_ROLE_USER_ENUM_ID = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = \'ROLE_USER\'";
 
     public static final String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
@@ -108,6 +109,9 @@ public class Constant {
     public static final String SQL_UPDATE_DATE_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"DATE_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     public static final String SQL_UPDATE_REFERENCE_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"REFERENCE_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     public static final String SQL_UPDATE_ENUM_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"ENUM_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
+    public static final String SQL_UPDATE_POINT_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"POINT_VALUE\"=(?,?) WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
+    public static final String SQL_UPDATE_NULL_POINT_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"POINT_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
+
 
     public static final String SQL_DELETE_FROM_PARAMETERS = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
 }
