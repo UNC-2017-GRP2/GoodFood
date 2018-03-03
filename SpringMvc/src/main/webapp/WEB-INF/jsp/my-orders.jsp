@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/resources/css/my-orders-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resources/js/my-orders-js.js"></script>
 </head>
 
 <jsp:include page="navbar.jsp"/>
@@ -45,6 +46,8 @@
                                                 <div class="col-md-4">
                                                     <h4>${order.status}</h4>
                                                 </div>
+                                                <div class="col-md-7"></div>
+                                                <div class="col-md-1">▼</div>
                                             </div>
                                         </div>
                                         <div class="panel-body">

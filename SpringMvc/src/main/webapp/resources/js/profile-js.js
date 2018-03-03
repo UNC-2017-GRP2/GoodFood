@@ -183,7 +183,7 @@ $(document).ready(function () {
         );
     });
 
-    function ValidateDate(date_fl){
+/*    function ValidateDate(date_fl){
         var str = date_fl;
         function TstDate(){
             var str2 = str.split("-");
@@ -209,5 +209,5 @@ $(document).ready(function () {
         {
             alert("no");
         }
-    }
+    }*/
 });

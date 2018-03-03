@@ -32,33 +32,27 @@ public class MyOrdersController {
     @RequestMapping(value = { "/my-orders"}, method = RequestMethod.GET)
     public ModelAndView myOrdersPage(Principal principal) throws IOException {
         ModelAndView model = new ModelAndView();
-
-        List<Entity> orders = null;
         List<Order> allOrders = null;
         try {
             User user  = userService.getByUsername(principal.getName());
             if (user != null){
                 model.addObject("user", user);
             }
-            //model.addObject("nullParameter", "Отсутствует");
         }catch (Exception e){
             System.out.println("method homePage:" + e.getMessage());
         }
         if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
-            //model.addObject("remove","Drop the order");
             model.addObject("role", "ROLE_COURIER");
-            //allOrders = orderService.getAllOrdersByCourier(principal.getName());
             allOrders = orderService.getCompletedOrdersByCourier(principal.getName());
         }
         else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
-            //model.addObject("remove","Delete the order");
             model.addObject("role", "ROLE_USER");
             allOrders = orderService.getOrdersByUsername(principal.getName());
+
         }
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
         model.addObject("start_exp_time", Constant.START_EXPIRATION_TIME);
-        //model.addObject("rub","\u20BD");
         model.setViewName("my-orders");
 
         if (allOrders != null && allOrders.size()!=0){

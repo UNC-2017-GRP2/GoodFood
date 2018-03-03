@@ -17,10 +17,3 @@
 .sub-container{
     width: 100%;
 }
-.panel-heading{
-    cursor: pointer;
-}
-.panel-body{
-    display: none;
-}
-

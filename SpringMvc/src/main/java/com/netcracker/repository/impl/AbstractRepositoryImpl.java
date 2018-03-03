@@ -137,6 +137,7 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(5, 0, numericType);
             preparedStatement.setLong(6, 0);
             preparedStatement.setObject(7,null);
+            preparedStatement.setObject(8,null);
             preparedStatement.executeUpdate();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
@@ -153,6 +154,7 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(5, 0, numericType);
             preparedStatement.setLong(6, 0);
             preparedStatement.setObject(7,null);
+            preparedStatement.setObject(8,null);
             preparedStatement.executeUpdate();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
@@ -169,6 +171,7 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(5, parameter, numericType);
             preparedStatement.setLong(6, 0);
             preparedStatement.setObject(7,null);
+            preparedStatement.setObject(8,null);
             preparedStatement.executeUpdate();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
@@ -186,23 +189,24 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(5, 0, numericType);
             preparedStatement.setLong(6, parameter);
             preparedStatement.setObject(7,null);
+            preparedStatement.setObject(8,null);
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
         }
     }
 
-    protected void savePointParameter(BigInteger objectId, long attrId, double x, double y) {
+    protected void savePointParameter(BigInteger objectId, long attrId, Object x, Object y) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS_POINT_VALUE);
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
             preparedStatement.setString(3, null);
             preparedStatement.setTimestamp(4, null);
             preparedStatement.setObject(5, 0, numericType);
             preparedStatement.setLong(6, 0);
-            preparedStatement.setDouble(7, x);
-            preparedStatement.setDouble(8, y);
+            preparedStatement.setObject(7, x);
+            preparedStatement.setObject(8, y);
             preparedStatement.executeUpdate();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");

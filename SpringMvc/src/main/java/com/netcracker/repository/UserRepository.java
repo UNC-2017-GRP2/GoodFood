@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface UserRepository {
     User getUserByUsername(String username);
+    User getUserById(BigInteger userId);
     List<User> getAllUsers();
     void saveUser(User user);
     void updateUser(User oldUser, User newUser);

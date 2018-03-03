@@ -16,8 +16,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Override
     public User getByUsername(String username){
         return userRepository.getUserByUsername(username);
+    }
+
+    @Override
+    public User getUserById(BigInteger userId) {
+        return userRepository.getUserById(userId);
     }
 
     @Override
