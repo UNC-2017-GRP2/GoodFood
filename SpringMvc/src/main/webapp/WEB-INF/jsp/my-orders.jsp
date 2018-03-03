@@ -47,7 +47,7 @@
                                                     <h4>${order.status}</h4>
                                                 </div>
                                                 <div class="col-md-7"></div>
-                                                <div class="col-md-1">▼</div>
+                                                <div class="col-md-1 text-center row-down">▼</div>
                                             </div>
                                         </div>
                                         <div class="panel-body">
