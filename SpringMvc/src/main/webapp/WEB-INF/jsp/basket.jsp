@@ -107,7 +107,7 @@
                         </li>
                     </ul>
                 </form>
-                <form id="payment" name="payment" method="post" action="https://sci.interkassa.com/" enctype="utf-8">
+            <%--    <form id="payment" name="payment" method="post" action="https://sci.interkassa.com/" enctype="utf-8">
                     <input type="hidden" name="ik_co_id" value="5a7b3a4b3c1eaf856c8b4567"/>
                     <input type="hidden" name="ik_pm_no" value="ID_4233"/>
                     <input type="hidden" name="ik_am" value="100.00"/>
@@ -115,7 +115,7 @@
                     <input type="hidden" name="ik_desc" value="Event Description"/>
                     <input type="hidden" name="ik_exp" value="2018-02-16"/>
                     <input type="submit" value="Pay">
-                </form>
+                </form>--%>
                 <form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">
                     <input type="hidden" name="receiver" value="410016165222018">
                     <input type="hidden" name="formcomment" value="ProjectUNC">
@@ -135,6 +135,18 @@
                 </form>
                 <p>К сумме добавится комиссия платежной системы (+0.5% Яндекс, +2% банковская карта)</p>
 
+                <form method="POST" action="https://merchant.webmoney.ru/lmi/payment_utf.asp" accept-charset="utf-8">
+                <p>
+                        <input type="hidden" name="LMI_PAYEE_PURSE" value="R648518292195">
+                        <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="${totalOrder}">
+                        <input type="hidden" name="LMI_PAYMENT_NO" value="1531">
+                        <input type="hidden" name="LMI_PAYMENT_DESC" value="test">
+                        <input type="hidden" name="LANG" value="ru-RU">
+                    </p>
+                    <p>
+                        <input type="submit" value="submit">
+                    </p>
+                </form>
 
             </div>
         </div>

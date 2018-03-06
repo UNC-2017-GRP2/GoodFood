@@ -1,4 +1,4 @@
-<!-- pay.html -->
+<!-- pay.jsp -->
 <html>
 <head>
     <title>Pay</title>

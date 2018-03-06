@@ -1,4 +1,4 @@
-<!-- success.html -->
+<!-- success.jsp -->
 <html>
 <head>
     <title>Success</title>

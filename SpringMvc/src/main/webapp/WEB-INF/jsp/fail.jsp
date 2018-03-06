@@ -1,4 +1,4 @@
-<!-- fail.html -->
+<!-- fail.jsp -->
 <html>
 <head>
     <title>Fail</title>
