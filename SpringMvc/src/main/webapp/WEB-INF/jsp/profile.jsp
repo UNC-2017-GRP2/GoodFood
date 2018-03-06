@@ -35,103 +35,141 @@
 
 <jsp:include page="navbar.jsp"/>
 
-<div class="container" style="margin-left: 25%;">
-    <div class="row">
-        <div class="col-md-7">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h4><spring:message code="general.profile"/></h4>
-                        </div>
-                        <div class="col-md-4 col-md-offset-4" style="text-align: right;">
-                            <button type="button" class="btn btn-default" data-toggle="modal"
-                                    data-target="#formEditProfileModal"><spring:message code="profile.edit"/>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <div class="box box-info">
-                        <div class="box-body">
-                            <div class="col-sm-6">
-                                <spring:message code="profile.photo" var="placeholder"/>
-                                <div align="center"><img alt='${placeholder}'
-                                                         src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg"
-                                                         id="profile-image1" class="img-circle img-responsive">
-                                    <input id="profile-image-upload" class="hidden" type="file">
-                                    <div style="color:#999;"><spring:message code="profile.changePhoto"/></div>
-                                    <!--Upload Image Js And Css-->
+<jsp:include page="navbar.jsp"/>
+
+<div class="blog-section paddingTB60 bg-grey ">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-12">
+                <div class="site-heading">
+                    <div class="container">
+                        <div class="row">
+                            <h1 class="text-center"><spring:message code="general.profile"/></h1>
+                            <div class="border text-center"></div>
+                            <div class="content">
+
+                                <div class="container container-prof text-center">
+                                    <div class="avatar-flip">
+                                        <img src="https://usercontent2.hubstatic.com/4050473_f520.jpg">
+                                        <%--<img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" height="150" width="150">--%>
+                                        <img src="http://i1112.photobucket.com/albums/k497/animalsbeingdicks/abd-3-12-2015.gif~original">
+                                    </div>
+                                    <h2>${user.login}<i class="glyphicon glyphicon-edit" data-toggle="modal"
+                                                        data-target="#formEditProfileModal"></i></h2>
+                                    <div class="text-center">
+                                        <ul class="details text-left" id="address-list">
+                                            <li><p><span class="glyphicon glyphicon-user one"></span>${user.fio}</p></li>
+                                            <li><p><span class="glyphicon glyphicon-earphone one"></span>${user.phoneNumber}</p></li>
+                                            <li><p><span class="glyphicon glyphicon-envelope one"></span>${user.email}</p></li>
+                                            <fmt:parseDate value="${user.birthday}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
+                                            <li><p><span class="glyphicon glyphicon-calendar one"></span><fmt:formatDate pattern="dd.MM.yyyy" value="${ parsedDate }" /></p></li>
+                                            <hr>
+                                        </ul>
+                                    </div>
+
                                 </div>
-                                <br>
-                                <!-- /input-group -->
+
+
+                                <%--<div class="container profile-container">
+                                    <div class="row text-center">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <h4><spring:message code="general.profile"/></h4>
+                                                        </div>
+                                                        <div class="col-md-4 col-md-offset-4" style="text-align: right;">
+                                                            <button type="button" class="btn btn-default" data-toggle="modal"
+                                                                    data-target="#formEditProfileModal"><spring:message code="profile.edit"/>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="box box-info">
+                                                        <div class="box-body">
+                                                            <div class="col-sm-6">
+                                                                <spring:message code="profile.photo" var="placeholder"/>
+                                                                <div align="center"><img alt='${placeholder}'
+                                                                                         src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg"
+                                                                                         id="profile-image1" class="img-circle img-responsive">
+                                                                    <input id="profile-image-upload" class="hidden" type="file">
+                                                                    <div style="color:#999;"><spring:message code="profile.changePhoto"/></div>
+                                                                    <!--Upload Image Js And Css-->
+                                                                </div>
+                                                                <br>
+                                                                <!-- /input-group -->
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <h4 style="color:#00b1b1;">${user.login}</h4></span>
+                                                                <!--<span><p>User</p></span>-->
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                            <hr style="margin:5px 0 5px 0;">
+
+                                                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.fullname"/>:</div>
+                                                            <div class="col-sm-7 col-xs-6 ">${user.fio}</div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="bot-border"></div>
+
+                                                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.username"/>:</div>
+                                                            <div class="col-sm-7">${user.login}</div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="bot-border"></div>
+
+                                                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.email"/>:</div>
+                                                            <div class="col-sm-7">${user.email}</div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="bot-border"></div>
+
+                                                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.phoneNumber"/>:</div>
+                                                            <c:choose>
+                                                                <c:when test="${user.phoneNumber != null}">
+                                                                    <div class="col-sm-7">${user.phoneNumber}</div>
+                                                                </c:when>
+                                                                <c:when test="${user.phoneNumber == null}">
+                                                                    <div class="col-sm-7">${nullParameter}</div>
+                                                                </c:when>
+                                                            </c:choose>
+                                                            <div class="clearfix"></div>
+                                                            <div class="bot-border"></div>
+
+                                                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.birthday"/>:</div>
+                                                            <c:choose>
+                                                                <c:when test="${user.birthday != null}">
+                                                                    <fmt:parseDate value="${user.birthday}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
+                                                                    <div class="col-sm-7"><fmt:formatDate pattern="dd.MM.yyyy" value="${ parsedDate }" /></div>
+                                                                </c:when>
+                                                                <c:when test="${user.birthday == null}">
+                                                                    <div class="col-sm-7">${nullParameter}</div>
+                                                                </c:when>
+                                                            </c:choose>
+                                                            <div class="clearfix"></div>
+                                                            <div class="bot-border"></div>
+
+                                                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.address"/>:</div>
+                                                            <div class="col-sm-7" id="user-addresses">
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                            <div class="bot-border"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>--%>
                             </div>
-                            <div class="col-sm-6">
-                                <h4 style="color:#00b1b1;">${user.login}</h4></span>
-                                <!--<span><p>User</p></span>-->
-                            </div>
-                            <div class="clearfix"></div>
-                            <hr style="margin:5px 0 5px 0;">
-
-                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.fullname"/>:</div>
-                            <div class="col-sm-7 col-xs-6 ">${user.fio}</div>
-                            <div class="clearfix"></div>
-                            <div class="bot-border"></div>
-
-                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.username"/>:</div>
-                            <div class="col-sm-7">${user.login}</div>
-                            <div class="clearfix"></div>
-                            <div class="bot-border"></div>
-
-                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.email"/>:</div>
-                            <div class="col-sm-7">${user.email}</div>
-                            <div class="clearfix"></div>
-                            <div class="bot-border"></div>
-
-                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.phoneNumber"/>:</div>
-                            <c:choose>
-                                <c:when test="${user.phoneNumber != null}">
-                                    <div class="col-sm-7">${user.phoneNumber}</div>
-                                </c:when>
-                                <c:when test="${user.phoneNumber == null}">
-                                    <div class="col-sm-7">${nullParameter}</div>
-                                </c:when>
-                            </c:choose>
-                            <div class="clearfix"></div>
-                            <div class="bot-border"></div>
-
-                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.birthday"/>:</div>
-                            <c:choose>
-                                <c:when test="${user.birthday != null}">
-                                    <fmt:parseDate value="${user.birthday}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
-                                    <div class="col-sm-7"><fmt:formatDate pattern="dd.MM.yyyy" value="${ parsedDate }" /></div>
-                                </c:when>
-                                <c:when test="${user.birthday == null}">
-                                    <div class="col-sm-7">${nullParameter}</div>
-                                </c:when>
-                            </c:choose>
-                            <div class="clearfix"></div>
-                            <div class="bot-border"></div>
-
-                            <div class="col-sm-5 col-xs-6 tital "><spring:message code="users.address"/>:</div>
-                            <div class="col-sm-7" id="user-addresses">
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="bot-border"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <script>
-            $(function () {
-                $('#profile-image1').on('click', function () {
-                    $('#profile-image-upload').click();
-                });
-            });
-        </script>
     </div>
 </div>
+
+
 
 
 <div class="modal fade" id="formEditProfileModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -302,6 +340,9 @@
         <script>${flag}</script>
     </div>
 </div>
+
+<jsp:include page="footer.jsp"/>
+
 <script>getUserAddresses();</script>
 </body>
 </html>

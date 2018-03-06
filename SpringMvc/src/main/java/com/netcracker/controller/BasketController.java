@@ -2,7 +2,6 @@ package com.netcracker.controller;
 
 import com.netcracker.model.Address;
 import com.netcracker.model.Item;
-import com.netcracker.model.User;
 import com.netcracker.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.sql.SQLException;

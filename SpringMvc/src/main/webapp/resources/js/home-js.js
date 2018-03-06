@@ -1,4 +1,4 @@
-function openDetails(name, image, description, cost, rub){
+function openDetails(name, image, description, cost, rub) {
     $('#itemName').text(name);
     $('#itemImage').attr("src", image);
     $('#itemDescription').text(description);
@@ -13,8 +13,8 @@ function successNotification() {
     }, 3000);
 }
 
+$(document).ready(function () {
 
-$(document).ready(function() {
     $('.minus').click(function () {
         var $input = $(this).parent().find('input');
         var count = parseInt($input.val()) - 1;
@@ -29,5 +29,5 @@ $(document).ready(function() {
         $input.change();
         return false;
     });
-});
 
+});

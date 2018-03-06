@@ -107,8 +107,10 @@ function getAddressByCoordinates(latitude, longitude) {
     ymaps.geocode(coords).then(function (res) {
         if (res.geoObjects.get(0) != null) {
             var obj = res.geoObjects.get(0);
-            var html = $("#user-addresses").html() + obj.getAddressLine() + "<br>";
-            $("#user-addresses").html(html);
+
+            var html = $("#address-list").html() + "<li><p><span class=\"glyphicon glyphicon-home one\"></span>" + obj.getAddressLine() + "</p></li>";
+            $("#address-list").html(html);
+
             var newHTML = "<li class=\"list-group-item\"> " +
                 "<div class=\"col-xs-11 text-left\"> " +
                 "   <h4>" + obj.getAddressLine() + "</h4> " +
@@ -121,6 +123,27 @@ function getAddressByCoordinates(latitude, longitude) {
         }
     });
 }
+
+/*function getAddressByCoordinates(latitude, longitude) {
+    var coords = [latitude, longitude];
+    ymaps.geocode(coords).then(function (res) {
+        if (res.geoObjects.get(0) != null) {
+            var obj = res.geoObjects.get(0);
+            var html = $("#user-addresses").html() + obj.getAddressLine() + "<br>";
+            $("#user-addresses").html(html);
+            var
+            var newHTML = "<li class=\"list-group-item\"> " +
+                "<div class=\"col-xs-11 text-left\"> " +
+                "   <h4>" + obj.getAddressLine() + "</h4> " +
+                "</div> " +
+                "<div class=\"col-xs-1 text-right\"> " +
+                "   <span aria-hidden=\"true\" class=\"remove-address\" onclick=\"removeAddress('" + coords[0] + "','" + coords[1] + "',this);\">&times;</span> " +
+                "</div>  </li> <li class=\"forNewAddress\">" +
+                "</li>";
+            $(".forNewAddress").replaceWith(newHTML);
+        }
+    });
+}*/
 
 
 $(document).ready(function () {
@@ -210,4 +233,10 @@ $(document).ready(function () {
             alert("no");
         }
     }*/
+
+    $(function () {
+        $('#profile-image1').on('click', function () {
+            $('#profile-image-upload').click();
+        });
+    });
 });
