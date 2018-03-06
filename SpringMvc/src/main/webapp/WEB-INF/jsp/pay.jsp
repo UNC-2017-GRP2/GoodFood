@@ -4,7 +4,7 @@
     <title>Pay</title>
 </head>
 <body>
-<form id=pay name=pay method="POST" action="https://merchant.webmoney.ru/lmi/payment.asp">
+<%--<form id=pay name=pay method="POST" action="https://merchant.webmoney.ru/lmi/payment.asp">
     <p>пример платежа через сервис Web Merchant Interface</p> <p>заплатить 1 WMZ...</p>
     <p>
         <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="1.0">
@@ -16,6 +16,6 @@
     <p>
         <input type="submit" value="submit">
     </p>
-</form>
+</form>--%>
 </body>
 </html>
