@@ -1,4 +1,3 @@
-
 function getUserName(orderId, userId) {
     $.ajax({
         url: 'getUsername',

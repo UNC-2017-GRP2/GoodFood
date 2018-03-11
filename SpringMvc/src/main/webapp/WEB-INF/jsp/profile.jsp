@@ -35,8 +35,6 @@
 
 <jsp:include page="navbar.jsp"/>
 
-<jsp:include page="navbar.jsp"/>
-
 <div class="blog-section paddingTB60 bg-grey ">
     <div class="container">
         <div class="row text-center">
@@ -47,7 +45,6 @@
                             <h1 class="text-center"><spring:message code="general.profile"/></h1>
                             <div class="border text-center"></div>
                             <div class="content">
-
                                 <div class="container container-prof text-center">
                                     <div class="avatar-flip">
                                         <img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" height="150" width="150">
@@ -56,7 +53,7 @@
                                     <h2>${user.login}<i class="glyphicon glyphicon-edit" data-toggle="modal"
                                                         data-target="#formEditProfileModal"></i></h2>
                                     <div class="text-center">
-                                        <ul class="details text-left" id="address-list">
+                                        <ul class="details text-left" id="user-data-list">
                                             <li><p><span class="glyphicon glyphicon-user one"></span>${user.fio}</p></li>
                                             <li><p><span class="glyphicon glyphicon-earphone one"></span>${user.phoneNumber}</p></li>
                                             <li><p><span class="glyphicon glyphicon-envelope one"></span>${user.email}</p></li>

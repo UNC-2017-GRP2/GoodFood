@@ -46,7 +46,7 @@ public class HomeController {
                 httpSession.setAttribute("userPhone", user.getPhoneNumber());
             }
             if (user.getRole().equals("ROLE_COURIER")) {
-                model.setViewName("redirect:/my-orders");
+                model.setViewName("redirect:/my-orders/1");
                 return model;
             }
         }

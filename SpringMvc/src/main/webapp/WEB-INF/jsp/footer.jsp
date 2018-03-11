@@ -72,7 +72,7 @@
             <div class="row">
                 <div class="col-sm-6 ">
                     <div class="copyright-text">
-                        <p>CopyRight © 2017 Netcracker</p>
+                        <p>CopyRight © 2018 Netcracker</p>
                     </div>
                 </div> <!-- End Col -->
                 <%--<div class="col-sm-6 ">

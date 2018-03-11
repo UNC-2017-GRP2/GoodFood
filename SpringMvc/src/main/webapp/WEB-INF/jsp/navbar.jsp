@@ -15,85 +15,6 @@
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
 
-<%--<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="home"><div class="logo"><h1><spring:message code="general.projectName"/></h1></div></a>
-        </div>
-
-        <ul class="nav navbar-nav navbar-right">
-            <!--<li><a href="#">Link</a></li>-->
-            <li class="dropdown">
-                <c:choose>
-                    <c:when test="${pageContext.request.userPrincipal.name != null}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">
-                            <c:out value="${pageContext.request.remoteUser}"/>
-                            <span class="caret"></span>
-                        </a>
-                    </c:when>
-                    <c:when test="${pageContext.request.userPrincipal.name == null}">
-                        <a class="navbar-brand" href="login">Sign In/Sign Up</a>
-                    </c:when>
-                </c:choose>
-                <ul class="dropdown-menu">
-
-                    <c:if test="${pageContext.request.userPrincipal.name != null}">
-                        <sec:authorize access="hasRole('ROLE_ADMIN')">
-                            <li>
-                                <a href="<c:url value='/admin'/>"><spring:message code="general.adminPanel"/></a>
-                            </li>
-                        </sec:authorize>
-                    </c:if>
-
-                    <c:if test="${pageContext.request.userPrincipal.name != null}">
-                        <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-                            <li><a href="home?value=Pizza"><spring:message code="general.mainPage"/></a></li>
-                        </sec:authorize>
-                    </c:if>
-
-                    <li><a href="my-orders"><spring:message code="general.myOrders"/></a></li>
-
-                    <c:if test="${pageContext.request.userPrincipal.name != null}">
-                        <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-                            <li><a href="basket"><spring:message code="general.basket"/></a></li>
-                        </sec:authorize>
-                    </c:if>
-
-                    <c:if test="${pageContext.request.userPrincipal.name != null}">
-                        <sec:authorize access="hasAnyRole('ROLE_COURIER', 'ROLE_ADMIN')">
-                            <li>
-                                <a href="<c:url value='/free-orders'/>"><spring:message code="orders.freeOrders"/></a>
-                            </li>
-                            <li>
-                                <a href="<c:url value='/current-orders'/>"><spring:message code="orders.currentOrders"/></a>
-                            </li>
-                        </sec:authorize>
-                    </c:if>
-                    <li><a href="profile"><spring:message code="general.profile"/></a></li>
-                    <li role="separator" class="divider"></li>
-                    <p align="center">
-                        <a href="?lang=en"><img src="/resources/img/flags/United-Kingdom.png" border="1"></a>
-                        <a href="?lang=uk"><img src="/resources/img/flags/Ukraine.png" border="1"></a>
-                        <a href="?lang=ru"><img src="/resources/img/flags/Russia.png" border="5"></a></p>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="javascript:document.getElementById('logout').submit()"><spring:message
-                            code="navbar.logout"/></a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    </div>
-</nav>--%>
-
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -104,7 +25,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="home"><div class="logo"><h1><spring:message code="general.projectName"/></h1></div></a>
+        <a class="navbar-brand" href="<c:url value='/home?value=Pizza'/>"><div class="logo"><h1><spring:message code="general.projectName"/></h1></div></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -126,15 +47,15 @@
 
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
                                 <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-                                    <li><a href="home?value=Pizza"><spring:message code="general.mainPage"/></a></li>
+                                    <li><a href="<c:url value='/home?value=Pizza'/>"><spring:message code="general.mainPage"/></a></li>
                                 </sec:authorize>
                             </c:if>
 
-                            <li><a href="my-orders"><spring:message code="general.myOrders"/></a></li>
+                            <li><a href="<c:url value='/my-orders/1'/>"><spring:message code="general.myOrders"/></a></li>
 
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
                                 <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-                                    <li><a href="basket"><spring:message code="general.basket"/></a></li>
+                                    <li><a href="<c:url value='/basket'/>"><spring:message code="general.basket"/></a></li>
                                 </sec:authorize>
                             </c:if>
 
@@ -148,7 +69,7 @@
                                     </li>
                                 </sec:authorize>
                             </c:if>
-                            <li><a href="profile"><spring:message code="general.profile"/></a></li>
+                            <li><a href="<c:url value='/profile'/>"><spring:message code="general.profile"/></a></li>
                             <li role="separator" class="divider"></li>
                             <p align="center">
                                 <a href="?lang=en"><img src="/resources/img/flags/United-Kingdom.png" border="1"></a>
@@ -165,7 +86,7 @@
                     <%--<li><a href="login"><span class="glyphicon glyphicon-log-in"></span>Login / Sign Up</a></li>--%>
                     <li>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a  href="login" ><span class="glyphicon glyphicon-log-in"></span> Login | Sign Up</a></li>
+                            <li><a  href="<c:url value='/login'/>" ><span class="glyphicon glyphicon-log-in"></span> Login | Sign Up</a></li>
                         </ul>
                     </li>
                 </c:when>

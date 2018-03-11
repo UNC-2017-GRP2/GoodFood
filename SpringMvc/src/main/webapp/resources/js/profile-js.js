@@ -108,8 +108,8 @@ function getAddressByCoordinates(latitude, longitude) {
         if (res.geoObjects.get(0) != null) {
             var obj = res.geoObjects.get(0);
 
-            var html = $("#address-list").html() + "<li><p><span class=\"glyphicon glyphicon-home one\"></span>" + obj.getAddressLine() + "</p></li>";
-            $("#address-list").html(html);
+            var html = $("#user-data-list").html() + "<li><p><span class=\"glyphicon glyphicon-home one\"></span>" + obj.getAddressLine() + "</p></li>";
+            $("#user-data-list").html(html);
 
             var newHTML = "<li class=\"list-group-item\"> " +
                 "<div class=\"col-xs-11 text-left\"> " +

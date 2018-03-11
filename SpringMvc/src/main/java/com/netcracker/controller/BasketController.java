@@ -44,7 +44,7 @@ public class BasketController {
             Address orderAddress = new Address(Double.parseDouble(latitude), Double.parseDouble(longitude));
             orderService.checkout(basketItems,principal.getName(), orderAddress, inputPhone);
             sessionStatus.setComplete();
-            return "redirect:/my-orders";
+            return "redirect:/my-orders/1";
         }else{
             return "redirect:/basket";
         }

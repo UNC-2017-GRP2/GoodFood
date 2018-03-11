@@ -7,20 +7,6 @@
     letter-spacing: 1px;
     box-sizing: border-box;
 }
-.bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0}
-
-.well {
-    border: none;
-    background: #f9fafa;
-    padding: 20px;
-}
-
-.main-container{
-    width: 70%;
-}
-.sub-container{
-    width: 100%;
-}
 
 /*--------------Content----------*/
 .site-heading{

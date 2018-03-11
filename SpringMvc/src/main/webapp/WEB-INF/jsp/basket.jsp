@@ -49,10 +49,7 @@
                                                     </div>
                                                     <div class="col-md-5">
                                                         <p><h4 class="list-group-item-heading"> ${item.productName} </h4></p>
-                                                            <%--<p class="list-group-item-text"> ${item.productDescription} </p>--%>
-                                                        <p>
-                                                        <h4> ${item.productCost} ₽ </h4>
-                                                        </p>
+                                                        <p><h4> ${item.productCost} ₽ </h4></p>
                                                     </div>
                                                     <div class="col-md-2 text-center">
                                                         <div class="info">
@@ -90,7 +87,7 @@
                                                 </div>
                                             </li>
                                             <li class="list-group-item list-group-total-order">
-                                                <div class="col-md-6 text-left">
+                                                <div class="col-md-12 text-right">
                                                     <h3><spring:message code="orders.totalOrderCost"/>: <span class="total-order-cost">${totalOrder}</span> ₽</h3>
                                                     <p>
                                                         <spring:message code="basket.checkout" var="placeholder"/>
@@ -118,6 +115,5 @@
 <c:if test="${basketItems.size() == 0}">
     <script>disabledInputAddress();</script>
 </c:if>
-<script>getUserAddresses();</script>
 </body>
 </html>

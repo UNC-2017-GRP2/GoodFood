@@ -4,6 +4,7 @@ public class Constant {
 
     public static final long START_EXPIRATION_TIME = 3;
     public static final long END_EXPIRATION_TIME = 12;
+    public static final int ORDERS_QUANTITY_ON_PAGE = 4;
 
     /**Languages**/
     public static final long LANG_RUSSIAN = 81;

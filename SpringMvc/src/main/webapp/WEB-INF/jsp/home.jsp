@@ -5,13 +5,11 @@
 <html>
 <head>
     <title><spring:message code="general.projectName"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/resources/css/home-style.css">
-    <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-        <%@include file="/resources/js/home-js.js" %>
-    </script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home-style.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home-js.js"></script>
 </head>
 <body>
 
@@ -20,86 +18,7 @@
 <form id="logout" action="${logoutUrl}" method="post">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
-<%--<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="home"><div class="logo"><h1><spring:message code="general.projectName"/></h1></div></a>
-        </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <c:choose>
-                    <c:when test="${pageContext.request.userPrincipal.name != null}">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><c:out value="${pageContext.request.remoteUser}"/> <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-
-                                <c:if test="${pageContext.request.userPrincipal.name != null}">
-                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
-                                        <li>
-                                            <a href="<c:url value='/admin'/>"><spring:message code="general.adminPanel"/></a>
-                                        </li>
-                                    </sec:authorize>
-                                </c:if>
-
-                                <c:if test="${pageContext.request.userPrincipal.name != null}">
-                                    <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-                                        <li><a href="home?value=Pizza"><spring:message code="general.mainPage"/></a></li>
-                                    </sec:authorize>
-                                </c:if>
-
-                                <li><a href="my-orders"><spring:message code="general.myOrders"/></a></li>
-
-                                <c:if test="${pageContext.request.userPrincipal.name != null}">
-                                    <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-                                        <li><a href="basket"><spring:message code="general.basket"/></a></li>
-                                    </sec:authorize>
-                                </c:if>
-
-                                <c:if test="${pageContext.request.userPrincipal.name != null}">
-                                    <sec:authorize access="hasAnyRole('ROLE_COURIER', 'ROLE_ADMIN')">
-                                        <li>
-                                            <a href="<c:url value='/free-orders'/>"><spring:message code="orders.freeOrders"/></a>
-                                        </li>
-                                        <li>
-                                            <a href="<c:url value='/current-orders'/>"><spring:message code="orders.currentOrders"/></a>
-                                        </li>
-                                    </sec:authorize>
-                                </c:if>
-                                <li><a href="profile"><spring:message code="general.profile"/></a></li>
-                                <li role="separator" class="divider"></li>
-                                <p align="center">
-                                    <a href="?lang=en"><img src="/resources/img/flags/United-Kingdom.png" border="1"></a>
-                                    <a href="?lang=uk"><img src="/resources/img/flags/Ukraine.png" border="1"></a>
-                                    <a href="?lang=ru"><img src="/resources/img/flags/Russia.png" border="5"></a></p>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="javascript:document.getElementById('logout').submit()"><spring:message
-                                        code="navbar.logout"/></a></li>
-                            </ul>
-                        </li>
-                    </c:when>
-                    <c:when test="${pageContext.request.userPrincipal.name == null}">
-                        &lt;%&ndash;<li><a class="navbar-brand" href="login">Sign In/Sign Up</a></li>&ndash;%&gt;
-                        &lt;%&ndash;<li><a href="login"><span class="glyphicon glyphicon-log-in"></span>Login / Sign Up</a></li>&ndash;%&gt;
-                        <li>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a  href="login" ><span class="glyphicon glyphicon-log-in"></span> Login | Sign Up</a></li>
-                            </ul>
-                        </li>
-                    </c:when>
-                </c:choose>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-collapse -->
-</nav>--%>
 <jsp:include page="navbar.jsp"/>
 <div class= "banner-sektion banner-overlay ">
     <div class="container text-center">

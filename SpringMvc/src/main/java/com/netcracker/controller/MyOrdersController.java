@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,37 +30,63 @@ public class MyOrdersController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = { "/my-orders"}, method = RequestMethod.GET)
-    public ModelAndView myOrdersPage(Principal principal) throws IOException {
+    @RequestMapping(value = {"/my-orders/{pageId}"}, method = RequestMethod.GET)
+    public ModelAndView myOrdersPageId(Principal principal, @PathVariable int pageId){
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = null;
+        List<Order> ordersForShow;
+        int pageCount;
         try {
             User user  = userService.getByUsername(principal.getName());
             if (user != null){
                 model.addObject("user", user);
             }
+            if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
+                model.addObject("role", "ROLE_COURIER");
+                allOrders = orderService.getCompletedOrdersByCourier(principal.getName());
+            }
+            else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
+                model.addObject("role", "ROLE_USER");
+                allOrders = orderService.getOrdersByUsername(principal.getName());
+            }
         }catch (Exception e){
-            System.out.println("method homePage:" + e.getMessage());
+            System.out.println("method myOrders:" + e.getMessage());
         }
-        if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
-            model.addObject("role", "ROLE_COURIER");
-            allOrders = orderService.getCompletedOrdersByCourier(principal.getName());
-        }
-        else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
-            model.addObject("role", "ROLE_USER");
-            allOrders = orderService.getOrdersByUsername(principal.getName());
 
-        }
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
         model.addObject("start_exp_time", Constant.START_EXPIRATION_TIME);
-        model.setViewName("my-orders");
+        model.addObject("page", pageId);
 
         if (allOrders != null && allOrders.size()!=0){
-            model.addObject("orders", allOrders);
+            ordersForShow = getOrdersRange(Constant.ORDERS_QUANTITY_ON_PAGE * (pageId-1), allOrders);
+            model.addObject("orders", ordersForShow);
+            pageCount = (int)Math.ceil(((double)allOrders.size())/((double)Constant.ORDERS_QUANTITY_ON_PAGE));
+            model.addObject("pageCount", pageCount);
         }
+        model.setViewName("my-orders");
         return model;
     }
+
+    private List<Order> getOrdersRange(int startIdx, List<Order> orders){
+        List<Order> result = new ArrayList<>();
+        int endIdx = startIdx + Constant.ORDERS_QUANTITY_ON_PAGE;
+        if (orders.size() < endIdx){
+            for (int i = startIdx; i < orders.size(); i++){
+                if (orders.get(i) != null){
+                    result.add(orders.get(i));
+                }
+            }
+        }else{
+            for (int i = startIdx; i < endIdx; i++){
+                if (orders.get(i) != null){
+                    result.add(orders.get(i));
+                }
+            }
+        }
+        return result;
+    }
+
 
     @RequestMapping(value = { "/my-orders/remove/{id}"}, method = RequestMethod.POST)
     public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
@@ -69,7 +96,7 @@ public class MyOrdersController {
                 orderService.changeOrderStatus(id, Constant.STATUS_CANCELLED_ENUM_ID); //cancelled
             }
         }
-        return "redirect:/my-orders";
+        return "redirect:/my-orders/1";
     }
 
 
@@ -79,6 +106,6 @@ public class MyOrdersController {
         if (order != null){
             orderService.changeOrderStatus(id, Constant.STATUS_EXPIRED_ENUM_ID); //expired
         }
-        return "redirect:/my-orders";
+        return "redirect:/my-orders/1";
     }
 }
