@@ -4,6 +4,7 @@ import org.springframework.cglib.core.Local;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -128,4 +129,11 @@ public class Order {
     public void setOrderPhone(String orderPhone) {
         this.orderPhone = orderPhone;
     }
+
+    public static final Comparator<Order> COMPARE_BY_DATE = new Comparator<Order>() {
+        @Override
+        public int compare(Order o1, Order o2) {
+            return o2.getOrderCreationDate().compareTo(o1.getOrderCreationDate());
+        }
+    };
 }

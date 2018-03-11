@@ -21,6 +21,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -59,6 +60,7 @@ public class MyOrdersController {
         model.addObject("page", pageId);
 
         if (allOrders != null && allOrders.size()!=0){
+            Collections.sort(allOrders, Order.COMPARE_BY_DATE);
             ordersForShow = getOrdersRange(Constant.ORDERS_QUANTITY_ON_PAGE * (pageId-1), allOrders);
             model.addObject("orders", ordersForShow);
             pageCount = (int)Math.ceil(((double)allOrders.size())/((double)Constant.ORDERS_QUANTITY_ON_PAGE));

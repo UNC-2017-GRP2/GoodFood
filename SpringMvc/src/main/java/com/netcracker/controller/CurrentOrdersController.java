@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -49,6 +50,7 @@ public class CurrentOrdersController {
         model.setViewName("current-orders");
 
         if (allOrders != null && allOrders.size() != 0) {
+            Collections.sort(allOrders, Order.COMPARE_BY_DATE);
             model.addObject("orders", allOrders);
         }
         return model;
