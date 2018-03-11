@@ -90,8 +90,9 @@
                                                 <div class="col-md-12 text-right">
                                                     <h3><spring:message code="orders.totalOrderCost"/>: <span class="total-order-cost">${totalOrder}</span> ₽</h3>
                                                     <p>
-                                                        <spring:message code="basket.checkout" var="placeholder"/>
-                                                        <input type="submit" class="btn btn-primary to-order-btn" disabled="disabled" value='${placeholder}'>
+                                                        <button type="submit" disabled="disabled" class="btn btn-primary to-order-btn">
+                                                            <span class="glyphicon glyphicon-check"></span>
+                                                            <spring:message code="basket.checkout"/></button>
                                                     </p>
                                                 </div>
                                             </li>

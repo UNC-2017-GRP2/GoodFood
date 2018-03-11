@@ -78,13 +78,17 @@
                                 </div>
 
                                 <div class="style">
-                                    <spring:message code="general.addToCart" var="add"/>
+
                                     <c:choose>
                                         <c:when test="${pageContext.request.userPrincipal.name != null}">
-                                            <button type="submit" class="btn btn-primary">${add}</button>
+                                            <button type="submit" class="btn btn-primary">
+                                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                <spring:message code="general.addToCart"/></button>
                                         </c:when>
                                         <c:when test="${pageContext.request.userPrincipal.name == null}">
-                                            <button type="submit" disabled="disabled" class="btn btn-primary">${add}</button>
+                                            <button type="submit" disabled="disabled" class="btn btn-primary">
+                                                <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                <spring:message code="general.addToCart"/></button>
                                         </c:when>
                                     </c:choose>
 
@@ -168,7 +172,7 @@
                             <h1>Акция</h1>
                             <ul>
                                 <li>Скидка 5%</li>
-                                <li>На всю посуду</li>
+                                <li>На всю пиццу</li>
                                 <li>С 20 по 30 мая</li>
                             </ul>
                         </div>
@@ -181,9 +185,9 @@
                         <div class="tag-inner">
                             <h1>Акция</h1>
                             <ul>
-                                <li>Скидка 5%</li>
-                                <li>На всю посуду</li>
-                                <li>С 20 по 30 мая</li>
+                                <li>Скидка 10%</li>
+                                <li>На десерты</li>
+                                <li>Сегодня до 23:59</li>
                             </ul>
                         </div>
                     </div>
@@ -195,9 +199,9 @@
                         <div class="tag-inner">
                             <h1>Акция</h1>
                             <ul>
-                                <li>Скидка 5%</li>
-                                <li>На всю посуду</li>
-                                <li>С 20 по 30 мая</li>
+                                <li>Скидка 15%</li>
+                                <li>На бургеры от 450 ₽</li>
+                                <li>С 15 по 31 марта</li>
                             </ul>
                         </div>
                     </div>
