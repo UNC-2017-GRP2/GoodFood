@@ -27,4 +27,14 @@ function getAddressByCoordinates(orderId, latitude, longitude){
 
 $(document).ready(function () {
 
+    ymaps.ready(init);
+    var myMap;
+
+    function init(){
+        myMap = new ymaps.Map("map", {
+            center: [51.6720400, 39.1843000],
+            zoom: 12
+        });
+    }
+
 });

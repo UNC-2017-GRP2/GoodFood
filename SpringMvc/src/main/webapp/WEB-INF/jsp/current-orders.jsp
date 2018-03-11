@@ -9,11 +9,12 @@
     <title><spring:message code="general.currentOrders"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/my-orders-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/current-orders-style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/orders-button-style.css">
     <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/current-orders-js.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 
     <script type="text/javascript">
         ymaps.ready(getOrderAddresses);
@@ -74,47 +75,7 @@
                                                 <div class="col-sm-5"><spring:message code="orders.deliveryTo"/></div>
                                                 <div class="col-sm-7" id = "address${order.orderId}"></div>
                                             </div>
-                                                <%--<ul class="details text-left">
-                                                    <fmt:parseDate value="${ order.orderCreationDate }"
-                                                                   pattern="yyyy-MM-dd'T'HH:mm"
-                                                                   var="parsedDateTime"
-                                                                   type="both"/>
-                                                    <li>
-                                                        <p>
-                                                            <span><spring:message code="orders.orderId"/></span>
-                                                                ${order.orderId}
-                                                        </p>
-                                                    </li>
-                                                    <li>
-                                                        <p>
-                                                            <span><spring:message code="orders.orderProcessed"/></span>
-                                                            <fmt:formatDate pattern="dd.MM.yyyy   HH:mm"
-                                                                            value="${ parsedDateTime }"/>
-                                                        </p>
-                                                    </li>
-                                                    <li>
-                                                        <p>
-                                                            <span><spring:message code="orders.timeSinceCreation"/></span>
-                                                                ${order.orderCreationDate.until(now, chr)}
-                                                        </p>
-                                                    </li>
-                                                    <li>
-                                                        <p>
-                                                            <span><spring:message code="users.username"/></span>
-                                                            <span id="user${order.orderId}">
-                                                                <script>getUserName('${order.orderId}', '${order.userId}');</script>
-                                                            </span>
 
-                                                        </p>
-                                                    </li>
-                                                    <li>
-                                                        <p>
-                                                            <span><spring:message code="orders.deliveryTo"/></span>
-                                                                ${order.orderAddress.latitude} ${order.orderAddress.longitude}
-                                                        </p>
-                                                    </li>
-                                                    <hr>
-                                                </ul>--%>
                                             <ul class="details text-left">
                                                 <hr>
                                             </ul>
@@ -171,6 +132,9 @@
                                         </div>
                                     </div>
                                 </c:forEach>
+                            </div>
+                            <div class="content map-content">
+                                <div id="map"></div>
                             </div>
                         </div>
                     </div>
