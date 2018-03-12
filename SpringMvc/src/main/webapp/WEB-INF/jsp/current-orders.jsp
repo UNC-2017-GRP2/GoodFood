@@ -7,12 +7,12 @@
 <html>
 <head>
     <title><spring:message code="general.currentOrders"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/my-orders-style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/current-orders-style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/orders-button-style.css">
-    <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/current-orders-js.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 

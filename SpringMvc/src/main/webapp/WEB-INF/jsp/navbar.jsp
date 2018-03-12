@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="/resources/css/navbar-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/navbar-style.css">
     <script type="text/javascript"><%@include file="/resources/js/navbar-js.js" %></script>
 </head>
 <body>

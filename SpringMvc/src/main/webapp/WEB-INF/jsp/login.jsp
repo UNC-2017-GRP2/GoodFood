@@ -5,11 +5,11 @@
 <html>
 <head>
     <title><spring:message code="general.projectName"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath} webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="webjars/bootstrap-checkbox-x/1.5.4/css/checkbox-x.min.css">
-    <link rel="stylesheet" href="/resources/css/login-style.css">
-    <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap-checkbox-x/1.5.4/css/checkbox-x.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login-style.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript"><%@include file="/resources/js/login-js.js" %></script>
 </head>
 <body>

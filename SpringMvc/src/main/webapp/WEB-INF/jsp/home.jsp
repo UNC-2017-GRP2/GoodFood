@@ -60,10 +60,10 @@
                     <div class="block">
                         <form action="/addBasket?id=${item.productId}" method="post">
                             <div class="top">
-                                <strong><span class="converse item-name" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="₽"/>');">${item.productName}</span></strong>
+                                <strong><span class="converse item-name" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${pageContext.request.contextPath}${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="₽"/>');">${item.productName}</span></strong>
                             </div>
                             <div class="middle" >
-                                <img src="${item.productImage}" class="item-img" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="₽"/>');"/>
+                                <img src="${pageContext.request.contextPath}${item.productImage}" class="item-img" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${pageContext.request.contextPath}${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="₽"/>');"/>
                             </div>
                             <div class="bottom">
                                 <strong>
