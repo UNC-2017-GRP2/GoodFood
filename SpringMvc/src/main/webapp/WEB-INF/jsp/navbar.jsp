@@ -72,9 +72,9 @@
                             <li><a href="<c:url value='/profile'/>"><spring:message code="general.profile"/></a></li>
                             <li role="separator" class="divider"></li>
                             <p align="center">
-                                <a href="?lang=en"><img src="/resources/img/flags/United-Kingdom.png" border="1"></a>
-                                <a href="?lang=uk"><img src="/resources/img/flags/Ukraine.png" border="1"></a>
-                                <a href="?lang=ru"><img src="/resources/img/flags/Russia.png" border="5"></a></p>
+                                <a href="?lang=en"><img src="${pageContext.request.contextPath}/resources/img/flags/United-Kingdom.png" border="1"></a>
+                                <a href="?lang=uk"><img src="${pageContext.request.contextPath}/resources/img/flags/Ukraine.png" border="1"></a>
+                                <a href="?lang=ru"><img src="${pageContext.request.contextPath}/resources/img/flags/Russia.png" border="5"></a></p>
                             <li role="separator" class="divider"></li>
                             <li><a href="javascript:document.getElementById('logout').submit()"><spring:message
                                     code="navbar.logout"/></a></li>

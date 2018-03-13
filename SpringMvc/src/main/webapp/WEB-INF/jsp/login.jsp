@@ -72,7 +72,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
 
-            <form:form action="/registration" method="POST" modelAttribute="userForm" class="form-signup mg-btm"
+            <form:form action="${pageContext.request.contextPath}/registration" method="POST" modelAttribute="userForm" class="form-signup mg-btm"
                        id="registrationForm" role="form">
                 <h3 class="heading-desc"><spring:message code="general.signUpForm"></spring:message></h3>
                 <div class="main">
