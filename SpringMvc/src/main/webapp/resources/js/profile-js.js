@@ -204,6 +204,22 @@ $(document).ready(function () {
                 }
             }
         );
+
+        $('#phoneNumber1').inputmask({
+            'mask': '+7 (999) 999-9999',
+            'oncomplete': function (e) {
+                $("#btn-save-user-data").prop('disabled', false);
+                $("#phone-validation-message").text("");
+            },
+            'onincomplete': function (e) {
+                if (e.target.value == "") {
+                    $("#btn-save-user-data").prop('disabled', false);
+                } else {
+                    $("#phone-validation-message").text("Phone is not valid.");
+                    $("#btn-save-user-data").prop('disabled', true);
+                }
+            }
+        });
     });
 
 /*    function ValidateDate(date_fl){

@@ -17,7 +17,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.google.gson.Gson;
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
 @Controller
@@ -84,6 +85,31 @@ public class RegistrationController {
             System.out.println("method loginPage:" + e.getMessage());
         }
         return model;
+    }
+
+   /* @RequestMapping(value = "/checkUsername", method = RequestMethod.GET)
+    public @ResponseBody Gson checkUsername(@RequestParam String username){
+        Gson gson = new Gson();
+        gson.toJson(userService.isLoginExist(username));
+        return gson;
+    }*/
+
+    @RequestMapping(value = "/checkUsername", method = RequestMethod.GET)
+    public @ResponseBody String checkUsername(@RequestParam String username){
+        if (userService.isLoginExist(username)){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+
+    @RequestMapping(value = "/checkEmail", method = RequestMethod.GET)
+    public @ResponseBody String checkEmail(@RequestParam String email){
+        if (userService.isEmailExist(email)){
+            return "true";
+        }else{
+            return "false";
+        }
     }
 }
 

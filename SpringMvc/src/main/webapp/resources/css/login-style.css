@@ -21,6 +21,11 @@
 
 /*---------------------------------Content--------------------------------------*/
 
+.validation-message{
+    display: none;
+}
+
+
 .form-signin, .form-signup {
     max-width: 400px;
     display:block;
@@ -34,7 +39,7 @@
 }
 .form-container{
     perspective: 9000px;
-    margin-top: 5%;
+    margin-top: 8%;
 }
 
 .row-rotate {
@@ -52,7 +57,7 @@
 
 .form-container{
     width: 400px;
-    min-height: 650px;
+    min-height: 850px;
 
 }
 

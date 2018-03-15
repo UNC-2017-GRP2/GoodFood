@@ -127,12 +127,13 @@
                                 <div class="form-group">
                                     <label for="phoneNumber1" class="col-xs-4 control-label"><spring:message code="users.phoneNumber"/>:</label>
                                     <div class="col-xs-6">
-                                        <form:input type='text' id='phoneNumber1' path="phoneNumber"
-                                                    class="form-control input-medium bfh-phone" data-format="+7 (ddd) ddd-dddd"></form:input>
+                                        <form:input path="phoneNumber" type='text' id='phoneNumber1' class="form-control"></form:input>
+                                        <%--<form:input type='text' id='phoneNumber1' path="phoneNumber"
+                                                    class="form-control input-medium bfh-phone" data-format="+7 (ddd) ddd-dddd"></form:input>--%>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <form:errors path="phoneNumber"></form:errors>
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage" id="phone-validation-message">
+                                    <%--<form:errors path="phoneNumber"></form:errors>--%>
                                 </div>
 
                                 <div class="form-group">

@@ -6,11 +6,12 @@
 <head>
     <title><spring:message code="general.projectName"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap-checkbox-x/1.5.4/css/checkbox-x.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.date.extensions.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript"><%@include file="/resources/js/login-js.js" %></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/login-js.js"></script>
 </head>
 <body>
 
@@ -78,36 +79,27 @@
                 <div class="main">
                     <spring:message code="enter.fullname" var="placeholder"/>
                     <form:input type='text' id='fio' path="fio" class="form-control" placeholder='${placeholder}'></form:input>
-                        <%--    <div style="display:block;" class="alert alert-danger col-sm-12">
-                                <form:errors path="fio"></form:errors>
-                            </div>--%>
+                            <div class="alert alert-danger col-sm-12 validation-message" id="fio-validation-message">
+                            </div>
 
                     <spring:message code="enter.username" var="placeholder"/>
                     <form:input type='text' id='login' path="login" class="form-control" placeholder='${placeholder}'></form:input>
-                        <%--<div style="display:inline-block" class="alert alert-danger col-sm-12">
-                            <form:errors path="login"></form:errors>
-                        </div>--%>
+                    <div class="alert alert-danger col-sm-12 validation-message" id="login-validation-message">
+                    </div>
 
                     <spring:message code="enter.email" var="placeholder"/>
                     <form:input type='text' id='email' path="email" class="form-control" placeholder='${placeholder}'></form:input>
-                        <%--<div style="display:inline-block" class="alert alert-danger col-sm-12">
-                            <form:errors path="email"></form:errors>
-                        </div>--%>
+                    <div class="alert alert-danger col-sm-12 validation-message" id="email-validation-message">
+                    </div>
 
                     <spring:message code="enter.password" var="placeholder"/>
                     <form:input type='password' id='passwordHash' path="passwordHash" class="form-control" placeholder='${placeholder}'></form:input>
-                        <%--<div style="display:inline-block" class="alert alert-danger col-sm-12">
-                            <form:errors path="passwordHash"></form:errors>
-                        </div>--%>
+                    <div class="alert alert-danger col-sm-12 validation-message" id="password-validation-message">
+                    </div>
 
                     <spring:message code="users.confirmPassword" var="placeholder"/>
                     <form:input type='password' id='confirmPassword' path="confirmPassword" class="form-control" placeholder='${placeholder}'></form:input>
-                    <div style="display: none; height: min-content;" class="alert alert-registration alert-danger col-sm-12">
-                        <form:errors path="fio"></form:errors><br>
-                        <form:errors path="login"></form:errors><br>
-                        <form:errors path="email"></form:errors><br>
-                        <form:errors path="passwordHash"></form:errors><br>
-                        <form:errors path="confirmPassword"></form:errors>
+                    <div class="alert alert-danger col-sm-12 validation-message" id="confirmPassword-validation-message">
                     </div>
                     <span class="clearfix"></span>
                 </div>
@@ -119,7 +111,7 @@
                             </div>
                         </div>
                         <div class="col-xs-6 col-md-6 pull-right">
-                            <button type="submit" class="btn btn-large btn-danger pull-right"><spring:message code="profile.signUp"/></button>
+                            <button type="submit" class="btn btn-large btn-danger pull-right" id="btn-signUp" disabled="disabled"><spring:message code="profile.signUp"/></button>
                         </div>
                     </div>
                 </div>
