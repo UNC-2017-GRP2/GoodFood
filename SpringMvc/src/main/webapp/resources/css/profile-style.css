@@ -25,6 +25,10 @@ input.hidden {position: absolute;left: -9999px;}
     color: currentColor;
 }
 
+.required-field{
+    color: #d9534f;
+}
+
 #addressValid{
     color: rgb(255,0,0);
 }

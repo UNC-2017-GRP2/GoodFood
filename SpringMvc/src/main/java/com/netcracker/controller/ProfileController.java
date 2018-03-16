@@ -42,133 +42,135 @@ public class ProfileController {
 
     public static AuthenticationManager am = new AuthManager();
 
-    @RequestMapping(value = { "/profile"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/profile"}, method = RequestMethod.GET)
     public ModelAndView profilePage(ModelAndView model, Principal principal, HttpSession httpSession) throws IOException {
-        try{
-            User user  = userService.getByUsername(principal.getName());
-            if (user != null){
+        try {
+            User user = userService.getByUsername(principal.getName());
+            if (user != null) {
                 model.addObject("user", user);
 
                 model.addObject("userForUpdate", user);
-                if (httpSession.getAttribute("username") == null){
-                    httpSession.setAttribute("username",principal.getName());
+                if (httpSession.getAttribute("username") == null) {
+                    httpSession.setAttribute("username", principal.getName());
                 }
-                if (httpSession.getAttribute("basketItems") == null){
+                if (httpSession.getAttribute("basketItems") == null) {
                     httpSession.setAttribute("basketItems", new ArrayList<Item>());
                 }
-                if (httpSession.getAttribute("userAddresses") == null){
+                if (httpSession.getAttribute("userAddresses") == null) {
                     httpSession.setAttribute("userAddresses", user.getAddresses());
                 }
-                if (httpSession.getAttribute("newAddresses") == null){
+                if (httpSession.getAttribute("newAddresses") == null) {
                     httpSession.setAttribute("newAddresses", new ArrayList<>(user.getAddresses()));
                 }
             }
             model.addObject("nullParameter", "None");
             model.setViewName("profile");
             return model;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("method profilePage:" + e.getMessage());
         }
         return model;
     }
 
-    @RequestMapping(value = { "/edit"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/edit"}, method = RequestMethod.GET)
     public ModelAndView editPage(ModelAndView model, Principal principal) throws IOException {
-        User user  = userService.getByUsername(principal.getName());
-        if (user != null){
+        User user = userService.getByUsername(principal.getName());
+        if (user != null) {
             model.addObject("user", user);
         }
         model.setViewName("redirect:/profile");
         return model;
     }
 
-    @RequestMapping(value = { "/edit"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/edit"}, method = RequestMethod.POST)
     public ModelAndView edit(@ModelAttribute("userForUpdate") @Validated User updatedUser, Principal principal, HttpSession httpSession, SessionStatus sessionStatus, BindingResult result) throws IOException {
-        User user  = userService.getByUsername(principal.getName());
+        User user = userService.getByUsername(principal.getName());
         updatedUser.setPasswordHash(user.getPasswordHash());
         validator.validate(updatedUser, result);
         ModelAndView model = new ModelAndView();
-        if (result.hasErrors()){
-            model.addObject("flag","ToOpenEditModal();");
+        if (result.hasErrors()) {
+            model.addObject("flag", "ToOpenEditModal();");
             model.addObject("user", user);
             model.addObject("userForUpdate", updatedUser);
             model.setViewName("profile");
             return model;
-        }else{
-            userService.updateUser(user,updatedUser);
-            if (!user.getLogin().equals(updatedUser.getLogin())){
+        } else {
+            userService.updateUser(user, updatedUser);
+            if (!user.getLogin().equals(updatedUser.getLogin())) {
                 Authentication request = new UsernamePasswordAuthenticationToken(updatedUser.getLogin(), updatedUser.getPasswordHash());
                 Authentication authResult = am.authenticate(request);
                 SecurityContextHolder.getContext().setAuthentication(authResult);
             }
             model.addObject("nullParameter", "None");
-            model.addObject("flag","ToCleanEditProfileForm();");
+            model.addObject("flag", "ToCleanEditProfileForm();");
             model.setViewName("redirect:/profile");
             sessionStatus.setComplete();
-            httpSession.setAttribute("username",updatedUser.getLogin());
+            httpSession.setAttribute("username", updatedUser.getLogin());
             httpSession.setAttribute("userPhone", updatedUser.getPhoneNumber());
             return model;
         }
     }
 
-    @RequestMapping(value = { "/editPassword"}, method = RequestMethod.POST)
-    public ModelAndView editPassword(@RequestParam String oldPassword,@ModelAttribute("userForUpdate") @Validated User updatedUser,Principal principal, BindingResult result ){
-        passValidator.validate(updatedUser,result);
+    @RequestMapping(value = {"/editPassword"}, method = RequestMethod.POST)
+    public ModelAndView editPassword(@RequestParam String oldPassword, @ModelAttribute("userForUpdate") @Validated User updatedUser, Principal principal, BindingResult result) {
+        passValidator.validate(updatedUser, result);
         ModelAndView model = new ModelAndView();
         User user = userService.getByUsername(principal.getName());
         ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-        String hashNewPassword = encoder.encodePassword(updatedUser.getPasswordHash(),null);
-        if (!userService.isEqualsPassword(encoder.encodePassword(oldPassword, null),user.getUserId()) || result.hasErrors()){
-            if (!userService.isEqualsPassword(encoder.encodePassword(oldPassword, null),user.getUserId())){
+        String hashNewPassword = encoder.encodePassword(updatedUser.getPasswordHash(), null);
+        if (!userService.isEqualsPassword(encoder.encodePassword(oldPassword, null), user.getUserId()) || result.hasErrors()) {
+            if (!userService.isEqualsPassword(encoder.encodePassword(oldPassword, null), user.getUserId())) {
                 model.addObject("errorOldPassword", true);
-            }else{
+            } else {
                 model.addObject("errorOldPassword", false);
             }
-            model.addObject("flag","ToOpenEditModal();");
+            model.addObject("flag", "ToOpenEditModal();");
             model.addObject("user", user);
             model.addObject("userForUpdate", updatedUser);
             model.setViewName("profile");
             return model;
-        }else{
+        } else {
             userService.updatePassword(user.getUserId(), hashNewPassword);
             Authentication request = new UsernamePasswordAuthenticationToken(principal.getName(), hashNewPassword);
             Authentication authResult = am.authenticate(request);
             SecurityContextHolder.getContext().setAuthentication(authResult);
         }
-        model.addObject("flag","ToCleanEditProfileForm();");
+        model.addObject("flag", "ToCleanEditProfileForm();");
         model.setViewName("redirect:/profile");
         return model;
     }
 
     @RequestMapping(value = "/addAddress", method = RequestMethod.GET)
-    public @ResponseBody String addAddress(@RequestParam double latitude, @RequestParam double longitude, HttpSession httpSession){
+    public @ResponseBody
+    String addAddress(@RequestParam double latitude, @RequestParam double longitude, HttpSession httpSession) {
         List<Address> newAddresses = (List<Address>) httpSession.getAttribute("newAddresses");
         //boolean isExists = false;
-        for(Address address : newAddresses){
+        for (Address address : newAddresses) {
             /*if (address.equals(inputAddress.trim())){
-                *//*isExists = true;
+             *//*isExists = true;
                 break;*//*
                 return "isExist";
             }*/
-            if (address.getLatitude() == latitude && address.getLongitude() == longitude){
+            if (address.getLatitude() == latitude && address.getLongitude() == longitude) {
                 /*isExists = true;
                 break;*/
                 return "isExist";
             }
         }
         //if(!isExists){
-           // newAddresses.add(inputAddress);
-            newAddresses.add(new Address(latitude, longitude));
-            httpSession.setAttribute("newAddresses", newAddresses);
-            return "success";
+        // newAddresses.add(inputAddress);
+        newAddresses.add(new Address(latitude, longitude));
+        httpSession.setAttribute("newAddresses", newAddresses);
+        return "success";
         //}
     }
 
     @RequestMapping(value = "/removeAddress", method = RequestMethod.GET)
-    public @ResponseBody void removeAddress(@RequestParam double latitude, @RequestParam double longitude, HttpSession httpSession){
+    public @ResponseBody
+    void removeAddress(@RequestParam double latitude, @RequestParam double longitude, HttpSession httpSession) {
         List<Address> newAddresses = (List<Address>) httpSession.getAttribute("newAddresses");
-        for(Address address : newAddresses){
-            if (address.getLatitude() == latitude && address.getLongitude() == longitude){
+        for (Address address : newAddresses) {
+            if (address.getLatitude() == latitude && address.getLongitude() == longitude) {
                 newAddresses.remove(address);
                 break;
             }
@@ -177,19 +179,44 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/resetNewAddress", method = RequestMethod.GET)
-    public @ResponseBody void resetNewAddress(HttpSession httpSession){
-        List<Address> newAddresses = (ArrayList<Address>)httpSession.getAttribute("userAddresses");
+    public @ResponseBody
+    void resetNewAddress(HttpSession httpSession) {
+        List<Address> newAddresses = (ArrayList<Address>) httpSession.getAttribute("userAddresses");
         httpSession.setAttribute("newAddresses", new ArrayList<>(newAddresses));
     }
 
-    @RequestMapping(value = { "/editAddresses"}, method = RequestMethod.GET)
-    public ModelAndView editAddresses(Principal principal, HttpSession httpSession){
+    @RequestMapping(value = {"/editAddresses"}, method = RequestMethod.GET)
+    public ModelAndView editAddresses(Principal principal, HttpSession httpSession) {
         ModelAndView model = new ModelAndView();
         BigInteger userId = userService.getByUsername(principal.getName()).getUserId();
-        List<Address> newAddresses =  (ArrayList<Address>)httpSession.getAttribute("newAddresses");
+        List<Address> newAddresses = (ArrayList<Address>) httpSession.getAttribute("newAddresses");
         userService.updateAddresses(userId, newAddresses);
         httpSession.setAttribute("userAddresses", new ArrayList<>(newAddresses));
         model.setViewName("redirect:/profile");
         return model;
+    }
+
+    @RequestMapping(value = "/checkUsernameForUpdate", method = RequestMethod.GET)
+    public @ResponseBody
+    String checkUsername(@RequestParam String username, Principal principal) {
+        if (userService.isLoginExist(username)) {
+            User user = userService.getByUsername(principal.getName());
+            if (!userService.isYourLoginForUpdateUser(username, user.getPasswordHash())) {
+                return "true";
+            }
+        }
+        return "false";
+    }
+
+    @RequestMapping(value = "/checkEmailForUpdate", method = RequestMethod.GET)
+    public @ResponseBody
+    String checkEmail(@RequestParam String email, Principal principal) {
+        if (userService.isEmailExist(email)) {
+            User user = userService.getByUsername(principal.getName());
+            if (!userService.isYourEmailForUpdateUser(email, user.getPasswordHash())) {
+                return "true";
+            }
+        }
+        return "false";
     }
 }

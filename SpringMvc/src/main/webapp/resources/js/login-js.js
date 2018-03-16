@@ -2,7 +2,7 @@ var fio = false, login = false, email = false, password = false, confirmPassword
 var mailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/; //От 6 символов, наличие одной заглавной буквы, наличие одной строчной буквы и одной цифры
 
-function ToOpenRegistrationModal() {
+/*function ToOpenRegistrationModal() {
     $('#formRegistrationModal').modal('show');
     $(".row-rotate").css("transform", "rotateY(180deg)");
     $(".alert-registration").css("display", "inline-block");
@@ -11,7 +11,7 @@ function ToOpenRegistrationModal() {
 function ToCleanRegistrationForm() {
     $(".alert-registration").css("display", "none");
     $("#registrationForm").trigger('reset');
-}
+}*/
 
 function showErrorMessage() {
     $("#login-alert").css("display", "inline-block");

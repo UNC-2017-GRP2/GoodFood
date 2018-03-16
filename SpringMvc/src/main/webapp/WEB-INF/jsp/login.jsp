@@ -123,6 +123,6 @@
 
 <jsp:include page="footer.jsp"/>
 
-<script>${flag}</script>
+<%--<script>${flag}</script>--%>
 </body>
 </html>

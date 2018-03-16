@@ -96,44 +96,41 @@
                                    id="editProfileForm" role="form">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="login" class="col-xs-4 control-label"><spring:message code="users.username"/>:</label>
+                                    <label for="login" class="col-xs-4 control-label"><spring:message code="users.username"/>:<span class="required-field"> *</span></label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='login' path="login"
                                                     class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <form:errors path="login"></form:errors>
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage" id="login-validation-message">
+                                    <%--<form:errors path="login"></form:errors>--%>
                                 </div>
                                 <div class="form-group">
-                                    <label for="fio" class="col-xs-4 control-label"><spring:message code="users.fullname"/>:</label>
+                                    <label for="fio" class="col-xs-4 control-label"><spring:message code="users.fullname"/>:<span class="required-field"> *</span></label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='fio' path="fio" class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <form:errors path="fio"></form:errors>
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage" id="fio-validation-message">
+                                    <%--<form:errors path="fio"></form:errors>--%>
                                 </div>
                                 <div class="form-group">
-                                    <label for="email" class="col-xs-4 control-label"><spring:message code="users.email"/>:</label>
+                                    <label for="email" class="col-xs-4 control-label"><spring:message code="users.email"/>:<span class="required-field"> *</span></label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='email' path="email"
                                                     class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <form:errors path="email"></form:errors>
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage" id="email-validation-message">
+                                    <%--<form:errors path="email"></form:errors>--%>
                                 </div>
                                 <div class="form-group">
                                     <label for="phoneNumber1" class="col-xs-4 control-label"><spring:message code="users.phoneNumber"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input path="phoneNumber" type='text' id='phoneNumber1' class="form-control"></form:input>
-                                        <%--<form:input type='text' id='phoneNumber1' path="phoneNumber"
-                                                    class="form-control input-medium bfh-phone" data-format="+7 (ddd) ddd-dddd"></form:input>--%>
                                     </div>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="phone-validation-message">
-                                    <%--<form:errors path="phoneNumber"></form:errors>--%>
                                 </div>
 
                                 <div class="form-group">
@@ -144,8 +141,8 @@
                                                     class="form-control" placeholder='${placeholder}'></form:input>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <form:errors path="birthday"></form:errors>
+                                <div class="col-xs-offset-4 col-xs-8 validationMessage" id="birth-validation-message">
+                                   <%-- <form:errors path="birthday"></form:errors>--%>
                                 </div>
                             </div>
                             <div class="modal-footer">

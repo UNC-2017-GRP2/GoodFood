@@ -1,3 +1,9 @@
+var fio = true, login = true, email = true, phone = true, birthday = true, password = false, confirmPassword = false;
+var mailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/; //От 6 символов, наличие одной заглавной буквы, наличие одной строчной буквы и одной цифры
+
+
+
 function ToOpenEditModal() {
     $('#formEditProfileModal').modal('show');
 }
@@ -102,6 +108,8 @@ function clearEditPasswordInputs() {
     $("#confirmPassword").val("");
 }
 
+/*----------------------------------------------------Get Address By Coordinates--------------------------------------------------*/
+
 function getAddressByCoordinates(latitude, longitude) {
     var coords = [latitude, longitude];
     ymaps.geocode(coords).then(function (res) {
@@ -145,6 +153,29 @@ function getAddressByCoordinates(latitude, longitude) {
     });
 }*/
 
+/*----------------------------------------------------For Edit profile Validation--------------------------------------------------*/
+
+function checkAllEditProfileFields() {
+    if (fio && login && email && phone && birthday) {
+        $("#btn-save-user-data").prop('disabled', false);
+    } else {
+        $("#btn-save-user-data").prop('disabled', true);
+    }
+}
+
+function setErrorValidMessage(input, validMessageDiv, message) {
+    $(input).css("border", "0.5px solid #d9534f");
+    $(validMessageDiv).text(message);
+    $(validMessageDiv).css("display", "block");
+    checkAllEditProfileFields();
+}
+
+function setSuccessValid(input, validMessageDiv) {
+    $(input).css("border", "0.5px solid #5cb85c");
+    $(validMessageDiv).css("display", "none");
+    checkAllEditProfileFields();
+}
+/*----------------------------------------------------------------------------------------------------------------------------------*/
 
 $(document).ready(function () {
 
@@ -172,83 +203,146 @@ $(document).ready(function () {
     });
 
 
-    $(function () {
-        $("#birth").datepicker({
-            inline: true,
-            showOtherMonths: true,
-            dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            dateFormat: 'yy-mm-dd',
-            changeYear: true
-        });
+    /*----------------------------------------------------Edit profile Validation--------------------------------------------------*/
+    $('#fio').keyup(function () {
+        $('#fio').css("box-shadow", "none");
+        if ($('#fio').val() == "") {
+            fio = false;
+            setErrorValidMessage(this, $('#fio-validation-message'), "Full name must not be empty.");
 
-        $('#birth').inputmask({
-                'mask': '9999-99-99',
-                'oncomplete': function (e) {
-                    var inputValue = e.target.value;
-                    var dateArray = inputValue.split('-');
-                    var now = new Date();
-                    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                    var curDate = new Date(inputValue);
-                    if (today < curDate || curDate == 'Invalid Date' || (dateArray[0] != curDate.getFullYear()) || (dateArray[1]-1 != curDate.getMonth()) || (dateArray[2] != curDate.getDate())){
-                        $("#btn-save-user-data").prop('disabled', true);
-                    } else{
-                        $("#btn-save-user-data").prop('disabled', false);
+        } else {
+            fio = true;
+            setSuccessValid(this, $('#fio-validation-message'));
+        }
+    });
+
+    $('#login').keyup(function () {
+        $('#login').css("box-shadow", "none");
+        var username = $('#login').val();
+        if (username == "") {
+            login = false;
+            setErrorValidMessage(this, $('#login-validation-message'), "Login must not be empty.");
+
+        } else {
+            $.ajax({
+                url: 'checkUsernameForUpdate',
+                type: 'GET',
+                data: ({
+                    username: username
+                }),
+                dataType: "text",
+                success: function (data) {
+                    if (data == "true") {
+                        login = false;
+                        setErrorValidMessage($('#login'), $('#login-validation-message'), "This login is already in use.");
+                    } else {
+                        login = true;
+                        setSuccessValid($('#login'), $('#login-validation-message'));
                     }
                 },
-                'onincomplete': function (e) {
-                    if (e.target.value == "") {
-                        $("#btn-save-user-data").prop('disabled', false);
-                    } else {
-                        $("#btn-save-user-data").prop('disabled', true);
-                    }
+                error: function () {
+                    alert("error checkUsernameForUpdate");
                 }
-            }
-        );
+            });
+        }
+    });
 
-        $('#phoneNumber1').inputmask({
-            'mask': '+7 (999) 999-9999',
+    $('#email').keyup(function () {
+        $('#email').css("box-shadow", "none");
+        var emailInput = $('#email').val();
+        if (emailInput == "") {
+            email = false;
+            setErrorValidMessage(this, $('#email-validation-message'), "E-mail must not be empty.");
+
+        } else {
+            if (!mailRegex.test(emailInput)) {
+                email = false;
+                setErrorValidMessage(this, $('#email-validation-message'), "E-mail is not valid.");
+            } else {
+                $.ajax({
+                    url: 'checkEmailForUpdate',
+                    type: 'GET',
+                    data: ({
+                        email: emailInput
+                    }),
+                    dataType: "text",
+                    success: function (data) {
+                        if (data == "true") {
+                            email = false;
+                            setErrorValidMessage($('#email'), $('#email-validation-message'), "This E-mail is already in use.");
+                        } else {
+                            email = true;
+                            setSuccessValid($('#email'), $('#email-validation-message'));
+                        }
+                    },
+                    error: function () {
+                        alert("error checkEmailForUpdate");
+                    }
+                });
+            }
+        }
+    });
+
+    $("#birth").datepicker({
+        inline: true,
+        showOtherMonths: true,
+        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        dateFormat: 'yy-mm-dd',
+        changeYear: true
+    });
+
+    $('#birth').inputmask({
+            'mask': '9999-99-99',
             'oncomplete': function (e) {
-                $("#btn-save-user-data").prop('disabled', false);
-                $("#phone-validation-message").text("");
+                var inputValue = e.target.value;
+                var dateArray = inputValue.split('-');
+                var now = new Date();
+                var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                var curDate = new Date(inputValue);
+                if (today < curDate || curDate == 'Invalid Date' || (dateArray[0] != curDate.getFullYear()) || (dateArray[1]-1 != curDate.getMonth()) || (dateArray[2] != curDate.getDate())){
+                    //$("#btn-save-user-data").prop('disabled', true);
+                    birthday = false;
+                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), "Birthday is not valid.");
+                } else{
+                    birthday = true;
+                    setSuccessValid($('#birth'), $('#birth-validation-message'));
+                    //$("#btn-save-user-data").prop('disabled', false);
+                }
             },
             'onincomplete': function (e) {
                 if (e.target.value == "") {
-                    $("#btn-save-user-data").prop('disabled', false);
+                    birthday = true;
+                    setSuccessValid($('#birth'), $('#birth-validation-message'));
+                    //$("#btn-save-user-data").prop('disabled', false);
                 } else {
-                    $("#phone-validation-message").text("Phone is not valid.");
-                    $("#btn-save-user-data").prop('disabled', true);
+                    birthday = false;
+                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), "Birthday is not valid.");
                 }
             }
-        });
-    });
+        }
+    );
 
-/*    function ValidateDate(date_fl){
-        var str = date_fl;
-        function TstDate(){
-            var str2 = str.split("-");
-            if(str2.length!=3){return false;}
-//Границы разрешенного периода. Нельзя ввести дату до 1990-го года и позднее 2020-го.
-            if((parseInt(str2[0], 10)>=2018)) {
-                return false;
+    $('#phoneNumber1').inputmask({
+        'mask': '+7 (999) 999-9999',
+        'oncomplete': function (e) {
+            phone = true;
+            setSuccessValid($('#phoneNumber1'), $('#phone-validation-message'));
+            /*$("#btn-save-user-data").prop('disabled', false);
+            $("#phone-validation-message").text("");*/
+        },
+        'onincomplete': function (e) {
+            if (e.target.value == "") {
+                phone = true;
+                setSuccessValid($('#phoneNumber1'), $('#phone-validation-message'));
+                //$("#btn-save-user-data").prop('disabled', false);
+            } else {
+                phone = false;
+                setErrorValidMessage($('#phoneNumber1'), $('#phone-validation-message'), "Phone is not valid.");
+                /*$("#phone-validation-message").text("Phone is not valid.");
+                $("#btn-save-user-data").prop('disabled', true);*/
             }
-            str2 = str2[0] +'-'+ str2[1]+'-'+ str2[2];
-            var da = new Date(str2);
-            alert(da);
-            if(new Date(str2) == 'Invalid Date'){
-                return false;
-            }
-            return str;
         }
-        var S = TstDate()
-        if(S)
-        {
-            alert("ok");
-        }
-        else
-        {
-            alert("no");
-        }
-    }*/
+    });
 
     $(function () {
         $('#profile-image1').on('click', function () {

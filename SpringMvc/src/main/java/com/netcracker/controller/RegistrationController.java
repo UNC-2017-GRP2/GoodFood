@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
+
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
@@ -27,61 +28,46 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private SignUpValidator validator;
-
     public static AuthenticationManager am = new AuthManager();
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String registrationGet(Model model) {
-        model.addAttribute("userForm", new User());
-        model.addAttribute("flag","ToOpenRegistrationModal();");
-        return "login";
-    }
-
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView registrationPost(@ModelAttribute ("userForm") @Validated User userForm, BindingResult result) {
-        validator.validate(userForm, result);
+    public ModelAndView registrationPost(@ModelAttribute("userForm") @Validated User userForm) {
         ModelAndView model = new ModelAndView();
-        if (result.hasErrors()){
-            model.addObject("flag","ToOpenRegistrationModal();");
-            model.setViewName("login");
-            return model;
-        }else{
+        try {
             ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-            userForm.setPasswordHash(encoder.encodePassword(userForm.getPasswordHash(),null));
+            userForm.setPasswordHash(encoder.encodePassword(userForm.getPasswordHash(), null));
             userForm.setRole("ROLE_USER");
             userService.saveUser(userForm);
-            try{
-                Authentication request = new UsernamePasswordAuthenticationToken(userForm.getLogin(), userForm.getPasswordHash());
-                Authentication authResult = am.authenticate(request);
-                SecurityContextHolder.getContext().setAuthentication(authResult);
-                model.setViewName("redirect:/profile");
-                return model;
-            }catch (Exception e){
-                System.out.println("Authentication failed: " + e.getMessage());
-            }
+
+            Authentication request = new UsernamePasswordAuthenticationToken(userForm.getLogin(), userForm.getPasswordHash());
+            Authentication authResult = am.authenticate(request);
+            SecurityContextHolder.getContext().setAuthentication(authResult);
+            model.setViewName("redirect:/profile");
+            return model;
+        } catch (Exception e) {
+            System.out.println("Authentication failed: " + e.getMessage());
+        }
+        finally {
             model.setViewName("redirect:/login");
-            model.addObject("flag","ToCleanRegistrationForm();");
             return model;
         }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView loginPage(@RequestParam(value = "error",required = false) String error) {
+    public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error) {
         ModelAndView model = new ModelAndView();
-        if(!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
             model.setViewName("redirect:/home");
             return model;
         }
-        try{
+        try {
             if (error != null) {
                 model.addObject("error", "Invalid Credentials provided.");
             }
             model.setViewName("login");
             model.addObject("userForm", new User());
             return model;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("method loginPage:" + e.getMessage());
         }
         return model;
@@ -95,19 +81,21 @@ public class RegistrationController {
     }*/
 
     @RequestMapping(value = "/checkUsername", method = RequestMethod.GET)
-    public @ResponseBody String checkUsername(@RequestParam String username){
-        if (userService.isLoginExist(username)){
+    public @ResponseBody
+    String checkUsername(@RequestParam String username) {
+        if (userService.isLoginExist(username)) {
             return "true";
-        }else{
+        } else {
             return "false";
         }
     }
 
     @RequestMapping(value = "/checkEmail", method = RequestMethod.GET)
-    public @ResponseBody String checkEmail(@RequestParam String email){
-        if (userService.isEmailExist(email)){
+    public @ResponseBody
+    String checkEmail(@RequestParam String email) {
+        if (userService.isEmailExist(email)) {
             return "true";
-        }else{
+        } else {
             return "false";
         }
     }
