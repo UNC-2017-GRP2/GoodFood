@@ -1,7 +1,9 @@
-var fio = true, login = true, email = true, phone = true, birthday = true, password = false, confirmPassword = false;
+var fio = true, login = true, email = true, phone = true, birthday = true, oldPassword = false, password = false,
+    confirmPassword = false;
 var mailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/; //От 6 символов, наличие одной заглавной буквы, наличие одной строчной буквы и одной цифры
-
+var checkUserBasicData = "data";
+var checkUserPassword = "password";
 
 
 function ToOpenEditModal() {
@@ -51,8 +53,6 @@ function geocode(address) {
         if (error) {
             $("#addressValid").text(error);
         } else {
-            //alert (geoAddress.getAddressLine());
-            //alert(coords[0] + " ! " + coords[1]);
             $.ajax({
                 url: 'addAddress',
                 type: 'GET',
@@ -62,7 +62,7 @@ function geocode(address) {
                 }),
                 dataType: "text",
                 success: function (data) {
-                    if (data == "success") {
+                    if (data === "success") {
                         $("#input-address").val("");
                         ymaps.geocode([coords[0], coords[1]]).then(function (res) {
                             if (res.geoObjects.get(0) != null) {
@@ -163,18 +163,35 @@ function checkAllEditProfileFields() {
     }
 }
 
-function setErrorValidMessage(input, validMessageDiv, message) {
+function checkAllPasswordEditProfileFields() {
+    if (oldPassword && password && confirmPassword) {
+        $("#btn-save-user-password").prop('disabled', false);
+    } else {
+        $("#btn-save-user-password").prop('disabled', true);
+    }
+}
+
+function setErrorValidMessage(input, validMessageDiv, message, flag) {
     $(input).css("border", "0.5px solid #d9534f");
     $(validMessageDiv).text(message);
     $(validMessageDiv).css("display", "block");
-    checkAllEditProfileFields();
+    if (flag === checkUserBasicData) {
+        checkAllEditProfileFields();
+    } else if (flag === checkUserPassword) {
+        checkAllPasswordEditProfileFields();
+    }
 }
 
-function setSuccessValid(input, validMessageDiv) {
+function setSuccessValid(input, validMessageDiv, flag) {
     $(input).css("border", "0.5px solid #5cb85c");
     $(validMessageDiv).css("display", "none");
-    checkAllEditProfileFields();
+    if (flag === checkUserBasicData) {
+        checkAllEditProfileFields();
+    } else if (flag === checkUserPassword) {
+        checkAllPasswordEditProfileFields();
+    }
 }
+
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 $(document).ready(function () {
@@ -187,7 +204,24 @@ $(document).ready(function () {
 
     clearEditPasswordInputs();
 
-    $(".resetNewAddress").click(function () {
+    $(".reset-forms").click(function () {
+        //location.reload();
+        $(".edit-forms").trigger('reset');
+        clearEditPasswordInputs();
+        $(".form-control").css("border", "1px solid #ccc");
+        $(".form-control").css("box-shadow", "inset 0 1px 1px rgba(0, 0, 0, 0.075)");
+        $(".validationMessage").css("display", "none");
+
+        $(".form-control").focus( function() {
+            $(this).css("border-color", "#66afe9");
+            $(this).css("box-shadow", "inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6)");
+        });
+
+        $(".form-control").blur( function() {
+            $(this).css("border", "1px solid #ccc");
+            $(this).css("box-shadow", "inset 0 1px 1px rgba(0, 0, 0, 0.075)");
+        });
+
         $.ajax({
             url: 'resetNewAddress',
             type: 'GET',
@@ -208,11 +242,11 @@ $(document).ready(function () {
         $('#fio').css("box-shadow", "none");
         if ($('#fio').val() == "") {
             fio = false;
-            setErrorValidMessage(this, $('#fio-validation-message'), "Full name must not be empty.");
+            setErrorValidMessage(this, $('#fio-validation-message'), "Full name must not be empty.", checkUserBasicData);
 
         } else {
             fio = true;
-            setSuccessValid(this, $('#fio-validation-message'));
+            setSuccessValid(this, $('#fio-validation-message'), checkUserBasicData);
         }
     });
 
@@ -221,7 +255,7 @@ $(document).ready(function () {
         var username = $('#login').val();
         if (username == "") {
             login = false;
-            setErrorValidMessage(this, $('#login-validation-message'), "Login must not be empty.");
+            setErrorValidMessage(this, $('#login-validation-message'), "Login must not be empty.", checkUserBasicData);
 
         } else {
             $.ajax({
@@ -234,10 +268,10 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data == "true") {
                         login = false;
-                        setErrorValidMessage($('#login'), $('#login-validation-message'), "This login is already in use.");
+                        setErrorValidMessage($('#login'), $('#login-validation-message'), "This login is already in use.", checkUserBasicData);
                     } else {
                         login = true;
-                        setSuccessValid($('#login'), $('#login-validation-message'));
+                        setSuccessValid($('#login'), $('#login-validation-message'), checkUserBasicData);
                     }
                 },
                 error: function () {
@@ -252,12 +286,12 @@ $(document).ready(function () {
         var emailInput = $('#email').val();
         if (emailInput == "") {
             email = false;
-            setErrorValidMessage(this, $('#email-validation-message'), "E-mail must not be empty.");
+            setErrorValidMessage(this, $('#email-validation-message'), "E-mail must not be empty.", checkUserBasicData);
 
         } else {
             if (!mailRegex.test(emailInput)) {
                 email = false;
-                setErrorValidMessage(this, $('#email-validation-message'), "E-mail is not valid.");
+                setErrorValidMessage(this, $('#email-validation-message'), "E-mail is not valid.", checkUserBasicData);
             } else {
                 $.ajax({
                     url: 'checkEmailForUpdate',
@@ -269,10 +303,10 @@ $(document).ready(function () {
                     success: function (data) {
                         if (data == "true") {
                             email = false;
-                            setErrorValidMessage($('#email'), $('#email-validation-message'), "This E-mail is already in use.");
+                            setErrorValidMessage($('#email'), $('#email-validation-message'), "This E-mail is already in use.", checkUserBasicData);
                         } else {
                             email = true;
-                            setSuccessValid($('#email'), $('#email-validation-message'));
+                            setSuccessValid($('#email'), $('#email-validation-message'), checkUserBasicData);
                         }
                     },
                     error: function () {
@@ -299,24 +333,21 @@ $(document).ready(function () {
                 var now = new Date();
                 var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
                 var curDate = new Date(inputValue);
-                if (today < curDate || curDate == 'Invalid Date' || (dateArray[0] != curDate.getFullYear()) || (dateArray[1]-1 != curDate.getMonth()) || (dateArray[2] != curDate.getDate())){
-                    //$("#btn-save-user-data").prop('disabled', true);
+                if (today < curDate || curDate == 'Invalid Date' || (dateArray[0] != curDate.getFullYear()) || (dateArray[1] - 1 != curDate.getMonth()) || (dateArray[2] != curDate.getDate())) {
                     birthday = false;
-                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), "Birthday is not valid.");
-                } else{
+                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), "Birthday is not valid.", checkUserBasicData);
+                } else {
                     birthday = true;
-                    setSuccessValid($('#birth'), $('#birth-validation-message'));
-                    //$("#btn-save-user-data").prop('disabled', false);
+                    setSuccessValid($('#birth'), $('#birth-validation-message'), checkUserBasicData);
                 }
             },
             'onincomplete': function (e) {
                 if (e.target.value == "") {
                     birthday = true;
-                    setSuccessValid($('#birth'), $('#birth-validation-message'));
-                    //$("#btn-save-user-data").prop('disabled', false);
+                    setSuccessValid($('#birth'), $('#birth-validation-message'), checkUserBasicData);
                 } else {
                     birthday = false;
-                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), "Birthday is not valid.");
+                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), "Birthday is not valid.", checkUserBasicData);
                 }
             }
         }
@@ -326,23 +357,83 @@ $(document).ready(function () {
         'mask': '+7 (999) 999-9999',
         'oncomplete': function (e) {
             phone = true;
-            setSuccessValid($('#phoneNumber1'), $('#phone-validation-message'));
-            /*$("#btn-save-user-data").prop('disabled', false);
-            $("#phone-validation-message").text("");*/
+            setSuccessValid($('#phoneNumber1'), $('#phone-validation-message'), checkUserBasicData);
         },
         'onincomplete': function (e) {
             if (e.target.value == "") {
                 phone = true;
-                setSuccessValid($('#phoneNumber1'), $('#phone-validation-message'));
-                //$("#btn-save-user-data").prop('disabled', false);
+                setSuccessValid($('#phoneNumber1'), $('#phone-validation-message'), checkUserBasicData);
             } else {
                 phone = false;
-                setErrorValidMessage($('#phoneNumber1'), $('#phone-validation-message'), "Phone is not valid.");
-                /*$("#phone-validation-message").text("Phone is not valid.");
-                $("#btn-save-user-data").prop('disabled', true);*/
+                setErrorValidMessage($('#phoneNumber1'), $('#phone-validation-message'), "Phone is not valid.", checkUserBasicData);
             }
         }
     });
+
+    $('#oldPassword').keyup(function () {
+        $('#oldPassword').css("box-shadow", "none");
+        var passwordInput = $('#oldPassword').val();
+        if (passwordInput === "") {
+            oldPassword = false;
+            setErrorValidMessage(this, $('#old-password-validation-message'), "Field old password must not be empty.", checkUserPassword);
+        } else {
+            $.ajax({
+                url: 'checkPasswordForUpdate',
+                type: 'GET',
+                data: ({
+                    oldPassword: passwordInput
+                }),
+                dataType: "text",
+                success: function (data) {
+                    if (data === "false") {
+                        oldPassword = false;
+                        setErrorValidMessage($('#oldPassword'), $('#old-password-validation-message'), "Old password is not correct.", checkUserPassword);
+                    } else {
+                        oldPassword = true;
+                        setSuccessValid($('#oldPassword'), $('#old-password-validation-message'), checkUserPassword);
+                    }
+                },
+                error: function () {
+                    alert("error checkPassword Edit profile");
+                }
+            });
+        }
+    });
+
+    $('#passwordHash').keyup(function () {
+        $('#passwordHash').css("box-shadow", "none");
+        var passwordInput = $('#passwordHash').val();
+        if (passwordInput === "") {
+            password = false;
+            setErrorValidMessage(this, $('#password-validation-message'), "Password must not be empty.", checkUserPassword);
+        } else if (!passwordRegex.test(passwordInput)) {
+            password = false;
+            setErrorValidMessage(this, $('#password-validation-message'), "Password must contain from 6 characters, one capital letter,one lower case letter and one number", checkUserPassword);
+        } else {
+            password = true;
+            setSuccessValid(this, $('#password-validation-message'), checkUserPassword);
+            if (passwordInput !== $('#confirmPassword').val()) {
+                confirmPassword = false;
+                setErrorValidMessage($('#confirmPassword'), $('#confirmPassword-validation-message'), "Passwords don't match.");
+            }
+        }
+    });
+
+    $('#confirmPassword').keyup(function () {
+        $('#confirmPassword').css("box-shadow", "none");
+        var confirmPasswordInput = $('#confirmPassword').val();
+        if (confirmPasswordInput === "") {
+            confirmPassword = false;
+            setErrorValidMessage(this, $('#confirmPassword-validation-message'), "Field confirm password must not be empty.", checkUserPassword);
+        } else if (confirmPasswordInput !== $('#passwordHash').val()) {
+            confirmPassword = false;
+            setErrorValidMessage(this, $('#confirmPassword-validation-message'), "Passwords don't match.", checkUserPassword);
+        } else {
+            confirmPassword = true;
+            setSuccessValid(this, $('#confirmPassword-validation-message'), checkUserPassword);
+        }
+    });
+
 
     $(function () {
         $('#profile-image1').on('click', function () {

@@ -9,16 +9,18 @@
     <title><spring:message code="general.myOrders"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/my-orders-style.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/orders-button-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/grey-button-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/my-orders-js.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript">
         ymaps.ready(getOrderAddresses);
+
         function getOrderAddresses() {
             <c:forEach items="${orders}" var="order">
-                getAddressByCoordinates('${order.orderId}',${order.orderAddress.latitude}, ${order.orderAddress.longitude});
+            getAddressByCoordinates('${order.orderId}', ${order.orderAddress.latitude}, ${order.orderAddress.longitude});
             </c:forEach>
         }
     </script>
@@ -67,7 +69,7 @@
                                                     <li>
                                                         <p>
                                                             <span class="glyphicon glyphicon-home"></span>
-                                                            <span id = "address${order.orderId}">
+                                                            <span id="address${order.orderId}">
                                                             </span>
                                                         </p>
                                                     </li>
@@ -103,7 +105,7 @@
                                                             <form action="/my-orders/markAsExp/${order.orderId}"
                                                                   method="post">
                                                                 <button type="submit"
-                                                                        class="btn orders-button order-btn-danger">
+                                                                        class="btn grey-button grey-btn-danger">
                                                                     <spring:message code="orders.expired"/></button>
                                                                 <input type="hidden" name="${_csrf.parameterName}"
                                                                        value="${_csrf.token}"/>
@@ -116,7 +118,7 @@
                                                             <form action="/my-orders/remove/${order.orderId}"
                                                                   method="post">
                                                                 <button type="submit"
-                                                                        class="btn orders-button order-btn-danger">
+                                                                        class="btn grey-button grey-btn-danger">
                                                                     <spring:message code="orders.cancel"/></button>
                                                                 <input type="hidden" name="${_csrf.parameterName}"
                                                                        value="${_csrf.token}"/>
@@ -128,38 +130,53 @@
                                         </div>
                                         </c:forEach>
                                     </div>
-                                    <div class="pagination">
+                                    <c:if test="${orders != null && orders.size() != 0}">
+                                        <div class="pagination">
                                             <ul>
                                                 <c:choose>
                                                     <c:when test="${page == 1}">
-                                                        <a href="<c:url value='/my-orders/${page}'/>"><li><</li></a>
+                                                        <a href="<c:url value='/my-orders/${page}'/>">
+                                                            <li><</li>
+                                                        </a>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <a href="<c:url value='/my-orders/${page - 1}'/>"><li><</li></a>
+                                                        <a href="<c:url value='/my-orders/${page - 1}'/>">
+                                                            <li><</li>
+                                                        </a>
                                                     </c:otherwise>
                                                 </c:choose>
 
                                                 <c:forEach var="i" begin="1" end="${pageCount}">
                                                     <c:choose>
                                                         <c:when test="${i == page}">
-                                                            <a class="is-active" href="<c:url value='/my-orders/${i}'/>"><li>${i}</li></a>
+                                                            <a class="is-active"
+                                                               href="<c:url value='/my-orders/${i}'/>">
+                                                                <li>${i}</li>
+                                                            </a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a href="<c:url value='/my-orders/${i}'/>"><li>${i}</li></a>
+                                                            <a href="<c:url value='/my-orders/${i}'/>">
+                                                                <li>${i}</li>
+                                                            </a>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>
 
                                                 <c:choose>
                                                     <c:when test="${page == pageCount}">
-                                                        <a href="<c:url value='/my-orders/${page}'/>"><li>></li></a>
+                                                        <a href="<c:url value='/my-orders/${page}'/>">
+                                                            <li>></li>
+                                                        </a>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <a href="<c:url value='/my-orders/${page + 1}'/>"><li>></li></a>
+                                                        <a href="<c:url value='/my-orders/${page + 1}'/>">
+                                                            <li>></li>
+                                                        </a>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </ul>
-                                    </div>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>

@@ -139,6 +139,10 @@ $(document).ready(function () {
         } else {
             password = true;
             setSuccessValid(this, $('#password-validation-message'));
+            if (passwordInput !== $('#confirmPassword').val()){
+                confirmPassword = false;
+                setErrorValidMessage($('#confirmPassword'), $('#confirmPassword-validation-message'), "Passwords don't match.");
+            }
         }
     });
 

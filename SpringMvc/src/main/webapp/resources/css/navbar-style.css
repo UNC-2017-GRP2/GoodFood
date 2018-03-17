@@ -12,6 +12,7 @@
     height: auto;
 }
 
+
 .caret-up {
     width: 0;
     height: 0;
@@ -51,6 +52,20 @@
     border-left-color: transparent;
     border-right-color: transparent;
 }
+
+.dropdown:hover .dropdown-toggle{
+   background-color: inherit!important;
+}
+
+.dropdown-toggle{
+    font-size: 3vh;
+}
+
+.navbar-nav li .dropdown-menu{
+    border-radius: 5px!important;
+    margin-top: 5%!important;
+}
+
 @media (max-width: 420px) {
     .logo h1 {font-size: 1em;}
 }

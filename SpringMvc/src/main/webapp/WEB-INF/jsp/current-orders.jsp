@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/my-orders-style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/current-orders-style.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/orders-button-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/grey-button-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/current-orders-js.js"></script>
@@ -107,7 +107,7 @@
                                                         <form action="/current-orders/markAsDeliv/${order.orderId}"
                                                               method="post">
                                                             <button type="submit"
-                                                                    class="btn orders-button order-btn-success">
+                                                                    class="btn grey-button grey-btn-success">
                                                                 <spring:message
                                                                         code="orders.delivered"/></button>
                                                             <input type="hidden" name="${_csrf.parameterName}"
@@ -121,7 +121,7 @@
                                                         <form action="/current-orders/remove/${order.orderId}"
                                                               method="post">
                                                             <button type="submit"
-                                                                    class="btn orders-button order-btn-danger">
+                                                                    class="btn grey-button grey-btn-danger">
                                                                 <spring:message code="orders.drop"/></button>
                                                             <input type="hidden" name="${_csrf.parameterName}"
                                                                    value="${_csrf.token}"/>

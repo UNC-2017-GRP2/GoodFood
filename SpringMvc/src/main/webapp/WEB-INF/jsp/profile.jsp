@@ -9,6 +9,7 @@
     <title><spring:message code="general.profile"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profile-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/grey-button-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
@@ -81,7 +82,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle"><spring:message code="profile.editProfile"/></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="resetNewAddress">&times;</span>
+                    <span aria-hidden="true" class="resetNewAddress reset-forms">&times;</span>
                 </button>
             </div>
             <div class="well" style="height: auto!important;">
@@ -92,7 +93,7 @@
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="editProfile">
-                        <form:form action="/edit" method="POST" modelAttribute="userForUpdate" class="form-horizontal"
+                        <form:form action="/edit" method="POST" modelAttribute="userForUpdate" class="form-horizontal edit-forms"
                                    id="editProfileForm" role="form">
                             <div class="modal-body">
                                 <div class="form-group">
@@ -103,7 +104,6 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="login-validation-message">
-                                    <%--<form:errors path="login"></form:errors>--%>
                                 </div>
                                 <div class="form-group">
                                     <label for="fio" class="col-xs-4 control-label"><spring:message code="users.fullname"/>:<span class="required-field"> *</span></label>
@@ -112,7 +112,6 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="fio-validation-message">
-                                    <%--<form:errors path="fio"></form:errors>--%>
                                 </div>
                                 <div class="form-group">
                                     <label for="email" class="col-xs-4 control-label"><spring:message code="users.email"/>:<span class="required-field"> *</span></label>
@@ -122,7 +121,6 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="email-validation-message">
-                                    <%--<form:errors path="email"></form:errors>--%>
                                 </div>
                                 <div class="form-group">
                                     <label for="phoneNumber1" class="col-xs-4 control-label"><spring:message code="users.phoneNumber"/>:</label>
@@ -142,84 +140,70 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="birth-validation-message">
-                                   <%-- <form:errors path="birthday"></form:errors>--%>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" id="btn-save-user-data"><spring:message code="profile.save"/></button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><spring:message code="general.cancel"/></button>
+                            <div class="modal-footer row">
+                                <div class="col-sm-offset-6 col-sm-3"><button type="button" class="btn grey-button reset-forms" data-dismiss="modal"><spring:message code="general.cancel"/></button></div>
+                                <div class="col-sm-3"><button type="submit" class="btn btn-primary btn-block" id="btn-save-user-data"><spring:message code="profile.save"/></button></div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
                     </div>
                     <div class="tab-pane fade" id="editPassword">
-                        <form:form action="/editPassword" method="POST" class="form-horizontal" id="editPasswordForm"
+                        <form:form action="/editPassword" method="POST" class="form-horizontal edit-forms" id="editPasswordForm"
                                    role="form" modelAttribute="userForUpdate">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="oldPassword" class="col-xs-4 control-label"><spring:message code="profile.oldPassword"/>:</label>
+                                    <label for="oldPassword" class="col-xs-5 control-label"><spring:message code="profile.oldPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <input type='password' id='oldPassword' name="oldPassword" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <label class="validationMessage errorOldPassword"></label>
-                                    <c:choose>
-                                        <c:when test="${errorOldPassword}">
-                                            <spring:message code="errors.oldPassIsntCorrect" var="placeholder"/>
-                                            <script>putValueToErrorPasswordLabel('${placeholder}');</script>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <script>putValueToErrorPasswordLabel("");</script>
-                                        </c:otherwise>
-                                    </c:choose>
+                                <div class="col-xs-offset-5 col-xs-7 validationMessage" id="old-password-validation-message">
                                 </div>
                                 <div class="form-group">
-                                    <label for="passwordHash" class="col-xs-4 control-label"><spring:message code="profile.newPassword"/>:</label>
+                                    <label for="passwordHash" class="col-xs-5 control-label"><spring:message code="profile.newPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='password' id='passwordHash' path="passwordHash"
                                                     class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <form:errors path="passwordHash"></form:errors>
+                                <div class="col-xs-offset-5 col-xs-7 validationMessage" id="password-validation-message">
                                 </div>
                                 <div class="form-group">
-                                    <label for="confirmPassword" class="col-xs-4 control-label"><spring:message code="users.confirmPassword"/>:</label>
+                                    <label for="confirmPassword" class="col-xs-5 control-label"><spring:message code="users.confirmPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='password' id='confirmPassword' path="confirmPassword"
                                                     class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-4 col-xs-8 validationMessage">
-                                    <form:errors path="confirmPassword"></form:errors>
+                                <div class="col-xs-offset-5 col-xs-7 validationMessage" id="confirmPassword-validation-message">
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary"><spring:message code="profile.save"/></button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><spring:message code="general.cancel"/></button>
+                            <div class="modal-footer row">
+                                <div class="col-sm-offset-6 col-sm-3"><button type="button" class="btn grey-button reset-forms" data-dismiss="modal"><spring:message code="general.cancel"/></button></div>
+                                <div class=" col-sm-3"><button type="submit" class="btn btn-primary btn-block" id="btn-save-user-password" disabled="disabled"><spring:message code="profile.save"/></button></div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
                     </div>
                     <div class="tab-pane fade" id="editAddress">
-                        <form:form action="/editAddresses" method="GET" class="form-horizontal" id="editAddressForm"
+                        <form:form action="/editAddresses" method="GET" class="form-horizontal edit-forms" id="editAddressForm"
                                    role="form">
                             <div class="modal-body">
                                 <div class="list-group">
                                     <ul id="user-addresses-for-edit">
                                         <li class="forNewAddress"></li>
                                     </ul>
-
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-xs-6">
+                                <div class="form-group row" style="position: relative;">
+                                    <div class="col-xs-8 col-sm-8">
                                         <spring:message code="enter.address" var="placeholder"/>
-                                        <input type='text' id='input-address' class="form-control"
-                                               placeholder='${placeholder}'>
+                                        <textarea id='input-address' class="form-control"
+                                                  placeholder='${placeholder}'></textarea>
                                     </div>
-                                    <div class="col-xs-2">
-                                        <button type="button" class="btn btn-default" onclick="addAddress();"><spring:message code="profile.addAddress"/></button>
+                                    <div class="col-xs-4 col-sm-4" style="position: absolute; bottom: 0; right: 0;">
+                                        <button type="button" class="btn grey-button" onclick="addAddress();"><spring:message code="profile.addAddress"/></button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -228,9 +212,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary"><spring:message code="profile.save"/></button>
-                                <button type="button" class="btn btn-secondary resetNewAddress" data-dismiss="modal"><spring:message code="general.cancel"/></button>
+                            <div class="modal-footer row">
+                                <div class="col-sm-offset-6 col-sm-3"><button type="button" class="btn grey-button reset-forms" data-dismiss="modal"><spring:message code="general.cancel"/></button></div>
+                                <div class="col-sm-3"><button type="submit" class="btn btn-primary btn-block"><spring:message code="profile.save"/></button></div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>

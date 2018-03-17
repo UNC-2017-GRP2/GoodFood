@@ -3,7 +3,6 @@ package com.netcracker.controller;
 import com.netcracker.config.AuthManager;
 import com.netcracker.model.User;
 import com.netcracker.service.UserService;
-import com.netcracker.validation.SignUpValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,15 +11,9 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import com.google.gson.Gson;
-
-import javax.servlet.http.HttpSession;
-import java.security.Principal;
 
 @Controller
 public class RegistrationController {
