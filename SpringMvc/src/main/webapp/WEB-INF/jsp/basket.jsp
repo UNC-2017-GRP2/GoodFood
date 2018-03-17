@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/basket-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.date.extensions.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
     <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
@@ -21,6 +23,9 @@
             getAddressByCoordinates(${address.latitude}, ${address.longitude});
             </c:forEach>
         }
+        $(document).ready(function () {
+            setPhoneValue('${userPhone}');
+        });
     </script>
 </head>
 <body>
@@ -69,21 +74,21 @@
                                                 </li>
                                             </c:forEach>
                                             <li class="list-group-item list-group-address">
-                                                <div class="col-md-4">
+                                                <div class="col-md-5 text-center">
                                                     <spring:message code="enter.address" var="placeholder"/>
-                                                    <input type='text' id='input-address' class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder='${placeholder}'>
+                                                    <textarea type='text' id='input-address' class="form-control" class="dropdown-toggle" data-toggle="dropdown" placeholder='${placeholder}'></textarea>
                                                     <input type='hidden' id="input-address-latitude" name="input-address-latitude">
                                                     <input type='hidden' id="input-address-longitude" name="input-address-longitude">
-                                                    <div class="list-group">
-
+                                                    <div class="list-group" id="my-address-list">
                                                         <ul class="ul-my-addresses">
                                                         </ul>
-
                                                     </div>
-                                                    <label id="address-valid"></label>
+                                                    <div class="validationMessage" id="address-valid"></div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <input type='text' id='input-phone' name="input-phone" value="${userPhone}" class="form-control input-medium bfh-phone" data-format="+7 (ddd) ddd-dddd">
+                                                <div class="col-md-3 text-center">
+                                                    <input type='text' id='input-phone' name="input-phone" value="${userPhone}" class="form-control">
+                                                    <div class="validationMessage" id="phone-validation-message">
+                                                    </div>
                                                 </div>
                                             </li>
                                             <li class="list-group-item list-group-total-order">
@@ -111,10 +116,10 @@
 <jsp:include page="footer.jsp"/>
 
 <c:if test="${basketItems == null}">
-    <script>disabledInputAddress();</script>
+    <script>disabledInputFieldsForCheckout();</script>
 </c:if>
 <c:if test="${basketItems.size() == 0}">
-    <script>disabledInputAddress();</script>
+    <script>disabledInputFieldsForCheckout();</script>
 </c:if>
 </body>
 </html>

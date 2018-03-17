@@ -25,6 +25,7 @@
 .list-group-item {
     height:auto;
     min-height: 130px;
+    overflow-y: hidden;
 }
 .list-group-item:hover{
     color: currentColor;
@@ -77,15 +78,20 @@
 }
 
 .list-group-address{
+    padding-top: 4%;
     height:auto;
-    min-height: 40px;!important;
+    min-height: 170px;!important;
     overflow-y: hidden;
 }
 
-.ul-my-addresses{
+#my-address-list{
+    display: none;
+}
+
+/*.ul-my-addresses{
     visibility: hidden;
     height: 0;
-}
+}*/
 .list-group-item-address {
     height:auto;
     min-height: 10px;!important;
@@ -95,8 +101,11 @@
 .list-group-item-address:hover{
     background-color: rgb(245,245,245);
 }
-#address-valid{
-    color: rgb(255,0,0);
+
+
+.validationMessage{
+    margin-top: 2%;
+    color: #d9534f;
 }
 
 ::-webkit-scrollbar {
