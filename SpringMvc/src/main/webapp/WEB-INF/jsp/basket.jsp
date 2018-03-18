@@ -115,7 +115,7 @@
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
-                                                <div class="col-md-5">
+                                                <div class="col-md-6">
                                                     <div>
                                                         <div class="form-row text-left">
                                                             <ul class="nav nav-tabs ">

@@ -56,7 +56,7 @@ public class BasketController {
                 Map<String, Object> params = new HashMap<String, Object>();
                 params.put("amount", summa);
                 params.put("currency", "usd");
-                params.put("description", "Example charge last");
+                params.put("description", "Example charge last last");
                 params.put("source", stripeToken);
                 Charge.create(params);
             } catch (Exception e) {
