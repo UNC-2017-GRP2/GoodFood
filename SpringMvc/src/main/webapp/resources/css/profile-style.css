@@ -49,7 +49,9 @@ input.hidden {position: absolute;left: -9999px;}
     color: #bb0000;
     opacity: 0.6;
 }
-
+.well{
+    height: auto!important;
+}
 
 ::-webkit-scrollbar {
     display: none;

@@ -85,7 +85,7 @@
                     <span aria-hidden="true" class="resetNewAddress reset-forms">&times;</span>
                 </button>
             </div>
-            <div class="well" style="height: auto!important;">
+            <div class="well">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#editProfile" data-toggle="tab"><spring:message code="profile.basicInfo"/></a></li>
                     <li><a href="#editPassword" data-toggle="tab"><spring:message code="users.password"/></a></li>

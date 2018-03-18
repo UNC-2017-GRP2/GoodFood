@@ -1,5 +1,11 @@
 var phone = false, addressFlag = false;
 
+var stripe;
+var elements;
+var style;
+var card;
+var form;
+
 function addressSelection(address) {
     $("#input-address").val(address);
     /*$(".to-order-btn").prop('disabled', false);
@@ -44,8 +50,7 @@ function geocode(address) {
         }
         if (error) {
             addressFlag = false;
-            setErrorValidMessage($("#input-address"),$("#address-valid"),error);
-            //alert(address + " addressGeocodeError");
+            setErrorValidMessage($("#input-address"), $("#address-valid"), error);
             /*$("#address-valid").text(error);
             $(".to-order-btn").prop('disabled', true);*/
 
@@ -77,7 +82,6 @@ function checkAllFieldsForCheckout() {
     } else {
         $(".to-order-btn").prop('disabled', true);
     }
-    //alert(phone + " " + address);
 }
 
 function setErrorValidMessage(input, validMessageDiv, message) {
@@ -243,7 +247,7 @@ $(document).ready(function () {
     $("#input-address").keyup(function () {
         var address = $("#input-address").val();
         if (address != "") {
-            $("#my-address-list").css("display","none");
+            $("#my-address-list").css("display", "none");
             /*$(".ul-my-addresses").css('visibility', 'hidden');
             $(".ul-my-addresses").css('height', '0');*/
         }
@@ -266,14 +270,14 @@ $(document).ready(function () {
     $("#input-address").focus(function () {
         var value = $("#input-address").val();
         if (value == "") {
-            $("#my-address-list").css("display","block");
+            $("#my-address-list").css("display", "block");
             /*$(".ul-my-addresses").css('visibility', 'visible');
             $(".ul-my-addresses").css('height', 'auto');*/
         }
     });
     $("#input-address").blur(function () {
         setTimeout(function () {
-            $("#my-address-list").css("display","none");
+            $("#my-address-list").css("display", "none");
             /*$(".ul-my-addresses").css('visibility', 'hidden');
             $(".ul-my-addresses").css('height', '0');*/
         }, 200);
@@ -293,4 +297,85 @@ $(document).ready(function () {
             setErrorValidMessage($('#input-phone'), $('#phone-validation-message'), "Phone is not valid.");
         }
     });
+
+
+    /*----------------------------------Payment-------------------------*/
+
+
+    $("#cash-li").click(function () {
+        card.removeEventListener('change', changeCard);
+        form.removeEventListener('submit', submitForm);
+    });
+
+    $("#card-li").click(function () {
+        stripe = Stripe('pk_test_0IsoCr09XiMm8p55y084PVte');
+        elements = stripe.elements();
+        style = {
+            base: {
+                color: '#32325d',
+                lineHeight: '18px',
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        };
+        // Create an instance of the card Element.
+        card = elements.create('card', {style: style});
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+        card.addEventListener('change', changeCard);
+        form = document.getElementById('payment-form');
+        form.addEventListener('submit', submitForm);
+    });
+
+    function changeCard(event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    }
+
+    function submitForm(event) {
+        event.preventDefault();
+        stripe.createToken(card).then(function (result) {
+            if (result.error) {
+                // Inform the customer that there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Send the token to your server.
+                stripeTokenHandler(result.token);
+            }
+        });
+    }
+
+    function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('id', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // Submit the form
+        form.submit();
+    }
+
+
+
+
+
+
+
 });
