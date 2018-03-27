@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public interface OrderRepository {
     void checkout(Order order) throws SQLException;
@@ -15,4 +16,5 @@ public interface OrderRepository {
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
     List<Order> getOrdersByUserId(BigInteger userId);
+    Order getLocalizedOrder(Order order, Locale locale);
 }
