@@ -50,13 +50,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrders(Locale locale) {
         List<Order> allOrders;
+        List<Item> orderItems;
         allOrders = orderRepository.getAllOrders();
         if (locale.equals(Locale.ENGLISH))
             return allOrders;
         else {
             List<Order> result = new ArrayList<>();
             for (Order order : allOrders) {
-                result.add(orderRepository.getLocalizedOrder(order, locale));
+                orderItems = order.getOrderItems();
+                for (Item item : orderItems) {
+                    result.add(itemRepository.getLocalizedItem(item, locale));
+                }
             }
             return result;
         }
