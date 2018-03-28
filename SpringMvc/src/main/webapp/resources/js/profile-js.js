@@ -38,17 +38,17 @@ function geocode(address) {
                 case 'number':
                 case 'near':
                 case 'range':
-                    error = 'Inaccurate address, clarification required.';
+                    error = getString('error_clarify_address');
                     break;
                 case 'street':
-                    error = 'Inaccurate address, clarification required.';
+                    error = getString('error_clarify_address');
                     break;
                 case 'other':
                 default:
-                    error = 'Inaccurate address, clarification required.';
+                    error = getString('error_clarify_address');
             }
         } else {
-            error = 'Address not found';
+            error = getString('error_address_not_found');
         }
         if (error) {
             $("#addressValid").text(error);
@@ -74,7 +74,7 @@ function geocode(address) {
                         });
                         /*var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + inputAddress + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" address=\"" + inputAddress + "\" onclick=\"removeAddress('" + inputAddress + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";*/
                     } else {
-                        $("#addressValid").text("This address already exists.");
+                        $("#addressValid").text(getString('error_address_already_exists'));
                     }
                 },
                 error: function () {
@@ -242,7 +242,7 @@ $(document).ready(function () {
         $('#fio').css("box-shadow", "none");
         if ($('#fio').val() == "") {
             fio = false;
-            setErrorValidMessage(this, $('#fio-validation-message'), "Full name must not be empty.", checkUserBasicData);
+            setErrorValidMessage(this, $('#fio-validation-message'), getString('error_full_name_must_not_be_empty'), checkUserBasicData);
 
         } else {
             fio = true;
@@ -255,7 +255,7 @@ $(document).ready(function () {
         var username = $('#login').val();
         if (username == "") {
             login = false;
-            setErrorValidMessage(this, $('#login-validation-message'), "Login must not be empty.", checkUserBasicData);
+            setErrorValidMessage(this, $('#login-validation-message'), getString('error_login_must_not_be_empty'), checkUserBasicData);
 
         } else {
             $.ajax({
@@ -268,7 +268,7 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data == "true") {
                         login = false;
-                        setErrorValidMessage($('#login'), $('#login-validation-message'), "This login is already in use.", checkUserBasicData);
+                        setErrorValidMessage($('#login'), $('#login-validation-message'), getString('error_login_already_in_use'), checkUserBasicData);
                     } else {
                         login = true;
                         setSuccessValid($('#login'), $('#login-validation-message'), checkUserBasicData);
@@ -286,12 +286,12 @@ $(document).ready(function () {
         var emailInput = $('#email').val();
         if (emailInput == "") {
             email = false;
-            setErrorValidMessage(this, $('#email-validation-message'), "E-mail must not be empty.", checkUserBasicData);
+            setErrorValidMessage(this, $('#email-validation-message'), getString('email_must_not_be_empty'), checkUserBasicData);
 
         } else {
             if (!mailRegex.test(emailInput)) {
                 email = false;
-                setErrorValidMessage(this, $('#email-validation-message'), "E-mail is not valid.", checkUserBasicData);
+                setErrorValidMessage(this, $('#email-validation-message'),getString('email_is_not_valid'), checkUserBasicData);
             } else {
                 $.ajax({
                     url: 'checkEmailForUpdate',
@@ -303,7 +303,7 @@ $(document).ready(function () {
                     success: function (data) {
                         if (data == "true") {
                             email = false;
-                            setErrorValidMessage($('#email'), $('#email-validation-message'), "This E-mail is already in use.", checkUserBasicData);
+                            setErrorValidMessage($('#email'), $('#email-validation-message'), getString('email_already_in_use'), checkUserBasicData);
                         } else {
                             email = true;
                             setSuccessValid($('#email'), $('#email-validation-message'), checkUserBasicData);
@@ -335,7 +335,7 @@ $(document).ready(function () {
                 var curDate = new Date(inputValue);
                 if (today < curDate || curDate == 'Invalid Date' || (dateArray[0] != curDate.getFullYear()) || (dateArray[1] - 1 != curDate.getMonth()) || (dateArray[2] != curDate.getDate())) {
                     birthday = false;
-                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), "Birthday is not valid.", checkUserBasicData);
+                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), getString('birthday_is_not_valid'), checkUserBasicData);
                 } else {
                     birthday = true;
                     setSuccessValid($('#birth'), $('#birth-validation-message'), checkUserBasicData);
@@ -347,7 +347,7 @@ $(document).ready(function () {
                     setSuccessValid($('#birth'), $('#birth-validation-message'), checkUserBasicData);
                 } else {
                     birthday = false;
-                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), "Birthday is not valid.", checkUserBasicData);
+                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), getString('birthday_is_not_valid'), checkUserBasicData);
                 }
             }
         }

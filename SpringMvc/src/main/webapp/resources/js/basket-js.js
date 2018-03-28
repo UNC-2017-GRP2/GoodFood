@@ -36,17 +36,17 @@ function geocode(address) {
                 case 'number':
                 case 'near':
                 case 'range':
-                    error = 'Inaccurate address, clarification required.';
+                    error = getString('error_clarify_address');
                     break;
                 case 'street':
-                    error = 'Inaccurate address, clarification required.';
+                    error = getString('error_clarify_address');
                     break;
                 case 'other':
                 default:
-                    error = 'Inaccurate address, clarification required.';
+                    error = getString('error_clarify_address');
             }
         } else {
-            error = 'Address not found';
+            error = getString('error_address_not_found');
         }
         if (error) {
             addressFlag = false;
@@ -294,7 +294,7 @@ $(document).ready(function () {
         'onincomplete': function (e) {
             phone = false;
             $('#input-phone').css("box-shadow", "none");
-            setErrorValidMessage($('#input-phone'), $('#phone-validation-message'), "Phone is not valid.");
+            setErrorValidMessage($('#input-phone'), $('#phone-validation-message'), getString('error_phone_is_not_valid'));
         }
     });
 
@@ -371,11 +371,4 @@ $(document).ready(function () {
         // Submit the form
         form.submit();
     }
-
-
-
-
-
-
-
 });
