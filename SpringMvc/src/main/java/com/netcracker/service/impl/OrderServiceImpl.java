@@ -57,14 +57,17 @@ public class OrderServiceImpl implements OrderService {
         if (locale.equals(Locale.ENGLISH))
             return allOrders;
         else {
-            List<Item> orderItems;
+            List<Order> allLocalizedOrders = new ArrayList<>();
+            List<Item> orderLocalizedItems;
             for (Order order : allOrders) {
-                orderItems = order.getOrderItems();
-                for (Item item : orderItems) {
-                    orderItems.add(itemRepository.getLocalizedItem(item, locale));
+                orderLocalizedItems = order.getOrderItems();
+                for (Item item : orderLocalizedItems) {
+                    orderLocalizedItems.add(itemRepository.getLocalizedItem(item, locale));
                 }
+                order.setOrderItems(orderLocalizedItems);
+                allLocalizedOrders.add(order);
             }
-            return allOrders;
+            return allLocalizedOrders;
         }
     }
     //public List<Order> getAllOrders() {
