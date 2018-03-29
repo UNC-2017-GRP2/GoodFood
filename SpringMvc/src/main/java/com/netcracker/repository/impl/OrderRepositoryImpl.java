@@ -27,16 +27,16 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
 
     @Override
     public void checkout(Order order) throws SQLException {
-        try{
+        try {
             order.setOrderId(getObjectId());
             connection.setAutoCommit(false); //начало транзакции, вроде бы
             //Сохраняем заказ
-            saveObject("Order " + order.getOrderId(),order.getOrderId(), new BigInteger("0"), Constant.ORDER_OBJ_TYPE_ID);
+            saveObject("Order " + order.getOrderId(), order.getOrderId(), new BigInteger("0"), Constant.ORDER_OBJ_TYPE_ID);
             //добавляем пользователя
             saveReferenceParameter(order.getUserId(), Constant.ORDER_ATTR_ID, order.getOrderId());
             //продукты
             for (Item item : order.getOrderItems()) {
-                for (int i=0;i<item.getProductQuantity();i++){
+                for (int i = 0; i < item.getProductQuantity(); i++) {
                     saveReferenceParameter(order.getOrderId(), Constant.ITEM_ATTR_ID, item.getProductId());
                 }
             }
@@ -49,9 +49,9 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             //статус
             saveEnumValue(order.getOrderId(), Constant.STATUS_ATTR_ID, Constant.STATUS_CREATED_ENUM_ID);
             //дата создания
-            saveDateParameter(order.getOrderId(),Constant.ORDER_CREATION_DATE_ATTR_ID, new java.sql.Timestamp(System.currentTimeMillis()));
+            saveDateParameter(order.getOrderId(), Constant.ORDER_CREATION_DATE_ATTR_ID, new java.sql.Timestamp(System.currentTimeMillis()));
             connection.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             connection.rollback();
         }
@@ -61,9 +61,9 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     public List<Order> getAllOrders() {
         List<Order> result = new ArrayList<>();
         BigInteger orderId;
-        try{
+        try {
             ResultSet resultSet = getObjectsByObjectTypeId(Constant.ORDER_OBJ_TYPE_ID);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 orderId = new BigInteger(resultSet.getString("OBJECT_ID"));
                 Order newOrder = getOrderById(orderId);
                 result.add(newOrder);
@@ -78,17 +78,17 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     public List<Order> getOrdersByUserId(BigInteger userId) {
         List<Order> result = new ArrayList<>();
         BigInteger orderId;
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_REFERENCE_VAL_BY_OBJ_ID_AND_ATTR_ID);
             preparedStatement.setObject(1, userId, numericType);
             preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 orderId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
                 result.add(getOrderById(orderId));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return result;
@@ -121,7 +121,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         try {
             resultSet = getParametersByObjectId(orderId);
             //идем по всем параметрам заказа
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 long curAttrId = resultSet.getLong("ATTR_ID");
                 if (curAttrId == Constant.COURIER_ATTR_ID) {
                     courierId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
@@ -129,14 +129,14 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 if (curAttrId == Constant.ITEM_ATTR_ID) {
                     BigInteger itemId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
                     boolean flag = false;
-                    for(Item item:orderItems){
-                        if (item.getProductId().compareTo(itemId) == 0){  // они равны
+                    for (Item item : orderItems) {
+                        if (item.getProductId().compareTo(itemId) == 0) {  // они равны
                             flag = true;
-                            item.setProductQuantity(item.getProductQuantity()+1);
+                            item.setProductQuantity(item.getProductQuantity() + 1);
                             break;
                         }
                     }
-                    if(!flag){
+                    if (!flag) {
                         orderItems.add(itemRepository.getItemById(new BigInteger(resultSet.getString("REFERENCE_VALUE"))));
                     }
                 }
@@ -155,28 +155,28 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                         System.out.println(e.getMessage());
                     }
                 }
-                if (curAttrId == Constant.ORDERS_COST_ATTR_ID){
+                if (curAttrId == Constant.ORDERS_COST_ATTR_ID) {
                     orderCost = new BigInteger(resultSet.getString("TEXT_VALUE"));
                 }
-                if (curAttrId == Constant.ORDER_ADDRESS_ATTR_ID){
-                    if (resultSet.getObject("POINT_VALUE") != null){
-                        PGpoint address = (PGpoint)resultSet.getObject("POINT_VALUE");
+                if (curAttrId == Constant.ORDER_ADDRESS_ATTR_ID) {
+                    if (resultSet.getObject("POINT_VALUE") != null) {
+                        PGpoint address = (PGpoint) resultSet.getObject("POINT_VALUE");
                         orderAddress = new Address(address.x, address.y);
                     }
                 }
-                if (curAttrId == Constant.ORDER_PHONE_ATTR_ID){
+                if (curAttrId == Constant.ORDER_PHONE_ATTR_ID) {
                     orderPhone = resultSet.getString("TEXT_VALUE");
                 }
-                if (curAttrId == Constant.ORDER_CREATION_DATE_ATTR_ID){
+                if (curAttrId == Constant.ORDER_CREATION_DATE_ATTR_ID) {
                     //System.out.println(resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toString());
                     orderCreationDate = resultSet.getTimestamp("DATE_VALUE").toLocalDateTime();
                 }
             }
             newOrder = new Order(orderId, userId, orderCost, orderStatus, orderAddress, orderPhone, orderItems, orderCreationDate, courierId);
-            if (resultSet != null){
+            if (resultSet != null) {
                 resultSet.close();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return newOrder;
@@ -195,67 +195,22 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         BigInteger courierId = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_OBJECT_ID_BY_NAME);
-            preparedStatement.setString(1,username);
+            preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 courierId = new BigInteger(resultSet.getString("OBJECT_ID"));
                 //courierId = resultSet.getLong("OBJECT_ID");
             }
             preparedStatement.close();
             resultSet.close();
-            if (isReferenceParameterExist(orderId,Constant.COURIER_ATTR_ID)){
-                updateReferenceParameter(orderId,Constant.COURIER_ATTR_ID,courierId);
-            }else{
-                saveReferenceParameter(orderId,Constant.COURIER_ATTR_ID,courierId);
+            if (isReferenceParameterExist(orderId, Constant.COURIER_ATTR_ID)) {
+                updateReferenceParameter(orderId, Constant.COURIER_ATTR_ID, courierId);
+            } else {
+                saveReferenceParameter(orderId, Constant.COURIER_ATTR_ID, courierId);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         changeOrderStatus(orderId, Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
     }
-<<<<<<< HEAD
 }
-=======
-
-
-//    public Order getLocalizedOrder(Order order, Locale locale) {
-//        long langId;
-//        if (locale.toString().equals("ru")) {
-//            langId = Constant.LANG_RUSSIAN;
-//        }
-//        else if (locale.toString().equals("uk")) {
-//            langId = Constant.LANG_UKRAINIAN;
-//        }
-//        else {
-//            return order;
-//        }
-//        List<Item> orderItems = order.getOrderItems();
-//        for (Item item : orderItems) {
-//            String itemName = item.getProductName();
-//            String itemDescription = item.getProductDescription();
-//            try {
-//                ResultSet resultSet = getLocStringsByObjectId(item.getProductId(), langId);
-//                while (resultSet.next()) {
-//                    long curAttrId = resultSet.getLong("ATTR_ID");
-//
-//                    if (curAttrId == Constant.ITEM_DESCRIPTION_ATTR_ID) {
-//                        itemDescription = resultSet.getString("LOC_TEXT_VALUE");
-//                    }
-//                    if (curAttrId == Constant.ITEM_NAME_ATTR_ID) {
-//                        itemName = resultSet.getString("LOC_TEXT_VALUE");
-//                    }
-//                }
-//                item.setProductName(itemName);
-//                item.setProductDescription(itemDescription);
-//                if (resultSet != null) {
-//                    resultSet.close();
-//                }
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//            //return order;
-//        }
-//        return order;
-//    }
-}
->>>>>>> bda1bd85d007419c75c896112b95933d991ce616
