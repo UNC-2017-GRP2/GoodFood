@@ -31,19 +31,23 @@
         }
 
     </script>
+    <script type="text/javascript">
+        if ('${pageContext.response.locale}' == 'uk') {
+            <%@include file="/resources/js/strings-uk.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'ru') {
+            <%@include file="/resources/js/strings-ru.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'en') {
+            <%@include file="/resources/js/strings-en.js" %>
+        }
+
+    </script>
+
 </head>
 <body>
 
 <jsp:include page="navbar.jsp"/>
-if ('${pageContext.response.locale}' == 'uk') {
-<%@include file="/resources/js/strings-uk.js" %>
-}
-if ('${pageContext.response.locale}' == 'ru') {
-<%@include file="/resources/js/strings-ru.js" %>
-}
-if ('${pageContext.response.locale}' == 'en') {
-<%@include file="/resources/js/strings-en.js" %>
-}
 
 
 <div class="blog-section paddingTB60 bg-grey ">

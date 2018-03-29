@@ -1,40 +1,38 @@
 ﻿function getErrorString(stringId) {
     switch (stringId) {
         case 'clarify_address':
-            return 'Inaccurate address, clarification required.';
+            return 'Адреса потребує уточнення.';
         case 'address_is_not_found':
-            return 'The address is not found.';
+            return 'Адресу не знайдено.';
         case 'phone_is_not_valid':
-            return 'Phone is not valid.';
+            return 'Неправильиий номер телефону.';
         case 'address_is_already_exists':
-            return 'The address is already exists.';
+            return 'Адресу вже привʼязано до профілю.';
         case 'full_name_must_not_be_empty':
-            return 'Full name must not be empty.';
+            return 'Повне імʼя не має бути порожнім.';
         case 'login_must_not_be_empty':
-            return 'Username must not be empty.';
+            return 'Імʼя користувача не має бути порожнім.';
         case 'login_is_already_in_use':
-            return 'The username is already in use';
+            return 'Це імʼя користувача вже використовується';
         case 'email_must_not_be_empty':
-            return "E-mail must not be empty.";
+            return "Адреса е-пошти не має бути порожньою";
         case 'email_is_not_valid':
-            return "The e-mail is not valid";
+            return "Неправильиа адреса е-пошти";
         case 'email_is_already_in_use':
-            return 'The e-mail is already in use.';
+            return 'Ця адреса е-пошти вже використовується.';
         case 'birthday_is_not_valid':
-            return 'The birthday is not valid.';
-        case 'phone_is_not_valid':
-            return 'The phone is not valid.';
+            return 'Неправильиа дата народження.';
         case 'password_must_not_be_empty':
-            return 'Password must not be empty.';
+            return 'Пароль не має бути порожнім.';
         case 'old_password_must_not_be_empty':
-            return 'Old password must not be empty.';
+            return 'Це поле не має бути порожнім.';
         case 'old_password_is_not_correct':
-            return 'Old password is not correct.';
+            return 'Неправильиий старий пароль';
         case 'password_must_contain':
-            return 'Password must contain from 6 characters, one capital letter,one lower case letter and one number';
+            return 'Пароль має містити більше за 6 символів, щонайменш одну велику та одну малу літеру, а також одну цифру.';
         case 'passwords_do_not_match':
-            return 'Passwords donʼt match.';
+            return 'Паролі не збігаються.';
         case 'password_confirmation_must_not_be_empty':
-            return 'Confirm password must not be empty.';
+            return 'Це поле не має бути порожнім.';
     }
 }

@@ -87,6 +87,12 @@
                     <li>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a  href="<c:url value='/login'/>" ><span class="glyphicon glyphicon-log-in"></span> Login | Sign Up</a></li>
+                            <li role="separator" class="divider"></li>
+                            <p align="center">
+                                <a href="?lang=en"><img src="${pageContext.request.contextPath}/resources/img/flags/United-Kingdom.png" border="1"></a>
+                                <a href="?lang=uk"><img src="${pageContext.request.contextPath}/resources/img/flags/Ukraine.png" border="1"></a>
+                                <a href="?lang=ru"><img src="${pageContext.request.contextPath}/resources/img/flags/Russia.png" border="5"></a></p>
+
                         </ul>
                     </li>
                 </c:when>

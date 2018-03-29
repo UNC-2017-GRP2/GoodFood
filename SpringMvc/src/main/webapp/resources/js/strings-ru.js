@@ -1,40 +1,38 @@
 ﻿function getErrorString(stringId) {
     switch (stringId) {
         case 'clarify_address':
-            return 'Inaccurate address, clarification required.';
+            return 'Адрес требует уточнения.';
         case 'address_is_not_found':
-            return 'The address is not found.';
+            return 'Адрес не найден.';
         case 'phone_is_not_valid':
-            return 'Phone is not valid.';
+            return 'Неверный номер телефона.';
         case 'address_is_already_exists':
-            return 'The address is already exists.';
+            return 'Адрес уже привязан к профилю.';
         case 'full_name_must_not_be_empty':
-            return 'Full name must not be empty.';
+            return 'Полное имя не может быть пустым.';
         case 'login_must_not_be_empty':
-            return 'Username must not be empty.';
+            return 'Имя пользователя не может быть пустым.';
         case 'login_is_already_in_use':
-            return 'The username is already in use';
+            return 'Это имя пользователя уже используется.';
         case 'email_must_not_be_empty':
-            return "E-mail must not be empty.";
+            return "E-mail не может быть пустым.";
         case 'email_is_not_valid':
-            return "The e-mail is not valid";
+            return "Неправильный E-mail.";
         case 'email_is_already_in_use':
-            return 'The e-mail is already in use.';
+            return 'Данный E-mail уже используется.';
         case 'birthday_is_not_valid':
-            return 'The birthday is not valid.';
-        case 'phone_is_not_valid':
-            return 'The phone is not valid.';
+            return 'Неверная дата рождения.';
         case 'password_must_not_be_empty':
-            return 'Password must not be empty.';
+            return 'Пароль не может быть пустым.';
         case 'old_password_must_not_be_empty':
-            return 'Old password must not be empty.';
+            return 'Поле не может быть пустым.';
         case 'old_password_is_not_correct':
-            return 'Old password is not correct.';
+            return 'Неверный пароль.';
         case 'password_must_contain':
-            return 'Password must contain from 6 characters, one capital letter,one lower case letter and one number';
+            return 'Пароль должен содержать более 6 символов, как минимум одну заглавную и одну строчную букву, а также одну цифру';
         case 'passwords_do_not_match':
-            return 'Passwords donʼt match.';
+            return 'Пароли не совпадают.';
         case 'password_confirmation_must_not_be_empty':
-            return 'Confirm password must not be empty.';
+            return 'Поле не может быть пустым.';
     }
 }
