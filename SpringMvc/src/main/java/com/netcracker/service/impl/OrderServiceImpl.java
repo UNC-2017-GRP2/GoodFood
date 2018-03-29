@@ -3,6 +3,7 @@ package com.netcracker.service.impl;
 import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.Order;
+import com.netcracker.repository.ItemRepository;
 import com.netcracker.repository.OrderRepository;
 import com.netcracker.repository.UserRepository;
 import com.netcracker.service.OrderService;
@@ -24,6 +25,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Autowired
     private UserService userService;
@@ -50,21 +53,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrders(Locale locale) {
         List<Order> allOrders;
-
         allOrders = orderRepository.getAllOrders();
         if (locale.equals(Locale.ENGLISH))
             return allOrders;
         else {
-            List<Order> result = new ArrayList<>();
+            List<Item> orderItems;
             for (Order order : allOrders) {
-                
-                for (Item item : Order.OrderItems){
-                result.add(itemRepository.getLocalizedItem(item, locale));
+                orderItems = order.getOrderItems();
+                for (Item item : orderItems) {
+                    orderItems.add(itemRepository.getLocalizedItem(item, locale));
+                }
             }
-            return result;
+            return allOrders;
         }
     }
-
     //public List<Order> getAllOrders() {
     //    return orderRepository.getAllOrders();
     //}

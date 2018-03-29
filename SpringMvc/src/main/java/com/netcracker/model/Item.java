@@ -28,11 +28,17 @@ public class Item {
         return productId;
     }
 
-    public String getProductName() { return productName; }
+    public String getProductName() {
+        return productName;
+    }
 
-    public String getProductDescription() { return productDescription; }
+    public String getProductDescription() {
+        return productDescription;
+    }
 
-    public String getProductCategory() { return productCategory; }
+    public String getProductCategory() {
+        return productCategory;
+    }
 
     public BigInteger getProductCost() {
         return productCost;

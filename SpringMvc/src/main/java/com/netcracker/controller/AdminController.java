@@ -18,7 +18,6 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 public class AdminController {
@@ -28,10 +27,9 @@ public class AdminController {
     private UserService userService;
 
     @RequestMapping(value = { "/admin"}, method = RequestMethod.GET)
-    //public ModelAndView adminPanel() throws IOException {
-    public ModelAndView adminPanel(Locale locale) throws IOException {
+    public ModelAndView adminPanel() throws IOException {
         ModelAndView model = new ModelAndView();
-        List<Order> allOrders = orderService.getAllOrders(locale);
+        List<Order> allOrders = orderService.getAllOrders();
         List<User> allUsers = userService.getAllUsers();
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
@@ -47,9 +45,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = { "/admin/actualize"}, method = RequestMethod.GET)
-    //public String markOrderAsExpired() throws IOException {
-    public String markOrderAsExpired(Locale locale) throws IOException {
-        List<Order> allOrders = orderService.getAllOrders(locale);
+    public String markOrderAsExpired() throws IOException {
+        List<Order> allOrders = orderService.getAllOrders();
         for (Order order : allOrders) {
             if (order.getOrderCreationDate().until(LocalDateTime.now(), ChronoUnit.HOURS) > Constant.END_EXPIRATION_TIME) {
                 orderService.changeOrderStatus(order.getOrderId(), Constant.STATUS_EXPIRED_ENUM_ID);
