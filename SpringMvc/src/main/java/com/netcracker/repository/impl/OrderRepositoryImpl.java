@@ -213,4 +213,49 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         }
         changeOrderStatus(orderId, Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
     }
+<<<<<<< HEAD
 }
+=======
+
+
+//    public Order getLocalizedOrder(Order order, Locale locale) {
+//        long langId;
+//        if (locale.toString().equals("ru")) {
+//            langId = Constant.LANG_RUSSIAN;
+//        }
+//        else if (locale.toString().equals("uk")) {
+//            langId = Constant.LANG_UKRAINIAN;
+//        }
+//        else {
+//            return order;
+//        }
+//        List<Item> orderItems = order.getOrderItems();
+//        for (Item item : orderItems) {
+//            String itemName = item.getProductName();
+//            String itemDescription = item.getProductDescription();
+//            try {
+//                ResultSet resultSet = getLocStringsByObjectId(item.getProductId(), langId);
+//                while (resultSet.next()) {
+//                    long curAttrId = resultSet.getLong("ATTR_ID");
+//
+//                    if (curAttrId == Constant.ITEM_DESCRIPTION_ATTR_ID) {
+//                        itemDescription = resultSet.getString("LOC_TEXT_VALUE");
+//                    }
+//                    if (curAttrId == Constant.ITEM_NAME_ATTR_ID) {
+//                        itemName = resultSet.getString("LOC_TEXT_VALUE");
+//                    }
+//                }
+//                item.setProductName(itemName);
+//                item.setProductDescription(itemDescription);
+//                if (resultSet != null) {
+//                    resultSet.close();
+//                }
+//            } catch (Exception e) {
+//                System.out.println(e.getMessage());
+//            }
+//            //return order;
+//        }
+//        return order;
+//    }
+}
+>>>>>>> bda1bd85d007419c75c896112b95933d991ce616

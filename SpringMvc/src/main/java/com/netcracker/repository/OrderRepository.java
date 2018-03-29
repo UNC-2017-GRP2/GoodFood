@@ -15,4 +15,8 @@ public interface OrderRepository {
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
     List<Order> getOrdersByUserId(BigInteger userId);
+<<<<<<< HEAD
+=======
+   // Order getLocalizedOrder(Order order, Locale locale);
+>>>>>>> bda1bd85d007419c75c896112b95933d991ce616
 }
