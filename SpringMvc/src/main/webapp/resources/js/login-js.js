@@ -52,7 +52,7 @@ $(document).ready(function () {
         $('#fio').css("box-shadow", "none");
         if ($('#fio').val() == "") {
             fio = false;
-            setErrorValidMessage(this, $('#fio-validation-message'), "Full name must not be empty.");
+            setErrorValidMessage(this, $('#fio-validation-message'), getErrorString('full_name_must_not_be_empty'));
 
         } else {
             fio = true;
@@ -65,7 +65,7 @@ $(document).ready(function () {
         var username = $('#login').val();
         if (username == "") {
             login = false;
-            setErrorValidMessage(this, $('#login-validation-message'), "Login must not be empty.");
+            setErrorValidMessage(this, $('#login-validation-message'), getErrorString('login_must_not_be_empty'));
 
         } else {
             $.ajax({
@@ -78,7 +78,7 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data == "true") {
                         login = false;
-                        setErrorValidMessage($('#login'), $('#login-validation-message'), "This login is already in use.");
+                        setErrorValidMessage($('#login'), $('#login-validation-message'), getErrorString('login_is_already_in_use'));
                     } else {
                         login = true;
                         setSuccessValid($('#login'), $('#login-validation-message'));
@@ -96,12 +96,12 @@ $(document).ready(function () {
         var emailInput = $('#email').val();
         if (emailInput == "") {
             email = false;
-            setErrorValidMessage(this, $('#email-validation-message'), "E-mail must not be empty.");
+            setErrorValidMessage(this, $('#email-validation-message'), getErrorString('email_must_not_be_empty'));
 
         } else {
             if (!mailRegex.test(emailInput)) {
                 email = false;
-                setErrorValidMessage(this, $('#email-validation-message'), "E-mail is not valid.");
+                setErrorValidMessage(this, $('#email-validation-message'), getErrorString('email_is_not_valid'));
             } else {
                 $.ajax({
                     url: 'checkEmail',
@@ -113,7 +113,7 @@ $(document).ready(function () {
                     success: function (data) {
                         if (data == "true") {
                             email = false;
-                            setErrorValidMessage($('#email'), $('#email-validation-message'), "This E-mail is already in use.");
+                            setErrorValidMessage($('#email'), $('#email-validation-message'), getErrorString('email_is_already_in_use'));
                         } else {
                             email = true;
                             setSuccessValid($('#email'), $('#email-validation-message'));
@@ -132,16 +132,16 @@ $(document).ready(function () {
         var passwordInput = $('#passwordHash').val();
         if (passwordInput == "") {
             password = false;
-            setErrorValidMessage(this, $('#password-validation-message'), "Password must not be empty.");
+            setErrorValidMessage(this, $('#password-validation-message'), getErrorString('password_must_not_be_empty'));
         } else if (!passwordRegex.test(passwordInput)) {
             password = false;
-            setErrorValidMessage(this, $('#password-validation-message'), "Password must contain from 6 characters, one capital letter,one lower case letter and one number");
+            setErrorValidMessage(this, $('#password-validation-message'), getErrorString('password_must_contain'));
         } else {
             password = true;
             setSuccessValid(this, $('#password-validation-message'));
             if (passwordInput !== $('#confirmPassword').val()){
                 confirmPassword = false;
-                setErrorValidMessage($('#confirmPassword'), $('#confirmPassword-validation-message'), "Passwords don't match.");
+                setErrorValidMessage($('#confirmPassword'), $('#confirmPassword-validation-message'), getErrorString('passwords_do_not_match'));
             }
         }
     });
@@ -151,10 +151,10 @@ $(document).ready(function () {
         var confirmPasswordInput = $('#confirmPassword').val();
         if (confirmPasswordInput == "") {
             confirmPassword = false;
-            setErrorValidMessage(this, $('#confirmPassword-validation-message'), "Confirm password must not be empty.");
+            setErrorValidMessage(this, $('#confirmPassword-validation-message'), getErrorString('password_confirmation_must_not_be_empty'));
         } else if (confirmPasswordInput != $('#passwordHash').val()) {
             confirmPassword = false;
-            setErrorValidMessage(this, $('#confirmPassword-validation-message'), "Passwords don't match.");
+            setErrorValidMessage(this, $('#confirmPassword-validation-message'), getErrorString('passwords_do_not_match'));
         } else {
             confirmPassword = true;
             setSuccessValid(this, $('#confirmPassword-validation-message'));

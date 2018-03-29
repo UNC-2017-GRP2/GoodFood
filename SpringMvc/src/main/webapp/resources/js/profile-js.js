@@ -38,17 +38,17 @@ function geocode(address) {
                 case 'number':
                 case 'near':
                 case 'range':
-                    error = getString('error_clarify_address');
+                    error = getString('clarify_address');
                     break;
                 case 'street':
-                    error = getString('error_clarify_address');
+                    error = getString('clarify_address');
                     break;
                 case 'other':
                 default:
-                    error = getString('error_clarify_address');
+                    error = getString('clarify_address');
             }
         } else {
-            error = getString('error_address_not_found');
+            error = getString('address_is_not_found');
         }
         if (error) {
             $("#addressValid").text(error);
@@ -74,7 +74,7 @@ function geocode(address) {
                         });
                         /*var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + inputAddress + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" address=\"" + inputAddress + "\" onclick=\"removeAddress('" + inputAddress + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";*/
                     } else {
-                        $("#addressValid").text(getString('error_address_already_exists'));
+                        $("#addressValid").text(getString('address_is_already_exists'));
                     }
                 },
                 error: function () {
@@ -242,7 +242,7 @@ $(document).ready(function () {
         $('#fio').css("box-shadow", "none");
         if ($('#fio').val() == "") {
             fio = false;
-            setErrorValidMessage(this, $('#fio-validation-message'), getString('error_full_name_must_not_be_empty'), checkUserBasicData);
+            setErrorValidMessage(this, $('#fio-validation-message'), getString('full_name_must_not_be_empty'), checkUserBasicData);
 
         } else {
             fio = true;
@@ -255,7 +255,7 @@ $(document).ready(function () {
         var username = $('#login').val();
         if (username == "") {
             login = false;
-            setErrorValidMessage(this, $('#login-validation-message'), getString('error_login_must_not_be_empty'), checkUserBasicData);
+            setErrorValidMessage(this, $('#login-validation-message'), getString('login_must_not_be_empty'), checkUserBasicData);
 
         } else {
             $.ajax({
@@ -268,7 +268,7 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data == "true") {
                         login = false;
-                        setErrorValidMessage($('#login'), $('#login-validation-message'), getString('error_login_already_in_use'), checkUserBasicData);
+                        setErrorValidMessage($('#login'), $('#login-validation-message'), getString('login_is_already_in_use'), checkUserBasicData);
                     } else {
                         login = true;
                         setSuccessValid($('#login'), $('#login-validation-message'), checkUserBasicData);
@@ -303,7 +303,7 @@ $(document).ready(function () {
                     success: function (data) {
                         if (data == "true") {
                             email = false;
-                            setErrorValidMessage($('#email'), $('#email-validation-message'), getString('email_already_in_use'), checkUserBasicData);
+                            setErrorValidMessage($('#email'), $('#email-validation-message'), getString('email_is_already_in_use'), checkUserBasicData);
                         } else {
                             email = true;
                             setSuccessValid($('#email'), $('#email-validation-message'), checkUserBasicData);
@@ -365,7 +365,7 @@ $(document).ready(function () {
                 setSuccessValid($('#phoneNumber1'), $('#phone-validation-message'), checkUserBasicData);
             } else {
                 phone = false;
-                setErrorValidMessage($('#phoneNumber1'), $('#phone-validation-message'), "Phone is not valid.", checkUserBasicData);
+                setErrorValidMessage($('#phoneNumber1'), $('#phone-validation-message'), getErrorString('phone_is_not_valid'), checkUserBasicData);
             }
         }
     });
@@ -375,7 +375,7 @@ $(document).ready(function () {
         var passwordInput = $('#oldPassword').val();
         if (passwordInput === "") {
             oldPassword = false;
-            setErrorValidMessage(this, $('#old-password-validation-message'), "Field old password must not be empty.", checkUserPassword);
+            setErrorValidMessage(this, $('#old-password-validation-message'), getErrorString('old_password_must_not_be_empty'), checkUserPassword);
         } else {
             $.ajax({
                 url: 'checkPasswordForUpdate',
@@ -387,7 +387,7 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data === "false") {
                         oldPassword = false;
-                        setErrorValidMessage($('#oldPassword'), $('#old-password-validation-message'), "Old password is not correct.", checkUserPassword);
+                        setErrorValidMessage($('#oldPassword'), $('#old-password-validation-message'), getErrorString('old_password_is_not_correct'), checkUserPassword);
                     } else {
                         oldPassword = true;
                         setSuccessValid($('#oldPassword'), $('#old-password-validation-message'), checkUserPassword);
@@ -405,16 +405,16 @@ $(document).ready(function () {
         var passwordInput = $('#passwordHash').val();
         if (passwordInput === "") {
             password = false;
-            setErrorValidMessage(this, $('#password-validation-message'), "Password must not be empty.", checkUserPassword);
+            setErrorValidMessage(this, $('#password-validation-message'), getErrorString('password_must_not_be_empty'), checkUserPassword);
         } else if (!passwordRegex.test(passwordInput)) {
             password = false;
-            setErrorValidMessage(this, $('#password-validation-message'), "Password must contain from 6 characters, one capital letter,one lower case letter and one number", checkUserPassword);
+            setErrorValidMessage(this, $('#password-validation-message'), getErrorString('password_must_contain'), checkUserPassword);
         } else {
             password = true;
             setSuccessValid(this, $('#password-validation-message'), checkUserPassword);
             if (passwordInput !== $('#confirmPassword').val()) {
                 confirmPassword = false;
-                setErrorValidMessage($('#confirmPassword'), $('#confirmPassword-validation-message'), "Passwords don't match.");
+                setErrorValidMessage($('#confirmPassword'), $('#confirmPassword-validation-message'), getErrorString('passwords_do_not_match'));
             }
         }
     });
@@ -424,10 +424,10 @@ $(document).ready(function () {
         var confirmPasswordInput = $('#confirmPassword').val();
         if (confirmPasswordInput === "") {
             confirmPassword = false;
-            setErrorValidMessage(this, $('#confirmPassword-validation-message'), "Field confirm password must not be empty.", checkUserPassword);
+            setErrorValidMessage(this, $('#confirmPassword-validation-message'), getErrorString('password_confirmation_must_not_be_empty'), checkUserPassword);
         } else if (confirmPasswordInput !== $('#passwordHash').val()) {
             confirmPassword = false;
-            setErrorValidMessage(this, $('#confirmPassword-validation-message'), "Passwords don't match.", checkUserPassword);
+            setErrorValidMessage(this, $('#confirmPassword-validation-message'), getErrorString('passwords_do_not_match'), checkUserPassword);
         } else {
             confirmPassword = true;
             setSuccessValid(this, $('#confirmPassword-validation-message'), checkUserPassword);
