@@ -11,7 +11,7 @@ function dropdownButton(userId, buttonId) {
             role: $('#' + buttonId).val()
         }),
         success: function (data) {
-            alert(data);
+            $.notify("Role changed", "success");
         }
     });
 }

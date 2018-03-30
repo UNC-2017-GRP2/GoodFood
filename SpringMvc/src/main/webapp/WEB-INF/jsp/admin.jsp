@@ -11,6 +11,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         <%@include file="/resources/js/admin-js.js" %>
+        <%@include file="/resources/js/notify.js" %>
     </script>
 </head>
 
