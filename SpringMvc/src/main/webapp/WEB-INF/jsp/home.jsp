@@ -11,6 +11,19 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/home-js.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/notify.js"></script>
+    <script type="text/javascript">
+        if ('${pageContext.response.locale}' == 'uk') {
+            <%@include file="/resources/js/strings-uk.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'ru') {
+            <%@include file="/resources/js/strings-ru.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'en') {
+            <%@include file="/resources/js/strings-en.js" %>
+        }
+    </script>
+
 </head>
 <body>
 
@@ -59,7 +72,7 @@
             <div class="content">
                 <c:forEach items="${items}" var="item">
                     <div class="block">
-                        <form action="/addBasket?id=${item.productId}" method="post">
+                        <%--<form action="/addBasket?id=${item.productId}" method="post">--%>
                             <div class="top">
                                 <strong><span class="converse item-name" onclick="openDetails('<c:out value="${item.productName}"/>','<c:out value="${pageContext.request.contextPath}${item.productImage}"/>','<c:out value="${item.productDescription}"/>','<c:out value="${item.productCost}"/>','<c:out value="₽"/>');">${item.productName}</span></strong>
                             </div>
@@ -73,7 +86,7 @@
                                 <div class="info">
                                     <div class="number">
                                         <span class="minus">-</span>
-                                        <input type="text" class="quantity" id="count" name="count" value="1" size="5"/>
+                                        <input type="text" class="quantity" id="count-${item.productId}" value="1" size="5"/>
                                         <span class="plus">+</span>
                                     </div>
                                 </div>
@@ -82,7 +95,7 @@
 
                                     <c:choose>
                                         <c:when test="${pageContext.request.userPrincipal.name != null}">
-                                            <button type="submit" class="btn btn-primary">
+                                            <button type="button" onclick="addToCart('${item.productId}', 'count-${item.productId}');" class="btn btn-primary">
                                                     <span class="glyphicon glyphicon-shopping-cart"></span>
                                                 <spring:message code="general.addToCart"/></button>
                                         </c:when>
@@ -96,7 +109,7 @@
                                 </div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        </form>
+                        <%--</form>--%>
                     </div>
                 </c:forEach>
             </div>

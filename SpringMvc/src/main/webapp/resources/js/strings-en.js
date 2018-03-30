@@ -1,4 +1,13 @@
-﻿function getErrorString(stringId) {
+﻿function getNotificationString(stringId) {
+    switch (stringId) {
+        case 'role_changed':
+            return 'Role changed.';
+        case 'item_added':
+            return 'Item added.';
+    }
+}
+
+function getErrorString(stringId) {
     switch (stringId) {
         case 'clarify_address':
             return 'Inaccurate address, clarification required.';

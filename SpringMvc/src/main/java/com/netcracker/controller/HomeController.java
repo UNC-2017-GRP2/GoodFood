@@ -69,8 +69,8 @@ public class HomeController {
     }
 
 
-    @RequestMapping(value = { "/addBasket"}, method = RequestMethod.POST)
-    public ModelAndView addItemInBasket(@RequestParam("id") BigInteger id, @RequestParam("count") int count, Locale locale, HttpSession httpSession) throws IOException {
+    @RequestMapping(value = { "/addBasket"}, method = RequestMethod.GET)
+    public String addItemInBasket(@RequestParam BigInteger id, @RequestParam int count, Locale locale, HttpSession httpSession) throws IOException {
         Item item = itemService.getItemById(id, locale);
         if (item != null){
             if (httpSession.getAttribute("basketItems") == null){
@@ -91,10 +91,7 @@ public class HomeController {
             }
             httpSession.setAttribute("basketItems", curItems);
         }
-        ModelAndView model = new ModelAndView();
-        model.setViewName("redirect:/home?value="+item.getProductCategory());
-        //model.addObject("notification","Successfully added to the basket");
-        return model;
+        return "redirect:/home";
     }
 
 }

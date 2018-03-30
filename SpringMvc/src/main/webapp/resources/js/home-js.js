@@ -6,6 +6,20 @@ function openDetails(name, image, description, cost, rub) {
     $('#itemDetails').modal('show');
 }
 
+function addToCart(productId, countId) {
+    $.ajax({
+        url : 'addBasket',
+        type: 'GET',
+        data : ({
+            id: productId,
+            count: $('#' + countId).val()
+        }),
+        success: function (data) {
+            $.notify(getNotificationString('item_added'), "success");
+        }
+    });
+}
+
 function successNotification() {
     $(".alert").alert();
     setTimeout(function () {

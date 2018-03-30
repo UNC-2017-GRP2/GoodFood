@@ -1,4 +1,12 @@
-﻿function getErrorString(stringId) {
+﻿function getNotificationString(stringId) {
+    switch (stringId) {
+        case 'role_changed':
+            return 'Роль изменена.';
+        case 'item_added':
+            return 'Товар добавлен.';
+    }
+}
+function getErrorString(stringId) {
     switch (stringId) {
         case 'clarify_address':
             return 'Адрес требует уточнения.';

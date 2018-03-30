@@ -1,6 +1,4 @@
 function dropdownButton(userId, buttonId) {
-    // alert($('#' + buttonId).val());
-    // alert(userId);
     $.ajax({
         url : 'changeRole',
         type: 'GET',
@@ -11,7 +9,7 @@ function dropdownButton(userId, buttonId) {
             role: $('#' + buttonId).val()
         }),
         success: function (data) {
-            $.notify("Role changed", "success");
+            $.notify(getNotificationString('role_changed'), "success");
         }
     });
 }

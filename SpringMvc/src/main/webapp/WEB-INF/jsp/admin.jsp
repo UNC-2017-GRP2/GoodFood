@@ -13,6 +13,18 @@
         <%@include file="/resources/js/admin-js.js" %>
         <%@include file="/resources/js/notify.js" %>
     </script>
+    <script type="text/javascript">
+        if ('${pageContext.response.locale}' == 'uk') {
+            <%@include file="/resources/js/strings-uk.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'ru') {
+            <%@include file="/resources/js/strings-ru.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'en') {
+            <%@include file="/resources/js/strings-en.js" %>
+        }
+    </script>
+
 </head>
 
 <body>
