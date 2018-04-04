@@ -60,12 +60,21 @@ public class OrderServiceImpl implements OrderService {
             List<Order> allLocalizedOrders = new ArrayList<>();
             List<Item> orderLocalizedItems;
             for (Order order : allOrders) {
-                orderLocalizedItems = order.getOrderItems();
-                for (Item item : orderLocalizedItems) {
+                Order localizedOrder = new Order(order.getOrderId(),
+                        order.getUserId(),
+                        order.getOrderCost(),
+                        order.getStatus(),
+                        order.getOrderAddress(),
+                        order.getOrderPhone(),
+                        new ArrayList<Item>(),
+                        order.getOrderCreationDate(),
+                        order.getCourierId());
+                orderLocalizedItems = localizedOrder.getOrderItems();
+                for (Item item :  order.getOrderItems()) {
                     orderLocalizedItems.add(itemRepository.getLocalizedItem(item, locale));
                 }
-                order.setOrderItems(orderLocalizedItems);
-                allLocalizedOrders.add(order);
+                localizedOrder.setOrderItems(orderLocalizedItems);
+                allLocalizedOrders.add(localizedOrder);
             }
             return allLocalizedOrders;
         }
