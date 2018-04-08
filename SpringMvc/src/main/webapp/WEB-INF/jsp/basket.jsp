@@ -17,6 +17,7 @@
             src="${pageContext.request.contextPath}/webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
     <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
     <script src="https://js.stripe.com/v3/"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/notify.js"></script>
     <%--<script src="webjars/noty/2.2.4/jquery.noty.packaged.min.js" type="text/javascript"></script>--%>
     <script type="text/javascript">
         <%@include file="/resources/js/basket-js.js" %>
@@ -41,6 +42,11 @@
 
         $(document).ready(function () {
             setPhoneValue('${userPhone}');
+
+            if (${paymentError != null}){
+                $.notify(getNotificationString('payment_error'), "error");
+                //$.notify('${paymentError}', "wrong");
+            }
         });
     </script>
 </head>

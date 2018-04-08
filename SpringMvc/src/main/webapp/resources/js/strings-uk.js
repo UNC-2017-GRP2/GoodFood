@@ -4,6 +4,8 @@
             return 'Роль змінено.';
         case 'item_added':
             return 'Товар додано.';
+        case 'payment_error':
+            return 'Під час оплати сталася помилка';
     }
 }
 

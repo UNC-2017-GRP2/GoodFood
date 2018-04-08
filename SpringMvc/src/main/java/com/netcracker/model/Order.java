@@ -18,6 +18,21 @@ public class Order {
     private BigInteger courierId;
     private List<Item> orderItems;
     private LocalDateTime orderCreationDate;
+    private String paymentType;
+    private Boolean isPaid;
+
+    public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, Address orderAddress, String orderPhone, List<Item> orderItems, LocalDateTime orderCreationDate, String paymentType, Boolean isPaid) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.orderCost = orderCost;
+        this.status = status;
+        this.orderAddress = orderAddress;
+        this.orderPhone = orderPhone;
+        this.orderItems = orderItems;
+        this.orderCreationDate = orderCreationDate;
+        this.paymentType = paymentType;
+        this.isPaid = isPaid;
+    }
 
     public Order(BigInteger orderId,
                  BigInteger userId,
@@ -27,12 +42,12 @@ public class Order {
                  String orderPhone,
                  List<Item> orderItems,
                  LocalDateTime orderCreationDate,
-                 BigInteger courierId) {
-        this(orderId, userId, orderCost, status, orderAddress, orderPhone, orderItems, orderCreationDate);
+                 BigInteger courierId, String paymentType, Boolean isPaid) {
+        this(orderId, userId, orderCost, status, orderAddress, orderPhone, orderItems, orderCreationDate, paymentType, isPaid );
         this.courierId = courierId;
     }
 
-    public Order(BigInteger orderId,
+/*    public Order(BigInteger orderId,
                  BigInteger userId,
                  BigInteger orderCost,
                  String status,
@@ -48,7 +63,7 @@ public class Order {
         this.orderPhone = orderPhone;
         this.orderItems = orderItems;
         this.orderCreationDate = orderCreationDate;
-    }
+    }*/
 /*
     public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, List<Item> orderItems) {
         this.orderId = orderId;
@@ -94,6 +109,14 @@ public class Order {
         return orderCreationDate;
     }
 
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public Boolean getPaid() {
+        return isPaid;
+    }
+
     public void setOrderCreationDate(LocalDateTime orderCreationDate) {
         this.orderCreationDate = orderCreationDate;
     }
@@ -105,6 +128,8 @@ public class Order {
     public void setUserId(BigInteger userId) {
         this.userId = userId;
     }
+
+
 
     public void setCourierId(BigInteger userId) {
         this.courierId = userId;
@@ -128,6 +153,14 @@ public class Order {
 
     public void setOrderPhone(String orderPhone) {
         this.orderPhone = orderPhone;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public void setPaid(Boolean paid) {
+        isPaid = paid;
     }
 
     public static final Comparator<Order> COMPARE_BY_DATE = new Comparator<Order>() {

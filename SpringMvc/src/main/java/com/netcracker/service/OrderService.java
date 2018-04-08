@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public interface OrderService {
     BigInteger totalOrder(ArrayList<Item> items);
-    void checkout(ArrayList<Item> items, String username, Address orderAddress, String inputPhone) throws SQLException;
+    void checkout(BigInteger orderId,ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException;
     List<Order> getAllFreeOrders();
     //List<Order> getAllOrdersByUser(String username);
     Order getOrderById(BigInteger orderId);
@@ -24,4 +24,5 @@ public interface OrderService {
     void setCourier(BigInteger orderId, String username);
     List<Order> getAllOrders();
     List<Order> getOrdersByUsername(String username);
+    BigInteger getObjectId();
 };

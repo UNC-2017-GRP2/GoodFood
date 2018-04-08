@@ -4,6 +4,8 @@
             return 'Роль изменена.';
         case 'item_added':
             return 'Товар добавлен.';
+        case 'payment_error':
+            return 'Во время оплаты произошла ошибка.';
     }
 }
 function getErrorString(stringId) {

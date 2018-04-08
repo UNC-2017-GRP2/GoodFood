@@ -1,3 +1,4 @@
+<%@ page import="com.netcracker.config.Constant" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -71,6 +72,24 @@
                                                             <span class="glyphicon glyphicon-home"></span>
                                                             <span id="address${order.orderId}">
                                                             </span>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p>
+                                                            <span class="glyphicon glyphicon-ruble"></span>
+                                                            <span>${order.paymentType}</span>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p>
+                                                            <c:if test="${order.paid eq true}">
+                                                                <span class="glyphicon glyphicon-ok"></span>
+                                                                <span><spring:message code="orders.paid"></spring:message></span>
+                                                            </c:if>
+                                                            <c:if test="${order.paid eq false}">
+                                                                <span class="glyphicon glyphicon-remove"></span>
+                                                                <span><spring:message code="orders.notPaid"></spring:message></span>
+                                                            </c:if>
                                                         </p>
                                                     </li>
                                                     <hr>

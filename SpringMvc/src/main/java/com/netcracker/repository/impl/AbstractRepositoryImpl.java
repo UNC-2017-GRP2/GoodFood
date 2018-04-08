@@ -102,6 +102,22 @@ public class AbstractRepositoryImpl{
         }
     }
 
+    protected String getEnumNameById(long enumId){
+        try (PreparedStatement statement = connection.prepareStatement(Constant.SQL_SELECT_ENUM_NAME_BY_ID)) {
+            statement.setLong(1, enumId);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                   return rs.getString("NAME");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     protected void saveObject(String name, BigInteger objectId, BigInteger parentId, long objTypeId){
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_OBJECTS);

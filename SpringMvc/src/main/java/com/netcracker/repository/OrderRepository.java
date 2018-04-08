@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface OrderRepository {
-    void checkout(Order order) throws SQLException;
+    void checkout(Order order, long paymenttype) throws SQLException;
     List<Order> getAllOrders();
     Order getOrderById(BigInteger orderId);
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
     List<Order> getOrdersByUserId(BigInteger userId);
+    BigInteger getObjectId();
 }

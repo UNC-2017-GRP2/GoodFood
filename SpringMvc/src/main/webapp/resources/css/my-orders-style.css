@@ -95,6 +95,13 @@
     width: 50px;
 }
 
+.glyphicon-remove{
+    color: #d9534f;
+}
+.glyphicon-ok{
+    color: #5cb85c;
+}
+
 
 
 /*----------Sticker---------*/
@@ -114,39 +121,37 @@
     font-size: 12px;
     font-weight: bold;
     background: #999;
-    color: #fff
+    color: #fff;
 }
 .sticker-left {
-    border-top-left-radius: 6px
+    border-top-left-radius: 6px;
 }
 .sticker-right {
-    border-top-right-radius: 6px
+    border-top-right-radius: 6px;
 }
 .sticker-left:after {
     left: 0;
-    border-radius: 6px 0 6px 0
+    border-radius: 6px 0 6px 0;
 }
 .sticker-right:after {
     right: 0;
-    border-radius: 0 6px 0 6px
+    border-radius: 0 6px 0 6px;
 }
 .sticker-danger:after {
-    background: #d9534f
+    background: #d9534f;
 }
 .sticker-warning:after {
-    background: #f0ad4e
+    background: #f0ad4e;
 }
 .sticker-success:after {
-    background: #5cb85c
+    background: #5cb85c;
 }
 .sticker-info:after {
-    background: #5bc0de
+    background: #5bc0de;
 }
 .sticker-inverse:after {
-    background: #222
+    background: #222;
 }
-
-
 
 /*Buttons*/
 .btn-outline {

@@ -4,6 +4,8 @@
             return 'Role changed.';
         case 'item_added':
             return 'Item added.';
+        case 'payment_error':
+            return 'There was an error during payment.';
     }
 }
 

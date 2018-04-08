@@ -215,12 +215,10 @@ COPY "ATTR_OBJECT_TYPES" ("OBJECT_TYPE_ID", "ATTR_ID") FROM stdin;
 300	401
 300	402
 300	403
-300	403
 300	404
 300	405
 300	406
 300	410
-300	411
 300	412
 305	403
 305	407
@@ -231,6 +229,10 @@ COPY "ATTR_OBJECT_TYPES" ("OBJECT_TYPE_ID", "ATTR_ID") FROM stdin;
 306	409
 306	413
 306	414
+305	416
+305	417
+306	418
+305	421
 \.
 
 
@@ -260,11 +262,11 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 404	Birthday	54
 405	User role	55
 406	E-mail	51
-407	Order cost	52
-408	Item category	51
-409	Item cost	52
+407	Order cost	51
+408	Item category	55
+409	Item cost	51
+411	Order paid 51
 410	Address	56
-411	Payment card number	51
 412	Order	53
 413	Item name	51
 414	Item description	51
@@ -272,8 +274,7 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 416	Order courier	53
 417	Order status	55
 418	Item image	53
-419	Order address	56
-420	Order phone	51
+419	Order payment type	55
 421	Order creation date	54
 \.
 
@@ -285,6 +286,8 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 COPY "ENUM_TYPES" ("ENUM_TYPE_ID", "NAME") FROM stdin;
 700	User role
 701	Order state
+702	Item category
+703	Order payment
 \.
 
 
@@ -297,13 +300,12 @@ COPY "ENUMS" ("ENUM_ID", "NAME", "ENUM_TYPE_ID") FROM stdin;
 801	ROLE_USER	700
 802	ROLE_COURIER	700
 803	Created	701
-804	Without courier	701
 805	Linked with courier	701
 806	Delivered	701
-807	Delivery confirmed	701
 808	Expired	701
 809	Cancelled	701
-810	Paid	701
+818	Cash payment 703
+819	Payment by card 703
 \.
 
 

@@ -26,9 +26,14 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     }
 
     @Override
-    public void checkout(Order order) throws SQLException {
+    public BigInteger getObjectId() {
+        return super.getObjectId();
+    }
+
+    @Override
+    public void checkout(Order order, long paymentType) throws SQLException {
         try{
-            order.setOrderId(getObjectId());
+            //order.setOrderId(getObjectId());
             connection.setAutoCommit(false); //начало транзакции, вроде бы
             //Сохраняем заказ
             saveObject("Order " + order.getOrderId(),order.getOrderId(), new BigInteger("0"), Constant.ORDER_OBJ_TYPE_ID);
@@ -41,15 +46,20 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 }
             }
             //адрес
-            savePointParameter(order.getOrderId(), Constant.ORDER_ADDRESS_ATTR_ID, order.getOrderAddress().getLatitude(), order.getOrderAddress().getLongitude());
+            savePointParameter(order.getOrderId(), Constant.ADDRESS_ATTR_ID, order.getOrderAddress().getLatitude(), order.getOrderAddress().getLongitude());
             //стоимость
             saveTextParameter(order.getOrderId(), Constant.ORDERS_COST_ATTR_ID, order.getOrderCost().toString());
             //телефон
-            saveTextParameter(order.getOrderId(), Constant.ORDER_PHONE_ATTR_ID, order.getOrderPhone());
+            saveTextParameter(order.getOrderId(), Constant.PHONE_NUMBER_ATTR_ID, order.getOrderPhone());
             //статус
             saveEnumValue(order.getOrderId(), Constant.STATUS_ATTR_ID, Constant.STATUS_CREATED_ENUM_ID);
             //дата создания
             saveDateParameter(order.getOrderId(),Constant.ORDER_CREATION_DATE_ATTR_ID, new java.sql.Timestamp(System.currentTimeMillis()));
+            //Тип оплаты
+            saveEnumValue(order.getOrderId(), Constant.ORDER_PAYMENT_TYPE_ATTR_ID, paymentType);
+            //Оплачен ли заказ
+            saveTextParameter(order.getOrderId(), Constant.ORDER_PAID_ATTR_ID, (order.getPaid())?"1":"0");
+
             connection.commit();
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -94,7 +104,6 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         return result;
     }
 
-
     @Override
     public Order getOrderById(BigInteger orderId) {
         Order newOrder = null;
@@ -106,6 +115,8 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         String orderPhone = null;
         List<Item> orderItems = new ArrayList<>();
         LocalDateTime orderCreationDate = null;
+        String paymentType = null;
+        Boolean isPaid = false;
         ResultSet resultSet = null;
 
         try {
@@ -158,21 +169,27 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 if (curAttrId == Constant.ORDERS_COST_ATTR_ID){
                     orderCost = new BigInteger(resultSet.getString("TEXT_VALUE"));
                 }
-                if (curAttrId == Constant.ORDER_ADDRESS_ATTR_ID){
+                if (curAttrId == Constant.ADDRESS_ATTR_ID){
                     if (resultSet.getObject("POINT_VALUE") != null){
                         PGpoint address = (PGpoint)resultSet.getObject("POINT_VALUE");
                         orderAddress = new Address(address.x, address.y);
                     }
                 }
-                if (curAttrId == Constant.ORDER_PHONE_ATTR_ID){
+                if (curAttrId == Constant.PHONE_NUMBER_ATTR_ID){
                     orderPhone = resultSet.getString("TEXT_VALUE");
                 }
                 if (curAttrId == Constant.ORDER_CREATION_DATE_ATTR_ID){
                     //System.out.println(resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toString());
                     orderCreationDate = resultSet.getTimestamp("DATE_VALUE").toLocalDateTime();
                 }
+                if (curAttrId == Constant.ORDER_PAYMENT_TYPE_ATTR_ID){
+                    paymentType =  getEnumNameById(resultSet.getLong("ENUM_VALUE"));
+                }
+                if (curAttrId == Constant.ORDER_PAID_ATTR_ID){
+                    isPaid = resultSet.getInt("TEXT_VALUE") == 1;
+                }
             }
-            newOrder = new Order(orderId, userId, orderCost, orderStatus, orderAddress, orderPhone, orderItems, orderCreationDate, courierId);
+            newOrder = new Order(orderId, userId, orderCost, orderStatus, orderAddress, orderPhone, orderItems, orderCreationDate, courierId, paymentType, isPaid);
             if (resultSet != null){
                 resultSet.close();
             }

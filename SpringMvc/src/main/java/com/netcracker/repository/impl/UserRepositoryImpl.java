@@ -148,7 +148,8 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                         }
                         if (curAttrId == Constant.USER_ROLE_ATTR_ID) {
                             long roleValue = resultSet.getLong("ENUM_VALUE");
-                            try (PreparedStatement statement = connection.prepareStatement(Constant.SQL_SELECT_ENUM_NAME_BY_ID)) {
+                            role = getEnumNameById(roleValue);
+                            /*try (PreparedStatement statement = connection.prepareStatement(Constant.SQL_SELECT_ENUM_NAME_BY_ID)) {
                                 statement.setLong(1, roleValue);
                                 try (ResultSet rs = statement.executeQuery()) {
                                     while (rs.next()) {
@@ -159,7 +160,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                                 }
                             } catch (Exception e) {
                                 System.out.println(e.getMessage());
-                            }
+                            }*/
                         }
                         if (curAttrId == Constant.USERNAME_ATTR_ID){
                             username = resultSet.getString("TEXT_VALUE");

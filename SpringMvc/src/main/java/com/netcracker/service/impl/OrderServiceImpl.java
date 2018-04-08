@@ -3,8 +3,10 @@ package com.netcracker.service.impl;
 import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.Order;
+import com.netcracker.repository.AbstractRepository;
 import com.netcracker.repository.OrderRepository;
 import com.netcracker.repository.UserRepository;
+import com.netcracker.repository.impl.AbstractRepositoryImpl;
 import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,13 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserService userService;
+
+    @Override
+    public BigInteger getObjectId(){
+        return orderRepository.getObjectId();
+    }
 
     @Override
     public BigInteger totalOrder(ArrayList<Item> items) {
@@ -38,12 +44,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void checkout(ArrayList<Item> items, String username, Address orderAddress, String inputPhone) throws SQLException {
+    public void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException {
         /*BigInteger userId = userService.getByUsername(username).getUserId();
         BigInteger orderCost = totalOrder(items);*/
-        Order order = new Order(null, userService.getByUsername(username).getUserId(), totalOrder(items), null, orderAddress, inputPhone, items, null);
+        Order order = new Order(orderId, userService.getByUsername(username).getUserId(), totalOrder(items), null, orderAddress, inputPhone, items, null, null, isPaid);
         //orderRepository.checkout(items, username, inputAddress);
-        orderRepository.checkout(order);
+        orderRepository.checkout(order, paymentType);
     }
 
     @Override
