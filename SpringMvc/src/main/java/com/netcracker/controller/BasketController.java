@@ -35,7 +35,7 @@ public class BasketController {
     private UserService userService;
 
     @RequestMapping(value = "/basket", method = RequestMethod.GET)
-    public ModelAndView toBasket(HttpSession httpSession, @RequestParam(value = "message", required = false) String paymentError, ModelAndView model){
+    public ModelAndView toBasket(HttpSession httpSession, @RequestParam(value = "message", required = false) String message, ModelAndView model){
        // ModelAndView model = new ModelAndView();
         List<Item> basketItems = (ArrayList<Item>) httpSession.getAttribute("basketItems");
         if(basketItems != null && basketItems.size() != 0){
@@ -44,9 +44,8 @@ public class BasketController {
         }
         model.addObject("userAddresses", httpSession.getAttribute("userAddresses"));
 
-        if (paymentError != null){
+        if (message != null){
             model.addObject("paymentError", "paymentError");
-            //model.addObject("paymentError","error");
         }
         model.setViewName("basket");
         return model;
@@ -92,14 +91,7 @@ public class BasketController {
                             orderService.checkout(orderId,basketItems,principal.getName(), orderAddress, inputPhone, Constant.PAYMENT_BY_CARD_ENUM_ID, true);
                         }else{
                             throw new Exception();
-                            /*model.addObject("errorPayment","There was an error during payment.");
-                            model.setViewName("redirect:/basket");
-                            return model;*/
                         }
-                        /*Gson gson = new Gson();
-                        String json = gson.toJson(Charge.GSON);
-                        JsonObject jobj = gson.fromJson(json, JsonObject.class);
-                        System.out.println(jobj.toString());*/
                     }catch (Exception e){
                         model.addObject("message","paymentError");
                         model.setViewName("redirect:/basket");

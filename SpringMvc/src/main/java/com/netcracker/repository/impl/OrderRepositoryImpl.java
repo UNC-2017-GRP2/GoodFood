@@ -153,18 +153,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 }
                 if (curAttrId == Constant.STATUS_ATTR_ID) {
                     long enumValue = resultSet.getLong("ENUM_VALUE");
-                    try (PreparedStatement statement = connection.prepareStatement(Constant.SQL_SELECT_ENUM_NAME_BY_ID)) {
-                        statement.setLong(1, enumValue);
-                        try (ResultSet resultSet1 = statement.executeQuery()) {
-                            while (resultSet1.next()) {
-                                orderStatus = resultSet1.getString("NAME");
-                            }
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage() + " inner try catch");
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
+                    orderStatus = getEnumNameById(enumValue);
                 }
                 if (curAttrId == Constant.ORDERS_COST_ATTR_ID){
                     orderCost = new BigInteger(resultSet.getString("TEXT_VALUE"));
@@ -216,7 +205,6 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 courierId = new BigInteger(resultSet.getString("OBJECT_ID"));
-                //courierId = resultSet.getLong("OBJECT_ID");
             }
             preparedStatement.close();
             resultSet.close();

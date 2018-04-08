@@ -45,10 +45,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException {
-        /*BigInteger userId = userService.getByUsername(username).getUserId();
-        BigInteger orderCost = totalOrder(items);*/
         Order order = new Order(orderId, userService.getByUsername(username).getUserId(), totalOrder(items), null, orderAddress, inputPhone, items, null, null, isPaid);
-        //orderRepository.checkout(items, username, inputAddress);
         orderRepository.checkout(order, paymentType);
     }
 
