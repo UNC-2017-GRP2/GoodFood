@@ -1,7 +1,3 @@
-﻿INSERT INTO public."ENUM_TYPES"(
-	"ENUM_TYPE_ID", "NAME")
-	VALUES (702, 'Item category');
-
 INSERT INTO public."ENUMS"(
 	"ENUM_ID", "NAME", "ENUM_TYPE_ID")
 	VALUES (811, 'Pizza', 702),

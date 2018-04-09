@@ -7,7 +7,7 @@
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
+--SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -265,7 +265,7 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 407	Order cost	51
 408	Item category	55
 409	Item cost	51
-411	Order paid 51
+411	Order paid	51
 410	Address	56
 412	Order	53
 413	Item name	51
@@ -304,8 +304,8 @@ COPY "ENUMS" ("ENUM_ID", "NAME", "ENUM_TYPE_ID") FROM stdin;
 806	Delivered	701
 808	Expired	701
 809	Cancelled	701
-818	Cash payment 703
-819	Payment by card 703
+818	Cash payment	703
+819	Payment by card	703
 \.
 
 
