@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @SessionAttributes(value = {"username"})
@@ -28,13 +29,13 @@ public class FreeOrdersController {
     private UserService userService;
 
     @RequestMapping(value = { "/free-orders"}, method = RequestMethod.GET)
-    public ModelAndView freeOrdersPage() throws IOException {
+    public ModelAndView freeOrdersPage(Locale locale) throws IOException {
         ModelAndView model = new ModelAndView();
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
         model.setViewName("free-orders");
 
-        List<Order> allOrders = orderService.getAllFreeOrders();
+        List<Order> allOrders = orderService.getAllFreeOrders(locale);
         if (allOrders != null && allOrders.size()!=0){
             Collections.sort(allOrders, Order.COMPARE_BY_DATE);
             model.addObject("orders", allOrders);

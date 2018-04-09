@@ -23,6 +23,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class MyOrdersController {
@@ -32,7 +33,7 @@ public class MyOrdersController {
     private UserService userService;
 
     @RequestMapping(value = {"/my-orders/{pageId}"}, method = RequestMethod.GET)
-    public ModelAndView myOrdersPageId(Principal principal, @PathVariable int pageId){
+    public ModelAndView myOrdersPageId(Principal principal, @PathVariable int pageId, Locale locale){
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = null;
         List<Order> ordersForShow;
@@ -44,7 +45,7 @@ public class MyOrdersController {
             }
             if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_COURIER")) {
                 model.addObject("role", "ROLE_COURIER");
-                allOrders = orderService.getCompletedOrdersByCourier(principal.getName());
+                allOrders = orderService.getCompletedOrdersByCourier(principal.getName(), locale);
             }
             else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
                 model.addObject("role", "ROLE_USER");

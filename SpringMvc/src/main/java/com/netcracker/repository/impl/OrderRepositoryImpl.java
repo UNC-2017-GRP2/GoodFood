@@ -36,12 +36,12 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             //order.setOrderId(getObjectId());
             connection.setAutoCommit(false); //начало транзакции, вроде бы
             //Сохраняем заказ
-            saveObject("Order " + order.getOrderId(),order.getOrderId(), new BigInteger("0"), Constant.ORDER_OBJ_TYPE_ID);
+            saveObject("Order " + order.getOrderId(), order.getOrderId(), new BigInteger("0"), Constant.ORDER_OBJ_TYPE_ID);
             //добавляем пользователя
             saveReferenceParameter(order.getUserId(), Constant.ORDER_ATTR_ID, order.getOrderId());
             //продукты
             for (Item item : order.getOrderItems()) {
-                for (int i=0;i<item.getProductQuantity();i++){
+                for (int i = 0; i < item.getProductQuantity(); i++) {
                     saveReferenceParameter(order.getOrderId(), Constant.ITEM_ATTR_ID, item.getProductId());
                 }
             }
@@ -61,7 +61,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             saveTextParameter(order.getOrderId(), Constant.ORDER_PAID_ATTR_ID, (order.getPaid())?"1":"0");
 
             connection.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             connection.rollback();
         }
@@ -71,9 +71,9 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     public List<Order> getAllOrders() {
         List<Order> result = new ArrayList<>();
         BigInteger orderId;
-        try{
+        try {
             ResultSet resultSet = getObjectsByObjectTypeId(Constant.ORDER_OBJ_TYPE_ID);
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 orderId = new BigInteger(resultSet.getString("OBJECT_ID"));
                 Order newOrder = getOrderById(orderId);
                 result.add(newOrder);
@@ -88,17 +88,17 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     public List<Order> getOrdersByUserId(BigInteger userId) {
         List<Order> result = new ArrayList<>();
         BigInteger orderId;
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_REFERENCE_VAL_BY_OBJ_ID_AND_ATTR_ID);
             preparedStatement.setObject(1, userId, numericType);
             preparedStatement.setLong(2, Constant.ORDER_ATTR_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 orderId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
                 result.add(getOrderById(orderId));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return result;
@@ -132,7 +132,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         try {
             resultSet = getParametersByObjectId(orderId);
             //идем по всем параметрам заказа
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 long curAttrId = resultSet.getLong("ATTR_ID");
                 if (curAttrId == Constant.COURIER_ATTR_ID) {
                     courierId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
@@ -140,14 +140,14 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 if (curAttrId == Constant.ITEM_ATTR_ID) {
                     BigInteger itemId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
                     boolean flag = false;
-                    for(Item item:orderItems){
-                        if (item.getProductId().compareTo(itemId) == 0){  // они равны
+                    for (Item item : orderItems) {
+                        if (item.getProductId().compareTo(itemId) == 0) {  // они равны
                             flag = true;
-                            item.setProductQuantity(item.getProductQuantity()+1);
+                            item.setProductQuantity(item.getProductQuantity() + 1);
                             break;
                         }
                     }
-                    if(!flag){
+                    if (!flag) {
                         orderItems.add(itemRepository.getItemById(new BigInteger(resultSet.getString("REFERENCE_VALUE"))));
                     }
                 }
@@ -155,7 +155,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                     long enumValue = resultSet.getLong("ENUM_VALUE");
                     orderStatus = getEnumNameById(enumValue);
                 }
-                if (curAttrId == Constant.ORDERS_COST_ATTR_ID){
+                if (curAttrId == Constant.ORDERS_COST_ATTR_ID) {
                     orderCost = new BigInteger(resultSet.getString("TEXT_VALUE"));
                 }
                 if (curAttrId == Constant.ADDRESS_ATTR_ID){
@@ -167,7 +167,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 if (curAttrId == Constant.PHONE_NUMBER_ATTR_ID){
                     orderPhone = resultSet.getString("TEXT_VALUE");
                 }
-                if (curAttrId == Constant.ORDER_CREATION_DATE_ATTR_ID){
+                if (curAttrId == Constant.ORDER_CREATION_DATE_ATTR_ID) {
                     //System.out.println(resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toString());
                     orderCreationDate = resultSet.getTimestamp("DATE_VALUE").toLocalDateTime();
                 }
@@ -182,7 +182,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             if (resultSet != null){
                 resultSet.close();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return newOrder;
@@ -201,19 +201,19 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         BigInteger courierId = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_OBJECT_ID_BY_NAME);
-            preparedStatement.setString(1,username);
+            preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 courierId = new BigInteger(resultSet.getString("OBJECT_ID"));
             }
             preparedStatement.close();
             resultSet.close();
-            if (isReferenceParameterExist(orderId,Constant.COURIER_ATTR_ID)){
-                updateReferenceParameter(orderId,Constant.COURIER_ATTR_ID,courierId);
-            }else{
-                saveReferenceParameter(orderId,Constant.COURIER_ATTR_ID,courierId);
+            if (isReferenceParameterExist(orderId, Constant.COURIER_ATTR_ID)) {
+                updateReferenceParameter(orderId, Constant.COURIER_ATTR_ID, courierId);
+            } else {
+                saveReferenceParameter(orderId, Constant.COURIER_ATTR_ID, courierId);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         changeOrderStatus(orderId, Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);

@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class CurrentOrdersController {
@@ -30,7 +31,7 @@ public class CurrentOrdersController {
     private UserService userService;
 
     @RequestMapping(value = {"/current-orders"}, method = RequestMethod.GET)
-    public ModelAndView currentOrders(ModelAndView model, Principal principal) throws IOException {
+    public ModelAndView currentOrders(ModelAndView model, Principal principal, Locale locale) throws IOException {
 
         List<Order> allOrders = null;
         try {
@@ -42,7 +43,7 @@ public class CurrentOrdersController {
             System.out.println("method currentOrdersPage:" + e.getMessage());
         }
         model.addObject("role", "ROLE_COURIER");
-        allOrders = orderService.getNotCompletedOrdersByCourier(principal.getName());
+        allOrders = orderService.getNotCompletedOrdersByCourier(principal.getName(), locale);
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
         model.addObject("start_exp_time", Constant.START_EXPIRATION_TIME);

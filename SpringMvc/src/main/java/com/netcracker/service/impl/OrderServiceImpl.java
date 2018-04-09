@@ -4,6 +4,7 @@ import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.Order;
 import com.netcracker.repository.AbstractRepository;
+import com.netcracker.repository.ItemRepository;
 import com.netcracker.repository.OrderRepository;
 import com.netcracker.repository.UserRepository;
 import com.netcracker.repository.impl.AbstractRepositoryImpl;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -25,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ItemRepository itemRepository;
     @Autowired
     private UserService userService;
 
@@ -50,9 +54,39 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.getAllOrders();
+    public List<Order> getAllOrders(Locale locale) {
+        List<Order> allOrders;
+        allOrders = orderRepository.getAllOrders();
+        if (locale.equals(Locale.ENGLISH))
+            return allOrders;
+        else {
+            List<Order> allLocalizedOrders = new ArrayList<>();
+            List<Item> orderLocalizedItems;
+            for (Order order : allOrders) {
+                Order localizedOrder = new Order(order.getOrderId(),
+                        order.getUserId(),
+                        order.getOrderCost(),
+                        order.getStatus(),
+                        order.getOrderAddress(),
+                        order.getOrderPhone(),
+                        new ArrayList<Item>(),
+                        order.getOrderCreationDate(),
+                        order.getCourierId(),
+                        order.getPaymentType(),
+                        order.getPaid());
+                orderLocalizedItems = localizedOrder.getOrderItems();
+                for (Item item :  order.getOrderItems()) {
+                    orderLocalizedItems.add(itemRepository.getLocalizedItem(item, locale));
+                }
+                localizedOrder.setOrderItems(orderLocalizedItems);
+                allLocalizedOrders.add(localizedOrder);
+            }
+            return allLocalizedOrders;
+        }
     }
+    //public List<Order> getAllOrders() {
+    //    return orderRepository.getAllOrders();
+    //}
 
     @Override
     public List<Order> getOrdersByUsername(String username) {
@@ -60,8 +94,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllFreeOrders() {
-        List<Order> allOrders = getAllOrders();
+    //public List<Order> getAllFreeOrders() {
+    public List<Order> getAllFreeOrders(Locale locale) {
+        List<Order> allOrders = getAllOrders(locale);
         List<Order> allFreeOrders = new ArrayList<>();
         for (Order newOrder : allOrders) {
             if (newOrder.getStatus().equals("Created") || newOrder.getStatus().equals("Without courier")) {
@@ -73,9 +108,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrdersByCourier(String username) {
+    //public List<Order> getAllOrdersByCourier(String username) {
+    public List<Order> getAllOrdersByCourier(String username, Locale locale) {
         BigInteger userId = userRepository.getUserByUsername(username).getUserId();
-        List<Order> allOrders = getAllOrders();
+        List<Order> allOrders = getAllOrders(locale);
         List<Order> allOrdersByUser = new ArrayList<>();
         for (Order newOrder : allOrders) {
             if (newOrder.getCourierId().equals(userId)) {
@@ -86,9 +122,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getCompletedOrdersByCourier(String username) {
+    //public List<Order> getCompletedOrdersByCourier(String username) {
+    public List<Order> getCompletedOrdersByCourier(String username, Locale locale) {
         BigInteger userId = userRepository.getUserByUsername(username).getUserId();
-        List<Order> allOrders = getAllOrders();
+        List<Order> allOrders = getAllOrders(locale);
         List<Order> completedOrders = new ArrayList<>();
         for (Order newOrder : allOrders) {
             if (newOrder.getCourierId().equals(userId) && newOrder.getStatus().equals("Delivered") || newOrder.getStatus().equals("Not delivered") || newOrder.getStatus().equals("Cancelled")) {
@@ -99,9 +136,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getNotCompletedOrdersByCourier(String username) {
+    //public List<Order> getNotCompletedOrdersByCourier(String username) {
+    public List<Order> getNotCompletedOrdersByCourier(String username, Locale locale) {
         BigInteger userId = userRepository.getUserByUsername(username).getUserId();
-        List<Order> allOrders = getAllOrders();
+        List<Order> allOrders = getAllOrders(locale);
         List<Order> withCourier = new ArrayList<>();
         for (Order newOrder : allOrders) {
             if (newOrder.getCourierId().equals(userId) && newOrder.getStatus().equals("Linked with courier")) {
