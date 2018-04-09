@@ -575,3 +575,14 @@
     text-transform: uppercase;
 }
 .tag-inner li:last-child {border-bottom :none;}
+
+/*---------------------------------BOTTLE--------------------------------------*/
+
+
+.btl
+{
+    position:fixed;
+    bottom:0px;
+    left:90%;
+    z-index: 20001;
+}

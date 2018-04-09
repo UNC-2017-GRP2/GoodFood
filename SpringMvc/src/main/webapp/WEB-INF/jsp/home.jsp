@@ -176,6 +176,11 @@
         </div>--%>
     </div>
 </div>
+<c:if test="${bottle == 1}">
+    <a href="<c:url value='/home?value=Beverages'/>">
+    <img class="btl" src="${pageContext.request.contextPath}/resources/img/beverages/bottle.png" height="30%" width="auto">
+    </a>
+</c:if>
 <div class="Features-section paddingTB60 bg-dgrey ">
     <div class="container">
         <div class="row text-center ">

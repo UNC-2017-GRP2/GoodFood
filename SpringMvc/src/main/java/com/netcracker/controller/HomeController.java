@@ -63,7 +63,10 @@ public class HomeController {
         }
         model.addObject("items", currentItems);
 
-        //model.addObject("notification", null);
+        if(new String("Beverages").equals(value)) {
+            model.addObject("bottle", 1);
+        }
+
         model.setViewName("home");
         return model;
     }
