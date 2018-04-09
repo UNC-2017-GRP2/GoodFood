@@ -242,7 +242,8 @@ public class RepositoryImpl implements Repository {
                     saveDateParameter(objectId, parameter.getAttributeId(), (Timestamp) parameter.getValue());
                 }
                 if (attrTypeId == Constant.ENUM_VALUE_ATTR_TYPE_ID) {
-                    saveEnumValue(objectId, parameter.getAttributeId(), getEnumIdByValue(parameter.getValue()));
+                    /*saveEnumValue(objectId, parameter.getAttributeId(), getEnumIdByValue(parameter.getValue()));*/
+                    saveEnumValue(objectId, parameter.getAttributeId(), (long) parameter.getValue());
                 }
                 if (attrTypeId == Constant.POINT_VALUE_ATTR_TYPE_ID) {
                     if (parameter.getValue() instanceof Address) {

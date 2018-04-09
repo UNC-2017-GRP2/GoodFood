@@ -8,7 +8,6 @@ public class Entity {
     private BigInteger objectId;
     private long objectTypeId;
     private String name;
-    //private Map<Long, Object> mapParameters;
     private List<MapParameter> parameters;
 
     public Entity() { }

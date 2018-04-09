@@ -3,20 +3,16 @@ package com.netcracker.service.impl;
 import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.Order;
-import com.netcracker.repository.AbstractRepository;
 import com.netcracker.repository.ItemRepository;
 import com.netcracker.repository.OrderRepository;
 import com.netcracker.repository.UserRepository;
-import com.netcracker.repository.impl.AbstractRepositoryImpl;
 import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 

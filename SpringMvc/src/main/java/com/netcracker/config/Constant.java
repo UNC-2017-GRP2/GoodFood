@@ -40,6 +40,7 @@ public class Constant {
     public static final long COURIER_ATTR_ID = 416;
     public static final long ITEM_IMAGE_ATTR_ID = 418;
     public static final long ORDER_PAYMENT_TYPE_ATTR_ID = 419;
+    public static final long IMAGE_PATH_ATTR_ID = 420;
     public static final long ORDER_CREATION_DATE_ATTR_ID = 421;
 
     /**Table enum_types**/
