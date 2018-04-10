@@ -131,6 +131,9 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 case "Beverages":
                     result = getList(all,"Beverages");
                     break;
+                case "Alcohol":
+                    result = getList(all,"Alcohol");
+                    break;
             }
         }
         return result;

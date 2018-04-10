@@ -177,7 +177,7 @@
     </div>
 </div>
 <c:if test="${bottle == 1}">
-    <a href="<c:url value='/home?value=Beverages'/>">
+    <a href="<c:url value='/home?value=Alcohol'/>">
     <img class="btl" src="${pageContext.request.contextPath}/resources/img/beverages/bottle.png" height="30%" width="auto">
     </a>
 </c:if>

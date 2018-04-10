@@ -306,8 +306,8 @@ COPY "ENUMS" ("ENUM_ID", "NAME", "ENUM_TYPE_ID") FROM stdin;
 806	Delivered	701
 808	Expired	701
 809	Cancelled	701
-811	Pizza		702
-812	Sushi		702
+811	Pizza	702
+812	Sushi	702
 813	Burgers	702
 814	Salads	702
 815	Snacks	702
@@ -315,7 +315,7 @@ COPY "ENUMS" ("ENUM_ID", "NAME", "ENUM_TYPE_ID") FROM stdin;
 817	Beverages	702
 818	Cash payment	703
 819	Payment by card	703
-
+820	Alcohol	702
 \.
 
 
