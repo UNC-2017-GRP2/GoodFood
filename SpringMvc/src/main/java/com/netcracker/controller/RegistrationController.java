@@ -66,13 +66,6 @@ public class RegistrationController {
         return model;
     }
 
-   /* @RequestMapping(value = "/checkUsername", method = RequestMethod.GET)
-    public @ResponseBody Gson checkUsername(@RequestParam String username){
-        Gson gson = new Gson();
-        gson.toJson(userService.isLoginExist(username));
-        return gson;
-    }*/
-
     @RequestMapping(value = "/checkUsername", method = RequestMethod.GET)
     public @ResponseBody
     String checkUsername(@RequestParam String username) {
