@@ -21,7 +21,7 @@ public class Constant {
 
     /**Table attributes**/
     public static final long FULL_NAME_ATTR_ID = 400;
-    public static final long USERNAME_ATTR_ID = 401;
+    public static final long NAME_ATTR_ID = 401;
     public static final long PASSWORD_HASH_ATTR_ID = 402;
     public static final long PHONE_NUMBER_ATTR_ID = 403;
     public static final long BIRTHDAY_ATTR_ID = 404;
@@ -33,14 +33,12 @@ public class Constant {
     public static final long ADDRESS_ATTR_ID = 410;
     public static final long ORDER_PAID_ATTR_ID = 411;
     public static final long ORDER_ATTR_ID = 412;
-    public static final long ITEM_NAME_ATTR_ID = 413;
     public static final long ITEM_DESCRIPTION_ATTR_ID = 414;
     public static final long ITEM_ATTR_ID = 415;
     public static final long STATUS_ATTR_ID = 417;
     public static final long COURIER_ATTR_ID = 416;
     public static final long ITEM_IMAGE_ATTR_ID = 418;
     public static final long ORDER_PAYMENT_TYPE_ATTR_ID = 419;
-    public static final long IMAGE_PATH_ATTR_ID = 420;
     public static final long ORDER_CREATION_DATE_ATTR_ID = 421;
 
     /**Table enum_types**/
@@ -58,6 +56,14 @@ public class Constant {
     public static final long STATUS_DELIVERED_ENUM_ID = 806;
     public static final long STATUS_EXPIRED_ENUM_ID = 808;
     public static final long STATUS_CANCELLED_ENUM_ID = 809;
+    public static final long CATEGORY_PIZZA = 811;
+    public static final long CATEGORY_SUSHI = 812;
+    public static final long CATEGORY_BURGERS = 813;
+    public static final long CATEGORY_SALADS = 814;
+    public static final long CATEGORY_SNACKS = 815;
+    public static final long CATEGORY_DESSERT = 816;
+    public static final long CATEGORY_BEVERAGES = 817;
+    public static final long CATEGORY_ALCOHOL = 820;
     public static final long CASH_PAYMENT_ENUM_ID = 818;
     public static final long PAYMENT_BY_CARD_ENUM_ID = 819;
 
@@ -94,6 +100,7 @@ public class Constant {
     public static final String SQL_SELECT_OBJECT_ID_BY_TEXT_VAL_AND_ATTR_ID = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"TEXT_VALUE\" = ?";
     public static final String SQL_SELECT_REFERENCE_VAL_BY_OBJ_ID_AND_ATTR_ID = "select \"REFERENCE_VALUE\" from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
     public static final String SQL_SELECT_TEXT_VAL_BY_OBJ_ID_AND_ATTR_ID = "select \"TEXT_VALUE\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"OBJECT_ID\" = ? ";
+    public static final String SQL_SELECT_OBJ_ID_BY_ATTR_AND_ENUM = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"ENUM_VALUE\" = ?";
 
     public static final String SQL_SELECT_ENUMS = "select * from \"ENUMS\" where \"ENUM_ID\" = ?";
     public static final String SQL_SELECT_ENUM_NAME_BY_ID = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";

@@ -25,8 +25,6 @@ public class OtherController {
     @Autowired
     private Service service;
 
-
-
     @RequestMapping(value = {"/other"}, method = RequestMethod.GET)
     public ModelAndView otherPage(ModelAndView model) throws IOException {
         List<Entity> users = repository.getEntitiesByObjectTypeId(Constant.USER_OBJ_TYPE_ID);
@@ -35,37 +33,13 @@ public class OtherController {
         return model;
     }
 
-    class Response{
-        private BigInteger objectId;
-        private String name;
-
-        public BigInteger getObjectId() {
-            return objectId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setObjectId(BigInteger objectId) {
-            this.objectId = objectId;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
 
     @RequestMapping(value = {"/sendEntity"}, method = RequestMethod.GET)
-    public @ResponseBody Response sendEntity(@RequestParam String jsonEntity) throws IOException {
+    public @ResponseBody String sendEntity(@RequestParam String jsonEntity) throws IOException {
         Gson gson = new Gson();
         Entity entity = gson.fromJson(jsonEntity, Entity.class);
         service.saveEntity(entity);
 
-        Response response = new Response();
-        response.setName("success");
-        response.setObjectId(new BigInteger("12345615"));
-        return response;
+        return "redirect:/home";
     }
 }

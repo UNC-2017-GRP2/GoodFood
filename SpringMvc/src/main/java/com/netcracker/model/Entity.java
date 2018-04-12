@@ -57,10 +57,18 @@ public class Entity {
         this.parameters = parameters;
     }
 
-    public Object getParameterById(long attrId){
+    public Object getParameterValueByAttrId(long attrId){
         for(MapParameter param : parameters){
             if (param.getAttributeId() == attrId){
                 return param.getValue();
+            }
+        }
+        return null;
+    }
+    public MapParameter getParameterByAttrId(long attrId){
+        for(MapParameter param : parameters){
+            if (param.getAttributeId() == attrId){
+                return param;
             }
         }
         return null;

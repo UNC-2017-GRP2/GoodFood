@@ -61,7 +61,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 if (curAttrId == Constant.ITEMS_COST_ATTR_ID){
                     itemCost = new BigInteger(resultSet.getString("TEXT_VALUE"));
                 }
-                if (curAttrId == Constant.ITEM_NAME_ATTR_ID) {
+                if (curAttrId == Constant.NAME_ATTR_ID) {
                     itemName = resultSet.getString("TEXT_VALUE");
                 }
                 if (curAttrId == Constant.ITEM_IMAGE_ATTR_ID){
@@ -101,8 +101,32 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         return null;
     }
 
-
     @Override
+    public List<Item> getItemsByCategory(String category) {
+        List<Item>result = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_OBJ_ID_BY_ATTR_AND_ENUM);
+            preparedStatement.setLong(1, Constant.ITEM_CATEGORY_ATTR_ID);
+            preparedStatement.setLong(2, Long.valueOf(category));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                result.add(getItemById(new BigInteger(resultSet.getString("OBJECT_ID"))));
+            }
+            if (preparedStatement != null){
+                preparedStatement.close();
+            }
+            if (resultSet != null){
+                resultSet.close();
+            }
+            return result;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return result;
+    }
+
+
+    /*@Override
     public List<Item> getItemsByCategory(String category) {
         List<Item> all = getAllItems();
         List<Item> result = new ArrayList<>();
@@ -134,10 +158,13 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 case "Alcohol":
                     result = getList(all,"Alcohol");
                     break;
+                default:
+                    result = getList(all,"Pizza");
+                    break;
             }
         }
         return result;
-    }
+    }*/
     private List<Item> getList(List<Item>all, String category){
         List<Item> result = new ArrayList<>();
         for(Item item:all){
@@ -169,7 +196,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 if(curAttrId == Constant.ITEM_DESCRIPTION_ATTR_ID){
                     itemDescription = resultSet.getString("LOC_TEXT_VALUE");
                 }
-                if (curAttrId == Constant.ITEM_NAME_ATTR_ID) {
+                if (curAttrId == Constant.NAME_ATTR_ID) {
                     itemName = resultSet.getString("LOC_TEXT_VALUE");
                 }
             }

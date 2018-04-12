@@ -133,7 +133,7 @@
         </div>
 
         <spring:message code="enter.username" var="placeholder"/>
-        <input type='text' id='login' attr-id="<%=Constant.USERNAME_ATTR_ID%>" name="true"  class="form-control" placeholder='${placeholder}'>
+        <input type='text' id='login' attr-id="<%=Constant.NAME_ATTR_ID%>" name="true"  class="form-control" placeholder='${placeholder}'>
         <div class="alert alert-danger col-sm-12 validation-message" id="login-validation-message">
         </div>
 

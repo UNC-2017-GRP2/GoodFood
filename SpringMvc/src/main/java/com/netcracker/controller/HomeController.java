@@ -1,6 +1,7 @@
 package com.netcracker.controller;
 
 
+import com.netcracker.config.Constant;
 import com.netcracker.model.Item;
 import com.netcracker.model.User;
 import com.netcracker.service.ItemService;
@@ -53,19 +54,19 @@ public class HomeController {
 
         List<Item> currentItems = itemService.getItemsByCategory(value, locale);
         if(value == null){
-            model.addObject("value", "Pizza");
+            model.addObject("value", Constant.CATEGORY_PIZZA);
         }else{
             model.addObject("value", value);
+            if(value.equals(String.valueOf(Constant.CATEGORY_BEVERAGES))) {
+                model.addObject("bottle", 1);
+            }
         }
-        if (currentItems == null){
-            currentItems = itemService.getItemsByCategory("Pizza", locale);
-
+        if (currentItems == null || currentItems.size() == 0){
+            model.addObject("value", Constant.CATEGORY_PIZZA);
+            currentItems = itemService.getItemsByCategory(String.valueOf(Constant.CATEGORY_PIZZA), locale);
         }
         model.addObject("items", currentItems);
 
-        if(new String("Beverages").equals(value)) {
-            model.addObject("bottle", 1);
-        }
 
         model.setViewName("home");
         return model;

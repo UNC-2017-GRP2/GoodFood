@@ -45,6 +45,8 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                     saveReferenceParameter(order.getOrderId(), Constant.ITEM_ATTR_ID, item.getProductId());
                 }
             }
+            //название
+            saveTextParameter(order.getOrderId(), Constant.NAME_ATTR_ID, "Order " + order.getOrderId());
             //адрес
             savePointParameter(order.getOrderId(), Constant.ADDRESS_ATTR_ID, order.getOrderAddress().getLatitude(), order.getOrderAddress().getLongitude());
             //стоимость

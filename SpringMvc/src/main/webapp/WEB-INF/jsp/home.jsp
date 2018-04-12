@@ -1,3 +1,4 @@
+<%@ page import="com.netcracker.config.Constant" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -51,13 +52,13 @@
                 <div class="site-heading ">
                     <nav class="top-menu">
                         <ul class="menu-main">
-                            <li><a href="<c:url value='/home?value=Pizza'/>"><spring:message code="item.category.Pizza"/></a></li>
-                            <li><a href="<c:url value='/home?value=Sushi'/>"><spring:message code="item.category.Sushi"/></a></li>
-                            <li><a href="<c:url value='/home?value=Burgers'/>"><spring:message code="item.category.Burgers"/></a></li>
-                            <li><a href="<c:url value='/home?value=Salads'/>"><spring:message code="item.category.Salads"/></a></li>
-                            <li><a href="<c:url value='/home?value=Snacks'/>"><spring:message code="item.category.Snacks"/></a></li>
-                            <li><a href="<c:url value='/home?value=Dessert'/>"><spring:message code="item.category.Dessert"/></a></li>
-                            <li><a href="<c:url value='/home?value=Beverages'/>"><spring:message code="item.category.Beverages"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_PIZZA%>"><spring:message code="item.category.Pizza"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SUSHI%>"><spring:message code="item.category.Sushi"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_BURGERS%>"><spring:message code="item.category.Burgers"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SALADS%>"><spring:message code="item.category.Salads"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SNACKS%>"><spring:message code="item.category.Snacks"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_DESSERT%>"><spring:message code="item.category.Dessert"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_BEVERAGES%>"><spring:message code="item.category.Beverages"/></a></li>
                         </ul>
                     </nav>
                     <%--<h3>Popular Food This Month In New Delhi</h3>--%>
@@ -177,7 +178,7 @@
     </div>
 </div>
 <c:if test="${bottle == 1}">
-    <a href="<c:url value='/home?value=Alcohol'/>">
+    <a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_ALCOHOL%>">
     <img class="btl" src="${pageContext.request.contextPath}/resources/img/beverages/bottle.png" height="30%" width="auto">
     </a>
 </c:if>

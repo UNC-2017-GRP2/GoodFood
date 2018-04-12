@@ -213,6 +213,9 @@ ALTER TABLE "PARAMETERS" OWNER TO postgres;
 COPY "ATTR_OBJECT_TYPES" ("OBJECT_TYPE_ID", "ATTR_ID") FROM stdin;
 300	400
 300	401
+301	401
+305	401
+306	401
 300	402
 300	403
 300	404
@@ -227,13 +230,11 @@ COPY "ATTR_OBJECT_TYPES" ("OBJECT_TYPE_ID", "ATTR_ID") FROM stdin;
 305	415
 306	408
 306	409
-306	413
 306	414
 305	416
 305	417
 306	418
 305	421
-301	420
 \.
 
 
@@ -257,7 +258,7 @@ COPY "ATTR_TYPES" ("ATTR_TYPE_ID", "NAME") FROM stdin;
 
 COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 400	Full name	51
-401	Username	51
+401	Name	51
 402	Password hash	51
 403	Phone number	51
 404	Birthday	54
@@ -269,14 +270,12 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 411	Order paid	51
 410	Address	56
 412	Order	53
-413	Item name	51
 414	Item description	51
 415	Item	53
 416	Order courier	53
 417	Order status	55
 418	Item image	53
 419	Order payment type	55
-420	Image path	51
 421	Order creation date	54
 \.
 

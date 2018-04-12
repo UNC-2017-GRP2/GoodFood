@@ -1,3 +1,4 @@
+<%@ page import="com.netcracker.config.Constant" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -25,7 +26,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<c:url value='/home?value=Pizza'/>"><div class="logo"><h1><spring:message code="general.projectName"/></h1></div></a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_PIZZA%>"><div class="logo"><h1><spring:message code="general.projectName"/></h1></div></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -47,7 +48,7 @@
 
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
                                 <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-                                    <li><a href="<c:url value='/home?value=Pizza'/>"><spring:message code="general.mainPage"/></a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_PIZZA%>"><spring:message code="general.mainPage"/></a></li>
                                 </sec:authorize>
                             </c:if>
 

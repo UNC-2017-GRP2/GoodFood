@@ -112,7 +112,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         BigInteger userId = null;
         if (!username.equals("")) {
             try {
-                resultSet = getObjectIdByAttrIdAndTextVal(Constant.USERNAME_ATTR_ID, username);
+                resultSet = getObjectIdByAttrIdAndTextVal(Constant.NAME_ATTR_ID, username);
                 while (resultSet.next()) {
                     userId = new BigInteger(resultSet.getString("OBJECT_ID"));
                 }
@@ -150,7 +150,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                             long roleValue = resultSet.getLong("ENUM_VALUE");
                             role = getEnumNameById(roleValue);
                         }
-                        if (curAttrId == Constant.USERNAME_ATTR_ID){
+                        if (curAttrId == Constant.NAME_ATTR_ID){
                             username = resultSet.getString("TEXT_VALUE");
                         }
                         if (curAttrId == Constant.FULL_NAME_ATTR_ID){
@@ -215,7 +215,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                 saveObject(user.getLogin(), userId, new BigInteger("0"), Constant.USER_OBJ_TYPE_ID);
                 //ДОБАВЛЯЕМ ПАРАМЕТРЫ ЮЗЕРА
                 saveTextParameter(userId, Constant.FULL_NAME_ATTR_ID, user.getFio());
-                saveTextParameter(userId, Constant.USERNAME_ATTR_ID, user.getLogin());
+                saveTextParameter(userId, Constant.NAME_ATTR_ID, user.getLogin());
                 saveTextParameter(userId, Constant.PASSWORD_HASH_ATTR_ID, user.getPasswordHash());
                 saveTextParameter(userId, Constant.EMAIL_ATTR_ID, user.getEmail());
                 saveTextParameter(userId, Constant.PHONE_NUMBER_ATTR_ID, user.getPhoneNumber());
@@ -232,7 +232,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             //Обновляем в objects логин пользователя
             updateObjectName(oldUser.getUserId(), newUser.getLogin());
             //обновляем параметры,если параметра не было, то добавляем его
-            updateTextParameter(oldUser.getUserId(), Constant.USERNAME_ATTR_ID, newUser.getLogin());
+            updateTextParameter(oldUser.getUserId(), Constant.NAME_ATTR_ID, newUser.getLogin());
             updateTextParameter(oldUser.getUserId(), Constant.FULL_NAME_ATTR_ID, newUser.getFio());
             updateTextParameter(oldUser.getUserId(), Constant.EMAIL_ATTR_ID,newUser.getEmail());
             updateTextParameter(oldUser.getUserId(), Constant.PHONE_NUMBER_ATTR_ID,newUser.getPhoneNumber());
@@ -266,7 +266,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     @Override
     public boolean isLoginExist(String login) {
         try{
-            ResultSet resultSet = getObjectIdByAttrIdAndTextVal(Constant.USERNAME_ATTR_ID, login);
+            ResultSet resultSet = getObjectIdByAttrIdAndTextVal(Constant.NAME_ATTR_ID, login);
             if (resultSet.next()){
                 resultSet.close();
                 return true;
@@ -299,7 +299,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     @Override
     public boolean isYourLoginForUpdateUser(String login, String password){
         try{
-            ResultSet resultSet = getObjectIdByAttrIdAndTextVal(Constant.USERNAME_ATTR_ID, login);
+            ResultSet resultSet = getObjectIdByAttrIdAndTextVal(Constant.NAME_ATTR_ID, login);
             BigInteger userId;
             while (resultSet.next()){
                 userId = new BigInteger(resultSet.getString("OBJECT_ID"));

@@ -5,7 +5,7 @@ function submitJson(){
     var entity = {};
     entity["objectId"] = null;
     entity["objectTypeId"] = objectTypeId;
-    entity["name"] = "testlogin";
+    entity["name"] = "null";
     var parameters = [];
     $form.find("input").not('[type="hidden"]').each(function() {
         var attrId = $(this).attr("attr-id");

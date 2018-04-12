@@ -3,7 +3,6 @@ import com.netcracker.config.Constant;
 import com.netcracker.model.Entity;
 import com.netcracker.model.MapParameter;
 import com.netcracker.repository.Repository;
-import com.netcracker.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
@@ -35,13 +34,13 @@ public class ServiceImpl implements com.netcracker.service.Service {
     public void saveEntity(Entity entity) {
         if (entity.getObjectTypeId() == Constant.USER_OBJ_TYPE_ID){
             entity.getParameters().add(new MapParameter(Constant.USER_ROLE_ATTR_ID, Constant.ROLE_USER_ENUM_ID));
-            for(MapParameter parameter : entity.getParameters()){
-                if(parameter.getAttributeId() == Constant.PASSWORD_HASH_ATTR_ID){
-                    ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-                    parameter.setValue(encoder.encodePassword(parameter.getValue().toString(), null));
-                }
+            MapParameter pass = entity.getParameterByAttrId(Constant.PASSWORD_HASH_ATTR_ID);
+            if( pass != null){
+                ShaPasswordEncoder encoder = new ShaPasswordEncoder();
+                pass.setValue(encoder.encodePassword(pass.getValue().toString(), null));
             }
         }
+        entity.setName(entity.getParameterValueByAttrId(Constant.NAME_ATTR_ID).toString());
         repository.saveEntity(entity);
     }
 

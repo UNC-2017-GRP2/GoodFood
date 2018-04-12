@@ -2,7 +2,6 @@ package com.netcracker.service.impl;
 
 import com.netcracker.config.Constant;
 import com.netcracker.model.Entity;
-import com.netcracker.model.User;
 import com.netcracker.repository.Repository;
 import com.netcracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +27,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Entity user = repository.getEntityByName(username, Constant.USER_OBJ_TYPE_ID);
         UserDetails userDetails = null;
         if (user != null){
-            GrantedAuthority authority = new SimpleGrantedAuthority(user.getParameterById(Constant.USER_ROLE_ATTR_ID).toString());
+            GrantedAuthority authority = new SimpleGrantedAuthority(user.getParameterValueByAttrId(Constant.USER_ROLE_ATTR_ID).toString());
             userDetails = new org.springframework.security.core.userdetails.User(
-                    user.getParameterById(Constant.USERNAME_ATTR_ID).toString(),
-                    user.getParameterById(Constant.PASSWORD_HASH_ATTR_ID).toString(),
+                    user.getParameterValueByAttrId(Constant.NAME_ATTR_ID).toString(),
+                    user.getParameterValueByAttrId(Constant.PASSWORD_HASH_ATTR_ID).toString(),
                     Arrays.asList(authority));
         }
 
