@@ -2,6 +2,10 @@ package com.netcracker.config;
 
 public class Constant {
 
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_COURIER = "ROLE_COURIER";
+    public static final String ROLE_USER = "ROLE_USER";
+
     public static final long START_EXPIRATION_TIME = 3;
     public static final long END_EXPIRATION_TIME = 12;
     public static final int ORDERS_QUANTITY_ON_PAGE = 4;

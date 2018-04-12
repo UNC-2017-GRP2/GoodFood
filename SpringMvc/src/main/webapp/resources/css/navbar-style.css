@@ -8,6 +8,10 @@
     box-sizing: border-box;
 }
 
+.navbar{
+    margin-bottom: 0;
+}
+
 .navbar-brand{
     height: auto;
 }

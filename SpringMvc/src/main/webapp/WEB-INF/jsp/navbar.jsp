@@ -16,7 +16,7 @@
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
 
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
 <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -47,21 +47,25 @@
                             </c:if>
 
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
-                                <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
+                                <sec:authorize access="hasAnyRole('ROLE_USER')">
                                     <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_PIZZA%>"><spring:message code="general.mainPage"/></a></li>
                                 </sec:authorize>
                             </c:if>
 
-                            <li><a href="<c:url value='/my-orders/1'/>"><spring:message code="general.myOrders"/></a></li>
+                            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                                <sec:authorize access="hasAnyRole('ROLE_USER', 'ROLE_COURIER')">
+                                    <li><a href="<c:url value='/my-orders/1'/>"><spring:message code="general.myOrders"/></a></li>
+                                </sec:authorize>
+                            </c:if>
 
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
-                                <sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
+                                <sec:authorize access="hasAnyRole('ROLE_USER')">
                                     <li><a href="<c:url value='/basket'/>"><spring:message code="general.basket"/></a></li>
                                 </sec:authorize>
                             </c:if>
 
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
-                                <sec:authorize access="hasAnyRole('ROLE_COURIER', 'ROLE_ADMIN')">
+                                <sec:authorize access="hasAnyRole('ROLE_COURIER')">
                                     <li>
                                         <a href="<c:url value='/free-orders'/>"><spring:message code="orders.freeOrders"/></a>
                                     </li>
@@ -70,7 +74,12 @@
                                     </li>
                                 </sec:authorize>
                             </c:if>
-                            <li><a href="<c:url value='/profile'/>"><spring:message code="general.profile"/></a></li>
+
+                            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                                <sec:authorize access="hasAnyRole('ROLE_USER', 'ROLE_COURIER')">
+                                    <li><a href="<c:url value='/profile'/>"><spring:message code="general.profile"/></a></li>
+                                </sec:authorize>
+                            </c:if>
                             <li role="separator" class="divider"></li>
                             <p align="center">
                                 <a href="?lang=en"><img src="${pageContext.request.contextPath}/resources/img/flags/United-Kingdom.png" border="1"></a>

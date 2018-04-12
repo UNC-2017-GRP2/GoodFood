@@ -35,7 +35,7 @@ public class HomeController {
             if (httpSession.getAttribute("username") == null){
                 httpSession.setAttribute("username",principal.getName());
             }
-            if (!user.getRole().equals("ROLE_COURIER")){
+            if (!user.getRole().equals(Constant.ROLE_COURIER)){
                 if (httpSession.getAttribute("basketItems") == null){
                     httpSession.setAttribute("basketItems", new ArrayList<Item>());
                 }
@@ -46,8 +46,12 @@ public class HomeController {
             if (httpSession.getAttribute("userPhone") == null){
                 httpSession.setAttribute("userPhone", user.getPhoneNumber());
             }
-            if (user.getRole().equals("ROLE_COURIER")) {
+            if (user.getRole().equals(Constant.ROLE_COURIER)) {
                 model.setViewName("redirect:/my-orders/1");
+                return model;
+            }
+            if (user.getRole().equals(Constant.ROLE_ADMIN)) {
+                model.setViewName("redirect:/admin");
                 return model;
             }
         }

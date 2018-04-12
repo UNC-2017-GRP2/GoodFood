@@ -1,8 +1,10 @@
 package com.netcracker.controller;
 
 import com.netcracker.config.Constant;
+import com.netcracker.model.Item;
 import com.netcracker.model.Order;
 import com.netcracker.model.User;
+import com.netcracker.service.ItemService;
 import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +28,29 @@ public class AdminController {
     private OrderService orderService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ItemService itemService;
 
     @RequestMapping(value = { "/admin"}, method = RequestMethod.GET)
     public ModelAndView adminPanel(Locale locale) throws IOException {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();
+        List<Item> allItems =  itemService.getAllItems(locale);
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
         //model.addObject("rub","");
         model.setViewName("admin");
-        if (allOrders != null && allOrders.size()!=0){
+        if (allOrders != null){
             model.addObject("orders", allOrders);
         }
-        if (allUsers != null && allUsers.size()!=0){
+        if (allUsers != null){
             model.addObject("users", allUsers);
         }
+        if (allItems != null){
+            model.addObject("items", allItems);
+        }
+
         return model;
     }
 
