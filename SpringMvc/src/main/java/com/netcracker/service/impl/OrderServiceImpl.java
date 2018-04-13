@@ -10,11 +10,9 @@ import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,9 +25,13 @@ public class OrderServiceImpl implements OrderService {
     private UserRepository userRepository;
     @Autowired
     private ItemRepository itemRepository;
-
     @Autowired
     private UserService userService;
+
+    @Override
+    public BigInteger getObjectId(){
+        return orderRepository.getObjectId();
+    }
 
     @Override
     public BigInteger totalOrder(ArrayList<Item> items) {
@@ -42,12 +44,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void checkout(ArrayList<Item> items, String username, Address orderAddress, String inputPhone) throws SQLException {
-        /*BigInteger userId = userService.getByUsername(username).getUserId();
-        BigInteger orderCost = totalOrder(items);*/
-        Order order = new Order(null, userService.getByUsername(username).getUserId(), totalOrder(items), null, orderAddress, inputPhone, items, null);
-        //orderRepository.checkout(items, username, inputAddress);
-        orderRepository.checkout(order);
+    public void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException {
+        Order order = new Order(orderId, userService.getByUsername(username).getUserId(), totalOrder(items), null, orderAddress, inputPhone, items, null, null, isPaid);
+        orderRepository.checkout(order, paymentType);
     }
 
     @Override
@@ -68,7 +67,9 @@ public class OrderServiceImpl implements OrderService {
                         order.getOrderPhone(),
                         new ArrayList<Item>(),
                         order.getOrderCreationDate(),
-                        order.getCourierId());
+                        order.getCourierId(),
+                        order.getPaymentType(),
+                        order.getPaid());
                 orderLocalizedItems = localizedOrder.getOrderItems();
                 for (Item item :  order.getOrderItems()) {
                     orderLocalizedItems.add(itemRepository.getLocalizedItem(item, locale));
@@ -84,8 +85,8 @@ public class OrderServiceImpl implements OrderService {
     //}
 
     @Override
-    public List<Order> getOrdersByUsername(String username) {
-        return orderRepository.getOrdersByUserId(userService.getByUsername(username).getUserId());
+    public List<Order> getOrdersByUsername(String username, Locale locale) {
+        return orderRepository.getOrdersByUserId(userService.getByUsername(username).getUserId(), locale);
     }
 
     @Override

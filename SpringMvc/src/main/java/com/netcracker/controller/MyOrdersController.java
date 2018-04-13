@@ -49,7 +49,7 @@ public class MyOrdersController {
             }
             else if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
                 model.addObject("role", "ROLE_USER");
-                allOrders = orderService.getOrdersByUsername(principal.getName());
+                allOrders = orderService.getOrdersByUsername(principal.getName(), locale);
             }
         }catch (Exception e){
             System.out.println("method myOrders:" + e.getMessage());

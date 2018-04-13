@@ -7,12 +7,14 @@ import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public interface OrderRepository {
-    void checkout(Order order) throws SQLException;
+    void checkout(Order order, long paymenttype) throws SQLException;
     List<Order> getAllOrders();
     Order getOrderById(BigInteger orderId);
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
-    List<Order> getOrdersByUserId(BigInteger userId);
+    List<Order> getOrdersByUserId(BigInteger userId, Locale locale);
+    BigInteger getObjectId();
 }
