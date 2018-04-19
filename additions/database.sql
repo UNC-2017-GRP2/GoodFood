@@ -345,6 +345,19 @@ COPY "OBJECTS" ("NAME", "OBJECT_ID", "PARENT_ID", "OBJECT_TYPE_ID") FROM stdin;
 COPY "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "TEXT_VALUE", "DATE_VALUE", "REFERENCE_VALUE", "ENUM_VALUE") FROM stdin;
 \.
 
+--
+-- Administrator:Administrator1 account creating
+--
+
+insert into "OBJECTS" ("NAME", "OBJECT_ID", "OBJECT_TYPE_ID") values ('Administrator', 1598190037014144001, 300);
+
+insert into "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "TEXT_VALUE") values (1598190037014144001, 400, 'Administrator');
+
+insert into "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "TEXT_VALUE") values (1598190037014144001, 401, 'admin');
+
+insert into "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "TEXT_VALUE") values (1598190037014144001, 402, 'df1e9a98b8022278f1a6b7f5f058e2b35696c680');
+
+insert into "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "ENUM_VALUE") values (1598190037014144001, 405, 800);
 
 --
 -- Name: attr_types attr_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
