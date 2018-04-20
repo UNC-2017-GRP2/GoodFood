@@ -3,15 +3,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
     <title><spring:message code="general.adminPanel"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript"
-            src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.js"></script>
     <script type="text/javascript">
         <%@include file="/resources/js/admin-js.js" %>
         <%@include file="/resources/js/notify.js" %>
@@ -27,6 +30,7 @@
             <%@include file="/resources/js/strings-en.js" %>
         }
     </script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 
 </head>
 
@@ -144,8 +148,6 @@
         </div>
         </div>
     </div>
-
-
 --%>
 
 <div class="container-fluid main-container">
@@ -270,63 +272,81 @@
                         </tr>
                         </thead>
                         <c:forEach items="${users}" var="user">
-                            <tr>
-                                <td>${user.userId}</td>
-                                <td>${user.fio}</td>
-                                <td>${user.login}</td>
-                                <td>${user.phoneNumber}</td>
-                                <td>${user.role}</td>
+                            <tr class="user-tr"  onclick="getUserInfo('<c:out value="${user.userId}"/>')">
+                                <td data-toggle="modal" data-target="#user-info-modal">${user.userId}</td>
+                                <td data-toggle="modal" data-target="#user-info-modal">${user.fio}</td>
+                                <td data-toggle="modal" data-target="#user-info-modal">${user.login}</td>
+                                <td data-toggle="modal" data-target="#user-info-modal">${user.phoneNumber}</td>
+                                <td data-toggle="modal" data-target="#user-info-modal">${user.role}</td>
                                 <td class="text-center">
-                                    <a class='btn btn-info btn-xs' href="#">
-                                        <span class="glyphicon glyphicon-edit"></span> Edit
-                                    </a>
-                                    <a href="#" class="btn btn-danger btn-xs">
-                                        <span class="glyphicon glyphicon-remove"></span> Del
-                                    </a>
+                                    <select id="dropdown-${user.userId}">
+                                        <option value="ROLE_COURIER"><spring:message code="users.role.ROLE_COURIER"/></option>
+                                        <option value="ROLE_ADMIN"><spring:message code="users.role.ROLE_ADMIN"/></option>
+                                        <option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></option>
+                                    </select>
+                                    <c:choose>
+                                        <c:when test="${user.role.equals('ROLE_USER')}">
+                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_USER');</script>
+                                        </c:when>
+                                        <c:when test="${user.role.equals('ROLE_COURIER')}">
+                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_COURIER');</script>
+                                        </c:when>
+                                        <c:when test="${user.role.equals('ROLE_ADMIN')}">
+                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_ADMIN');</script>
+                                        </c:when>
+                                        <c:otherwise></c:otherwise>
+                                    </c:choose>
+
+                                    <c:choose>
+                                        <c:when test="${user.login == pageContext.request.remoteUser}">
+                                            <a class='btn btn-info btn-xs' href="#" disabled="disabled">
+                                                <span class="glyphicon glyphicon-edit"></span> Change role
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-xs" disabled="disabled">
+                                                <span class="glyphicon glyphicon-remove"></span> Del
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class='btn btn-info btn-xs' href="#" onclick="dropdownButton('${user.userId}', 'dropdown-${user.userId}');">
+                                                <span class="glyphicon glyphicon-edit"></span> Change role
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-xs" onclick="removeUser(this, '${user.userId}');">
+                                                <span class="glyphicon glyphicon-remove"></span> Del
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
+                                <%--<td>
+                                    <select id="dropdown-${user.userId}">
+                                        <option value="ROLE_COURIER"><spring:message code="users.role.ROLE_COURIER"/></option>
+                                        <option value="ROLE_ADMIN"><spring:message code="users.role.ROLE_ADMIN"/></option>
+                                        <option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></option>
+                                    </select>
+                                    <c:choose>
+                                        <c:when test="${user.role.equals('ROLE_USER')}">
+                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_USER');</script>
+                                        </c:when>
+                                        <c:when test="${user.role.equals('ROLE_COURIER')}">
+                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_COURIER');</script>
+                                        </c:when>
+                                        <c:when test="${user.role.equals('ROLE_ADMIN')}">
+                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_ADMIN');</script>
+                                        </c:when>
+                                        <c:otherwise></c:otherwise>
+                                    </c:choose>
+                                    <button type="button" class="btn btn-default" onclick="dropdownButton('${user.userId}', 'dropdown-${user.userId}');">Change role</button>
+                                </td>--%>
                             </tr>
                         </c:forEach>
                     </table>
                 </div>
-
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">New user</h3>
                     </div>
                     <div class="panel-body">
-
-                        <%-- <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Users" />--%>
                     </div>
                 </div>
-
-
-                <%--<table class="table table-striped custab">
-                    <thead>
-                    &lt;%&ndash;<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>&ndash;%&gt;
-                    <tr>
-                        <th><spring:message code="general.userId"/></th>
-                        <th><spring:message code="users.fullname"/></th>
-                        <th><spring:message code="users.username"/></th>
-                        <th><spring:message code="users.phoneNumber"/></th>
-                        <th scope="col"><spring:message code="users.role"/></th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                    </thead>
-                    <c:forEach items="${users}" var="user">
-                        <tr>
-                            <td>${user.userId}</td>
-                            <td>${user.fio}</td>
-                            <td>${user.login}</td>
-                            <td>${user.phoneNumber}</td>
-                            <td>${user.role}</td>
-                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span
-                                    class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#"
-                                                                                         class="btn btn-danger btn-xs"><span
-                                    class="glyphicon glyphicon-remove"></span> Del</a></td>
-                        </tr>
-                    </c:forEach>
-                </table>--%>
-
             </div>
         </div>
 
@@ -355,7 +375,37 @@
         </p>
     </footer>--%>
 </div>
-<%--
-<jsp:include page="test.jsp"/>--%>
+
+<div class="modal fade" id="user-info-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">User profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="reset-values">&times;</span>
+                </button>
+            </div>
+            <div class="content user-content">
+                <div class="container container-prof text-center">
+                    <div class="avatar-flip">
+                        <img class="img-circle" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg">
+                    </div>
+                    <div class="text-center">
+                        <ul class="details text-left" id="user-data-list">
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">User Id</span><span id="data-user-id" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Role</span><span id="data-role" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Login</span><span id="data-login" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Full name</span><span id="data-fio" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Phone</span><span id="data-phone" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">E-mail</span><span id="data-email" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Birthday</span><span id="data-birthday" class="col-sm-6 user-value"></span></p></li>
+                            <hr>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

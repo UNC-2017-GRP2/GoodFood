@@ -240,6 +240,27 @@ public class AbstractRepositoryImpl{
         }
     }
 
+    protected void removeObjectById(BigInteger objectId){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_OBJECT);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.executeUpdate();
+            removeParametersByObjId(objectId);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    protected void removeParametersByObjId(BigInteger objectId){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_ALL_PARAMETERS_BY_OBJ_ID);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     protected void updateTextParameter(BigInteger objectId, long attrId, String parameter){
         try {
             //если параметр был, то обновляем,иначе добавим

@@ -76,6 +76,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void removeUserById(BigInteger userId) {
+        userRepository.removeUserById(userId);
+    }
+
+    @Override
     public void changeRole(BigInteger userId, String role) {
         userRepository.changeRole(userId, role);
     }

@@ -1,6 +1,8 @@
 package com.netcracker.controller;
 
+import com.google.gson.Gson;
 import com.netcracker.config.Constant;
+import com.netcracker.model.Entity;
 import com.netcracker.model.Item;
 import com.netcracker.model.Order;
 import com.netcracker.model.User;
@@ -70,5 +72,18 @@ public class AdminController {
     String changeRole(@RequestParam BigInteger userId, @RequestParam String role){
         userService.changeRole(userId, role);
         return "redirect:/admin";
+    }
+
+    @RequestMapping(value = {"/getUserInfo"}, method = RequestMethod.GET)
+    public @ResponseBody String getUserInfo(@RequestParam BigInteger userId) throws IOException {
+        Gson gson = new Gson();
+        String user = gson.toJson(userService.getUserById(userId));
+        return user;
+    }
+
+    @RequestMapping(value = "/removeUser", method = RequestMethod.GET)
+    public @ResponseBody
+    void removeUser(@RequestParam BigInteger userId){
+        userService.removeUserById(userId);
     }
 }

@@ -263,6 +263,8 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         }
     }
 
+
+
     @Override
     public boolean isLoginExist(String login) {
         try{
@@ -380,5 +382,10 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         else    if (role.equals("ROLE_USER")) {
             updateEnumParameter(userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLE_USER_ENUM_ID);
         }
+    }
+
+    @Override
+    public void removeUserById(BigInteger userId) {
+        removeObjectById(userId);
     }
 }

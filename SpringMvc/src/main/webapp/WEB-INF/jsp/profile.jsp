@@ -62,8 +62,7 @@
                             <div class="content">
                                 <div class="container container-prof text-center">
                                     <div class="avatar-flip">
-                                        <img src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" height="150" width="150">
-                                        <img src="http://i1112.photobucket.com/albums/k497/animalsbeingdicks/abd-3-12-2015.gif~original">
+                                        <img class="img-circle" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg">
                                     </div>
                                     <h2>${user.login}<i class="glyphicon glyphicon-edit" data-toggle="modal"
                                                         data-target="#formEditProfileModal"></i></h2>

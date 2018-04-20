@@ -304,15 +304,6 @@ input.hidden {position: absolute;left: -9999px;}
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
 }
-.avatar-flip img:first-child {
-    z-index: 1;
-}
-.avatar-flip img:last-child {
-    z-index: 0;
-    transform: rotateY(180deg);
-    -webkit-transform: rotateY(180deg);
-    opacity: 0;
-}
 h2 {
     font-size: 32px;
     font-weight: 600;
