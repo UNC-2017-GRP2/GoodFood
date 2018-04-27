@@ -1,0 +1,117 @@
+﻿Пицца
+Мясная пицца - Куриное филе, ветчина, колбаски, томаты, корнишоны, сыр моцарелла, красный лук. 450р
+Meat Pizza - Chicken fillet, ham, sausages, tomatoes, gherkins, mozzarella cheese, red onions.
+
+Европейская пицца - Окорок, ветчина, куриное филе, сервелат, болгарский перец, сыр Моцарелла, соус Томатный, соус "Маджорио". 420р
+European Pizza - Ham, ham, chicken fillet, Servelat, Bulgarian pepper, Mozzarella cheese, Tomato sauce, "Maggiore" sauce.
+
+Пицца барбекю - Соус «Сити Пицца», сыр «Моцарелла», курица, бекон, шампиньоны, перец болгарский, лук красный, лук фри, соус барбекю. 490р.
+Pizza Barbecue - City Pizza sauce, Mozzarella cheese, chicken, bacon, champignons, Bulgarian pepper, red onion, French onion, barbecue sauce.
+
+Диабло - Острая пицца с куриным филе, колбасками пепперони, томатами, красным луком, пряными травами, сыром моцарелла и жгучим перцем. 350р
+Pizza Diablo - Spicy pizza with chicken fillet, pepperoni sausages, tomatoes, red onion, spicy herbs, mozzarella cheese and hot pepper.
+
+Пеперони - Пикантные колбаски пепперони, сыр моцарелла. 340р
+Peperoni - Spicy sausages of pepperoni, mozzarella cheese.
+
+Вегетарианская - Сыр "Моцарелла", сладкий перец, лук, помидоры, шампиньоны, маслины. 300р
+Vegetarian Pizza - Cheese "Mozzarella", sweet peppers, onions, tomatoes, champignons, olives.
+
+Роллы
+Калифорния - Снежный краб, икра масаго, сливочный сыр, огурец, кунжут. 120р
+California - Snow crab, Masaga caviar, cream cheese, cucumber, sesame.
+
+Филадельфия - Лосось, сливочный сыр, огурец. 190р
+Philadelphia - Salmon, cream cheese, cucumber.
+
+Чикен энд чиз - Курица жареная, пассерованные овощи, сливочный сыр, сыр мраморный, кунжут. 145р
+Chicken and cheese - Chicken fried, steamed vegetables, cream cheese, marbled cheese, sesame.
+
+Сливочная креветка - Сливочный сыр, снежный краб, икра масаго, огурец, креветка. 125р
+Creamy shrimp - Cream cheese, snow crab, Masaga caviar, cucumber, shrimp.
+
+Чикен спайс - Курица Терияки, сливочный сыр, соус Спайси, болгарский перец, китайская капуста, зеленый лук. 130р
+Chicken spice - Chicken Teriyaki, cream cheese, Spice sauce, Bulgarian pepper, Chinese cabbage, green onions.
+
+Бургеры
+Бургер Нью-Йорк - 100% мраморная говядина Black Angus, фирменный пикантный соус "Гриль", ломтик сыра маасдам, салат айсберг, свежие томаты, репчатый лук, маринованные корнишоны, в булочке бриошь. 470р
+Burger New York - 100% marble beef Black Angus, a special piquant Grill sauce, a slice of Maasdam cheese, an iceberg salad, fresh tomatoes, onions, pickled gherkins, a brioche bun.
+
+Техасский Бургер - Мясная крафт котлета на гриле с Гуакамоле, пикантным соусом Пико Де Галло с перцем Чипотле и сыром Чеддар на свежей Претцель Булочке. 450р
+The Texas Burger - Grilled meat grilled meat with Guacamole, piquant sauce Pico De Gallo with Chipotle pepper and Cheddar cheese on fresh Prentzel Bun.
+
+Бургер с Лососем - Рубленный лосось, приправленный соевым соусом и майонезом, с добавлением кунжутных семечек, подается на булочке Бриошь. 500р
+Burger with Salmon - Chopped salmon, seasoned with soy sauce and mayonnaise, with the addition of sesame seeds, is served on a brioche brioche.
+
+Бургер BBQ - Американский бургер с котлетой из мраморной говядины, луковыми кольцами и соусом bbq. 360р
+Burger BBQ - American burger with a marble beef cutlet, onion rings and bbq sauce.
+
+Чизбургер - Котлета из мраморной говядины, сыр чеддер, салат романо, томаты, красный лук, соленые огурцы, соус майонезно-горчичный. 300р
+Cheeseburger - Cutlet from marble beef, cheddar cheese, romano lettuce, tomatoes, red onions, pickles, mayonnaise-mustard sauce.
+
+Мексиканский - Острый сочный бургер с перцем халапеньо и рубленной говяжьей котлетой с добавлением поджаренного бекона, свежих томатов, салата "айсберг", хрустящих маринованных огурцов и соуса "барбекю" в булочке бриошь. 520р.
+Mexican burger - Spicy juicy burger with jalapeno pepper and chopped beef patty with roasted bacon, fresh tomatoes, iceberg salad, crispy pickled cucumbers and barbecue sauce in a brioche bun.
+
+Фиш бургер - Филе лосося, свежий шпинат, томаты, красный лук, соусы блю-чиз и тар-тар. 430р
+Fish burger - Fillet of salmon, fresh spinach, tomatoes, red onion, blue-cheese sauce and tar-tar.
+
+Блэк бургер - Пример невероятно сочной начинки благодаря котлете из мраморной говядины бекону яйцу пашот и двойному сыру чеддер а также добавлению домашнего майонеза и кетчупа красное вино Овощную основу составляют малосольные огурцы пряная руккола листья салата романо и хрустящие кольца красного лукаПодается с картофелем фри и коул слоу. 750р
+Black burger - An example of an incredibly juicy filling thanks to a cutlet from marble beef bacon poached egg and double cheddar cheese and also the addition of home-made mayonnaise and ketchup red wine. Vegetable base consists of lightly salted cucumbers spicy ruccola leaves romaine lettuce and crunchy red onion rings. Served with French fries and cole slou.
+
+Салаты
+Салат Цезарь - Листья салата в оригинальной заправке с обжаренным куриным филе, сыром пармезан, свежими томатами и хрустящим крутоном.  195р
+Caesar salad - Lettuce leaves in the original dressing with roasted chicken fillet, parmesan cheese, fresh tomatoes and crispy croutons.
+
+Cалат с телятиной и зеленью - Обжаренное мясо теленка, огурцы, помидоры, баклажаны, руккола, кинза, красный лук, медово-бальзамический соус. 490р
+Salad with veal and greens - Fried calf meat, cucumbers, tomatoes, eggplant, arugula, cilantro, red onion, honey-balsamic sauce.
+
+Салат овощной со шпинатом - Шпинат, руккола, бакинские помидоры, огурцы, болгарский перец, укроп, соус Наршараб, оливковое масло. 590р
+Vegetable salad with spinach - Spinach, arugula, Baku tomatoes, cucumbers, bell peppers, dill, Narsharab sauce, olive oil.
+
+Греческий - Микс свежих овощей, салата Айсберг, оливок и мягкого сыра с пряными нотками базилика и кунжута. 175р
+Greek salad - Mix of fresh vegetables, Iceberg lettuce, olives and soft cheese with spicy notes of basil and sesame.
+
+Тоскана - Теплый салат со свининой и свежими овощами в оригинальной заправке. 245р
+Tuscany - Warm salad with pork and fresh vegetables in the original dressing.
+
+Закуски
+Наггетсы куриные - Обжаренное во фритюре куриное филе. 175р
+Nuggets with chicken - Deep-fried chicken fillet.
+
+Гренки чесночные - Ароматные гренки с чесноком и сливочным соусом. 95р
+Toasted garlic - Aromatic toast with garlic and cream sauce.
+
+Картофель фри - Хрустящая картофельная соломка. 95р
+French fries - Crispy potato straw.
+
+Кольца кальмаров - Аппетитные хрустящие кольца кальмаров. Подаются на салате Айсберг с соусом Искья. 155р
+Rings of squids - Appetizing crispy squid rings. Served on Iceberg salad with Ischia sauce.
+
+Наггетсы сырные - Хрустящие сырные палочки с соусом Искья. 160р
+Nuggets cheese - Crispy cheese sticks with Ischia sauce.
+
+
+Десерты
+Торт чизкейк - Торт из сливочного сыра Филадельфия. 175р
+Cheesecake - Cake of cream cheese Philadelphia.
+
+Торт Эстерхази - Десерт из тонких воздушных коржей, фундука и орехового пралине. 195р
+Esterházy Cake - Dessert of thin air cakes, hazelnuts and walnut praline.
+
+Тирамису - Классический десерт из кофейного бисквита, пропитанного ликером и кофе эспрессо, под слоем воздушного сырного крема. 185р
+Tiramisu - A classic dessert made of coffee biscuit impregnated with liqueur and espresso, under a layer of airy cheese cream.
+
+Сырники - Сырники с фруктовым джемом и клубничным соусом. 135р
+Cheese pancake - Cheesecakes with fruit jam and strawberry sauce.
+
+Напитки
+Fanta - Fanta 250 мл. 137р
+Sprite - Sprite 250 мл. 137р
+
+Сок апельсиновый - Сок апельсиновый свежевыжатый 500 мл. 490р
+Orange juice - Orange juice freshly squeezed 500 мл.
+
+Schweppes - Schweppes 250 мл. 140р
+Coca-Cola - Coca-Cola 1000 мл. 170р
+
+в таблицу parameters Добавлена колонка с названием POINT_VALUE типа point
