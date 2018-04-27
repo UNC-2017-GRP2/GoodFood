@@ -4,6 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
@@ -20,6 +21,7 @@
     <script type="text/javascript">
         <%@include file="/resources/js/admin-js.js" %>
         <%@include file="/resources/js/notify.js" %>
+        <%@include file="/resources/js/login-js.js"%>
     </script>
     <script type="text/javascript">
         if ('${pageContext.response.locale}' == 'uk') {
@@ -31,6 +33,22 @@
         if ('${pageContext.response.locale}' == 'en') {
             <%@include file="/resources/js/strings-en.js" %>
         }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            if (${usersTab != null}){
+                if (${usersTab.equals("success")}){
+                    $.notify(getNotificationString('user_created'), "success");
+                }
+                if (${usersTab.equals("fail")}){
+                    $.notify(getErrorString('user_not_created'), "error");
+                }
+                $('.tab-pane').removeClass('active in');
+                $('.tab-pane').addClass('fade');
+                $('#usersTab').removeClass('fade');
+                $('#usersTab').addClass('active in');
+            }
+        });
     </script>
     <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
@@ -321,10 +339,9 @@
                 </div>
             </div>
             <div class="panel-body">
-                <div id="donutchart" style="width: 900px; height: 500px;"></div>
-                <div id="chart_div" style="width: 900px; height: 500px;"></div>
-                <div id="linechart_material" style="width: 900px; height: 500px;"></div>
-
+                <div id="donutchart" class="chart"></div>
+                <div id="chart_div" class="chart"></div>
+                <div id="linechart_material" class="chart"></div>
             </div>
         </div>
 
@@ -367,7 +384,7 @@
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.phoneNumber}</td>
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.role}</td>
                                 <td class="text-center">
-                                    <select id="dropdown-${user.userId}">
+                                    <select id="dropdown-${user.userId}" class="select-each-role">
                                         <option value="ROLE_COURIER"><spring:message code="users.role.ROLE_COURIER"/></option>
                                         <option value="ROLE_ADMIN"><spring:message code="users.role.ROLE_ADMIN"/></option>
                                         <option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></option>
@@ -404,26 +421,6 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <%--<td>
-                                    <select id="dropdown-${user.userId}">
-                                        <option value="ROLE_COURIER"><spring:message code="users.role.ROLE_COURIER"/></option>
-                                        <option value="ROLE_ADMIN"><spring:message code="users.role.ROLE_ADMIN"/></option>
-                                        <option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></option>
-                                    </select>
-                                    <c:choose>
-                                        <c:when test="${user.role.equals('ROLE_USER')}">
-                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_USER');</script>
-                                        </c:when>
-                                        <c:when test="${user.role.equals('ROLE_COURIER')}">
-                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_COURIER');</script>
-                                        </c:when>
-                                        <c:when test="${user.role.equals('ROLE_ADMIN')}">
-                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_ADMIN');</script>
-                                        </c:when>
-                                        <c:otherwise></c:otherwise>
-                                    </c:choose>
-                                    <button type="button" class="btn btn-default" onclick="dropdownButton('${user.userId}', 'dropdown-${user.userId}');">Change role</button>
-                                </td>--%>
                             </tr>
                         </c:forEach>
                     </table>
@@ -433,6 +430,57 @@
                         <h3 class="panel-title">New user</h3>
                     </div>
                     <div class="panel-body">
+                        <form:form action="${pageContext.request.contextPath}/createUser" method="POST"
+                                   modelAttribute="userForm" class="form-signup mg-btm"
+                                   id="registrationForm" role="form">
+                            <div class="main">
+                                <spring:message code="enter.fullname" var="placeholder"/>
+                                <form:input type='text' id='fio' path="fio" class="form-control"
+                                            placeholder='${placeholder}'></form:input>
+                                <div class="alert alert-danger col-sm-12 validation-message"
+                                     id="fio-validation-message">
+                                </div>
+
+                                <spring:message code="enter.username" var="placeholder"/>
+                                <form:input type='text' id='login' path="login" class="form-control"
+                                            placeholder='${placeholder}'></form:input>
+                                <div class="alert alert-danger col-sm-12 validation-message"
+                                     id="login-validation-message">
+                                </div>
+
+                                <spring:message code="enter.email" var="placeholder"/>
+                                <form:input type='text' id='email' path="email" class="form-control"
+                                            placeholder='${placeholder}'></form:input>
+                                <div class="alert alert-danger col-sm-12 validation-message"
+                                     id="email-validation-message">
+                                </div>
+
+                                <spring:message code="enter.password" var="placeholder"/>
+                                <form:input type='password' id='passwordHash' path="passwordHash" class="form-control"
+                                            placeholder='${placeholder}'></form:input>
+                                <div class="alert alert-danger col-sm-12 validation-message"
+                                     id="password-validation-message">
+                                </div>
+
+                                <spring:message code="users.confirmPassword" var="placeholder"/>
+                                <form:input type='password' id='confirmPassword' path="confirmPassword"
+                                            class="form-control" placeholder='${placeholder}'></form:input>
+                                <div class="alert alert-danger col-sm-12 validation-message"
+                                     id="confirmPassword-validation-message">
+                                </div>
+                                <form:select id="user-role"  path="role">
+                                    <form:option value="ROLE_COURIER"><spring:message
+                                            code="users.role.ROLE_COURIER"/></form:option>
+                                    <form:option value="ROLE_ADMIN"><spring:message
+                                            code="users.role.ROLE_ADMIN"/></form:option>
+                                    <form:option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></form:option>
+                                </form:select>
+                                <button type="submit" class="btn btn-info"
+                                        id="btn-signUp" disabled="disabled">Create user
+                                </button>
+                            </div>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form:form>
                     </div>
                 </div>
             </div>

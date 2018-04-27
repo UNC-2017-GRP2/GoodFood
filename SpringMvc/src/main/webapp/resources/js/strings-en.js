@@ -4,8 +4,8 @@
             return 'Role changed.';
         case 'item_added':
             return 'Item added.';
-        case 'payment_error':
-            return 'There was an error during payment.';
+        case 'user_created':
+            return 'User created.';
     }
 }
 
@@ -47,5 +47,9 @@ function getErrorString(stringId) {
             return 'Passwords donʼt match.';
         case 'password_confirmation_must_not_be_empty':
             return 'Confirm password must not be empty.';
+        case 'payment_error':
+            return 'There was an error during payment.';
+        case 'user_not_created':
+            return 'User was not created.';
     }
 }

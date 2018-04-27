@@ -92,13 +92,13 @@ function getUserInfo(userId) {
         }),
         success: function (data) {
             var user = JSON.parse(data);
+            $("#data-role").text(user.role);
             $("#data-user-id").text(user.userId);
             $("#data-login").text(user.login);
             $("#data-fio").text(user.fio);
             $("#data-phone").text(user.phoneNumber);
             $("#data-email").text(user.email);
             $("#data-birthday").text(new Date(user.birthday.year, user.birthday.month - 1, user.birthday.day).toLocaleDateString());
-            $("#data-role").text(user.role);
             $.each(user.addresses, function( index, value ) {
                 getAddressByCoordinates(value.latitude,value.longitude, index);
             });

@@ -1,6 +1,7 @@
 package com.netcracker.controller;
 
 import com.google.gson.Gson;
+import com.netcracker.config.AuthManager;
 import com.netcracker.config.Constant;
 import com.netcracker.model.Entity;
 import com.netcracker.model.Item;
@@ -10,11 +11,14 @@ import com.netcracker.service.ItemService;
 import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -35,11 +39,11 @@ public class AdminController {
     private ItemService itemService;
 
     @RequestMapping(value = { "/admin"}, method = RequestMethod.GET)
-    public ModelAndView adminPanel(Locale locale) throws IOException {
+    public ModelAndView adminPanel(Locale locale, @RequestParam(value = "usersTab", required = false) String usersTab) throws IOException {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();
-       // List<Item> allItems =  itemService.getAllItems(locale);
+        List<Item> items =  itemService.getAllItems(locale);
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
 
@@ -106,8 +110,8 @@ public class AdminController {
         if (allUsers != null){
             model.addObject("users", allUsers);
         }
-        if (allItems != null){
-            model.addObject("items", allItems);
+        if (items != null){
+            model.addObject("items", items);
         }
         if (pieDataMap != null) {
             model.addObject("pieDataMap", pieDataMap);
@@ -118,9 +122,11 @@ public class AdminController {
         if ( revenuePerDayMap != null) {
             model.addObject("revenuePerDayMap", revenuePerDayMap);
         }
-
+        if (usersTab != null){
+            model.addObject("usersTab", usersTab);
+        }
         model.addObject("weekDays", weekDays);
-
+        model.addObject("userForm", new User());
         return model;
     }
 
@@ -153,5 +159,24 @@ public class AdminController {
     public @ResponseBody
     void removeUser(@RequestParam BigInteger userId){
         userService.removeUserById(userId);
+    }
+
+    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
+    public ModelAndView registrationPost(@ModelAttribute("userForm") @Validated User userForm) {
+        ModelAndView model = new ModelAndView();
+        try {
+            ShaPasswordEncoder encoder = new ShaPasswordEncoder();
+            userForm.setPasswordHash(encoder.encodePassword(userForm.getPasswordHash(), null));
+            userService.saveUser(userForm);
+            model.addObject("usersTab", "success");
+            return model;
+        } catch (Exception e) {
+            System.out.println("Create failed: " + e.getMessage());
+            model.addObject("usersTab", "fail");
+        }
+        finally {
+            model.setViewName("redirect:/admin");
+            return model;
+        }
     }
 }

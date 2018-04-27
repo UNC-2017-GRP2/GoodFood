@@ -4,8 +4,9 @@
             return 'Роль змінено.';
         case 'item_added':
             return 'Товар додано.';
-        case 'payment_error':
-            return 'Під час оплати сталася помилка';
+        case 'user_created':
+            return 'Аккаунт було створено.';
+
     }
 }
 
@@ -45,5 +46,9 @@ function getErrorString(stringId) {
             return 'Паролі не збігаються.';
         case 'password_confirmation_must_not_be_empty':
             return 'Це поле не має бути порожнім.';
+        case 'payment_error':
+            return 'Під час оплати сталася помилка';
+        case 'user_not_created':
+            return 'Нема був створений.';
     }
 }

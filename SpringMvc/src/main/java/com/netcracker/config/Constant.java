@@ -1,6 +1,19 @@
 package com.netcracker.config;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constant {
+
+    public static Map<String, Long> ROLES;
+    static {
+        Map<String, Long> map = new HashMap<>();
+        map.put("ROLE_ADMIN", Constant.ROLE_ADMIN_ENUM_ID);
+        map.put("ROLE_USER", Constant.ROLE_USER_ENUM_ID);
+        map.put("ROLE_COURIER", Constant.ROLE_COURIER_ENUM_ID);
+        ROLES = Collections.unmodifiableMap(map);
+    }
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_COURIER = "ROLE_COURIER";

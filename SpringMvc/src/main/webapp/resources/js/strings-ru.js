@@ -4,8 +4,8 @@
             return 'Роль изменена.';
         case 'item_added':
             return 'Товар добавлен.';
-        case 'payment_error':
-            return 'Во время оплаты произошла ошибка.';
+        case 'user_created':
+            return 'Пользователь создан.';
     }
 }
 function getErrorString(stringId) {
@@ -44,5 +44,9 @@ function getErrorString(stringId) {
             return 'Пароли не совпадают.';
         case 'password_confirmation_must_not_be_empty':
             return 'Поле не может быть пустым.';
+        case 'payment_error':
+            return 'Во время оплаты произошла ошибка.';
+        case 'user_not_created':
+            return 'Пользователь не был создан.';
     }
 }
