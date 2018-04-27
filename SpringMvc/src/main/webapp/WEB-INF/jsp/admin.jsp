@@ -43,10 +43,6 @@
                 if (${usersTab.equals("fail")}){
                     $.notify(getErrorString('user_not_created'), "error");
                 }
-                $('.tab-pane').removeClass('active in');
-                $('.tab-pane').addClass('fade');
-                $('#usersTab').removeClass('fade');
-                $('#usersTab').addClass('active in');
             }
         });
     </script>
@@ -308,7 +304,7 @@
         </div>
     </div>
     <div class="col-md-10 content tab-content">
-        <div class="panel panel-default tab-pane active in" id="overviewTab">
+        <%--<div class="panel panel-default tab-pane active in" id="overviewTab">
             <div class="panel-heading">
                 <h3 class="panel-title">Website Overview</h3>
             </div>
@@ -337,14 +333,72 @@
                         <h4>Products</h4>
                     </div>
                 </div>
+                <div id="donutchart" style="width: 900px; height: 500px;"></div>
+                <div id="chart_div" style="width: 900px; height: 500px;"></div>
+                <div id="linechart_material" style="width: 900px; height: 500px;"></div>
             </div>
+        </div>--%>
+
+        <div class="panel panel-default tab-pane active in" id="overviewTab">
             <div class="panel-body">
-                <div id="donutchart" class="chart"></div>
-                <div id="chart_div" class="chart"></div>
-                <div id="linechart_material" class="chart"></div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Website Overview</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-3">
+                            <div class="well dash-box">
+                                <h2><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${users.size()}</h2>
+                                <h4>Users</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="well dash-box">
+                                <h2><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>${orders.size()}</h2>
+                                <h4>Orders</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="well dash-box">
+                                <h2><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 7</h2>
+                                <h4>Pages</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="well dash-box">
+                                <h2><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> ${items.size()}</h2>
+                                <h4>Products</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Product order statistics</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="donutchart" class="chart"></div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Revenue by day of the week</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="chart_div" class="chart"></div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Revenue for the last 10 days</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="linechart_material" class="chart"></div>
+                    </div>
+                </div>
             </div>
         </div>
-
 
 
         <div class="panel panel-default tab-pane fade" id="usersTab">
