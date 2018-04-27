@@ -1,0 +1,71 @@
+* {
+    font-family: "Roboto";
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+}
+
+.navbar-brand{
+    height: auto;
+}
+
+
+.caret-up {
+    width: 0;
+    height: 0;
+    border-left: 4px solid rgba(0, 0, 0, 0);
+    border-right: 4px solid rgba(0, 0, 0, 0);
+    border-bottom: 4px solid;
+
+    display: inline-block;
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+/*---LOGO---*/
+.logo {
+    text-align: center;
+}
+.logo h1 {
+    position: relative;
+    color: #5C2610;
+    font-size: 1.2em;
+    font-weight: normal;
+    line-height: 1;
+    padding: 10px 0;
+    margin: 0;
+    display: inline-block;
+}
+.logo h1:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 80%;
+    height: 155%;
+    border-radius: 50%/30%;
+    border: 3px solid #5C2610;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+
+.dropdown:hover .dropdown-toggle{
+   background-color: inherit!important;
+}
+
+.dropdown-toggle{
+    font-size: 3vh;
+}
+
+.navbar-nav li .dropdown-menu{
+    border-radius: 5px!important;
+    margin-top: 5%!important;
+}
+
+@media (max-width: 420px) {
+    .logo h1 {font-size: 1em;}
+}

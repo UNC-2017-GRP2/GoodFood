@@ -7,7 +7,11 @@
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+<<<<<<< HEAD
 --SET idle_in_transaction_session_timeout = 0;
+=======
+SET idle_in_transaction_session_timeout = 0;
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -213,15 +217,25 @@ ALTER TABLE "PARAMETERS" OWNER TO postgres;
 COPY "ATTR_OBJECT_TYPES" ("OBJECT_TYPE_ID", "ATTR_ID") FROM stdin;
 300	400
 300	401
+<<<<<<< HEAD
 301	401
 305	401
 306	401
 300	402
 300	403
+=======
+300	402
+300	403
+300	403
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 300	404
 300	405
 300	406
 300	410
+<<<<<<< HEAD
+=======
+300	411
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 300	412
 305	403
 305	407
@@ -230,11 +244,16 @@ COPY "ATTR_OBJECT_TYPES" ("OBJECT_TYPE_ID", "ATTR_ID") FROM stdin;
 305	415
 306	408
 306	409
+<<<<<<< HEAD
 306	414
 305	416
 305	417
 306	418
 305	421
+=======
+306	413
+306	414
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 \.
 
 
@@ -258,24 +277,43 @@ COPY "ATTR_TYPES" ("ATTR_TYPE_ID", "NAME") FROM stdin;
 
 COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 400	Full name	51
+<<<<<<< HEAD
 401	Name	51
+=======
+401	Username	51
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 402	Password hash	51
 403	Phone number	51
 404	Birthday	54
 405	User role	55
 406	E-mail	51
+<<<<<<< HEAD
 407	Order cost	51
 408	Item category	55
 409	Item cost	51
 411	Order paid	51
 410	Address	56
 412	Order	53
+=======
+407	Order cost	52
+408	Item category	51
+409	Item cost	52
+410	Address	56
+411	Payment card number	51
+412	Order	53
+413	Item name	51
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 414	Item description	51
 415	Item	53
 416	Order courier	53
 417	Order status	55
 418	Item image	53
+<<<<<<< HEAD
 419	Order payment type	55
+=======
+419	Order address	56
+420	Order phone	51
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 421	Order creation date	54
 \.
 
@@ -287,8 +325,11 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 COPY "ENUM_TYPES" ("ENUM_TYPE_ID", "NAME") FROM stdin;
 700	User role
 701	Order state
+<<<<<<< HEAD
 702	Item category
 703	Order payment
+=======
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 \.
 
 
@@ -301,6 +342,7 @@ COPY "ENUMS" ("ENUM_ID", "NAME", "ENUM_TYPE_ID") FROM stdin;
 801	ROLE_USER	700
 802	ROLE_COURIER	700
 803	Created	701
+<<<<<<< HEAD
 805	Linked with courier	701
 806	Delivered	701
 808	Expired	701
@@ -315,6 +357,15 @@ COPY "ENUMS" ("ENUM_ID", "NAME", "ENUM_TYPE_ID") FROM stdin;
 818	Cash payment	703
 819	Payment by card	703
 820	Alcohol	702
+=======
+804	Without courier	701
+805	Linked with courier	701
+806	Delivered	701
+807	Delivery confirmed	701
+808	Expired	701
+809	Cancelled	701
+810	Paid	701
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 \.
 
 
@@ -345,6 +396,7 @@ COPY "OBJECTS" ("NAME", "OBJECT_ID", "PARENT_ID", "OBJECT_TYPE_ID") FROM stdin;
 COPY "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "TEXT_VALUE", "DATE_VALUE", "REFERENCE_VALUE", "ENUM_VALUE") FROM stdin;
 \.
 
+<<<<<<< HEAD
 --
 -- Administrator:Administrator1 account creating
 --
@@ -358,6 +410,8 @@ insert into "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "TEXT_VALUE") values (15981900
 insert into "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "TEXT_VALUE") values (1598190037014144001, 402, 'df1e9a98b8022278f1a6b7f5f058e2b35696c680');
 
 insert into "PARAMETERS" ("OBJECT_ID", "ATTR_ID", "ENUM_VALUE") values (1598190037014144001, 405, 800);
+=======
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 
 --
 -- Name: attr_types attr_types_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -491,4 +545,8 @@ ALTER TABLE ONLY "PARAMETERS"
 -- PostgreSQL database dump complete
 --
 
+<<<<<<< HEAD
  */
+=======
+ */
+>>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
