@@ -15,6 +15,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         <%@include file="/resources/js/admin-js.js" %>
         <%@include file="/resources/js/notify.js" %>
@@ -30,7 +32,85 @@
             <%@include file="/resources/js/strings-en.js" %>
         }
     </script>
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawPieChart);
+
+        function drawPieChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Name', 'Quantity'],
+                <c:forEach items="${ pieDataMap}" var="item">
+                ['${item.key}', ${item.value}],
+                </c:forEach>
+            ]);
+
+            var options = {
+                title: 'Product order statistics',
+                width: 900,
+                height: 500,
+                pieHole: 0.4
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chart.draw(data, options);
+        }
+
+        google.charts.setOnLoadCallback(drawMultSeries);
+
+        function drawMultSeries() {
+            var data = google.visualization.arrayToDataTable([
+                ['Day of the week', 'Revenue'],
+                ['${weekDays[1]}', ${coreChartDataMap.get(weekDays[1])}],
+                ['${weekDays[2]}', ${coreChartDataMap.get(weekDays[2])}],
+                ['${weekDays[3]}', ${coreChartDataMap.get(weekDays[3])}],
+                ['${weekDays[4]}', ${coreChartDataMap.get(weekDays[4])}],
+                ['${weekDays[5]}', ${coreChartDataMap.get(weekDays[5])}],
+                ['${weekDays[6]}', ${coreChartDataMap.get(weekDays[6])}],
+                ['${weekDays[7]}', ${coreChartDataMap.get(weekDays[7])}],
+            ]);
+
+            var options = {
+                title: 'Revenue by day of the week',
+                chartArea: {width: '50%'},
+                hAxis: {
+                    title: 'Revenue',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'Day of the week'
+                }
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+        google.charts.load('current', {'packages':['line']});
+        google.charts.setOnLoadCallback(drawLineChartMaterial);
+
+        function drawLineChartMaterial() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Day', 'Revenue'],
+                <c:forEach items="${revenuePerDayMap}" var="item">
+                ['${item.key}', ${item.value}],
+                </c:forEach>
+            ]);
+
+            var options = {
+                chart: {
+                    title: 'Revenue for the last 10 days',
+                   /* subtitle: 'in millions of dollars (USD)'*/
+                },
+//                width: 700,
+//                height: 350
+            };
+
+            var chart = new google.charts.Line(document.getElementById('linechart_material'));
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
+    </script>
+
 
 </head>
 
@@ -240,7 +320,15 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-body">
+                <div id="donutchart" style="width: 900px; height: 500px;"></div>
+                <div id="chart_div" style="width: 900px; height: 500px;"></div>
+                <div id="linechart_material" style="width: 900px; height: 500px;"></div>
+
+            </div>
         </div>
+
+
 
         <div class="panel panel-default tab-pane fade" id="usersTab">
             <div class="panel-body">

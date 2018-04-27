@@ -19,10 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Controller
 public class AdminController {
@@ -38,9 +39,65 @@ public class AdminController {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();
-        List<Item> allItems =  itemService.getAllItems(locale);
+       // List<Item> allItems =  itemService.getAllItems(locale);
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
+
+
+        Map<String, Integer> pieDataMap = new HashMap<>();
+
+        //pieChartData-----------------------------------------------
+        List<Item> allItems = new ArrayList<>();
+        for (Order o : allOrders)
+            allItems.addAll(o.getOrderItems());
+
+        for (Item i : allItems) {
+            if (pieDataMap.containsKey(i.getProductName())) {
+                pieDataMap.replace(i.getProductName(), pieDataMap.get(i.getProductName()) + i.getProductQuantity());
+                continue;
+            }
+            pieDataMap.put(i.getProductName(), i.getProductQuantity());
+        }
+        //pieChartData END-------------------------------------------------
+
+        //CoreChart--------------------------------------------
+        Map<String, Integer> coreChartDataMap = new HashMap<>();
+        DateFormatSymbols symbols = new DateFormatSymbols(locale);
+        String[] weekDays = symbols.getShortWeekdays();
+        for (String day : weekDays) {
+            coreChartDataMap.put(day, 0);
+        }
+
+        DateTimeFormatter weekFormatter = DateTimeFormatter.ofPattern("EEE").withLocale(locale);
+        Integer newRevenue;
+        for (Order o : allOrders) {
+            newRevenue = coreChartDataMap.get(o.getOrderCreationDate().format(weekFormatter)) + o.getOrderCost().intValue();
+            coreChartDataMap.replace(o.getOrderCreationDate().format(weekFormatter), newRevenue);
+        }
+        //CoreChart    END--------------------------------------------
+
+
+        //Linechart----------------------------------------------
+        Map<String, Integer> revenuePerDayMap = new TreeMap<>();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM EEE").withLocale(locale);
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        int i = 0;
+        while (++i < 10) {
+            revenuePerDayMap.put(dateTime.format(dateTimeFormatter), 0);
+            dateTime = dateTime.minusDays(1);
+        }
+
+        for (Order o : allOrders)
+            if(o.getOrderCreationDate().isAfter(LocalDateTime.now().minusDays(10))) {
+                String s = o.getOrderCreationDate().format(dateTimeFormatter);
+                newRevenue = revenuePerDayMap.get(o.getOrderCreationDate().format(dateTimeFormatter)) + o.getOrderCost().intValue();
+                revenuePerDayMap.replace(o.getOrderCreationDate().format(dateTimeFormatter), newRevenue);
+            }
+        //  revenuePerDayMap.
+
+        //LineChartEnd---------------------------------------------------
+
         //model.addObject("rub","");
         model.setViewName("admin");
         if (allOrders != null){
@@ -52,6 +109,17 @@ public class AdminController {
         if (allItems != null){
             model.addObject("items", allItems);
         }
+        if (pieDataMap != null) {
+            model.addObject("pieDataMap", pieDataMap);
+        }
+        if (coreChartDataMap != null) {
+            model.addObject("coreChartDataMap", coreChartDataMap);
+        }
+        if ( revenuePerDayMap != null) {
+            model.addObject("revenuePerDayMap", revenuePerDayMap);
+        }
+
+        model.addObject("weekDays", weekDays);
 
         return model;
     }
