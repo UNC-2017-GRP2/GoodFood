@@ -148,9 +148,9 @@ $(document).ready(function () {
         $(".user-value").text("");
     });
 
-    /*$('.selectpicker').selectpicker({
-        size : 5
-    });*/
+    /*CHARTS*/
+
+
 
 });
 

@@ -10,12 +10,16 @@
 <head>
     <title><spring:message code="general.adminPanel"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -35,12 +39,12 @@
         }
     </script>
     <script type="text/javascript">
-        $(document).ready(function(){
-            if (${usersTab != null}){
-                if (${usersTab.equals("success")}){
+        $(document).ready(function () {
+            if (${usersTab != null}) {
+                if (${usersTab.equals("success")}) {
                     $.notify(getNotificationString('user_created'), "success");
                 }
-                if (${usersTab.equals("fail")}){
+                if (${usersTab.equals("fail")}) {
                     $.notify(getErrorString('user_not_created'), "error");
                 }
             }
@@ -99,7 +103,7 @@
             chart.draw(data, options);
         }
 
-        google.charts.load('current', {'packages':['line']});
+        google.charts.load('current', {'packages': ['line']});
         google.charts.setOnLoadCallback(drawLineChartMaterial);
 
         function drawLineChartMaterial() {
@@ -114,7 +118,7 @@
             var options = {
                 chart: {
                     title: 'Revenue for the last 10 days',
-                   /* subtitle: 'in millions of dollars (USD)'*/
+                    /* subtitle: 'in millions of dollars (USD)'*/
                 },
 //                width: 700,
 //                height: 350
@@ -270,13 +274,21 @@
                                 <div id="dropdown-lvl1" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <ul class="nav navbar-nav">
-                                            <li><a href="<c:url value='/admin'/>"><spring:message code="general.adminPanel"/></a></li>
-                                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_PIZZA%>"><spring:message code="general.mainPage"/></a></li>
-                                            <li><a href="<c:url value='/my-orders/1'/>"><spring:message code="general.myOrders"/></a></li>
-                                            <li><a href="<c:url value='/basket'/>"><spring:message code="general.basket"/></a></li>
-                                            <li><a href="<c:url value='/free-orders'/>"><spring:message code="orders.freeOrders"/></a></li>
-                                            <li><a href="<c:url value='/current-orders'/>"><spring:message code="orders.currentOrders"/></a></li>
-                                            <li><a href="<c:url value='/profile'/>"><spring:message code="general.profile"/></a></li>
+                                            <li><a href="<c:url value='/admin'/>"><spring:message
+                                                    code="general.adminPanel"/></a></li>
+                                            <li>
+                                                <a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_PIZZA%>"><spring:message
+                                                        code="general.mainPage"/></a></li>
+                                            <li><a href="<c:url value='/my-orders/1'/>"><spring:message
+                                                    code="general.myOrders"/></a></li>
+                                            <li><a href="<c:url value='/basket'/>"><spring:message
+                                                    code="general.basket"/></a></li>
+                                            <li><a href="<c:url value='/free-orders'/>"><spring:message
+                                                    code="orders.freeOrders"/></a></li>
+                                            <li><a href="<c:url value='/current-orders'/>"><spring:message
+                                                    code="orders.currentOrders"/></a></li>
+                                            <li><a href="<c:url value='/profile'/>"><spring:message
+                                                    code="general.profile"/></a></li>
                                             <!-- Dropdown level 2 -->
                                             <%--<li class="panel panel-default my-dropdown">
                                                 <a data-toggle="collapse" href="#dropdown-lvl2">
@@ -304,44 +316,8 @@
         </div>
     </div>
     <div class="col-md-10 content tab-content">
-        <%--<div class="panel panel-default tab-pane active in" id="overviewTab">
-            <div class="panel-heading">
-                <h3 class="panel-title">Website Overview</h3>
-            </div>
-            <div class="panel-body">
-                <div class="col-md-3">
-                    <div class="well dash-box">
-                        <h2><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${users.size()}</h2>
-                        <h4>Users</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="well dash-box">
-                        <h2><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>${orders.size()}</h2>
-                        <h4>Orders</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="well dash-box">
-                        <h2><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 7</h2>
-                        <h4>Pages</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="well dash-box">
-                        <h2><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> ${items.size()}</h2>
-                        <h4>Products</h4>
-                    </div>
-                </div>
-                <div id="donutchart" style="width: 900px; height: 500px;"></div>
-                <div id="chart_div" style="width: 900px; height: 500px;"></div>
-                <div id="linechart_material" style="width: 900px; height: 500px;"></div>
-            </div>
-        </div>--%>
-
         <div class="panel panel-default tab-pane active in" id="overviewTab">
             <div class="panel-body">
-
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Website Overview</h3>
@@ -349,13 +325,15 @@
                     <div class="panel-body">
                         <div class="col-md-3">
                             <div class="well dash-box">
-                                <h2><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${users.size()}</h2>
+                                <h2><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${users.size()}
+                                </h2>
                                 <h4>Users</h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
-                                <h2><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>${orders.size()}</h2>
+                                <h2><span class="glyphicon glyphicon-shopping-cart"
+                                          aria-hidden="true"></span>${orders.size()}</h2>
                                 <h4>Orders</h4>
                             </div>
                         </div>
@@ -367,7 +345,8 @@
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
-                                <h2><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> ${items.size()}</h2>
+                                <h2><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> ${items.size()}
+                                </h2>
                                 <h4>Products</h4>
                             </div>
                         </div>
@@ -400,7 +379,6 @@
             </div>
         </div>
 
-
         <div class="panel panel-default tab-pane fade" id="usersTab">
             <div class="panel-body">
                 <div class="panel panel-primary">
@@ -409,14 +387,15 @@
                     </div>
                     <div class="panel-body">
                         <div class="input-group stylish-input-group input-append">
-                            <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Users" />
+                            <input type="text" class="form-control" id="dev-table-filter" data-action="filter"
+                                   data-filters="#dev-table" placeholder="Filter Users"/>
                             <span class="input-group-addon">
                                 <button type="submit">
                                     <span class="glyphicon glyphicon-search"></span>
                                 </button>
                             </span>
                         </div>
-                       <%-- <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Users" />--%>
+                        <%-- <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Users" />--%>
                     </div>
                     <table class="table table-hover table-striped" id="dev-table">
                         <thead>
@@ -431,7 +410,7 @@
                         </tr>
                         </thead>
                         <c:forEach items="${users}" var="user">
-                            <tr class="user-tr"  onclick="getUserInfo('<c:out value="${user.userId}"/>')">
+                            <tr class="user-tr" onclick="getUserInfo('<c:out value="${user.userId}"/>')">
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.userId}</td>
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.fio}</td>
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.login}</td>
@@ -439,8 +418,10 @@
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.role}</td>
                                 <td class="text-center">
                                     <select id="dropdown-${user.userId}" class="select-each-role">
-                                        <option value="ROLE_COURIER"><spring:message code="users.role.ROLE_COURIER"/></option>
-                                        <option value="ROLE_ADMIN"><spring:message code="users.role.ROLE_ADMIN"/></option>
+                                        <option value="ROLE_COURIER"><spring:message
+                                                code="users.role.ROLE_COURIER"/></option>
+                                        <option value="ROLE_ADMIN"><spring:message
+                                                code="users.role.ROLE_ADMIN"/></option>
                                         <option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></option>
                                     </select>
                                     <c:choose>
@@ -466,10 +447,12 @@
                                             </a>
                                         </c:when>
                                         <c:otherwise>
-                                            <a class='btn btn-info btn-xs' href="#" onclick="dropdownButton('${user.userId}', 'dropdown-${user.userId}');">
+                                            <a class='btn btn-info btn-xs' href="#"
+                                               onclick="dropdownButton('${user.userId}', 'dropdown-${user.userId}');">
                                                 <span class="glyphicon glyphicon-edit"></span> Change role
                                             </a>
-                                            <a href="#" class="btn btn-danger btn-xs" onclick="removeUser(this, '${user.userId}');">
+                                            <a href="#" class="btn btn-danger btn-xs"
+                                               onclick="removeUser(this, '${user.userId}');">
                                                 <span class="glyphicon glyphicon-remove"></span> Del
                                             </a>
                                         </c:otherwise>
@@ -522,12 +505,13 @@
                                 <div class="alert alert-danger col-sm-12 validation-message"
                                      id="confirmPassword-validation-message">
                                 </div>
-                                <form:select id="user-role"  path="role">
+                                <form:select id="user-role" path="role">
                                     <form:option value="ROLE_COURIER"><spring:message
                                             code="users.role.ROLE_COURIER"/></form:option>
                                     <form:option value="ROLE_ADMIN"><spring:message
                                             code="users.role.ROLE_ADMIN"/></form:option>
-                                    <form:option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></form:option>
+                                    <form:option value="ROLE_USER"><spring:message
+                                            code="users.role.ROLE_USER"/></form:option>
                                 </form:select>
                                 <button type="submit" class="btn btn-info"
                                         id="btn-signUp" disabled="disabled">Create user
@@ -545,7 +529,7 @@
                 Orders
             </div>
             <div class="panel-body">
-               order
+                order
             </div>
         </div>
 
@@ -578,17 +562,26 @@
             <div class="content user-content">
                 <div class="container container-prof text-center">
                     <div class="avatar-flip">
-                        <img class="img-circle" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg">
+                        <img class="img-circle"
+                             src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg">
                     </div>
                     <div class="text-center">
                         <ul class="details text-left" id="user-data-list">
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">User Id</span><span id="data-user-id" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Role</span><span id="data-role" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Login</span><span id="data-login" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Full name</span><span id="data-fio" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Phone</span><span id="data-phone" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">E-mail</span><span id="data-email" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Birthday</span><span id="data-birthday" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">User Id</span><span
+                                    id="data-user-id" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Role</span><span
+                                    id="data-role" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Login</span><span
+                                    id="data-login" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span
+                                    class="col-sm-3">Full name</span><span id="data-fio"
+                                                                           class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Phone</span><span
+                                    id="data-phone" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">E-mail</span><span
+                                    id="data-email" class="col-sm-6 user-value"></span></p></li>
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Birthday</span><span
+                                    id="data-birthday" class="col-sm-6 user-value"></span></p></li>
                             <hr>
                         </ul>
                     </div>

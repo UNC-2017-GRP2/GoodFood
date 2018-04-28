@@ -22,9 +22,9 @@
     width: 100%;
 }*/
 
-:focus {
+/*:focus {
     outline: none;
-}
+}*/
 
 .side-menu {
     position: relative;
@@ -45,6 +45,13 @@
     margin-right: -1px;
     border-right: 5px solid #09736d;
 }
+
+/*.navbar-nav .left-menu-item:hover a{
+    background-color: transparent;
+    margin-right: -1px;
+    border-right: 5px solid #09736d;
+}*/
+
 .side-menu .navbar-nav li {
     display: block;
     width: 100%;
@@ -515,4 +522,5 @@ input.hidden {position: absolute;left: -9999px;}
 .chart{
     width: 900px;
     height: 500px;
+    margin: auto;
 }

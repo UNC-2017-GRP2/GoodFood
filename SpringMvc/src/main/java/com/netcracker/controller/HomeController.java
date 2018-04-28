@@ -50,10 +50,10 @@ public class HomeController {
                 model.setViewName("redirect:/my-orders/1");
                 return model;
             }
-            if (user.getRole().equals(Constant.ROLE_ADMIN)) {
+            /*if (user.getRole().equals(Constant.ROLE_ADMIN)) {
                 model.setViewName("redirect:/admin");
                 return model;
-            }
+            }*/
         }
 
         List<Item> currentItems = itemService.getItemsByCategory(value, locale);
