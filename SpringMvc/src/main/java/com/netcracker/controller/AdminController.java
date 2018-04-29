@@ -1,7 +1,9 @@
 package com.netcracker.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.netcracker.config.AuthManager;
+import com.netcracker.config.BigIntegerAdapter;
 import com.netcracker.config.Constant;
 import com.netcracker.model.Entity;
 import com.netcracker.model.Item;
@@ -39,7 +41,7 @@ public class AdminController {
     private ItemService itemService;
 
     @RequestMapping(value = { "/admin"}, method = RequestMethod.GET)
-    public ModelAndView adminPanel(Locale locale, @RequestParam(value = "usersTab", required = false) String usersTab) throws IOException {
+    public ModelAndView adminPanel(Locale locale/*, @RequestParam(value = "usersTab", required = false) String usersTab*/) throws IOException {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();
@@ -122,9 +124,9 @@ public class AdminController {
         if ( revenuePerDayMap != null) {
             model.addObject("revenuePerDayMap", revenuePerDayMap);
         }
-        if (usersTab != null){
+        /*if (usersTab != null){
             model.addObject("usersTab", usersTab);
-        }
+        }*/
         model.addObject("weekDays", weekDays);
         model.addObject("userForm", new User());
         return model;
@@ -150,9 +152,10 @@ public class AdminController {
 
     @RequestMapping(value = {"/getUserInfo"}, method = RequestMethod.GET)
     public @ResponseBody String getUserInfo(@RequestParam BigInteger userId) throws IOException {
-        Gson gson = new Gson();
-        String user = gson.toJson(userService.getUserById(userId));
-        return user;
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
+        Gson gson = builder.create();
+        return gson.toJson(userService.getUserById(userId));
     }
 
     @RequestMapping(value = "/removeUser", method = RequestMethod.GET)
@@ -161,7 +164,7 @@ public class AdminController {
         userService.removeUserById(userId);
     }
 
-    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
+   /* @RequestMapping(value = "/createUser", method = RequestMethod.POST)
     public ModelAndView registrationPost(@ModelAttribute("userForm") @Validated User userForm) {
         ModelAndView model = new ModelAndView();
         try {
@@ -178,5 +181,18 @@ public class AdminController {
             model.setViewName("redirect:/admin");
             return model;
         }
+    }*/
+
+    @RequestMapping(value = {"/createUser"}, method = RequestMethod.GET)
+    public @ResponseBody String sendEntity(@RequestParam String jsonUser) throws Exception {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
+        Gson gson = builder.create();
+        User user = gson.fromJson(jsonUser, User.class);
+        ShaPasswordEncoder encoder = new ShaPasswordEncoder();
+        user.setPasswordHash(encoder.encodePassword(user.getPasswordHash(), null));
+        user.setUserId(userService.getObjectId());
+        userService.saveUser(user);
+        return gson.toJson(user);
     }
 }

@@ -6,6 +6,8 @@
             return 'Item added.';
         case 'user_created':
             return 'User created.';
+        case 'user_deleted':
+            return 'User deleted.';
     }
 }
 
@@ -51,5 +53,30 @@ function getErrorString(stringId) {
             return 'There was an error during payment.';
         case 'user_not_created':
             return 'User was not created.';
+        case 'user_not_deleted':
+            return 'User was not deleted.';
+        case 'role_not_changed':
+            return 'Role was not changed.';
+        case 'no_results':
+            return 'No results found.';
+        case 'data_error':
+            return 'Data error.'
+    }
+}
+
+function getLocStrings(stringId) {
+    switch (stringId) {
+        case 'addresses':
+            return 'Addresses';
+        case 'ROLE_COURIER':
+            return 'Courier';
+        case 'ROLE_ADMIN':
+            return 'Administrator';
+        case 'ROLE_USER':
+            return 'User';
+        case 'change_role':
+            return 'Change role';
+        case 'del_user':
+            return 'Del';
     }
 }

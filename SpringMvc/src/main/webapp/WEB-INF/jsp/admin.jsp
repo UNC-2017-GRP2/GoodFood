@@ -38,7 +38,7 @@
             <%@include file="/resources/js/strings-en.js" %>
         }
     </script>
-    <script type="text/javascript">
+    <%--<script type="text/javascript">
         $(document).ready(function () {
             if (${usersTab != null}) {
                 if (${usersTab.equals("success")}) {
@@ -49,7 +49,7 @@
                 }
             }
         });
-    </script>
+    </script>--%>
     <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
         google.charts.setOnLoadCallback(drawPieChart);
@@ -259,17 +259,13 @@
                     <!-- Main Menu -->
                     <div class="side-menu-container">
                         <ul class="nav navbar-nav nav-tabs">
-                            <li class="active"><a href="#overviewTab" data-toggle="tab"><span
-                                    class="glyphicon glyphicon-dashboard"></span> Overview</a></li>
-                            <li><a href="#usersTab" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>
-                                Users</a></li>
-                            <li><a href="#ordersTab" data-toggle="tab"><span
-                                    class="glyphicon glyphicon-shopping-cart"></span> Orders</a></li>
-                            <li><a href="#itemsTab" data-toggle="tab"><span class="glyphicon glyphicon-cutlery"></span>
-                                Food</a></li>
+                            <li class="active"><a href="#overviewTab" data-toggle="tab"><span class="glyphicon glyphicon-dashboard"></span><spring:message code="admin.overview"/></a></li>
+                            <li><a href="#usersTab" data-toggle="tab"><span class="glyphicon glyphicon-user"></span><spring:message code="admin.users"/></a></li>
+                            <li><a href="#ordersTab" data-toggle="tab"><span class="glyphicon glyphicon-shopping-cart"></span><spring:message code="admin.orders"/></a></li>
+                            <li><a href="#itemsTab" data-toggle="tab"><span class="glyphicon glyphicon-cutlery"></span><spring:message code="admin.products"/></a></li>
                             <li class="panel panel-default my-dropdown">
                                 <a data-toggle="collapse" href="#dropdown-lvl1">
-                                    <span class="glyphicon glyphicon-list-alt"></span> Pages <span class="caret"></span>
+                                    <span class="glyphicon glyphicon-list-alt"></span><spring:message code="admin.pages"/><span class="caret"></span>
                                 </a>
                                 <div id="dropdown-lvl1" class="panel-collapse collapse">
                                     <div class="panel-body">
@@ -320,41 +316,41 @@
             <div class="panel-body">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Website Overview</h3>
+                        <h3 class="panel-title"><spring:message code="admin.website_overview"/></h3>
                     </div>
                     <div class="panel-body">
                         <div class="col-md-3">
                             <div class="well dash-box">
                                 <h2><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${users.size()}
                                 </h2>
-                                <h4>Users</h4>
+                                <h4><spring:message code="admin.users"/></h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
                                 <h2><span class="glyphicon glyphicon-shopping-cart"
                                           aria-hidden="true"></span>${orders.size()}</h2>
-                                <h4>Orders</h4>
+                                <h4><spring:message code="admin.orders"/></h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
                                 <h2><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 7</h2>
-                                <h4>Pages</h4>
+                                <h4><spring:message code="admin.pages"/></h4>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="well dash-box">
                                 <h2><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> ${items.size()}
                                 </h2>
-                                <h4>Products</h4>
+                                <h4><spring:message code="admin.products"/></h4>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Product order statistics</h3>
+                        <h3 class="panel-title"><spring:message code="admin.product_order_statistics"/></h3>
                     </div>
                     <div class="panel-body">
                         <div id="donutchart" class="chart"></div>
@@ -362,7 +358,7 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Revenue by day of the week</h3>
+                        <h3 class="panel-title"><spring:message code="admin.revenue_day"/></h3>
                     </div>
                     <div class="panel-body">
                         <div id="chart_div" class="chart"></div>
@@ -370,7 +366,7 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Revenue for the last 10 days</h3>
+                        <h3 class="panel-title"><spring:message code="admin.revenue_last_days"/></h3>
                     </div>
                     <div class="panel-body">
                         <div id="linechart_material" class="chart"></div>
@@ -383,12 +379,13 @@
             <div class="panel-body">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Users</h3>
+                        <h3 class="panel-title"><spring:message code="admin.users"/></h3>
                     </div>
                     <div class="panel-body">
                         <div class="input-group stylish-input-group input-append">
+                            <spring:message code="admin.users.filter" var="placeholder"/>
                             <input type="text" class="form-control" id="dev-table-filter" data-action="filter"
-                                   data-filters="#dev-table" placeholder="Filter Users"/>
+                                   data-filters="#dev-table" placeholder="${placeholder}"/>
                             <span class="input-group-addon">
                                 <button type="submit">
                                     <span class="glyphicon glyphicon-search"></span>
@@ -406,16 +403,16 @@
                             <th><spring:message code="users.username"/></th>
                             <th><spring:message code="users.phoneNumber"/></th>
                             <th><spring:message code="users.role"/></th>
-                            <th class="text-center">Action</th>
+                            <th class="text-center"><spring:message code="admin.users.actions"/></th>
                         </tr>
                         </thead>
                         <c:forEach items="${users}" var="user">
-                            <tr class="user-tr" onclick="getUserInfo('<c:out value="${user.userId}"/>')">
+                            <tr class="user-tr" onclick="getUserInfo('<c:out value="${user.userId}"/>');">
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.userId}</td>
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.fio}</td>
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.login}</td>
                                 <td data-toggle="modal" data-target="#user-info-modal">${user.phoneNumber}</td>
-                                <td data-toggle="modal" data-target="#user-info-modal">${user.role}</td>
+                                <td data-toggle="modal" data-target="#user-info-modal" id="user-role-${user.userId}">${user.role}</td>
                                 <td class="text-center">
                                     <select id="dropdown-${user.userId}" class="select-each-role">
                                         <option value="ROLE_COURIER"><spring:message
@@ -424,36 +421,24 @@
                                                 code="users.role.ROLE_ADMIN"/></option>
                                         <option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></option>
                                     </select>
-                                    <c:choose>
-                                        <c:when test="${user.role.equals('ROLE_USER')}">
-                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_USER');</script>
-                                        </c:when>
-                                        <c:when test="${user.role.equals('ROLE_COURIER')}">
-                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_COURIER');</script>
-                                        </c:when>
-                                        <c:when test="${user.role.equals('ROLE_ADMIN')}">
-                                            <script>selectOption('dropdown-${user.userId}', 'ROLE_ADMIN');</script>
-                                        </c:when>
-                                        <c:otherwise></c:otherwise>
-                                    </c:choose>
-
+                                    <script>selectOption('dropdown-${user.userId}', '${user.role}');</script>
                                     <c:choose>
                                         <c:when test="${user.login == pageContext.request.remoteUser}">
                                             <a class='btn btn-info btn-xs' href="#" disabled="disabled">
-                                                <span class="glyphicon glyphicon-edit"></span> Change role
+                                                <span class="glyphicon glyphicon-edit"></span><spring:message code="admin.btn.change_role"/>
                                             </a>
                                             <a href="#" class="btn btn-danger btn-xs" disabled="disabled">
-                                                <span class="glyphicon glyphicon-remove"></span> Del
+                                                <span class="glyphicon glyphicon-remove"></span><spring:message code="admin.btn.del_user"/>
                                             </a>
                                         </c:when>
                                         <c:otherwise>
                                             <a class='btn btn-info btn-xs' href="#"
-                                               onclick="dropdownButton('${user.userId}', 'dropdown-${user.userId}');">
-                                                <span class="glyphicon glyphicon-edit"></span> Change role
+                                               onclick="changeRole('${user.userId}', 'dropdown-${user.userId}');">
+                                                <span class="glyphicon glyphicon-edit"></span><spring:message code="admin.btn.change_role"/>
                                             </a>
                                             <a href="#" class="btn btn-danger btn-xs"
                                                onclick="removeUser(this, '${user.userId}');">
-                                                <span class="glyphicon glyphicon-remove"></span> Del
+                                                <span class="glyphicon glyphicon-remove"></span><spring:message code="admin.btn.del_user"/>
                                             </a>
                                         </c:otherwise>
                                     </c:choose>
@@ -464,48 +449,50 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">New user</h3>
+                        <h3 class="panel-title"><spring:message code="admin.create_user"/></h3>
                     </div>
                     <div class="panel-body">
                         <form:form action="${pageContext.request.contextPath}/createUser" method="POST"
                                    modelAttribute="userForm" class="form-signup mg-btm"
-                                   id="registrationForm" role="form">
+                                   id="createUserForm" role="form">
                             <div class="main">
                                 <spring:message code="enter.fullname" var="placeholder"/>
-                                <form:input type='text' id='fio' path="fio" class="form-control"
+                                <form:input type='text' id='fio' path="fio" name="fio" class="form-control"
                                             placeholder='${placeholder}'></form:input>
                                 <div class="alert alert-danger col-sm-12 validation-message"
                                      id="fio-validation-message">
                                 </div>
 
                                 <spring:message code="enter.username" var="placeholder"/>
-                                <form:input type='text' id='login' path="login" class="form-control"
+                                <form:input type='text' id='login' path="login" name="login" class="form-control"
                                             placeholder='${placeholder}'></form:input>
                                 <div class="alert alert-danger col-sm-12 validation-message"
                                      id="login-validation-message">
                                 </div>
 
                                 <spring:message code="enter.email" var="placeholder"/>
-                                <form:input type='text' id='email' path="email" class="form-control"
+                                <form:input type='text' id='email' path="email" name="email" class="form-control"
                                             placeholder='${placeholder}'></form:input>
                                 <div class="alert alert-danger col-sm-12 validation-message"
                                      id="email-validation-message">
                                 </div>
 
                                 <spring:message code="enter.password" var="placeholder"/>
-                                <form:input type='password' id='passwordHash' path="passwordHash" class="form-control"
+                                <form:input type='password' id='passwordHash' path="passwordHash" name="passwordHash"
+                                            class="form-control"
                                             placeholder='${placeholder}'></form:input>
                                 <div class="alert alert-danger col-sm-12 validation-message"
                                      id="password-validation-message">
                                 </div>
 
                                 <spring:message code="users.confirmPassword" var="placeholder"/>
-                                <form:input type='password' id='confirmPassword' path="confirmPassword"
+                                <form:input type='password' id='confirmPassword' name="confirmPassword"
+                                            path="confirmPassword"
                                             class="form-control" placeholder='${placeholder}'></form:input>
                                 <div class="alert alert-danger col-sm-12 validation-message"
                                      id="confirmPassword-validation-message">
                                 </div>
-                                <form:select id="user-role" path="role">
+                                <form:select id="user-role" path="role" name="role">
                                     <form:option value="ROLE_COURIER"><spring:message
                                             code="users.role.ROLE_COURIER"/></form:option>
                                     <form:option value="ROLE_ADMIN"><spring:message
@@ -513,8 +500,8 @@
                                     <form:option value="ROLE_USER"><spring:message
                                             code="users.role.ROLE_USER"/></form:option>
                                 </form:select>
-                                <button type="submit" class="btn btn-info"
-                                        id="btn-signUp" disabled="disabled">Create user
+                                <button type="button" class="btn btn-info"
+                                        id="btn-signUp" disabled="disabled" onclick="createUser();"><spring:message code="admin.create_user"/>
                                 </button>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -526,19 +513,17 @@
 
         <div class="panel panel-default tab-pane fade" id="ordersTab">
             <div class="panel-heading">
-                Orders
+                <spring:message code="admin.orders"/>
             </div>
             <div class="panel-body">
-                order
             </div>
         </div>
 
         <div class="panel panel-default tab-pane fade" id="itemsTab">
             <div class="panel-heading">
-                Items
+                <spring:message code="admin.products"/>
             </div>
             <div class="panel-body">
-                item
             </div>
         </div>
     </div>
@@ -554,7 +539,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">User profile</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle"><spring:message code="profile.userProfile"/></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="reset-values">&times;</span>
                 </button>
@@ -567,20 +552,20 @@
                     </div>
                     <div class="text-center">
                         <ul class="details text-left" id="user-data-list">
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">User Id</span><span
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message code="general.userId"/></span><span
                                     id="data-user-id" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Role</span><span
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message code="users.role"/></span><span
                                     id="data-role" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Login</span><span
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message code="users.username"/></span><span
                                     id="data-login" class="col-sm-6 user-value"></span></p></li>
                             <li><p class="row"><span class="col-sm-1"></span><span
-                                    class="col-sm-3">Full name</span><span id="data-fio"
+                                    class="col-sm-3"><spring:message code="users.fullname"/></span><span id="data-fio"
                                                                            class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Phone</span><span
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message code="users.phoneNumber"/></span><span
                                     id="data-phone" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">E-mail</span><span
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message code="users.email"/></span><span
                                     id="data-email" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3">Birthday</span><span
+                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message code="users.birthday"/></span><span
                                     id="data-birthday" class="col-sm-6 user-value"></span></p></li>
                             <hr>
                         </ul>

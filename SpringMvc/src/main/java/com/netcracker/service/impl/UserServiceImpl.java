@@ -17,6 +17,11 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
+    public BigInteger getObjectId() {
+        return userRepository.getObjectId();
+    }
+
+    @Override
     public User getByUsername(String username){
         return userRepository.getUserByUsername(username);
     }

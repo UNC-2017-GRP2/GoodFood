@@ -50,5 +50,28 @@ function getErrorString(stringId) {
             return 'Під час оплати сталася помилка';
         case 'user_not_created':
             return 'Нема був створений.';
+        case 'role_not_changed':
+            return 'Роль не була змінена';
+        case 'no_results':
+            return 'Нічого не знайдено.';
+        case 'data_error':
+            return 'Помилка даних.'
+    }
+}
+
+function getLocStrings(stringId) {
+    switch (stringId) {
+        case 'addresses':
+            return 'Адреси';
+        case 'ROLE_COURIER':
+            return 'Курʼєр';
+        case 'ROLE_ADMIN':
+            return 'Адміністратор';
+        case 'ROLE_USER':
+            return 'Користувач';
+        case 'change_role':
+            return 'Змінити роль';
+        case 'del_user':
+            return 'Видалити';
     }
 }

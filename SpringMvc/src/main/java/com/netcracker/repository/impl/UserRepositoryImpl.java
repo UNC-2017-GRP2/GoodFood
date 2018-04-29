@@ -19,6 +19,10 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     public UserRepositoryImpl(DataSource dataSource) throws SQLException {
         super(dataSource);
     }
+    @Override
+    public BigInteger getObjectId() {
+        return super.getObjectId();
+    }
 
     @Override
     public User getUserByUsername(String username) {
@@ -121,10 +125,9 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
 
     @Override
     public void saveUser(User user) {
-        long r = Constant.ROLES.get(user.getRole());
         BigInteger userId;
         try {
-            userId = getObjectId();
+            userId = (user.getUserId() != null)?user.getUserId() : getObjectId();
             if (userId != null){
                 //Сохраняем юзера в объектах
                 saveObject(user.getLogin(), userId, new BigInteger("0"), Constant.USER_OBJ_TYPE_ID);

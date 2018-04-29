@@ -469,25 +469,12 @@ input.hidden {position: absolute;left: -9999px;}
     margin: 0 auto;
     vertical-align: middle;
     background-color: #ffffff;
-    /*-moz-box-shadow: 0 0 3px 3px #888;
-    -webkit-box-shadow: 0 0 3px 3px #888;
-    box-shadow: 0 0 3px 3px #888;*/
     border-radius:5px;
     border: 0.5px solid #b4b3b3;
 }
 
-
-#registrationForm{
-    width: 400px;
-    min-height: 400px;
-}
-
 .main{
     padding: 38px;
-}
-
-.form-signup{
-    margin-bottom: 10px;
 }
 
 .form-signup .form-control {
@@ -505,13 +492,12 @@ input.hidden {position: absolute;left: -9999px;}
     border-radius: 5px;
 }
 
-.form-signup .form-signup select{
-    margin: 0;
+
+/*.form-signup select{
     width: 100%;
-    font-size: 16px;
     height: 20px;
     padding: 20px;
-}
+}*/
 
 #btn-signUp{
     margin: 0;
