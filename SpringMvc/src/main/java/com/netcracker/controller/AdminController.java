@@ -41,7 +41,7 @@ public class AdminController {
     private ItemService itemService;
 
     @RequestMapping(value = { "/admin"}, method = RequestMethod.GET)
-    public ModelAndView adminPanel(Locale locale/*, @RequestParam(value = "usersTab", required = false) String usersTab*/) throws IOException {
+    public ModelAndView adminPanel(Locale locale) throws IOException {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();

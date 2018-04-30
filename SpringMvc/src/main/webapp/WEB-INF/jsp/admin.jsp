@@ -63,7 +63,7 @@
             ]);
 
             var options = {
-                title: 'Product order statistics',
+                title: getLocStrings('product_order_statistics'),
                 width: 900,
                 height: 500,
                 pieHole: 0.4
@@ -77,25 +77,25 @@
 
         function drawMultSeries() {
             var data = google.visualization.arrayToDataTable([
-                ['Day of the week', 'Revenue'],
+                [getLocStrings('day_of_the_week'), getLocStrings('revenue')],
                 ['${weekDays[1]}', ${coreChartDataMap.get(weekDays[1])}],
                 ['${weekDays[2]}', ${coreChartDataMap.get(weekDays[2])}],
                 ['${weekDays[3]}', ${coreChartDataMap.get(weekDays[3])}],
                 ['${weekDays[4]}', ${coreChartDataMap.get(weekDays[4])}],
                 ['${weekDays[5]}', ${coreChartDataMap.get(weekDays[5])}],
                 ['${weekDays[6]}', ${coreChartDataMap.get(weekDays[6])}],
-                ['${weekDays[7]}', ${coreChartDataMap.get(weekDays[7])}],
+                ['${weekDays[7]}', ${coreChartDataMap.get(weekDays[7])}]
             ]);
 
             var options = {
-                title: 'Revenue by day of the week',
+                title: getLocStrings('revenue_day'),
                 chartArea: {width: '50%'},
                 hAxis: {
-                    title: 'Revenue',
+                    title: getLocStrings('revenue'),
                     minValue: 0
                 },
                 vAxis: {
-                    title: 'Day of the week'
+                    title: getLocStrings('day_of_the_week')
                 }
             };
 
@@ -109,7 +109,7 @@
         function drawLineChartMaterial() {
 
             var data = google.visualization.arrayToDataTable([
-                ['Day', 'Revenue'],
+                [getLocStrings('day'),  getLocStrings('revenue')],
                 <c:forEach items="${revenuePerDayMap}" var="item">
                 ['${item.key}', ${item.value}],
                 </c:forEach>
@@ -117,9 +117,9 @@
 
             var options = {
                 chart: {
-                    title: 'Revenue for the last 10 days',
+                    title: getLocStrings('revenue_last_days')
                     /* subtitle: 'in millions of dollars (USD)'*/
-                },
+                }
 //                width: 700,
 //                height: 350
             };

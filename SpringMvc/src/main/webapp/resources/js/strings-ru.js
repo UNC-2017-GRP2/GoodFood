@@ -71,5 +71,17 @@ function getLocStrings(stringId) {
             return 'Изменить роль';
         case 'del_user':
             return 'Удалить';
+        case 'product_order_statistics':
+            return 'Статистика заказа товара';
+        case 'revenue_day':
+            return 'Доход по дням недели';
+        case 'revenue_last_days':
+            return 'Доход за последние 10 дней';
+        case 'revenue':
+            return 'Доход';
+        case 'day_of_the_week':
+            return 'День недели';
+        case 'day':
+            return 'День'
     }
 }

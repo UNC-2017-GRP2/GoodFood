@@ -78,5 +78,17 @@ function getLocStrings(stringId) {
             return 'Change role';
         case 'del_user':
             return 'Del';
+        case 'product_order_statistics':
+            return 'Product order statistics';
+        case 'revenue_day':
+            return 'Revenue by day of the week';
+        case 'revenue_last_days':
+            return 'Revenue for the last 10 days';
+        case 'revenue':
+            return 'Revenue';
+        case 'day_of_the_week':
+            return 'Day of the week';
+        case 'day':
+            return 'Day'
     }
 }
