@@ -510,3 +510,8 @@ input.hidden {position: absolute;left: -9999px;}
     height: 500px;
     margin: auto;
 }
+
+/*------------orders-----------*/
+.order-row td, .order-head th{
+    text-align: center;
+}

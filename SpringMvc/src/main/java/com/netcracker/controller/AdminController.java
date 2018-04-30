@@ -103,8 +103,6 @@ public class AdminController {
         //  revenuePerDayMap.
 
         //LineChartEnd---------------------------------------------------
-
-        //model.addObject("rub","");
         model.setViewName("admin");
         if (allOrders != null){
             model.addObject("orders", allOrders);
@@ -124,23 +122,25 @@ public class AdminController {
         if ( revenuePerDayMap != null) {
             model.addObject("revenuePerDayMap", revenuePerDayMap);
         }
-        /*if (usersTab != null){
-            model.addObject("usersTab", usersTab);
-        }*/
         model.addObject("weekDays", weekDays);
         model.addObject("userForm", new User());
         return model;
     }
 
-    @RequestMapping(value = { "/admin/actualize"}, method = RequestMethod.GET)
-    public String markOrderAsExpired(Locale locale) throws IOException {
+    @RequestMapping(value = { "/admin/actualize"}, method = RequestMethod.POST)
+    public ModelAndView markOrderAsExpired(Locale locale) throws IOException {
         List<Order> allOrders = orderService.getAllOrders(locale);
         for (Order order : allOrders) {
-            if (order.getOrderCreationDate().until(LocalDateTime.now(), ChronoUnit.HOURS) > Constant.END_EXPIRATION_TIME) {
+            if ((order.getStatus().equals(Constant.STATUSES.get(Constant.STATUS_CREATED_ENUM_ID)) ||
+                    order.getStatus().equals(Constant.STATUSES.get(Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID))) &&
+                    order.getOrderCreationDate().until(LocalDateTime.now(), ChronoUnit.HOURS) > Constant.END_EXPIRATION_TIME) {
                 orderService.changeOrderStatus(order.getOrderId(), Constant.STATUS_EXPIRED_ENUM_ID);
             }
         }
-        return "redirect:/admin";
+        ModelAndView model = new ModelAndView();
+        /*model.addObject("actualize", true);*/
+        model.setViewName("redirect:/admin");
+        return model;
     }
 
     @RequestMapping(value = "/changeRole", method = RequestMethod.GET)
@@ -163,25 +163,6 @@ public class AdminController {
     void removeUser(@RequestParam BigInteger userId){
         userService.removeUserById(userId);
     }
-
-   /* @RequestMapping(value = "/createUser", method = RequestMethod.POST)
-    public ModelAndView registrationPost(@ModelAttribute("userForm") @Validated User userForm) {
-        ModelAndView model = new ModelAndView();
-        try {
-            ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-            userForm.setPasswordHash(encoder.encodePassword(userForm.getPasswordHash(), null));
-            userService.saveUser(userForm);
-            model.addObject("usersTab", "success");
-            return model;
-        } catch (Exception e) {
-            System.out.println("Create failed: " + e.getMessage());
-            model.addObject("usersTab", "fail");
-        }
-        finally {
-            model.setViewName("redirect:/admin");
-            return model;
-        }
-    }*/
 
     @RequestMapping(value = {"/createUser"}, method = RequestMethod.GET)
     public @ResponseBody String sendEntity(@RequestParam String jsonUser) throws Exception {

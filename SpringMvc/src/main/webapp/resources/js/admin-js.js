@@ -337,6 +337,35 @@ function createUser() {
     });
 }
 
+function getOrderInfo(orderId) {
+    $.ajax({
+        url : 'getOrderInfo',
+        type: 'GET',
+        data : ({
+            orderId : orderId
+        }),
+        dataType:'json',
+        success: function (data) {
+            //alert(data.userId);
+            //var user = JSON.parse(data);
+            /*$("#data-role").text(data.role);
+            //alert(user.userId.toString());
+            $("#data-user-id").text(data.userId);
+            $("#data-login").text(data.login);
+            $("#data-fio").text(data.fio);
+            $("#data-phone").text(data.phoneNumber);
+            $("#data-email").text(data.email);
+            $("#data-birthday").text(new Date(data.birthday.year, data.birthday.month - 1, data.birthday.day).toLocaleDateString());
+            $.each(data.addresses, function( index, value ) {
+                getAddressByCoordinates(value.latitude,value.longitude, index);
+            });*/
+        },
+        error: function () {
+            $.notify(getErrorString('data_error'));
+        }
+    });
+}
+
 $(document).ready(function () {
     $("#user-info-modal").on("hide.bs.modal", function () {
         $(".user-address").remove();
