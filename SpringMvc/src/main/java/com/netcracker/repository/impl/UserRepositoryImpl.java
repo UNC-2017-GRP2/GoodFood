@@ -19,92 +19,10 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     public UserRepositoryImpl(DataSource dataSource) throws SQLException {
         super(dataSource);
     }
-
-   /* public User getUserByUsername(String username) {
-        User user = null;
-
-        BigInteger userId = null;
-        String password = null;
-        String role = null;
-        String fio = null;
-        String email = null;
-        String phone = null;
-        LocalDate birthday = null;
-        List<Address> addresses = new ArrayList<>();
-        ResultSet resultSet = null;
-        if (!username.equals("")){
-            try{
-                resultSet = getObjectIdByAttrIdAndTextVal(Constant.USERNAME_ATTR_ID, username);
-                while (resultSet.next()) {
-                    userId = new BigInteger(resultSet.getString("OBJECT_ID"));
-                }
-
-                if (userId != null && !userId.equals(0)) {
-                    resultSet = getParametersByObjectId(userId);
-                    while (resultSet.next()) {
-                        long curAttrId = resultSet.getLong("ATTR_ID");
-                        if (curAttrId == Constant.PASSWORD_HASH_ATTR_ID) {
-                            password = resultSet.getString("TEXT_VALUE");
-                        }
-                        if (curAttrId == Constant.USER_ROLE_ATTR_ID) {
-                            long roleValue = resultSet.getLong("ENUM_VALUE");
-                            try (PreparedStatement statement = connection.prepareStatement(Constant.SQL_SELECT_ENUM_NAME_BY_ID)) {
-                                statement.setLong(1, roleValue);
-                                try (ResultSet rs = statement.executeQuery()) {
-                                    while (rs.next()) {
-                                        role = rs.getString("NAME");
-                                    }
-                                } catch (Exception e) {
-                                    System.out.println(e.getMessage());
-                                }
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
-                            }
-                        }
-                        if (curAttrId == Constant.FULL_NAME_ATTR_ID){
-                            fio = resultSet.getString("TEXT_VALUE");
-                        }
-                        if(curAttrId == Constant.EMAIL_ATTR_ID){
-                            email = resultSet.getString("TEXT_VALUE");
-                        }
-                        if (curAttrId == Constant.PHONE_NUMBER_ATTR_ID){
-                            phone = resultSet.getString("TEXT_VALUE");
-                        }
-                        if (curAttrId == Constant.BIRTHDAY_ATTR_ID){
-                            //birthday = new Date(resultSet.getDate("DATE_VALUE").getTime());
-                            birthday = (resultSet.getTimestamp("DATE_VALUE")!=null)?resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toLocalDate():null;
-                        }
-                        if(curAttrId == Constant.ADDRESS_ATTR_ID){
-                            PGpoint address = (PGpoint)resultSet.getObject("POINT_VALUE");
-                            addresses.add( new Address(address.x, address.y));
-                        }
-                    }
-                }
-                else{
-                    System.out.println("userId, pass, role == 0");
-                }
-
-                if (!password.equals("") && !role.equals("")){
-                    user = new User(userId, fio, username, password, password, phone, birthday, email, addresses, role);
-                }else{
-                    System.out.println("pass or role is empty!");
-                }
-                *//*if (preparedStatement != null){
-                    preparedStatement.close();
-                }*//*
-                if (resultSet != null){
-                    resultSet.close();
-                }
-            }catch (Exception e){
-                System.out.println(e.getMessage() + " 111");
-            }
-        }else{
-            System.out.println("Username is empty!!");
-        }
-        return user;
-    }*/
-
-
+    @Override
+    public BigInteger getObjectId() {
+        return super.getObjectId();
+    }
 
     @Override
     public User getUserByUsername(String username) {
@@ -209,7 +127,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     public void saveUser(User user) {
         BigInteger userId;
         try {
-            userId = getObjectId();
+            userId = (user.getUserId() != null)?user.getUserId() : getObjectId();
             if (userId != null){
                 //Сохраняем юзера в объектах
                 saveObject(user.getLogin(), userId, new BigInteger("0"), Constant.USER_OBJ_TYPE_ID);
@@ -219,7 +137,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                 saveTextParameter(userId, Constant.PASSWORD_HASH_ATTR_ID, user.getPasswordHash());
                 saveTextParameter(userId, Constant.EMAIL_ATTR_ID, user.getEmail());
                 saveTextParameter(userId, Constant.PHONE_NUMBER_ATTR_ID, user.getPhoneNumber());
-                saveEnumValue(userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLE_USER_ENUM_ID);
+                saveEnumValue(userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLES.get(user.getRole()));
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

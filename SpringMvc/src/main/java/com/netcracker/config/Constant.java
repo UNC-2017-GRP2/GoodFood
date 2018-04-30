@@ -1,6 +1,42 @@
 package com.netcracker.config;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constant {
+
+    public static Map<String, Long> ROLES;
+    static {
+        Map<String, Long> map = new HashMap<>();
+        map.put("ROLE_ADMIN", Constant.ROLE_ADMIN_ENUM_ID);
+        map.put("ROLE_USER", Constant.ROLE_USER_ENUM_ID);
+        map.put("ROLE_COURIER", Constant.ROLE_COURIER_ENUM_ID);
+        ROLES = Collections.unmodifiableMap(map);
+    }
+
+    /*public static Map<String, Long> STATUSES;
+    static {
+        Map<String, Long> map = new HashMap<>();
+        map.put("Created", Constant.STATUS_CREATED_ENUM_ID);
+        map.put("Linked with courier", Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
+        map.put("Delivered", Constant.STATUS_DELIVERED_ENUM_ID);
+        map.put("Expired", Constant.STATUS_EXPIRED_ENUM_ID);
+        map.put("Cancelled", Constant.STATUS_CANCELLED_ENUM_ID);
+        STATUSES = Collections.unmodifiableMap(map);
+    }*/
+    public static Map<Long, String> STATUSES;
+    static {
+        Map<Long, String> map = new HashMap<>();
+        map.put(Constant.STATUS_CREATED_ENUM_ID, "Created");
+        map.put(Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID, "Linked with courier");
+        map.put(Constant.STATUS_DELIVERED_ENUM_ID, "Delivered");
+        map.put(Constant.STATUS_EXPIRED_ENUM_ID, "Expired");
+        map.put(Constant.STATUS_CANCELLED_ENUM_ID, "Cancelled");
+        STATUSES = Collections.unmodifiableMap(map);
+    }
+
+
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_COURIER = "ROLE_COURIER";
