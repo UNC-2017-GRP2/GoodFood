@@ -13,6 +13,7 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/my-orders-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
@@ -401,11 +402,22 @@
                         <h3 class="panel-title"><spring:message code="admin.orders"/></h3>
                     </div>
                     <div class="panel-body">
-                        <form action="/admin/actualize" method="post">
+                        <div class="input-group stylish-input-group input-append">
+                            <spring:message code="admin.orders.filter" var="placeholder"/>
+                            <input type="text" class="form-control" id="orders-table-filter" data-action="filter"
+                                   data-filters="#orders-table" placeholder="${placeholder}"/>
+                            <span class="input-group-addon">
+                                <button type="submit">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                        <form id="actualize-form" action="/admin/actualize" method="post">
                             <button type="submit" class="btn btn-info btn-xs pull-right"><spring:message
                                     code="admin.actualize"/></button>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
+
                     </div>
                     <table class="table table-hover table-striped" id="orders-table">
                         <thead>
@@ -420,7 +432,7 @@
                         </tr>
                         </thead>
                         <c:forEach items="${orders}" var="order">
-                            <tr class="order-row" onclick="getOrderInfo('${order.orderId}');">
+                            <tr class="order-row" onclick="getOrderInfo('<c:out value="${order.orderId}"/>');"  data-toggle="modal" data-target="#order-info-modal">
                                 <td>${order.orderId}</td>
                                 <td>${order.userId}</td>
                                 <td>${order.status}</td>
@@ -507,6 +519,111 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="order-info-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><spring:message code="admin.order_info"/></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="reset-values">&times;</span>
+                </button>
+            </div>
+            <div class="container-order text-center sticker-left sticker-info"
+                 data-sticker="" id="sticker-text">
+                <div class="text-center order-info">
+                    <div class="row text-left">
+                        <div class="col-sm-5"><spring:message code="orders.orderId"/></div>
+                        <div class="col-sm-7" id="order-id"></div>
+                    </div>
+
+                    <div class="row text-left">
+                        <%--<fmt:parseDate value=""
+                                       pattern="yyyy-MM-dd'T'HH:mm"
+                                       var="parsedDateTime"
+                                       type="both"/>--%>
+                        <div class="col-sm-5"><spring:message code="orders.orderProcessed"/></div>
+                        <%--<div class="col-sm-7"><fmt:formatDate pattern="dd.MM.yyyy   HH:mm"
+                                                              value="${ parsedDateTime }"/></div>--%>
+                        <div class="col-sm-7" id="order-date"></div>
+                    </div>
+
+                    <div class="row text-left">
+                        <div class="col-sm-5"><spring:message code="orders.timeSinceCreation"/></div>
+                        <div class="col-sm-7" id="order-date-until"><%--${order.orderCreationDate.until(now, chr)}--%></div>
+                    </div>
+
+
+                    <div class="row text-left">
+                        <div class="col-sm-5"><spring:message code="orders.deliveryTo"/></div>
+                        <div class="col-sm-7" id = "address${order.orderId}">
+                        </div>
+                    </div>
+
+                    <div class="row text-left">
+                        <div class="col-sm-5"><spring:message code="orders.paymentType"/></div>
+                        <div class="col-sm-7" id="order-payment-type"></div>
+                    </div>
+
+                    <div class="row text-left">
+                        <div class="col-sm-5"><spring:message code="orders.paymentState"/></div>
+                        <div class="col-sm-7" id="order-paid"></div>
+                    </div>
+
+                    <%--<div class="row text-left">
+                        <div class="col-sm-5"><spring:message code="orders.paymentState"/></div>
+                        <c:if test="${order.paid eq true}">
+                            <div class="col-sm-7"><spring:message code="orders.paid"></spring:message></div>
+                        </c:if>
+                        <c:if test="${order.paid eq false}">
+                            <div class="col-sm-7"><spring:message code="orders.notPaid"></spring:message></div>
+                        </c:if>
+                    </div>--%>
+
+
+                    <ul class="details text-left">
+                        <hr>
+                    </ul>
+
+                    <div id="order-items">
+                        <%--<c:forEach items="${order.orderItems}" var="item">
+                            <div class="row text-left">
+                                <div class="col-sm-5">${item.productName}</div>
+                                <div class="col-sm-4">${item.productQuantity} <spring:message
+                                        code="items.count"/>&times;${item.productCost}₽
+                                </div>
+                                <div class="col-sm-3">${item.productCost*item.productQuantity}₽</div>
+                            </div>
+                        </c:forEach>--%>
+                    </div>
+
+                    <div class="row text-left">
+                        <div class="col-sm-5"></div>
+                        <div class="col-sm-4"><spring:message
+                                code="orders.totalOrderCost"/></div>
+                        <div class="col-sm-3" id="order-cost"></div>
+                    </div>
+
+                    <ul class="details text-left">
+                        <hr>
+                    </ul>
+                    <%--ЗДЕСЬ ИНФА ПРО ЮЗЕРА--%>
+
+                    <%--<div class="row text-left">
+                        <div class="col-sm-5"><spring:message code="users.username"/></div>
+                        <div class="col-sm-7" id="user${order.orderId}">
+                            <script>getUserName('${order.orderId}', '${order.userId}');</script>
+                        </div>
+                    </div>--%>
+
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>

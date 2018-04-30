@@ -338,7 +338,8 @@ function createUser() {
 }
 
 function getOrderInfo(orderId) {
-    $.ajax({
+    alert(orderId);
+    /*$.ajax({
         url : 'getOrderInfo',
         type: 'GET',
         data : ({
@@ -348,7 +349,7 @@ function getOrderInfo(orderId) {
         success: function (data) {
             //alert(data.userId);
             //var user = JSON.parse(data);
-            /*$("#data-role").text(data.role);
+            /!*$("#data-role").text(data.role);
             //alert(user.userId.toString());
             $("#data-user-id").text(data.userId);
             $("#data-login").text(data.login);
@@ -358,12 +359,12 @@ function getOrderInfo(orderId) {
             $("#data-birthday").text(new Date(data.birthday.year, data.birthday.month - 1, data.birthday.day).toLocaleDateString());
             $.each(data.addresses, function( index, value ) {
                 getAddressByCoordinates(value.latitude,value.longitude, index);
-            });*/
+            });*!/
         },
         error: function () {
             $.notify(getErrorString('data_error'));
         }
-    });
+    });*/
 }
 
 $(document).ready(function () {
