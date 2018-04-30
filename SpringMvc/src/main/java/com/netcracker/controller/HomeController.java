@@ -64,6 +64,9 @@ public class HomeController {
             if(value.equals(String.valueOf(Constant.CATEGORY_BEVERAGES))) {
                 model.addObject("bottle", 1);
             }
+            if(value.equals(String.valueOf(Constant.CATEGORY_ALCOHOL))) {
+                model.addObject("car", 1);
+            }
         }
         if (currentItems == null || currentItems.size() == 0){
             model.addObject("value", Constant.CATEGORY_PIZZA);

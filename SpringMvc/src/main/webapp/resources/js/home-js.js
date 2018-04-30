@@ -20,6 +20,16 @@ function addToCart(productId, countId) {
     });
 }
 
+function callDriver() {
+    $.ajax({
+        url : 'drunk',
+        type: 'GET',
+        success: function (data) {
+            $.notify(getNotificationString('item_added'), "success");
+        }
+    });
+}
+
 function successNotification() {
     $(".alert").alert();
     setTimeout(function () {

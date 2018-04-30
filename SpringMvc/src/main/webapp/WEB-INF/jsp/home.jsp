@@ -182,6 +182,10 @@
     <img class="btl" src="${pageContext.request.contextPath}/resources/img/beverages/bottle.png" height="30%" width="auto">
     </a>
 </c:if>
+<c:if test="${car == 1}">
+    <img class="car" src="${pageContext.request.contextPath}/resources/img/alcohol/Car-icon.png" height="30%" width="auto" onclick="callDriver();" class="menu_links">
+</c:if>
+
 <div class="Features-section paddingTB60 bg-dgrey ">
     <div class="container">
         <div class="row text-center ">
