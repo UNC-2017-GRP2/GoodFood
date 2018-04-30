@@ -85,8 +85,35 @@ public class OrderServiceImpl implements OrderService {
     //}
 
     @Override
-    public List<Order> getOrdersByUsername(String username) {
-        return orderRepository.getOrdersByUserId(userService.getByUsername(username).getUserId());
+    public List<Order> getOrdersByUsername(String username, Locale locale) {
+        List<Order> allOrders;
+        allOrders = orderRepository.getOrdersByUserId(userService.getByUsername(username).getUserId());
+        if (locale.equals(Locale.ENGLISH))
+            return allOrders;
+        else {
+            List<Order> allLocalizedOrders = new ArrayList<>();
+            List<Item> orderLocalizedItems;
+            for (Order order : allOrders) {
+                Order localizedOrder = new Order(order.getOrderId(),
+                        order.getUserId(),
+                        order.getOrderCost(),
+                        order.getStatus(),
+                        order.getOrderAddress(),
+                        order.getOrderPhone(),
+                        new ArrayList<Item>(),
+                        order.getOrderCreationDate(),
+                        order.getCourierId(),
+                        order.getPaymentType(),
+                        order.getPaid());
+                orderLocalizedItems = localizedOrder.getOrderItems();
+                for (Item item :  order.getOrderItems()) {
+                    orderLocalizedItems.add(itemRepository.getLocalizedItem(item, locale));
+                }
+                localizedOrder.setOrderItems(orderLocalizedItems);
+                allLocalizedOrders.add(localizedOrder);
+            }
+            return allLocalizedOrders;
+        }
     }
 
     @Override

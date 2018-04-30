@@ -28,6 +28,6 @@ public interface OrderService {
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
     List<Order> getAllOrders(Locale locale);
-    List<Order> getOrdersByUsername(String username);
+    List<Order> getOrdersByUsername(String username, Locale locale);
     BigInteger getObjectId();
 };

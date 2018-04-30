@@ -196,7 +196,7 @@ INSERT INTO public."PARAMETERS"(
 	(1590313064687461464, 414, 'Cake of cream cheese Philadelphia.', null, 0, 0),
 	(1590313064687461464, 409, '175', null, 0, 0),
 
-	(1590313064687461465, 401, 'Esterh?zy Cake', null, 0, 0),   
+	(1590313064687461465, 401, 'Esterházy Cake', null, 0, 0),
 	(1590313064687461465, 408, null, null, 0, 816),
 	(1590313064687461465, 414, 'Dessert of thin air cakes, hazelnuts and walnut praline.', null, 0, 0),
 	(1590313064687461465, 409, '195', null, 0, 0),
