@@ -23,8 +23,10 @@ public class DrunkServiceImpl implements DrunkService {
 
         HttpEntity<User> request = new HttpEntity<>(user);
 
-        restTemplate.exchange(Constant.BASE_URL_REST + "/",
-                HttpMethod.PUT, request, new ParameterizedTypeReference<User>() {
+        restTemplate.exchange(Constant.BASE_URL_REST + "/drunk_receive",
+                HttpMethod.POST, request, new ParameterizedTypeReference<User>() {
                 });
+        System.out.println(Constant.BASE_URL_REST + "/drunk_receive");
+//        return user;
     }
 }

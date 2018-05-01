@@ -164,5 +164,5 @@ public class Constant {
     public static final String SQL_DELETE_ALL_PARAMETERS_BY_OBJ_ID = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_DELETE_OBJECT = "delete from \"OBJECTS\" where \"OBJECT_ID\" = ?";
 
-    public static final String BASE_URL_REST = "http://127.0.0.1:8080/rest";
+    public static final String BASE_URL_REST = "http://127.0.0.1:8085";
 }
