@@ -6,7 +6,10 @@
             return 'Товар додано.';
         case 'user_created':
             return 'Аккаунт було створено.';
-
+        case 'user_deleted':
+            return 'Користувача видалено.';
+        case 'item_deleted':
+            return 'Продукт видалений.';
     }
 }
 
@@ -50,12 +53,16 @@ function getErrorString(stringId) {
             return 'Під час оплати сталася помилка';
         case 'user_not_created':
             return 'Нема був створений.';
+        case 'user_not_deleted':
+            return 'Нема був видалений.';
         case 'role_not_changed':
             return 'Роль не була змінена';
         case 'no_results':
             return 'Нічого не знайдено.';
         case 'data_error':
-            return 'Помилка даних.'
+            return 'Помилка даних.';
+        case 'item_not_deleted':
+            return 'Елемент не був видалений.';
     }
 }
 

@@ -125,6 +125,8 @@ public class AdminController {
         model.addObject("weekDays", weekDays);
         model.addObject("userForm", new User());
         model.addObject("itemForm", new Item());
+        List<String> categories = itemService.getAllCategories();
+        model.addObject("categories", categories);
         return model;
     }
 
@@ -193,4 +195,9 @@ public class AdminController {
         Gson gson = builder.create();
         return gson.toJson(itemService.getItemById(itemId, locale));
     }
+
+    /*@RequestMapping(value = "/removeItem", method = RequestMethod.GET)
+    public void removeItem(@RequestParam BigInteger itemId){
+        itemService.removeItemById(itemId);
+    }*/
 }

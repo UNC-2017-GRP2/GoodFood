@@ -56,6 +56,16 @@ public class ItemServiceImpl implements ItemService {
             return result;
         }
     }
+
+    @Override
+    public void removeItemById(BigInteger itemId) {
+        itemRepository.removeItemById(itemId);
+    }
+
+    @Override
+    public List<String> getAllCategories() {
+        return itemRepository.getAllCategories();
+    }
 //    public List<Item> getAllItems() {
 //        return itemRepository.getAllItems();
 //    }

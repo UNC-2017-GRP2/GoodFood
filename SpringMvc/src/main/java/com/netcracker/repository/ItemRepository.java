@@ -11,4 +11,6 @@ public interface ItemRepository {
     Item getItemById(BigInteger itemId);
     List<Item> getItemsByCategory (String category);
     Item getLocalizedItem(Item item, Locale locale);
+    void removeItemById(BigInteger itemId);
+    List<String> getAllCategories();
 }

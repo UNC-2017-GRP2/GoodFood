@@ -6,6 +6,10 @@
             return 'Товар добавлен.';
         case 'user_created':
             return 'Пользователь создан.';
+        case 'user_deleted':
+            return 'Пользователь удален.';
+        case 'item_deleted':
+            return 'Продукт удален.';
     }
 }
 function getErrorString(stringId) {
@@ -48,12 +52,16 @@ function getErrorString(stringId) {
             return 'Во время оплаты произошла ошибка.';
         case 'user_not_created':
             return 'Пользователь не был создан.';
+        case 'user_not_deleted':
+            return 'Пользователь не был удален.';
         case 'role_not_changed':
             return 'Роль не была изменена.';
         case 'no_results':
             return 'Ничего не найдено.';
         case 'data_error':
-            return 'Ошибка данных.'
+            return 'Ошибка данных.';
+        case 'item_not_deleted':
+            return 'Продукт не был удален.';
     }
 }
 

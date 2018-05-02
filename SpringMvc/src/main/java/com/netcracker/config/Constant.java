@@ -142,6 +142,7 @@ public class Constant {
     public static final String SQL_SELECT_TEXT_VAL_BY_OBJ_ID_AND_ATTR_ID = "select \"TEXT_VALUE\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"OBJECT_ID\" = ? ";
     public static final String SQL_SELECT_OBJ_ID_BY_ATTR_AND_ENUM = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"ENUM_VALUE\" = ?";
 
+    public static final String SQL_SELECT_ENUMS_BY_TYPE_ID = "select * from \"ENUMS\" where \"ENUM_TYPE_ID\" = ?";
     public static final String SQL_SELECT_ENUMS = "select * from \"ENUMS\" where \"ENUM_ID\" = ?";
     public static final String SQL_SELECT_ENUM_NAME_BY_ID = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";
     public static final String SQL_SELECT_ENUM_ID_BY_ENUM_VALUE = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = ?";

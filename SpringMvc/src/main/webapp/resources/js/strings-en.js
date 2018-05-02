@@ -8,6 +8,8 @@
             return 'User created.';
         case 'user_deleted':
             return 'User deleted.';
+        case 'item_deleted':
+            return 'Item deleted.';
     }
 }
 
@@ -60,7 +62,9 @@ function getErrorString(stringId) {
         case 'no_results':
             return 'No results found.';
         case 'data_error':
-            return 'Data error.'
+            return 'Data error.';
+        case 'item_not_deleted':
+            return 'Item was not deleted.';
     }
 }
 

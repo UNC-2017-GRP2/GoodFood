@@ -463,7 +463,25 @@ function editItem(itemId) {
     });
 }
 function removeItem(thisElem, itemId) {
-    
+    $.ajax({
+        url : 'removeItem',
+        type: 'GET',
+        data : ({
+            itemId: itemId
+        }),
+        success: function () {
+            $.notify(getNotificationString('item_deleted'), "success");
+            //$(thisElem).parent('td').parent('tr').remove();
+            var itemTable = $("#items-table").DataTable();
+            itemTable
+                .row($(thisElem).parents('tr'))
+                .remove()
+                .draw();
+        },
+        error: function () {
+            $.notify(getErrorString('item_not_deleted'), "error");
+        }
+    });
 }
 
 $(document).ready(function () {

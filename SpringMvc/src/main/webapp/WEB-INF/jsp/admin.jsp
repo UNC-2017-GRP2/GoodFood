@@ -1,9 +1,6 @@
 <%@ page import="com.netcracker.config.Constant" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html;charset=windows-1251" %>
-<%@ page pageEncoding="CP1251" %>
-<% request.setCharacterEncoding("CP1251"); %>
-<%@ page language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -11,7 +8,6 @@
 
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=cp1251">
     <title><spring:message code="general.adminPanel"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
@@ -716,7 +712,6 @@
                     <span aria-hidden="true" class="reset-values">&times;</span>
                 </button>
             </div>
-
             <div class="modal-body">
                 <div class="container-item text-center">
                     <div class="text-left item-info">
@@ -732,8 +727,11 @@
                             <label for="item-category" class="col-xs-4 control-label"><spring:message
                                     code="admin.item.category"/>:</label>
                             <div class="col-xs-6">
-                                <input type='text' id='item-category'
-                                       class="form-control">
+                                <select id='item-category' class="form-control">
+                                    <c:forEach items="${categories}" var="category">
+                                        <option value="${category}">${category}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
 
@@ -770,6 +768,8 @@
                                      src="">
                             </div>
                         </div>
+
+
 
                             <%--<div class="form-group">
                                 <label for="item-id" class="col-xs-4 control-label"><spring:message code="admin.item.itemId"/></label>
@@ -814,6 +814,9 @@
                             </div>--%>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"><spring:message code="profile.save"></spring:message></button>
             </div>
         </div>
     </div>

@@ -13,4 +13,6 @@ public interface ItemService {
     List<Item> getAllItems(Locale locale);
     Item getItemById(BigInteger itemId, Locale locale);
     List<Item> getItemsByCategory (String category, Locale locale);
+    void removeItemById(BigInteger itemId);
+    List<String>getAllCategories();
 }
