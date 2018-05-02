@@ -176,4 +176,12 @@ public class AdminController {
         userService.saveUser(user);
         return gson.toJson(user);
     }
+
+    @RequestMapping(value = {"/getOrderInfo"}, method = RequestMethod.GET)
+    public @ResponseBody String getOrderInfo(@RequestParam BigInteger orderId) throws IOException {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
+        Gson gson = builder.create();
+        return gson.toJson(orderService.getOrderById(orderId));
+    }
 }

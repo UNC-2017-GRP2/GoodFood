@@ -78,6 +78,11 @@
                                             </div>
 
                                             <div class="row text-left">
+                                                <div class="col-sm-5"><spring:message code="orders.phone"/></div>
+                                                <div class="col-sm-7">${order.orderPhone}</div>
+                                            </div>
+
+                                            <div class="row text-left">
                                                 <div class="col-sm-5"><spring:message code="orders.paymentType"/></div>
                                                 <div class="col-sm-7">${order.paymentType}</div>
                                             </div>

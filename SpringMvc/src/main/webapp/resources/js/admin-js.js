@@ -97,16 +97,15 @@ function getUserInfo(userId) {
         }),
         dataType:'json',
         success: function (data) {
-            //alert(data.userId);
-            //var user = JSON.parse(data);
             $("#data-role").text(data.role);
-            //alert(user.userId.toString());
             $("#data-user-id").text(data.userId);
             $("#data-login").text(data.login);
             $("#data-fio").text(data.fio);
             $("#data-phone").text(data.phoneNumber);
             $("#data-email").text(data.email);
-            $("#data-birthday").text(new Date(data.birthday.year, data.birthday.month - 1, data.birthday.day).toLocaleDateString());
+            if (data.birthday != null){
+                $("#data-birthday").text(new Date(data.birthday.year, data.birthday.month - 1, data.birthday.day).toLocaleDateString());
+            }
             $.each(data.addresses, function( index, value ) {
                 getAddressByCoordinates(value.latitude,value.longitude, index);
             });
@@ -116,6 +115,8 @@ function getUserInfo(userId) {
         }
     });
 }
+
+
 
 function getAddressByCoordinates(latitude, longitude, index) {
     var coords = [latitude, longitude];
@@ -338,8 +339,7 @@ function createUser() {
 }
 
 function getOrderInfo(orderId) {
-    alert(orderId);
-    /*$.ajax({
+    $.ajax({
         url : 'getOrderInfo',
         type: 'GET',
         data : ({
@@ -347,24 +347,69 @@ function getOrderInfo(orderId) {
         }),
         dataType:'json',
         success: function (data) {
-            //alert(data.userId);
-            //var user = JSON.parse(data);
-            /!*$("#data-role").text(data.role);
-            //alert(user.userId.toString());
-            $("#data-user-id").text(data.userId);
-            $("#data-login").text(data.login);
-            $("#data-fio").text(data.fio);
-            $("#data-phone").text(data.phoneNumber);
-            $("#data-email").text(data.email);
-            $("#data-birthday").text(new Date(data.birthday.year, data.birthday.month - 1, data.birthday.day).toLocaleDateString());
-            $.each(data.addresses, function( index, value ) {
-                getAddressByCoordinates(value.latitude,value.longitude, index);
-            });*!/
+            $("#order-id").text(data.orderId);
+            $("#order-status").text(data.status);
+            var date = new Date(data.orderCreationDate.date.year, data.orderCreationDate.date.month - 1, data.orderCreationDate.date.day, data.orderCreationDate.time.hour, data.orderCreationDate.time.minute, data.orderCreationDate.time.second);
+            $("#order-date").text(date.toLocaleString());
+            getOrderAddress(data.orderAddress.latitude, data.orderAddress.longitude);
+            $("#order-phone").text(data.orderPhone);
+            $("#order-payment-type").text(data.paymentType);
+            if(data.isPaid === true){
+                $("#order-paid").text(getLocStrings('order_paid'));
+            }else{
+                $("#order-paid").text(getLocStrings('order_not_paid'));
+            }
+            //alert(JSON.stringify(data));
+            for (var i = 0; i < data.orderItems.length; i++){
+                var newItemHtml = "<div class=\"row text-left\">" +
+                    "               <div class=\"col-sm-5\">" + data.orderItems[i].productName + "</div>" +
+                    "               <div class=\"col-sm-4\">" + data.orderItems[i].productQuantity + getLocStrings('items_count') + getLocStrings('multiplication_sign') + data.orderItems[i].productCost + getLocStrings('rub') +
+                    "               </div>" +
+                    "               <div class=\"col-sm-3\">" + data.orderItems[i].productCost*data.orderItems[i].productQuantity + getLocStrings('rub') + "</div>" +
+                    "              </div>";
+                $("#order-items").append(newItemHtml);
+            }
+            $("#order-cost").text(data.orderCost + getLocStrings('rub'));
+
+            $.ajax({
+                    url : 'getUserInfo',
+                    type: 'GET',
+                    data : ({
+                        userId : data.userId
+                    }),
+                    dataType:'json',
+                    success: function (data) {
+                        $("#user-role-order").text(data.role);
+                        $("#user-id-order").text(data.userId);
+                        $("#user-login-order").text(data.login);
+                        $("#user-fio-order").text(data.fio);
+                        $("#user-phone-order").text(data.phoneNumber);
+                        $("#user-email-order").text(data.email);
+                        $("#user-birthday-order").text(new Date(data.birthday.year, data.birthday.month - 1, data.birthday.day).toLocaleDateString());
+                        /*$.each(data.addresses, function( index, value ) {
+                            getAddressByCoordinates(value.latitude,value.longitude, index);
+                        });*/
+                    },
+                    error: function () {
+                        $.notify(getErrorString('data_error'));
+                    }
+            });
+
         },
         error: function () {
             $.notify(getErrorString('data_error'));
         }
-    });*/
+    });
+}
+
+function getOrderAddress(latitude, longitude){
+    var coords = [latitude, longitude];
+    ymaps.geocode(coords).then(function (res) {
+        if (res.geoObjects.get(0) != null) {
+            var obj = res.geoObjects.get(0);
+            $("#order-address").text(obj.getAddressLine());
+        }
+    });
 }
 
 $(document).ready(function () {
@@ -372,6 +417,13 @@ $(document).ready(function () {
         $(".user-address").remove();
         $(".user-value").text("");
     });
+
+    $("#order-info-modal").on("hide.bs.modal", function () {
+        $("#order-items div").remove();
+        $(".user-value-order").text("");
+        $(".order-value").text("");
+    });
+
     /*CHARTS*/
 });
 

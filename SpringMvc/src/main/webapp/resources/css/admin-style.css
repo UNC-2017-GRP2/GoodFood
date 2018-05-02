@@ -512,10 +512,37 @@ input.hidden {position: absolute;left: -9999px;}
 }
 
 /*------------orders-----------*/
-.order-row td, .order-head th{
+/*.order-row td, .order-head th{
     text-align: center;
+}*/
+
+#creation-date-until-td, #order-cost-td{
+    text-align: center;
+}
+
+#order-info-modal .modal-body{
+    background-color: #f9fafa;
+}
+
+.container-order {
+    margin: 30px auto 30px;
+    background-color: #fff;
+    padding: 0 20px 20px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.075);
+    -webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.075);
+    -moz-box-shadow: 0 2px 5px rgba(0,0,0,0.075);
+    text-align: center;
+}
+
+.order-row{
+    cursor: pointer;
 }
 
 #actualize-form{
     margin-top: 5px;
 }
+
+

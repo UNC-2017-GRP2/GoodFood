@@ -13,7 +13,7 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin-style.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/my-orders-style.css">
+    <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/my-orders-style.css">--%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
@@ -272,7 +272,7 @@
                         </div>
                         <%-- <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Users" />--%>
                     </div>
-                    <table class="table table-hover table-striped" id="dev-table">
+                    <table class="table table-hover table-striped table-bordered" id="dev-table">
                         <thead>
                         <%--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>--%>
                         <tr>
@@ -419,7 +419,7 @@
                         </form>
 
                     </div>
-                    <table class="table table-hover table-striped" id="orders-table">
+                    <table class="table table-hover table-striped table-bordered" id="orders-table">
                         <thead>
                         <tr class="order-head">
                             <th><spring:message code="orders.orderId"/></th>
@@ -438,24 +438,24 @@
                                 <td>${order.status}</td>
                                 <td><c:forEach items="${order.orderItems}" var="item">
                                     ${item.productName}<br/>
-                                    ${item.productCost} ₽<br/>
+                                    <%--${item.productCost} ₽<br/>--%>
                                 </c:forEach>
                                 </td>
                                 <td>${order.orderCreationDate.toString()}</td>
-                                <td>${order.orderCreationDate.until(now, chr)}</td>
-                                <td style="text-align: center">${order.orderCost} ₽</td>
+                                <td id="creation-date-until-td">${order.orderCreationDate.until(now, chr)}</td>
+                                <td id="order-cost-td">${order.orderCost} ₽</td>
                             </tr>
                         </c:forEach>
                     </table>
                 </div>
-                <div class="panel panel-primary">
+                <%--<div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title"></h3>
                     </div>
                     <div class="panel-body">
 
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
 
@@ -492,28 +492,56 @@
                     </div>
                     <div class="text-center">
                         <ul class="details text-left" id="user-data-list">
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message
-                                    code="general.userId"/></span><span
-                                    id="data-user-id" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message
-                                    code="users.role"/></span><span
-                                    id="data-role" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message
-                                    code="users.username"/></span><span
-                                    id="data-login" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span
-                                    class="col-sm-3"><spring:message code="users.fullname"/></span><span id="data-fio"
-                                                                                                         class="col-sm-6 user-value"></span>
-                            </p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message
-                                    code="users.phoneNumber"/></span><span
-                                    id="data-phone" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message
-                                    code="users.email"/></span><span
-                                    id="data-email" class="col-sm-6 user-value"></span></p></li>
-                            <li><p class="row"><span class="col-sm-1"></span><span class="col-sm-3"><spring:message
-                                    code="users.birthday"/></span><span
-                                    id="data-birthday" class="col-sm-6 user-value"></span></p></li>
+                            <li>
+                                <p class="row">
+                                    <span class="col-sm-1"></span>
+                                    <span class="col-sm-4"><spring:message code="general.userId"/></span>
+                                    <span id="data-user-id" class="col-sm-6 user-value"></span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="row">
+                                    <span class="col-sm-1"></span>
+                                    <span class="col-sm-4"><spring:message
+                                    code="users.role"/></span>
+                                    <span id="data-role" class="col-sm-6 user-value"></span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="row">
+                                    <span class="col-sm-1"></span>
+                                    <span class="col-sm-4"><spring:message code="users.username"/></span>
+                                    <span id="data-login" class="col-sm-6 user-value"></span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="row">
+                                    <span class="col-sm-1"></span>
+                                    <span class="col-sm-4"><spring:message code="users.fullname"/></span>
+                                    <span id="data-fio" class="col-sm-6 user-value"></span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="row">
+                                    <span class="col-sm-1"></span>
+                                    <span class="col-sm-4"><spring:message code="users.phoneNumber"/></span>
+                                    <span id="data-phone" class="col-sm-6 user-value"></span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="row">
+                                    <span class="col-sm-1"></span>
+                                    <span class="col-sm-4"><spring:message code="users.email"/></span>
+                                    <span id="data-email" class="col-sm-6 user-value"></span>
+                                </p>
+                            </li>
+                            <li>
+                                <p class="row">
+                                    <span class="col-sm-1"></span>
+                                    <span class="col-sm-4"><spring:message code="users.birthday"/></span>
+                                    <span id="data-birthday" class="col-sm-6 user-value"></span>
+                                </p>
+                            </li>
                             <hr>
                         </ul>
                     </div>
@@ -528,102 +556,104 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><spring:message code="admin.order_info"/></h5>
+                <h5 class="modal-title"><strong><spring:message code="admin.order_info"/></strong></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="reset-values">&times;</span>
                 </button>
             </div>
-            <div class="container-order text-center sticker-left sticker-info"
-                 data-sticker="" id="sticker-text">
-                <div class="text-center order-info">
-                    <div class="row text-left">
-                        <div class="col-sm-5"><spring:message code="orders.orderId"/></div>
-                        <div class="col-sm-7" id="order-id"></div>
-                    </div>
+            <div class="modal-body">
+                <div class="container-order text-center">
+                    <div class="text-center order-info">
+                        <div class="row text-left">
+                            <div class="col-sm-12"><strong><spring:message code="orders.order_title"/></strong></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="orders.orderId"/></div>
+                            <div class="col-sm-7 order-value" id="order-id"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="orders.status"/></div>
+                            <div class="col-sm-7 order-value" id="order-status"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="orders.orderProcessed"/></div>
+                            <div class="col-sm-7 order-value" id="order-date"></div>
+                        </div>
+                        <%--<div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="orders.timeSinceCreation"/></div>
+                            <div class="col-sm-7" id="order-date-until">${order.orderCreationDate.until(now, chr)}</div>
+                        </div>--%>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="orders.deliveryTo"/></div>
+                            <div class="col-sm-7 order-value" id = "order-address"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="orders.phone"/></div>
+                            <div class="col-sm-7 order-value" id = "order-phone"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="orders.paymentType"/></div>
+                            <div class="col-sm-7 order-value" id="order-payment-type"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="orders.paymentState"/></div>
+                            <div class="col-sm-7 order-value" id="order-paid"></div>
+                        </div>
+                        <ul class="details text-left">
+                            <hr>
+                        </ul>
 
-                    <div class="row text-left">
-                        <%--<fmt:parseDate value=""
-                                       pattern="yyyy-MM-dd'T'HH:mm"
-                                       var="parsedDateTime"
-                                       type="both"/>--%>
-                        <div class="col-sm-5"><spring:message code="orders.orderProcessed"/></div>
-                        <%--<div class="col-sm-7"><fmt:formatDate pattern="dd.MM.yyyy   HH:mm"
-                                                              value="${ parsedDateTime }"/></div>--%>
-                        <div class="col-sm-7" id="order-date"></div>
-                    </div>
+                        <div class="row text-left">
+                            <div class="col-sm-12"><strong><spring:message code="orders.order_items"/></strong></div>
+                        </div>
+                        <div id="order-items">
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"></div>
+                            <div class="col-sm-4"><spring:message
+                                    code="orders.totalOrderCost"/></div>
+                            <div class="col-sm-3" id="order-cost"></div>
+                        </div>
+                        <ul class="details text-left">
+                            <hr>
+                        </ul>
+                        <%--USER--%>
 
-                    <div class="row text-left">
-                        <div class="col-sm-5"><spring:message code="orders.timeSinceCreation"/></div>
-                        <div class="col-sm-7" id="order-date-until"><%--${order.orderCreationDate.until(now, chr)}--%></div>
-                    </div>
+                        <div class="row text-left">
+                            <div class="col-sm-12"><strong><spring:message code="users.user_info.title"/></strong></div>
+                        </div>
 
-
-                    <div class="row text-left">
-                        <div class="col-sm-5"><spring:message code="orders.deliveryTo"/></div>
-                        <div class="col-sm-7" id = "address${order.orderId}">
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="general.userId"/></div>
+                            <div class="col-sm-7 user-value-order" id="user-id-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.role"/></div>
+                            <div class="col-sm-7 user-value-order" id="user-role-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.username"/></div>
+                            <div class="col-sm-7 user-value-order" id="user-login-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.fullname"/></div>
+                            <div class="col-sm-7 user-value-order" id="user-fio-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.phoneNumber"/></div>
+                            <div class="col-sm-7 user-value-order" id="user-phone-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.email"/></div>
+                            <div class="col-sm-7 user-value-order" id="user-email-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.birthday"/></div>
+                            <div class="col-sm-7 user-value-order" id="user-birthday-order"></div>
                         </div>
                     </div>
-
-                    <div class="row text-left">
-                        <div class="col-sm-5"><spring:message code="orders.paymentType"/></div>
-                        <div class="col-sm-7" id="order-payment-type"></div>
-                    </div>
-
-                    <div class="row text-left">
-                        <div class="col-sm-5"><spring:message code="orders.paymentState"/></div>
-                        <div class="col-sm-7" id="order-paid"></div>
-                    </div>
-
-                    <%--<div class="row text-left">
-                        <div class="col-sm-5"><spring:message code="orders.paymentState"/></div>
-                        <c:if test="${order.paid eq true}">
-                            <div class="col-sm-7"><spring:message code="orders.paid"></spring:message></div>
-                        </c:if>
-                        <c:if test="${order.paid eq false}">
-                            <div class="col-sm-7"><spring:message code="orders.notPaid"></spring:message></div>
-                        </c:if>
-                    </div>--%>
-
-
-                    <ul class="details text-left">
-                        <hr>
-                    </ul>
-
-                    <div id="order-items">
-                        <%--<c:forEach items="${order.orderItems}" var="item">
-                            <div class="row text-left">
-                                <div class="col-sm-5">${item.productName}</div>
-                                <div class="col-sm-4">${item.productQuantity} <spring:message
-                                        code="items.count"/>&times;${item.productCost}₽
-                                </div>
-                                <div class="col-sm-3">${item.productCost*item.productQuantity}₽</div>
-                            </div>
-                        </c:forEach>--%>
-                    </div>
-
-                    <div class="row text-left">
-                        <div class="col-sm-5"></div>
-                        <div class="col-sm-4"><spring:message
-                                code="orders.totalOrderCost"/></div>
-                        <div class="col-sm-3" id="order-cost"></div>
-                    </div>
-
-                    <ul class="details text-left">
-                        <hr>
-                    </ul>
-                    <%--ЗДЕСЬ ИНФА ПРО ЮЗЕРА--%>
-
-                    <%--<div class="row text-left">
-                        <div class="col-sm-5"><spring:message code="users.username"/></div>
-                        <div class="col-sm-7" id="user${order.orderId}">
-                            <script>getUserName('${order.orderId}', '${order.userId}');</script>
-                        </div>
-                    </div>--%>
-
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>

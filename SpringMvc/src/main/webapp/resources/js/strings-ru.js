@@ -82,6 +82,16 @@ function getLocStrings(stringId) {
         case 'day_of_the_week':
             return 'День недели';
         case 'day':
-            return 'День'
+            return 'День';
+        case 'order_paid':
+            return 'Заказ оплачен';
+        case 'order_not_paid':
+            return 'Заказ не оплачен';
+        case 'items_count':
+            return 'шт';
+        case 'rub':
+            return '₽';
+        case 'multiplication_sign':
+            return '×';
     }
 }
