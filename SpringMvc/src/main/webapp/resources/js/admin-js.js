@@ -469,6 +469,8 @@ $(document).ready(function () {
 
     var ordersTable = $("#orders-table").DataTable(languageTableParams);
     var usersTable = $("#users-table").DataTable(languageTableParams);
+    var itemsTable = $("#items-table").DataTable(languageTableParams);
+
 
     $("#user-info-modal").on("hide.bs.modal", function () {
         $(".user-address").remove();

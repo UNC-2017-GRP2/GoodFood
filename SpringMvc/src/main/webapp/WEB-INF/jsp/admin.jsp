@@ -456,10 +456,47 @@
         </div>
 
         <div class="panel panel-default tab-pane fade" id="itemsTab">
-            <div class="panel-heading">
-                <spring:message code="admin.products"/>
-            </div>
             <div class="panel-body">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><spring:message code="admin.products"/></h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-striped table-bordered" id="items-table">
+                            <thead>
+                            <tr class="order-head">
+                                <th><spring:message code="item.itemId"/></th>
+                                <th><spring:message code="item.image"/></th>
+                                <th><spring:message code="item.category"/></th>
+                                <th><spring:message code="item.name"/></th>
+                                <th><spring:message code="item.description"/></th>
+                                <th><spring:message code="item.cost"/></th>
+                            </tr>
+                            </thead>
+                            <c:forEach items="${items}" var="item">
+                                <tr>
+                                    <td>${item.productId}</td>
+                                    <td class="media col-md-2">
+                                        <img class="media-object img-rounded img-responsive"
+                                             src="${item.productImage}">
+                                    </td>
+                                    <td>${item.productCategory}</td>
+                                    <td>${item.productName}</td>
+                                    <td>${item.productDescription}</td>
+                                    <td>${item.productCost} ₽</td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </div>
+                <%--<div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"></h3>
+                    </div>
+                    <div class="panel-body">
+
+                    </div>
+                </div>--%>
             </div>
         </div>
     </div>

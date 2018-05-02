@@ -545,7 +545,7 @@ input.hidden {position: absolute;left: -9999px;}
     margin-top: 5px;
 }
 
-#orders-table, #users-table{
+#orders-table, #users-table, #items-table{
     font-size: 12px;
 }
 
