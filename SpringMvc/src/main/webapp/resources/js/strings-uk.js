@@ -127,5 +127,9 @@ function getLocStrings(stringId) {
             return 'Перша';
         case 'last':
             return 'Остання';
+        case 'sort_ascending':
+            return 'Сортувати по зростанню';
+        case 'sort_descending':
+            return 'Сортувати по спадаючій';
     }
 }

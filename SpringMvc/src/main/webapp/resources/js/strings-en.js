@@ -132,5 +132,9 @@ function getLocStrings(stringId) {
             return 'First';
         case 'last':
             return 'Last';
+        case 'sort_ascending':
+            return 'Sort ascending';
+        case 'sort_descending':
+            return 'Sort descending';
     }
 }

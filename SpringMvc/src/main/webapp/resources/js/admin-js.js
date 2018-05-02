@@ -459,6 +459,10 @@ $(document).ready(function () {
                 previous:   getLocStrings('previous'),
                 next:       getLocStrings('next'),
                 last:       getLocStrings('last')
+            },
+            aria: {
+                sortAscending:  getLocStrings('sort_ascending'),
+                sortDescending: getLocStrings('sort_descending')
             }
         }
     };

@@ -653,9 +653,5 @@
         </div>
     </div>
 </div>
-<label id="test">
-    hello
-    world
-</label>
 </body>
 </html>
