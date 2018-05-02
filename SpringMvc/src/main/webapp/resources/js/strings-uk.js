@@ -95,5 +95,37 @@ function getLocStrings(stringId) {
             return '₽';
         case 'multiplication_sign':
             return '×';
+        case 'search':
+            return 'Пошук:';
+        case 'show':
+            return "Показати";
+        case 'entries':
+            return 'записів';
+        case 'no_records found':
+            return 'Збігів, не знайдено';
+        case 'showing_page':
+            return 'Показана сторінка';
+        case 'page_of':
+            return 'з';
+        case 'no_records_available':
+            return 'Немає доступних записів';
+        case 'filtered_from':
+            return 'відфільтровано з';
+        case 'total_records':
+            return 'записів';
+        case 'processing':
+            return 'Виконується обробка';
+        case 'loading_records':
+            return 'Завантаження';
+        case 'empty_table':
+            return 'Порожня таблиця';
+        case 'previous':
+            return 'Попередня';
+        case 'next':
+            return 'Наступна';
+        case 'first':
+            return 'Перша';
+        case 'last':
+            return 'Остання';
     }
 }

@@ -1,3 +1,5 @@
+
+
 function changeRole(userId, buttonId) {
     var newRole = $('#' + buttonId).val();
     $.ajax({
@@ -23,7 +25,7 @@ function selectOption(elementId, value) {
     document.getElementById(elementId).value = value;
 }
 
-$(function () {
+/*$(function () {
     $('.navbar-toggle-sidebar').click(function () {
         $('.navbar-nav').toggleClass('slide-in');
         $('.side-body').toggleClass('body-slide-in');
@@ -37,7 +39,7 @@ $(function () {
     });
 });
 
-/*ДЛЯ ПОИСКА*/
+/!*ДЛЯ ПОИСКА*!/
 (function(){
     'use strict';
     var $ = jQuery;
@@ -86,7 +88,7 @@ $(function(){
         }
     });
     $('[data-toggle="tooltip"]').tooltip();
-});
+});*/
 
 function getUserInfo(userId) {
     $.ajax({
@@ -143,7 +145,12 @@ function removeUser(thisElem, userId) {
         }),
         success: function () {
             $.notify(getNotificationString('user_deleted'), "success");
-            $(thisElem).parent('td').parent('tr').remove();
+            //$(thisElem).parent('td').parent('tr').remove();
+            var userTable = $("#users-table").DataTable();
+            userTable
+                .row($(thisElem).parents('tr'))
+                .remove()
+                .draw();
         },
         error: function () {
             $.notify(getErrorString('user_not_deleted'), "error");
@@ -305,8 +312,29 @@ function createUser() {
             tr.appendChild(cell4);
             tr.appendChild(cell5);
 
-            //$("#dev-table").appendChild(tr);
-            $('#dev-table tr:last').after(tr);*/
+            //$("#users-table").appendChild(tr);
+            $('#users-table tr:last').after(tr);*/
+            /*var userTable = $("#users-table").DataTable();
+            userTable.row.add( [
+                data.userId,
+                data.fio,
+                data.login,
+                data.phoneNumber,
+                data.role,
+                "<select id=\"dropdown-" + data.userId + "\" class=\"select-each-role\" style =\"margin-right: 5px;\">" +
+                "   <option value=\"ROLE_COURIER\">" + getLocStrings('ROLE_COURIER') + "</option>" +
+                "   <option value=\"ROLE_ADMIN\">" + getLocStrings('ROLE_ADMIN') + "</option>" +
+                "   <option value=\"ROLE_USER\">" + getLocStrings('ROLE_USER') + "</option>" +
+                "</select>" +
+                "<a class='btn btn-info btn-xs' style =\"margin-right: 5px;\" href=\"#\"\n" +
+                "   onclick=\"changeRole('" + data.userId + "','dropdown-" + data.userId + "');\">" +
+                "       <span class=\"glyphicon glyphicon-edit\"></span>" + getLocStrings('change_role') +
+                "</a>" +
+                "<a href=\"#\" class=\"btn btn-danger btn-xs\"\n" +
+                "   onclick=\"removeUser(this,'" + data.userId + "');\">" +
+                "       <span class=\"glyphicon glyphicon-remove\"></span>" + getLocStrings('del_user') +
+                "</a>"
+            ] ).draw( false );*/
 
             var row = "<tr class=\"user-tr\" onclick=\"getUserInfo('" + data.userId + "');\">" +
                 "<td data-toggle=\"modal\" data-target=\"#user-info-modal\">" + data.userId + "</td>" +
@@ -320,7 +348,6 @@ function createUser() {
                 "   <option value=\"ROLE_ADMIN\">" + getLocStrings('ROLE_ADMIN') + "</option>" +
                 "   <option value=\"ROLE_USER\">" + getLocStrings('ROLE_USER') + "</option>" +
                 "</select>" +
-
                 "<a class='btn btn-info btn-xs' style =\"margin-right: 5px;\" href=\"#\"\n" +
                 "   onclick=\"changeRole('" + data.userId + "','dropdown-" + data.userId + "');\">" +
                 "       <span class=\"glyphicon glyphicon-edit\"></span>" + getLocStrings('change_role') +
@@ -330,7 +357,9 @@ function createUser() {
                 "       <span class=\"glyphicon glyphicon-remove\"></span>" + getLocStrings('del_user') +
                 "</a>" +
                 "</td> </tr>";
-            $('#dev-table tr:last').after(row);
+            var userTable = $("#users-table").DataTable();
+            userTable.row.add($(row)).draw();
+            //$('#users-table tr:last').after(row);
         },
         error: function () {
             $.notify(getErrorString('user_not_created'), "error");
@@ -413,6 +442,30 @@ function getOrderAddress(latitude, longitude){
 }
 
 $(document).ready(function () {
+
+    var languageTableParams = {
+        "language":{
+            "lengthMenu": getLocStrings('show') + " _MENU_ " + getLocStrings('entries'),
+            "zeroRecords": getLocStrings('no_records found'),
+            "info": getLocStrings('showing_page') + " _PAGE_ " + getLocStrings('page_of') +" _PAGES_",
+            "infoEmpty": getLocStrings('no_records_available'),
+            "infoFiltered": "(" + getLocStrings('filtered_from') + " _MAX_ " + getLocStrings('total_records') +")",
+            "search": getLocStrings('search'),
+            "processing": getLocStrings('processing'),
+            "loadingRecords": getLocStrings('loading_records'),
+            "emptyTable": getLocStrings('empty_table'),
+            paginate: {
+                first:      getLocStrings('first'),
+                previous:   getLocStrings('previous'),
+                next:       getLocStrings('next'),
+                last:       getLocStrings('last')
+            }
+        }
+    };
+
+    var ordersTable = $("#orders-table").DataTable(languageTableParams);
+    var usersTable = $("#users-table").DataTable(languageTableParams);
+
     $("#user-info-modal").on("hide.bs.modal", function () {
         $(".user-address").remove();
         $(".user-value").text("");

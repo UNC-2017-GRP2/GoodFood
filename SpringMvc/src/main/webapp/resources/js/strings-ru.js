@@ -93,5 +93,37 @@ function getLocStrings(stringId) {
             return '₽';
         case 'multiplication_sign':
             return '×';
+        case 'search':
+            return 'Поиск:';
+        case 'show':
+            return "Показать";
+        case 'entries':
+            return 'записей';
+        case 'no_records found':
+            return 'Совпадений не найдено';
+        case 'showing_page':
+            return 'Показана страница';
+        case 'page_of':
+            return 'из';
+        case 'no_records_available':
+            return 'Нет доступных записей';
+        case 'filtered_from':
+            return 'отфильтровано из';
+        case 'total_records':
+            return 'записей';
+        case 'processing':
+            return 'Выполняется обработка';
+        case 'loading_records':
+            return 'Загрузка';
+        case 'empty_table':
+            return 'Пустая таблица';
+        case 'previous':
+            return 'Предыдущая';
+        case 'next':
+            return 'Следующая';
+        case 'first':
+            return 'Первая';
+        case 'last':
+            return 'Последняя';
     }
 }

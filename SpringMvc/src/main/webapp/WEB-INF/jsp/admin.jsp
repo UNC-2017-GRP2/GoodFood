@@ -10,10 +10,10 @@
 <head>
     <title><spring:message code="general.adminPanel"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin-style.css">
-    <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/my-orders-style.css">--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/datatables/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/datatables/1.10.12/css/dataTables.material.min.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
@@ -21,6 +21,8 @@
             src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -260,75 +262,76 @@
                         <h3 class="panel-title"><spring:message code="admin.users"/></h3>
                     </div>
                     <div class="panel-body">
-                        <div class="input-group stylish-input-group input-append">
+                        <%--<div class="input-group stylish-input-group input-append">
                             <spring:message code="admin.users.filter" var="placeholder"/>
-                            <input type="text" class="form-control" id="dev-table-filter" data-action="filter"
-                                   data-filters="#dev-table" placeholder="${placeholder}"/>
+                            <input type="text" class="form-control" id="users-table-filter" data-action="filter"
+                                   data-filters="#users-table" placeholder="${placeholder}"/>
                             <span class="input-group-addon">
                                 <button type="submit">
                                     <span class="glyphicon glyphicon-search"></span>
                                 </button>
                             </span>
-                        </div>
-                        <%-- <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Users" />--%>
-                    </div>
-                    <table class="table table-hover table-striped table-bordered" id="dev-table">
-                        <thead>
-                        <%--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>--%>
-                        <tr>
-                            <th><spring:message code="general.userId"/></th>
-                            <th><spring:message code="users.fullname"/></th>
-                            <th><spring:message code="users.username"/></th>
-                            <th><spring:message code="users.phoneNumber"/></th>
-                            <th><spring:message code="users.role"/></th>
-                            <th class="text-center"><spring:message code="admin.users.actions"/></th>
-                        </tr>
-                        </thead>
-                        <c:forEach items="${users}" var="user">
-                            <tr class="user-tr" onclick="getUserInfo('<c:out value="${user.userId}"/>');">
-                                <td data-toggle="modal" data-target="#user-info-modal">${user.userId}</td>
-                                <td data-toggle="modal" data-target="#user-info-modal">${user.fio}</td>
-                                <td data-toggle="modal" data-target="#user-info-modal">${user.login}</td>
-                                <td data-toggle="modal" data-target="#user-info-modal">${user.phoneNumber}</td>
-                                <td data-toggle="modal" data-target="#user-info-modal"
-                                    id="user-role-${user.userId}">${user.role}</td>
-                                <td class="text-center">
-                                    <select id="dropdown-${user.userId}" class="select-each-role">
-                                        <option value="ROLE_COURIER"><spring:message
-                                                code="users.role.ROLE_COURIER"/></option>
-                                        <option value="ROLE_ADMIN"><spring:message
-                                                code="users.role.ROLE_ADMIN"/></option>
-                                        <option value="ROLE_USER"><spring:message code="users.role.ROLE_USER"/></option>
-                                    </select>
-                                    <script>selectOption('dropdown-${user.userId}', '${user.role}');</script>
-                                    <c:choose>
-                                        <c:when test="${user.login == pageContext.request.remoteUser}">
-                                            <a class='btn btn-info btn-xs' href="#" disabled="disabled">
-                                                <span class="glyphicon glyphicon-edit"></span><spring:message
-                                                    code="admin.btn.change_role"/>
-                                            </a>
-                                            <a href="#" class="btn btn-danger btn-xs" disabled="disabled">
-                                                <span class="glyphicon glyphicon-remove"></span><spring:message
-                                                    code="admin.btn.del_user"/>
-                                            </a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a class='btn btn-info btn-xs' href="#"
-                                               onclick="changeRole('${user.userId}', 'dropdown-${user.userId}');">
-                                                <span class="glyphicon glyphicon-edit"></span><spring:message
-                                                    code="admin.btn.change_role"/>
-                                            </a>
-                                            <a href="#" class="btn btn-danger btn-xs"
-                                               onclick="removeUser(this, '${user.userId}');">
-                                                <span class="glyphicon glyphicon-remove"></span><spring:message
-                                                    code="admin.btn.del_user"/>
-                                            </a>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
+                        </div>--%>
+                        <%-- <input type="text" class="form-control" id="users-table-filter" data-action="filter" data-filters="#users-table" placeholder="Filter Users" />--%>
+                        <table class="table table-hover table-striped table-bordered" id="users-table">
+                            <thead>
+                            <%--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>--%>
+                            <tr>
+                                <th><spring:message code="general.userId"/></th>
+                                <th><spring:message code="users.fullname"/></th>
+                                <th><spring:message code="users.username"/></th>
+                                <th><spring:message code="users.phoneNumber"/></th>
+                                <th><spring:message code="users.role"/></th>
+                                <th class="text-center"><spring:message code="admin.users.actions"/></th>
                             </tr>
-                        </c:forEach>
-                    </table>
+                            </thead>
+                            <c:forEach items="${users}" var="user">
+                                <tr class="user-tr" onclick="getUserInfo('<c:out value="${user.userId}"/>');">
+                                    <td data-toggle="modal" data-target="#user-info-modal">${user.userId}</td>
+                                    <td data-toggle="modal" data-target="#user-info-modal">${user.fio}</td>
+                                    <td data-toggle="modal" data-target="#user-info-modal">${user.login}</td>
+                                    <td data-toggle="modal" data-target="#user-info-modal">${user.phoneNumber}</td>
+                                    <td data-toggle="modal" data-target="#user-info-modal"
+                                        id="user-role-${user.userId}">${user.role}</td>
+                                    <td class="text-center">
+                                        <select id="dropdown-${user.userId}" class="select-each-role">
+                                            <option value="ROLE_COURIER"><spring:message
+                                                    code="users.role.ROLE_COURIER"/></option>
+                                            <option value="ROLE_ADMIN"><spring:message
+                                                    code="users.role.ROLE_ADMIN"/></option>
+                                            <option value="ROLE_USER"><spring:message
+                                                    code="users.role.ROLE_USER"/></option>
+                                        </select>
+                                        <script>selectOption('dropdown-${user.userId}', '${user.role}');</script>
+                                        <c:choose>
+                                            <c:when test="${user.login == pageContext.request.remoteUser}">
+                                                <a class='btn btn-info btn-xs' href="#" disabled="disabled">
+                                                    <span class="glyphicon glyphicon-edit"></span><spring:message
+                                                        code="admin.btn.change_role"/>
+                                                </a>
+                                                <a href="#" class="btn btn-danger btn-xs" disabled="disabled">
+                                                    <span class="glyphicon glyphicon-remove"></span><spring:message
+                                                        code="admin.btn.del_user"/>
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a class='btn btn-info btn-xs' href="#"
+                                                   onclick="changeRole('${user.userId}', 'dropdown-${user.userId}');">
+                                                    <span class="glyphicon glyphicon-edit"></span><spring:message
+                                                        code="admin.btn.change_role"/>
+                                                </a>
+                                                <a href="#" class="btn btn-danger btn-xs"
+                                                   onclick="removeUser(this, '${user.userId}');">
+                                                    <span class="glyphicon glyphicon-remove"></span><spring:message
+                                                        code="admin.btn.del_user"/>
+                                                </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
@@ -402,51 +405,44 @@
                         <h3 class="panel-title"><spring:message code="admin.orders"/></h3>
                     </div>
                     <div class="panel-body">
-                        <div class="input-group stylish-input-group input-append">
-                            <spring:message code="admin.orders.filter" var="placeholder"/>
-                            <input type="text" class="form-control" id="orders-table-filter" data-action="filter"
-                                   data-filters="#orders-table" placeholder="${placeholder}"/>
-                            <span class="input-group-addon">
-                                <button type="submit">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </span>
+                        <div style="margin-bottom: 10px;">
+                            <form id="actualize-form" action="/admin/actualize" method="post">
+                                <button type="submit" class="btn btn-default btn-xs form-control"><spring:message
+                                        code="admin.actualize"/></button>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            </form>
                         </div>
-                        <form id="actualize-form" action="/admin/actualize" method="post">
-                            <button type="submit" class="btn btn-info btn-xs pull-right"><spring:message
-                                    code="admin.actualize"/></button>
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        </form>
 
-                    </div>
-                    <table class="table table-hover table-striped table-bordered" id="orders-table">
-                        <thead>
-                        <tr class="order-head">
-                            <th><spring:message code="orders.orderId"/></th>
-                            <th><spring:message code="general.userId"/></th>
-                            <th><spring:message code="orders.status"/></th>
-                            <th><spring:message code="orders.items"/></th>
-                            <th><spring:message code="orders.orderCreationDate"/></th>
-                            <th><spring:message code="orders.timeSinceCreation"/></th>
-                            <th><spring:message code="orders.cost"/></th>
-                        </tr>
-                        </thead>
-                        <c:forEach items="${orders}" var="order">
-                            <tr class="order-row" onclick="getOrderInfo('<c:out value="${order.orderId}"/>');"  data-toggle="modal" data-target="#order-info-modal">
-                                <td>${order.orderId}</td>
-                                <td>${order.userId}</td>
-                                <td>${order.status}</td>
-                                <td><c:forEach items="${order.orderItems}" var="item">
-                                    ${item.productName}<br/>
-                                    <%--${item.productCost} ₽<br/>--%>
-                                </c:forEach>
-                                </td>
-                                <td>${order.orderCreationDate.toString()}</td>
-                                <td id="creation-date-until-td">${order.orderCreationDate.until(now, chr)}</td>
-                                <td id="order-cost-td">${order.orderCost} ₽</td>
+                        <table class="table table-hover table-striped table-bordered" id="orders-table">
+                            <thead>
+                            <tr class="order-head">
+                                <th><spring:message code="orders.orderId"/></th>
+                                <th><spring:message code="general.userId"/></th>
+                                <th><spring:message code="orders.status"/></th>
+                                <th><spring:message code="orders.items"/></th>
+                                <th><spring:message code="orders.orderCreationDate"/></th>
+                                <th><spring:message code="orders.timeSinceCreation"/></th>
+                                <th><spring:message code="orders.cost"/></th>
                             </tr>
-                        </c:forEach>
-                    </table>
+                            </thead>
+                            <c:forEach items="${orders}" var="order">
+                                <tr class="order-row" onclick="getOrderInfo('<c:out value="${order.orderId}"/>');"
+                                    data-toggle="modal" data-target="#order-info-modal">
+                                    <td>${order.orderId}</td>
+                                    <td>${order.userId}</td>
+                                    <td>${order.status}</td>
+                                    <td><c:forEach items="${order.orderItems}" var="item">
+                                        ${item.productName}<br/>
+                                        <%--${item.productCost} ₽<br/>--%>
+                                    </c:forEach>
+                                    </td>
+                                    <td>${order.orderCreationDate.toString()}</td>
+                                    <td id="creation-date-until-td">${order.orderCreationDate.until(now, chr)}</td>
+                                    <td id="order-cost-td">${order.orderCost} ₽</td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
                 </div>
                 <%--<div class="panel panel-primary">
                     <div class="panel-heading">
@@ -657,5 +653,9 @@
         </div>
     </div>
 </div>
+<label id="test">
+    hello
+    world
+</label>
 </body>
 </html>

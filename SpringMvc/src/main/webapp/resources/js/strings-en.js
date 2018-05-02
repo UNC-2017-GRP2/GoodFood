@@ -100,5 +100,37 @@ function getLocStrings(stringId) {
             return '₽';
         case 'multiplication_sign':
             return '×';
+        case 'search':
+            return 'Search:';
+        case 'show':
+            return "Show";
+        case 'entries':
+            return 'entries';
+        case 'no_records found':
+            return 'No matching records found';
+        case 'showing_page':
+            return 'Showing page';
+        case 'page_of':
+            return 'of';
+        case 'no_records_available':
+            return 'No records available';
+        case 'filtered_from':
+            return 'filtered from';
+        case 'total_records':
+            return 'total records';
+        case 'processing':
+            return 'Processing is in progress';
+        case 'loading_records':
+            return 'Loading';
+        case 'empty_table':
+            return 'Empty table';
+        case 'previous':
+            return 'Previous';
+        case 'next':
+            return 'Next';
+        case 'first':
+            return 'First';
+        case 'last':
+            return 'Last';
     }
 }

@@ -160,6 +160,12 @@
       <version>2.2.4</version>
     </dependency>
 
+      <dependency>
+          <groupId>org.webjars</groupId>
+          <artifactId>datatables</artifactId>
+          <version>1.10.12</version>
+      </dependency>
+
     <dependency>
           <groupId>commons-validator</groupId>
           <artifactId>commons-validator</artifactId>
