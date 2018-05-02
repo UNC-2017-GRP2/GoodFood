@@ -21,6 +21,8 @@ public class Order {
     private String paymentType;
     private Boolean isPaid;
 
+    public Order(){}
+
     public Order(BigInteger orderId, BigInteger userId, BigInteger orderCost, String status, Address orderAddress, String orderPhone, List<Item> orderItems, LocalDateTime orderCreationDate, String paymentType, Boolean isPaid) {
         this.orderId = orderId;
         this.userId = userId;
