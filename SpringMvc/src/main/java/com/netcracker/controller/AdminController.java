@@ -124,6 +124,7 @@ public class AdminController {
         }
         model.addObject("weekDays", weekDays);
         model.addObject("userForm", new User());
+        model.addObject("itemForm", new Item());
         return model;
     }
 
@@ -183,5 +184,13 @@ public class AdminController {
         builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
         Gson gson = builder.create();
         return gson.toJson(orderService.getOrderById(orderId));
+    }
+
+    @RequestMapping(value = {"/getItemInfo"}, method = RequestMethod.GET)
+    public @ResponseBody String getItemInfo(@RequestParam BigInteger itemId, Locale locale) throws IOException {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
+        Gson gson = builder.create();
+        return gson.toJson(itemService.getItemById(itemId, locale));
     }
 }

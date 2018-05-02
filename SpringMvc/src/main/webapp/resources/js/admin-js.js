@@ -441,6 +441,31 @@ function getOrderAddress(latitude, longitude){
     });
 }
 
+function editItem(itemId) {
+    $.ajax({
+        url : 'getItemInfo',
+        type: 'GET',
+        data : ({
+            itemId : itemId
+        }),
+        dataType:'json',
+        success: function (data) {
+            $("#item-id").val(data.productId);
+            $("#item-category").val(data.productCategory);
+            $("#item-name").val(data.productName);
+            $("#item-description").val(data.productDescription);
+            $("#item-cost").val(data.productCost);
+            $("#item-image").attr('src', data.productImage);
+        },
+        error: function () {
+            $.notify(getErrorString('data_error'));
+        }
+    });
+}
+function removeItem(thisElem, itemId) {
+    
+}
+
 $(document).ready(function () {
 
     var languageTableParams = {

@@ -1,6 +1,9 @@
 <%@ page import="com.netcracker.config.Constant" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=windows-1251" %>
+<%@ page pageEncoding="CP1251" %>
+<% request.setCharacterEncoding("CP1251"); %>
+<%@ page language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -8,6 +11,7 @@
 
 <html>
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=cp1251">
     <title><spring:message code="general.adminPanel"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
@@ -464,17 +468,18 @@
                     <div class="panel-body">
                         <table class="table table-hover table-striped table-bordered" id="items-table">
                             <thead>
-                            <tr class="order-head">
-                                <th><spring:message code="item.itemId"/></th>
-                                <th><spring:message code="item.image"/></th>
-                                <th><spring:message code="item.category"/></th>
-                                <th><spring:message code="item.name"/></th>
-                                <th><spring:message code="item.description"/></th>
-                                <th><spring:message code="item.cost"/></th>
+                            <tr>
+                                <th><spring:message code="admin.item.itemId"/></th>
+                                <th><spring:message code="admin.item.image"/></th>
+                                <th><spring:message code="admin.item.category"/></th>
+                                <th><spring:message code="admin.item.name"/></th>
+                                <th><spring:message code="admin.item.description"/></th>
+                                <th><spring:message code="admin.item.cost"/></th>
+                                <th class="text-center"><spring:message code="admin.users.actions"/></th>
                             </tr>
                             </thead>
                             <c:forEach items="${items}" var="item">
-                                <tr>
+                                <tr class="item-row">
                                     <td>${item.productId}</td>
                                     <td class="media col-md-2">
                                         <img class="media-object img-rounded img-responsive"
@@ -484,6 +489,17 @@
                                     <td>${item.productName}</td>
                                     <td>${item.productDescription}</td>
                                     <td>${item.productCost} ₽</td>
+                                    <td class="text-center">
+                                        <a class='btn btn-info btn-xs' href="#"  data-toggle="modal" data-target="#edit-item-modal" onclick="editItem('${item.productId}');" >
+                                            <span class="glyphicon glyphicon-edit"></span><spring:message
+                                                code="admin.item.edit"/>
+                                        </a><br><br>
+                                        <a href="#" class="btn btn-danger btn-xs"
+                                           onclick="removeItem(this, '${item.productId}');">
+                                            <span class="glyphicon glyphicon-remove"></span><spring:message
+                                                code="admin.item.del"/>
+                                        </a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </table>
@@ -684,6 +700,118 @@
                             <div class="col-sm-5"><spring:message code="users.birthday"/></div>
                             <div class="col-sm-7 user-value-order" id="user-birthday-order"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong><spring:message code="admin.editing_item"/></strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="reset-values">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="container-item text-center">
+                    <div class="text-left item-info">
+                        <div class="row text-left edit-item-row">
+                            <label for="item-id" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.itemId"/>:</label>
+                            <div class="col-xs-6">
+                                <input type='text' id='item-id' class="form-control" disabled="disabled">
+                            </div>
+                        </div>
+
+                        <div class="row text-left edit-item-row">
+                            <label for="item-category" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.category"/>:</label>
+                            <div class="col-xs-6">
+                                <input type='text' id='item-category'
+                                       class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row text-left edit-item-row">
+                            <label for="item-name" class="col-xs-4 control-label"><spring:message code="admin.item.name"/>:</label>
+                            <div class="col-xs-6">
+                                <textarea id='item-name' class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row text-left edit-item-row">
+                            <label for="item-description" class="col-xs-4 control-label"><spring:message code="admin.item.description"/>:</label>
+                            <div class="col-xs-6">
+                                <textarea id='item-description' class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row text-left edit-item-row">
+                            <label for="item-cost" class="col-xs-4 control-label"><spring:message code="admin.item.cost"/>:</label>
+                            <div class="col-xs-6">
+                                <input type='text' id='item-cost'
+                                       class="form-control">
+                            </div>
+                        </div>
+
+                        <ul class="details text-left">
+                            <hr>
+                        </ul>
+
+                        <div class="row text-left edit-item-row">
+                            <label for="item-image" class="col-xs-4 control-label"><spring:message code="admin.item.image"/>:</label>
+                            <div class="media col-xs-6">
+                                <img id="item-image" class="media-object img-rounded img-responsive"
+                                     src="">
+                            </div>
+                        </div>
+
+                            <%--<div class="form-group">
+                                <label for="item-id" class="col-xs-4 control-label"><spring:message code="admin.item.itemId"/></label>
+                                <div class="col-xs-6">
+                                    <input type='text' id='item-id' class="form-control" disabled="disabled">
+                                </div>
+                            </div>--%>
+
+                            <%--<div class="form-group">
+                                <label for="item-category" class="col-xs-4 control-label"><spring:message code="admin.item.category"/></label>
+                                <div class="col-xs-6">
+                                    <input type='text' id='item-category'
+                                                class="form-control">
+                                </div>
+                            </div>--%>
+
+                            <%--<div class="row text-left">
+                                <div class="col-sm-5"><spring:message code="admin.item.category"/></div>
+                                <div class="col-sm-7" >
+                                    <input type="text" id="item-category" class="form-control">
+                                </div>
+                            </div>--%>
+                            <%--<div class="row text-left">
+                                <div class="col-sm-5"><spring:message code="admin.item.name"/></div>
+                                <div class="col-sm-7" id="item-name"></div>
+                            </div>--%>
+                            <%--<div class="row text-left">
+                                <div class="col-sm-5"><spring:message code="admin.item.description"/></div>
+                                <div class="col-sm-7" id = "item-description"></div>
+                            </div>--%>
+                            <%--<div class="row text-left">
+                                <div class="col-sm-5"><spring:message code="admin.item.cost"/></div>
+                                <div class="col-sm-7" id = "item-cost"></div>
+                            </div>--%>
+
+                            <%--<ul class="details text-left">
+                                <hr>
+                            </ul>--%>
+                            <%--<div class="row text-left">
+                                <div class="col-sm-5"><spring:message code="admin.item.image"/></div>
+                                <div class="col-sm-7" id = "item-image"></div>
+                            </div>--%>
                     </div>
                 </div>
             </div>

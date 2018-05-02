@@ -520,7 +520,7 @@ input.hidden {position: absolute;left: -9999px;}
     text-align: center;
 }
 
-#order-info-modal .modal-body{
+#order-info-modal .modal-body, #edit-item-modal .modal-body{
     background-color: #f9fafa;
 }
 
@@ -547,6 +547,23 @@ input.hidden {position: absolute;left: -9999px;}
 
 #orders-table, #users-table, #items-table{
     font-size: 12px;
+}
+
+.container-item {
+    margin: 30px auto 30px;
+    background-color: #fff;
+    padding: 40px 20px 40px 20px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.075);
+    -webkit-box-shadow: 0 2px 5px rgba(0,0,0,0.075);
+    -moz-box-shadow: 0 2px 5px rgba(0,0,0,0.075);
+    text-align: center;
+}
+
+.edit-item-row{
+    margin-bottom: 15px;
 }
 
 
