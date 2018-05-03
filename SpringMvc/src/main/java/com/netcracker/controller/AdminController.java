@@ -12,18 +12,27 @@ import com.netcracker.model.User;
 import com.netcracker.service.ItemService;
 import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
+import java.io.*;
 import java.math.BigInteger;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
@@ -42,6 +51,42 @@ public class AdminController {
 
     @RequestMapping(value = { "/admin"}, method = RequestMethod.GET)
     public ModelAndView adminPanel(Locale locale) throws IOException {
+
+        /*File myFile = new File("/resources/Items.xlsx");
+        FileInputStream fis = new FileInputStream(myFile);
+        XSSFWorkbook myWorkBook = new XSSFWorkbook (fis);
+
+        // Return first sheet from the XLSX workbook
+        XSSFSheet mySheet = myWorkBook.getSheetAt(0);
+
+        // Get iterator to all the rows in current sheet
+        Iterator<Row> rowIterator = mySheet.iterator();
+
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            // For each row, iterate through each columns
+            Iterator<Cell> cellIterator = row.cellIterator();
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+
+                switch (cell.getCellType()) {
+                    case Cell.CELL_TYPE_STRING:
+                        System.out.print(cell.getStringCellValue() + "\t");
+                        break;
+                    case Cell.CELL_TYPE_NUMERIC:
+                        System.out.print(cell.getNumericCellValue() + "\t");
+                        break;
+                    case Cell.CELL_TYPE_BOOLEAN:
+                        System.out.print(cell.getBooleanCellValue() + "\t");
+                        break;
+                    default:
+                }
+            }
+        }
+
+
+
+*/
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();
@@ -221,4 +266,65 @@ public class AdminController {
     public @ResponseBody void delOrder(@RequestParam BigInteger orderId){
         orderService.removeOrderById(orderId);
     }
+
+
+
+    @RequestMapping(value = "/admin/createItems", method = RequestMethod.POST)
+    public @ResponseBody void createItems(@RequestParam MultipartFile file) throws IOException {
+        //String fileLocation;
+        InputStream in = file.getInputStream();
+        Workbook workbook = new XSSFWorkbook(in);
+        Sheet sheet = workbook.getSheetAt(0);
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                switch (cell.getCellTypeEnum()) {
+                    case STRING: System.out.println(cell.getStringCellValue() + " "); break;
+                    case NUMERIC: System.out.println(cell.getNumericCellValue() + " "); break;
+                    case BOOLEAN: System.out.println(cell.getBooleanCellValue() + " "); break;
+                    default: System.out.println("default");
+                }
+            }
+        }
+
+        /*File currDir = new File(".");
+        String path = currDir.getAbsolutePath();
+        fileLocation = path.substring(0, path.length() - 1) + file.getOriginalFilename();
+        FileOutputStream f = new FileOutputStream(fileLocation);
+        int ch = 0;
+        while ((ch = in.read()) != -1) {
+            f.write(ch);
+        }
+        f.flush();
+        f.close();*/
+    }
+
+    @RequestMapping(value = "/admin/uploadFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody void uploadFile(@RequestParam MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                // Creating the directory to store file
+                String rootPath = System.getProperty("catalina.home");
+                File dir = new File(rootPath + File.separator + "tmpFiles");
+                if (!dir.exists())
+                    dir.mkdirs();
+
+                // Create the file on server
+                /*File serverFile = new File(dir.getAbsolutePath()
+                        + File.separator + name);
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(serverFile));
+                stream.write(bytes);
+                stream.close();*/
+
+                //return "You successfully uploaded file=" + name;
+            } catch (Exception e) {
+                //return "You failed to upload " + name + " => " + e.getMessage();
+            }
+        } else {
+            //return "You failed to upload " + name
+                //    + " because the file was empty.";
+        }
+    }
+
 }

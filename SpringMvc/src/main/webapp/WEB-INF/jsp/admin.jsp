@@ -513,14 +513,26 @@
                         </table>
                     </div>
                 </div>
-                <%--<div class="panel panel-primary">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"></h3>
+                        <h3 class="panel-title"><spring:message code="admin.item.add_items"/></h3>
                     </div>
                     <div class="panel-body">
+                        <%--<form id="add-item-form" action="/admin/createItems" method="post" enctype="multipart/form-data">
+                            <input type="file" name="file" accept=".xls,.xlsx" />
+                            <button type="submit" class="btn btn-default">Upload</button>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+
+                        <form method="post" action="/admin/uploadFile" enctype="multipart/form-data">
+                            File to upload: <input type="file" id="file" name="file"><br />
+                            Name:<br /> <br />
+                            <button type="submit" class="btn btn-default">Upl</button> Press here to upload the file!
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>--%>
 
                     </div>
-                </div>--%>
+                </div>
             </div>
         </div>
     </div>
@@ -804,50 +816,6 @@
                                      src="${pageContext.request.contextPath}">
                             </div>
                         </div>
-
-
-
-                            <%--<div class="form-group">
-                                <label for="item-id" class="col-xs-4 control-label"><spring:message code="admin.item.itemId"/></label>
-                                <div class="col-xs-6">
-                                    <input type='text' id='item-id' class="form-control" disabled="disabled">
-                                </div>
-                            </div>--%>
-
-                            <%--<div class="form-group">
-                                <label for="item-category" class="col-xs-4 control-label"><spring:message code="admin.item.category"/></label>
-                                <div class="col-xs-6">
-                                    <input type='text' id='item-category'
-                                                class="form-control">
-                                </div>
-                            </div>--%>
-
-                            <%--<div class="row text-left">
-                                <div class="col-sm-5"><spring:message code="admin.item.category"/></div>
-                                <div class="col-sm-7" >
-                                    <input type="text" id="item-category" class="form-control">
-                                </div>
-                            </div>--%>
-                            <%--<div class="row text-left">
-                                <div class="col-sm-5"><spring:message code="admin.item.name"/></div>
-                                <div class="col-sm-7" id="item-name"></div>
-                            </div>--%>
-                            <%--<div class="row text-left">
-                                <div class="col-sm-5"><spring:message code="admin.item.description"/></div>
-                                <div class="col-sm-7" id = "item-description"></div>
-                            </div>--%>
-                            <%--<div class="row text-left">
-                                <div class="col-sm-5"><spring:message code="admin.item.cost"/></div>
-                                <div class="col-sm-7" id = "item-cost"></div>
-                            </div>--%>
-
-                            <%--<ul class="details text-left">
-                                <hr>
-                            </ul>--%>
-                            <%--<div class="row text-left">
-                                <div class="col-sm-5"><spring:message code="admin.item.image"/></div>
-                                <div class="col-sm-7" id = "item-image"></div>
-                            </div>--%>
                     </div>
                 </div>
             </div>
