@@ -1,3 +1,5 @@
+var countRegex = /^\d*$/;
+
 function openDetails(name, image, description, cost, rub) {
     $('#itemName').text(name);
     $('#itemImage').attr("src", image);
@@ -61,6 +63,24 @@ $(document).ready(function () {
         $input.val(parseInt($input.val()) + 1);
         $input.change();
         return false;
+    });
+
+    /*$('.quantity').keyup(function () {
+        var text = $('.quantity').val();
+        var testText = text;
+        if(testText*1 + 0  !=  text){
+            $('.quantity').val(testText.substring(0, testText.length - 1));
+        }
+    });*/
+
+    $('.quantity').keyup(function () {
+        if ($(this).val() == ""){
+            $(this).val("1");
+        }
+        var testText = $(this).val();
+        if (testText*1 + 0 != $(this).val()){
+            $(this).val(testText.substring(0, testText.length - 1));
+        }
     });
 
 });

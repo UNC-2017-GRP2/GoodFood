@@ -1,4 +1,6 @@
 var pageContext = "";
+/*var costRegex = /^([1-9])([0-9])$/;*/
+var costRegex = /^([1-9])\d*$/;
 
 function changeRole(userId, buttonId) {
     var newRole = $('#' + buttonId).val();
@@ -388,6 +390,34 @@ $(document).ready(function () {
         $(".user-value-order").text("");
         $(".order-value").text("");
     });
+
+    $(".item-param").keyup(function () {
+        if ($(this).val() === ""){
+            $(this).css("border", "0.5px solid #d9534f");
+        }else{
+            $(this).css("border", "0.5px solid #5cb85c");
+        }
+    });
+
+   /* $("#item-cost").keyup(function () {
+       if (!costRegex.test($(this).val())){
+           $(this).css("border", "0.5px solid #d9534f");
+       }else{
+           $(this).css("border", "0.5px solid #5cb85c");
+       }
+    });*/
+
+    $('#item-cost').keyup(function () {
+        if ($(this).val() === "0"){
+            $(this).val("");
+            $(this).css("border", "0.5px solid #d9534f");
+        }
+        var testText = $(this).val();
+        if (testText*1 + 0 != $(this).val()){
+            $(this).val(testText.substring(0, testText.length - 1));
+        }
+    });
+
     /*CHARTS*/
 });
 

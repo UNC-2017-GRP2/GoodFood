@@ -743,38 +743,38 @@
                         <div class="row text-left edit-item-row">
                             <label for="item-name-en" class="col-xs-4 control-label"><spring:message code="admin.item.name_en"/>:</label>
                             <div class="col-xs-6">
-                                <input type="text" id='item-name-en' class="form-control">
+                                <input type="text" id='item-name-en' class="form-control item-param">
                             </div>
                         </div>
                         <div class="row text-left edit-item-row">
                             <label for="item-name-ru" class="col-xs-4 control-label"><spring:message code="admin.item.name_ru"/>:</label>
                             <div class="col-xs-6">
-                                <input type="text" id='item-name-ru' class="form-control">
+                                <input type="text" id='item-name-ru' class="form-control item-param">
                             </div>
                         </div>
                         <div class="row text-left edit-item-row">
                             <label for="item-name-uk" class="col-xs-4 control-label"><spring:message code="admin.item.name_uk"/>:</label>
                             <div class="col-xs-6">
-                                <input type="text" id='item-name-uk' class="form-control">
+                                <input type="text" id='item-name-uk' class="form-control item-param">
                             </div>
                         </div>
 
                         <div class="row text-left edit-item-row">
                             <label for="item-description-en" class="col-xs-4 control-label"><spring:message code="admin.item.description_en"/>:</label>
                             <div class="col-xs-6">
-                                <textarea id='item-description-en' class="form-control"></textarea>
+                                <textarea id='item-description-en' class="form-control item-param"></textarea>
                             </div>
                         </div>
                         <div class="row text-left edit-item-row">
                             <label for="item-description-ru" class="col-xs-4 control-label"><spring:message code="admin.item.description_ru"/>:</label>
                             <div class="col-xs-6">
-                                <textarea id='item-description-ru' class="form-control"></textarea>
+                                <textarea id='item-description-ru' class="form-control item-param"></textarea>
                             </div>
                         </div>
                         <div class="row text-left edit-item-row">
                             <label for="item-description-uk" class="col-xs-4 control-label"><spring:message code="admin.item.description_uk"/>:</label>
                             <div class="col-xs-6">
-                                <textarea id='item-description-uk' class="form-control"></textarea>
+                                <textarea id='item-description-uk' class="form-control item-param"></textarea>
                             </div>
                         </div>
 
@@ -782,7 +782,7 @@
                             <label for="item-cost" class="col-xs-4 control-label"><spring:message code="admin.item.cost"/>:</label>
                             <div class="col-xs-6">
                                 <input type='text' id='item-cost'
-                                       class="form-control">
+                                       class="form-control item-param">
                             </div>
                         </div>
 
