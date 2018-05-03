@@ -566,4 +566,15 @@ input.hidden {position: absolute;left: -9999px;}
     margin-bottom: 15px;
 }
 
+/*.td-for-items-btns{
+    line-height: inherit;
+    vertical-align: middle;
+}*/
+/*.btn-for-item{
+    width: 95%;
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+}*/
+
 

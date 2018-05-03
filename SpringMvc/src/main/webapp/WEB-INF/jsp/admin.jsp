@@ -42,6 +42,11 @@
         }
     </script>
     <script type="text/javascript">
+        $(document).ready(function () {
+            pageContext = ${pageContext.request.contextPath};
+        });
+    </script>
+    <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
         google.charts.setOnLoadCallback(drawPieChart);
 
@@ -479,18 +484,18 @@
                                     <td>${item.productId}</td>
                                     <td class="media col-md-2">
                                         <img class="media-object img-rounded img-responsive"
-                                             src="${item.productImage}">
+                                             src="${pageContext.request.contextPath}${item.productImage}">
                                     </td>
                                     <td>${item.productCategory}</td>
                                     <td>${item.productName}</td>
                                     <td>${item.productDescription}</td>
                                     <td>${item.productCost} ₽</td>
-                                    <td class="text-center">
-                                        <a class='btn btn-info btn-xs' href="#"  data-toggle="modal" data-target="#edit-item-modal" onclick="editItem('${item.productId}');" >
+                                    <td class="text-center td-for-items-btns">
+                                        <a class="btn btn-info btn-xs btn-for-item" href="#"  data-toggle="modal" data-target="#edit-item-modal" onclick="editItem('${item.productId}');" >
                                             <span class="glyphicon glyphicon-edit"></span><spring:message
                                                 code="admin.item.edit"/>
                                         </a><br><br>
-                                        <a href="#" class="btn btn-danger btn-xs"
+                                        <a href="#" class="btn btn-danger btn-xs btn-for-item"
                                            onclick="removeItem(this, '${item.productId}');">
                                             <span class="glyphicon glyphicon-remove"></span><spring:message
                                                 code="admin.item.del"/>
@@ -736,16 +741,40 @@
                         </div>
 
                         <div class="row text-left edit-item-row">
-                            <label for="item-name" class="col-xs-4 control-label"><spring:message code="admin.item.name"/>:</label>
+                            <label for="item-name-en" class="col-xs-4 control-label"><spring:message code="admin.item.name_en"/>:</label>
                             <div class="col-xs-6">
-                                <textarea id='item-name' class="form-control"></textarea>
+                                <input type="text" id='item-name-en' class="form-control">
+                            </div>
+                        </div>
+                        <div class="row text-left edit-item-row">
+                            <label for="item-name-ru" class="col-xs-4 control-label"><spring:message code="admin.item.name_ru"/>:</label>
+                            <div class="col-xs-6">
+                                <input type="text" id='item-name-ru' class="form-control">
+                            </div>
+                        </div>
+                        <div class="row text-left edit-item-row">
+                            <label for="item-name-uk" class="col-xs-4 control-label"><spring:message code="admin.item.name_uk"/>:</label>
+                            <div class="col-xs-6">
+                                <input type="text" id='item-name-uk' class="form-control">
                             </div>
                         </div>
 
                         <div class="row text-left edit-item-row">
-                            <label for="item-description" class="col-xs-4 control-label"><spring:message code="admin.item.description"/>:</label>
+                            <label for="item-description-en" class="col-xs-4 control-label"><spring:message code="admin.item.description_en"/>:</label>
                             <div class="col-xs-6">
-                                <textarea id='item-description' class="form-control"></textarea>
+                                <textarea id='item-description-en' class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row text-left edit-item-row">
+                            <label for="item-description-ru" class="col-xs-4 control-label"><spring:message code="admin.item.description_ru"/>:</label>
+                            <div class="col-xs-6">
+                                <textarea id='item-description-ru' class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="row text-left edit-item-row">
+                            <label for="item-description-uk" class="col-xs-4 control-label"><spring:message code="admin.item.description_uk"/>:</label>
+                            <div class="col-xs-6">
+                                <textarea id='item-description-uk' class="form-control"></textarea>
                             </div>
                         </div>
 
@@ -765,7 +794,7 @@
                             <label for="item-image" class="col-xs-4 control-label"><spring:message code="admin.item.image"/>:</label>
                             <div class="media col-xs-6">
                                 <img id="item-image" class="media-object img-rounded img-responsive"
-                                     src="">
+                                     src="${pageContext.request.contextPath}">
                             </div>
                         </div>
 

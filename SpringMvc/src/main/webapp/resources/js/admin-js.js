@@ -1,4 +1,4 @@
-
+var pageContext = "";
 
 function changeRole(userId, buttonId) {
     var newRole = $('#' + buttonId).val();
@@ -179,162 +179,6 @@ function createUser() {
             $('#createUserForm input').each(function(nf, form){
                 $(this).css('border', '0.5px solid #b4b3b3');
             });
-            //var user = JSON.parse(data);
-            /*var tr = document.createElement("tr");
-            tr.className = "user-tr";
-            tr.onclick = function () {
-                getUserInfo("'" + user.userId + "'");
-            };
-
-            /!*var cells = [];
-            for (var i = 0; i < 6; i++){
-                var cell = document.createElement("td");
-                cells.push(cell);
-            }*!/
-
-            var cell0 = document.createElement("td");
-            var cell1 = document.createElement("td");
-            var cell2 = document.createElement("td");
-            var cell3 = document.createElement("td");
-            var cell4 = document.createElement("td");
-            var cell5 = document.createElement("td");
-
-            var dataToggle = document.createAttribute("data-toggle");
-            dataToggle.value = "model";
-            var dataTarget = document.createAttribute("data-target");
-            dataTarget.value = "#user-info-modal";
-
-            /!*cell0.setAttributeNode(dataToggle);
-            cell0.setAttributeNode(dataTarget);
-
-            cell1.setAttributeNode(dataToggle);
-            cell1.setAttributeNode(dataTarget);
-
-            cell2.setAttributeNode(dataToggle);
-            cell2.setAttributeNode(dataTarget);
-
-            cell3.setAttributeNode(dataToggle);
-            cell3.setAttributeNode(dataTarget);
-
-            cell4.setAttributeNode(dataToggle);
-            cell4.setAttributeNode(dataTarget);*!/
-
-            cell0.setAttribute("data-toggle", "model");
-            cell0.setAttribute("data-target", "#user-info-modal");
-
-            cell1.setAttribute("data-toggle", "model");
-            cell1.setAttribute("data-target", "#user-info-modal");
-
-            cell2.setAttribute("data-toggle", "model");
-            cell2.setAttribute("data-target", "#user-info-modal");
-
-            cell3.setAttribute("data-toggle", "model");
-            cell3.setAttribute("data-target", "#user-info-modal");
-
-            cell4.setAttribute("data-toggle", "model");
-            cell4.setAttribute("data-target", "#user-info-modal");
-
-
-
-            /!*for (var j = 0; j < cells.length - 1; j++){
-                /!*cells[i].setAttribute(dataToggle);
-                cells[i].setAttribute(dataTarget);*!/
-                cells[i].setAttribute('data-toggle', 'model');
-                cells[i].setAttribute('data-target', '#user-info-modal');
-            }*!/
-
-
-
-            /!*cells[0].appendChild(document.createTextNode(user.userId));
-            cells[1].appendChild(document.createTextNode(user.fio));
-            cells[2].appendChild(document.createTextNode(user.login));
-            cells[3].appendChild(document.createTextNode(user.phoneNumber));
-            cells[4].appendChild(document.createTextNode(user.role));
-            cells[5].className = "text-center";*!/
-
-            cell0.appendChild(document.createTextNode(user.userId));
-            cell1.appendChild(document.createTextNode(user.fio));
-            cell2.appendChild(document.createTextNode(user.login));
-            cell3.appendChild(document.createTextNode(""));
-            cell4.appendChild(document.createTextNode(user.role));
-            cell5.className = "text-center";
-
-            var selectRole = document.createElement("select");
-            selectRole.id = "dropdown-" + user.userId;
-            selectRole.className = "select-each-role";
-            var optionsRoleText = ["Courier", "Administrator", "User"];
-            var optionsRoleValue = ["ROLE_COURIER", "ROLE_ADMIN", "ROLE_USER"];
-            for (var k = 0; k < optionsRoleText.length; k++){
-                var option = document.createElement("option");
-                option.value = optionsRoleValue[k];
-                option.text = optionsRoleText[k];
-                selectRole.appendChild(option);
-            }
-
-            var aChangeRole = document.createElement("a");
-            aChangeRole.className = "btn btn-info btn-xs";
-            aChangeRole.href = "#";
-            aChangeRole.onclick = function () {
-                changeRole("'" + user.userId + "'", "'dropdown-" + user.userId + "'");
-            };
-            var aChangeRoleSpan = document.createElement("span");
-            aChangeRoleSpan.className = "glyphicon glyphicon-edit";
-            aChangeRole.appendChild(aChangeRoleSpan);
-            aChangeRole.appendChild(document.createTextNode("Change role"));
-
-            var aRemoveUser = document.createElement("a");
-            aRemoveUser.className = "btn btn-danger btn-xs";
-            aRemoveUser.href = "#";
-            aRemoveUser.onclick = function () {
-                removeUser(this, "'" + user.userId + "'");
-            };
-            var aRemoveUserSpan = document.createElement("span");
-            aRemoveUserSpan.className = "glyphicon glyphicon-remove";
-            aRemoveUser.appendChild(aRemoveUserSpan);
-            aRemoveUser.appendChild(document.createTextNode("Del"));
-
-            /!*cells[5].appendChild(selectRole);
-            cells[5].appendChild(aChangeRoleSpan);
-            cells[5].appendChild(aRemoveUser);*!/
-
-            cell5.appendChild(selectRole);
-            cell5.appendChild(aChangeRole);
-            cell5.appendChild(aRemoveUser);
-
-            /!*for (var m = 0; m < cells.length; m++){
-                tr.appendChild(cells[m]);
-            }*!/
-
-            tr.appendChild(cell0);
-            tr.appendChild(cell1);
-            tr.appendChild(cell2);
-            tr.appendChild(cell3);
-            tr.appendChild(cell4);
-            tr.appendChild(cell5);
-
-            //$("#users-table").appendChild(tr);
-            $('#users-table tr:last').after(tr);*/
-            /*var userTable = $("#users-table").DataTable();
-            userTable.row.add( [
-                data.userId,
-                data.fio,
-                data.login,
-                data.phoneNumber,
-                data.role,
-                "<select id=\"dropdown-" + data.userId + "\" class=\"select-each-role\" style =\"margin-right: 5px;\">" +
-                "   <option value=\"ROLE_COURIER\">" + getLocStrings('ROLE_COURIER') + "</option>" +
-                "   <option value=\"ROLE_ADMIN\">" + getLocStrings('ROLE_ADMIN') + "</option>" +
-                "   <option value=\"ROLE_USER\">" + getLocStrings('ROLE_USER') + "</option>" +
-                "</select>" +
-                "<a class='btn btn-info btn-xs' style =\"margin-right: 5px;\" href=\"#\"\n" +
-                "   onclick=\"changeRole('" + data.userId + "','dropdown-" + data.userId + "');\">" +
-                "       <span class=\"glyphicon glyphicon-edit\"></span>" + getLocStrings('change_role') +
-                "</a>" +
-                "<a href=\"#\" class=\"btn btn-danger btn-xs\"\n" +
-                "   onclick=\"removeUser(this,'" + data.userId + "');\">" +
-                "       <span class=\"glyphicon glyphicon-remove\"></span>" + getLocStrings('del_user') +
-                "</a>"
-            ] ).draw( false );*/
 
             var row = "<tr class=\"user-tr\" onclick=\"getUserInfo('" + data.userId + "');\">" +
                 "<td data-toggle=\"modal\" data-target=\"#user-info-modal\">" + data.userId + "</td>" +
@@ -452,19 +296,38 @@ function editItem(itemId) {
         success: function (data) {
             $("#item-id").val(data.productId);
             $("#item-category").val(data.productCategory);
-            $("#item-name").val(data.productName);
-            $("#item-description").val(data.productDescription);
             $("#item-cost").val(data.productCost);
-            $("#item-image").attr('src', data.productImage);
+            $("#item-image").attr('src', pageContext + data.productImage);
+        },
+        error: function () {
+            $.notify(getErrorString('data_error'));
+        }
+    });
+
+    $.ajax({
+        url : 'getLocItemsInfo',
+        type: 'GET',
+        data : ({
+            itemId : itemId
+        }),
+        dataType:'json',
+        success: function (data) {
+            $("#item-name-en").val(data.nameEn);
+            $("#item-description-en").val(data.descriptionEn);
+            $("#item-name-ru").val(data.nameRu);
+            $("#item-description-ru").val(data.descriptionRu);
+            $("#item-name-uk").val(data.nameUk);
+            $("#item-description-uk").val(data.descriptionUk);
         },
         error: function () {
             $.notify(getErrorString('data_error'));
         }
     });
 }
+
 function removeItem(thisElem, itemId) {
     $.ajax({
-        url : 'removeItem',
+        url : 'delItem',
         type: 'GET',
         data : ({
             itemId: itemId
@@ -525,7 +388,6 @@ $(document).ready(function () {
         $(".user-value-order").text("");
         $(".order-value").text("");
     });
-
     /*CHARTS*/
 });
 

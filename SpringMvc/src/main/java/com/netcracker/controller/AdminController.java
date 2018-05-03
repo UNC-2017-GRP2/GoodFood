@@ -196,8 +196,24 @@ public class AdminController {
         return gson.toJson(itemService.getItemById(itemId, locale));
     }
 
-    /*@RequestMapping(value = "/removeItem", method = RequestMethod.GET)
-    public void removeItem(@RequestParam BigInteger itemId){
+    @RequestMapping(value = "/delItem", method = RequestMethod.GET)
+    public void delItem(@RequestParam BigInteger itemId){
         itemService.removeItemById(itemId);
-    }*/
+    }
+
+    @RequestMapping(value = {"/getLocItemsInfo"}, method = RequestMethod.GET)
+    public @ResponseBody String getLocItemsInfo(@RequestParam BigInteger itemId, Locale locale) throws IOException {
+        Gson gson = new Gson();
+        Item itemEn = itemService.getItemById(itemId, new Locale("en"));
+        Item itemRu = itemService.getItemById(itemId, new Locale("ru"));
+        Item itemUk = itemService.getItemById(itemId, new Locale("uk"));
+        Map<String, String> itemLocalize = new HashMap<>();
+        itemLocalize.put("nameEn", itemEn.getProductName());
+        itemLocalize.put("nameRu", itemRu.getProductName());
+        itemLocalize.put("nameUk", itemUk.getProductName());
+        itemLocalize.put("descriptionEn", itemEn.getProductDescription());
+        itemLocalize.put("descriptionRu", itemRu.getProductDescription());
+        itemLocalize.put("descriptionUk", itemUk.getProductDescription());
+        return gson.toJson(itemLocalize);
+    }
 }
