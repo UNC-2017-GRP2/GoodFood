@@ -216,4 +216,9 @@ public class AdminController {
         itemLocalize.put("descriptionUk", itemUk.getProductDescription());
         return gson.toJson(itemLocalize);
     }
+
+    @RequestMapping(value = "/delOrder", method = RequestMethod.GET)
+    public @ResponseBody void delOrder(@RequestParam BigInteger orderId){
+        orderService.removeOrderById(orderId);
+    }
 }

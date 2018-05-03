@@ -428,22 +428,29 @@
                                 <th><spring:message code="orders.orderCreationDate"/></th>
                                 <th><spring:message code="orders.timeSinceCreation"/></th>
                                 <th><spring:message code="orders.cost"/></th>
+                                <th><spring:message code="admin.users.actions"/></th>
                             </tr>
                             </thead>
                             <c:forEach items="${orders}" var="order">
-                                <tr class="order-row" onclick="getOrderInfo('<c:out value="${order.orderId}"/>');"
-                                    data-toggle="modal" data-target="#order-info-modal">
-                                    <td>${order.orderId}</td>
-                                    <td>${order.userId}</td>
-                                    <td>${order.status}</td>
-                                    <td><c:forEach items="${order.orderItems}" var="item">
+                                <tr class="order-row" onclick="getOrderInfo('<c:out value="${order.orderId}"/>');">
+                                    <td data-toggle="modal" data-target="#order-info-modal">${order.orderId}</td>
+                                    <td data-toggle="modal" data-target="#order-info-modal">${order.userId}</td>
+                                    <td data-toggle="modal" data-target="#order-info-modal">${order.status}</td>
+                                    <td data-toggle="modal" data-target="#order-info-modal"><c:forEach items="${order.orderItems}" var="item">
                                         ${item.productName}<br/>
                                         <%--${item.productCost} ₽<br/>--%>
                                     </c:forEach>
                                     </td>
-                                    <td>${order.orderCreationDate.toString()}</td>
-                                    <td id="creation-date-until-td">${order.orderCreationDate.until(now, chr)}</td>
-                                    <td id="order-cost-td">${order.orderCost} ₽</td>
+                                    <td data-toggle="modal" data-target="#order-info-modal">${order.orderCreationDate.toString()}</td>
+                                    <td id="creation-date-until-td" data-toggle="modal" data-target="#order-info-modal">${order.orderCreationDate.until(now, chr)}</td>
+                                    <td id="order-cost-td" data-toggle="modal" data-target="#order-info-modal">${order.orderCost} ₽</td>
+                                    <td class="text-center td-for-items-btns">
+                                        <a href="#" class="btn btn-danger btn-xs"
+                                           onclick="removeOrder(this, '${order.orderId}');">
+                                            <span class="glyphicon glyphicon-remove"></span><spring:message
+                                                code="admin.item.del"/>
+                                        </a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </table>

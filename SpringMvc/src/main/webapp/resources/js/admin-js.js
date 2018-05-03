@@ -349,6 +349,27 @@ function removeItem(thisElem, itemId) {
     });
 }
 
+function removeOrder(thisElem, orderId) {
+    $.ajax({
+        url : 'delOrder',
+        type: 'GET',
+        data : ({
+            orderId: orderId
+        }),
+        success: function () {
+            $.notify(getNotificationString('order_deleted'), "success");
+            var ordersTable = $("#orders-table").DataTable();
+            ordersTable
+                .row($(thisElem).parents('tr'))
+                .remove()
+                .draw();
+        },
+        error: function () {
+            $.notify(getErrorString('order_not_deleted'), "error");
+        }
+    });
+}
+
 $(document).ready(function () {
 
     var languageTableParams = {

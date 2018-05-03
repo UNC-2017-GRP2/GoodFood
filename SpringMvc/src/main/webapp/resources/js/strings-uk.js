@@ -10,6 +10,8 @@
             return 'Користувача видалено.';
         case 'item_deleted':
             return 'Продукт видалений.';
+        case 'order_deleted':
+            return 'Замовлення видалений.';
     }
 }
 
@@ -63,6 +65,8 @@ function getErrorString(stringId) {
             return 'Помилка даних.';
         case 'item_not_deleted':
             return 'Елемент не був видалений.';
+        case 'order_not_deleted':
+            return 'Замовлення не був видалений.';
     }
 }
 

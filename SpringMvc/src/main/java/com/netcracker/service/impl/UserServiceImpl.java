@@ -89,7 +89,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeUserById(BigInteger userId) {
-        for (Order order: orderService.getOrdersByUsername(userRepository.getUserById(userId).getLogin(), new Locale("en"))){
+        for (Order order: orderService.getAllOrders(new Locale("en"))){
+            if (order.getUserId().equals(userId))
             orderService.removeOrderById(order.getOrderId());
         }
         userRepository.removeUserById(userId);

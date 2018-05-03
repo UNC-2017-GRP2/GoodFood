@@ -10,6 +10,8 @@
             return 'User deleted.';
         case 'item_deleted':
             return 'Item deleted.';
+        case 'order_deleted':
+            return 'Order deleted.';
     }
 }
 
@@ -65,6 +67,8 @@ function getErrorString(stringId) {
             return 'Data error.';
         case 'item_not_deleted':
             return 'Item was not deleted.';
+        case 'order_not_deleted':
+            return 'Order was nod deleted.';
     }
 }
 

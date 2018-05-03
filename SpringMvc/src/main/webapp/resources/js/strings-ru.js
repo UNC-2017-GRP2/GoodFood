@@ -10,6 +10,8 @@
             return 'Пользователь удален.';
         case 'item_deleted':
             return 'Продукт удален.';
+        case 'order_deleted':
+            return 'Заказ удален.';
     }
 }
 function getErrorString(stringId) {
@@ -62,6 +64,8 @@ function getErrorString(stringId) {
             return 'Ошибка данных.';
         case 'item_not_deleted':
             return 'Продукт не был удален.';
+        case 'order_not_deleted':
+            return 'Заказ не был удален.';
     }
 }
 
