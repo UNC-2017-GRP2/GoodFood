@@ -399,14 +399,6 @@ $(document).ready(function () {
         }
     });
 
-   /* $("#item-cost").keyup(function () {
-       if (!costRegex.test($(this).val())){
-           $(this).css("border", "0.5px solid #d9534f");
-       }else{
-           $(this).css("border", "0.5px solid #5cb85c");
-       }
-    });*/
-
     $('#item-cost').keyup(function () {
         if ($(this).val() === "0"){
             $(this).val("");

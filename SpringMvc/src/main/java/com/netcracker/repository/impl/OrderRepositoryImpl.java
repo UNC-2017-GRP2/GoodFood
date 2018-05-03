@@ -220,4 +220,9 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         }
         changeOrderStatus(orderId, Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
     }
+
+    @Override
+    public void removeOrderById(BigInteger orderId){
+        removeObjectById(orderId);
+    }
 }

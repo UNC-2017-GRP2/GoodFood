@@ -16,4 +16,5 @@ public interface OrderRepository {
     void setCourier(BigInteger orderId, String username);
     List<Order> getOrdersByUserId(BigInteger userId);
     BigInteger getObjectId();
+    void removeOrderById(BigInteger orderId);
 }

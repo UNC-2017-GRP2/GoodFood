@@ -1,8 +1,10 @@
 package com.netcracker.service.impl;
 
 import com.netcracker.model.Item;
+import com.netcracker.model.Order;
 import com.netcracker.repository.ItemRepository;
 import com.netcracker.service.ItemService;
+import com.netcracker.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     @Override
     public List<Item> getAllItems(Locale locale) {
@@ -60,6 +65,18 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void removeItemById(BigInteger itemId) {
         itemRepository.removeItemById(itemId);
+        for (Order order: orderService.getAllOrders(new Locale("en"))){
+            boolean flag = false;
+            for (Item item: order.getOrderItems()){
+                if (item.getProductId().equals(itemId)){
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag){
+                orderService.removeOrderById(order.getOrderId());
+            }
+        }
     }
 
     @Override

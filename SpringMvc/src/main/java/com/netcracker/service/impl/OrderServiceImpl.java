@@ -33,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.getObjectId();
     }
 
+
+
     @Override
     public BigInteger totalOrder(ArrayList<Item> items) {
         BigInteger sum = new BigInteger("0");
@@ -200,4 +202,11 @@ public class OrderServiceImpl implements OrderService {
     public void setCourier(BigInteger orderId, String username) {
         orderRepository.setCourier(orderId, username);
     }
+
+    @Override
+    public void removeOrderById(BigInteger orderId) {
+        orderRepository.removeOrderById(orderId);
+    }
+
+
 }

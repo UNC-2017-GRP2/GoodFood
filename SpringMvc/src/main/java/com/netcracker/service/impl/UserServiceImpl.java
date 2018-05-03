@@ -1,20 +1,27 @@
 package com.netcracker.service.impl;
 
 import com.netcracker.model.Address;
+import com.netcracker.model.Order;
 import com.netcracker.model.User;
+import com.netcracker.repository.OrderRepository;
 import com.netcracker.repository.UserRepository;
+import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrderService orderService;
 
     @Override
     public BigInteger getObjectId() {
@@ -82,6 +89,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeUserById(BigInteger userId) {
+        for (Order order: orderService.getOrdersByUsername(userRepository.getUserById(userId).getLogin(), new Locale("en"))){
+            orderService.removeOrderById(order.getOrderId());
+        }
         userRepository.removeUserById(userId);
     }
 

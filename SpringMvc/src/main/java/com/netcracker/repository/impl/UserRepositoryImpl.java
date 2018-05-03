@@ -304,6 +304,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
 
     @Override
     public void removeUserById(BigInteger userId) {
+
         removeObjectById(userId);
     }
 }

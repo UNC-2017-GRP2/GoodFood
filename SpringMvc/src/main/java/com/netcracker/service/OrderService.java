@@ -30,4 +30,5 @@ public interface OrderService {
     List<Order> getAllOrders(Locale locale);
     List<Order> getOrdersByUsername(String username, Locale locale);
     BigInteger getObjectId();
+    void removeOrderById(BigInteger orderId);
 }
