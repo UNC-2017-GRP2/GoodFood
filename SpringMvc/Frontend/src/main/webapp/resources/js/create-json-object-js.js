@@ -25,7 +25,7 @@ function submitJson(){
             jsonEntity : JSON.stringify(entity)
         }),
         success: function (data) {
-            alert(data.name);
+            alert(data);
         },
         error: function (data) {
             alert("error");

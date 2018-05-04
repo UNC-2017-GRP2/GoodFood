@@ -38,8 +38,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
-    public  User getUser(@PathVariable( "username" ) String username){
+    public  User getUserByUsername(@PathVariable( "username" ) String username){
         return userService.getByUsername(username);
+    }
+
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+    public  User getUserById(@PathVariable( "id" ) BigInteger id){
+        return userService.getUserById(id);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -71,7 +76,7 @@ public class UserController {
         userService.updateAddresses( userId, addresses);
     }
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/id/{id}/update/role", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changeRole(@PathVariable("id")BigInteger userId, @RequestBody String role){
         userService.changeRole(userId, role);
@@ -98,5 +103,16 @@ public class UserController {
     @RequestMapping(value = "/validate/password/id/{id}", method = RequestMethod.POST)
     public boolean isEqualsPassword(@PathVariable("id") BigInteger id, @RequestBody String password){
         return userService.isEqualsPassword(password,id);
+    }
+
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void renoveUserById(@PathVariable("id")BigInteger userId){
+        userService.removeUserById(userId);
+    }
+
+    @RequestMapping(value = "/object/id", method = RequestMethod.GET)
+    public BigInteger getObjectId(){
+        return  userService.getObjectId();
     }
 }

@@ -371,4 +371,14 @@ $(document).ready(function () {
         // Submit the form
         form.submit();
     }
+
+    $('.quantity').keyup(function () {
+        if ($(this).val() == ""){
+            $(this).val("1");
+        }
+        var testText = $(this).val();
+        if (testText*1 + 0 != $(this).val()){
+            $(this).val(testText.substring(0, testText.length - 1));
+        }
+    });
 });

@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +56,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             //статус
             saveEnumValue(order.getOrderId(), Constant.STATUS_ATTR_ID, Constant.STATUS_CREATED_ENUM_ID);
             //дата создания
-            saveDateParameter(order.getOrderId(), Constant.ORDER_CREATION_DATE_ATTR_ID, new Timestamp(System.currentTimeMillis()));
+            saveDateParameter(order.getOrderId(),Constant.ORDER_CREATION_DATE_ATTR_ID, new java.sql.Timestamp(System.currentTimeMillis()));
             //Тип оплаты
             saveEnumValue(order.getOrderId(), Constant.ORDER_PAYMENT_TYPE_ATTR_ID, paymentType);
             //Оплачен ли заказ
@@ -71,8 +68,6 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             connection.rollback();
         }
     }
-
-
 
     @Override
     public List<Order> getAllOrders() {
@@ -224,5 +219,10 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             System.out.println(e.getMessage());
         }
         changeOrderStatus(orderId, Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
+    }
+
+    @Override
+    public void removeOrderById(BigInteger orderId){
+        removeObjectById(orderId);
     }
 }

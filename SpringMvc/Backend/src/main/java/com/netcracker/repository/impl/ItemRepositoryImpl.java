@@ -6,9 +6,7 @@ import com.netcracker.repository.ItemRepository;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -211,5 +209,33 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             System.out.println(e.getMessage());
         }
         return item;
+    }
+
+    @Override
+    public void removeItemById(BigInteger itemId){
+        removeObjectById(itemId);
+    }
+
+    @Override
+    public List<String> getAllCategories() {
+        List<String>result = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_ENUMS_BY_TYPE_ID);
+            preparedStatement.setLong(1, Constant.ITEM_CATEGORY_ENUM_TYPE_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                result.add(resultSet.getString("NAME"));
+            }
+            if (preparedStatement != null){
+                preparedStatement.close();
+            }
+            if (resultSet != null){
+                resultSet.close();
+            }
+            return result;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return result;
     }
 }

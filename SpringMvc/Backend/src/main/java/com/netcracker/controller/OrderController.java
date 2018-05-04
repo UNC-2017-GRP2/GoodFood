@@ -23,14 +23,17 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<Order> getAllOrders(@PathVariable Locale locale){
-        return orderService.getAllOrders(locale);
+    @RequestMapping(value = "/locale/{locale}", method = RequestMethod.GET)
+    public List<Order> getAllOrders(@PathVariable String locale){
+        Locale newLocale = new Locale(locale);
+        return orderService.getAllOrders(newLocale);
     }
 
-    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
-    public List<Order> getOrdersByUsername(@PathVariable String username){
-        return orderService.getOrdersByUsername(username);
+    @RequestMapping(value = "/locale/{locale}/user/{username}", method = RequestMethod.GET)
+    public List<Order> getOrdersByUsername(@PathVariable String username,
+                                           @PathVariable String locale){
+        Locale thisLocale = new Locale(locale);
+        return orderService.getOrdersByUsername(username,thisLocale);
     }
 
     @RequestMapping(value = "/total", method = RequestMethod.POST)
@@ -90,9 +93,13 @@ public class OrderController {
 
     @RequestMapping(value = "/{id}/courier/{courierName}", method = RequestMethod.POST)
     public void setCourier(@PathVariable BigInteger id, @PathVariable String courierName){
-        setCourier(id,courierName);
+        orderService.setCourier(id,courierName);
     }
 
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    public void removeOrderById(@PathVariable BigInteger id){
+        orderService.removeOrderById(id);
+    }
 
 
     /*

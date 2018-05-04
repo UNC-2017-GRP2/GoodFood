@@ -45,18 +45,29 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public List<Order> getOrdersByUsername(String username) {
+    public List<Order> getOrdersByUsername(String username, Locale locale) {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<Order>> itemResponse =
-                restTemplate.exchange(ORDER_BASE_URL+"/user/" + username + "/",
+                restTemplate.exchange(ORDER_BASE_URL+"/locale/"+ locale.getLanguage() +"/user/" + username + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Order>>() {
                         });
         List<Order> result = itemResponse.getBody();
 
         return result;
     }
-/*
+
+    @Override
+    public void removeOrderById(BigInteger orderId) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        Object itemResponse =
+                restTemplate.exchange(ORDER_BASE_URL+"/" + orderId + "/",
+                        HttpMethod.DELETE, null, new ParameterizedTypeReference<Object>() {
+                        });
+    }
+
+    /*
     @Override
     public List<Order> getAllFreeOrders() {
         RestTemplate restTemplate = new RestTemplate();
@@ -129,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getAllOrders(Locale locale) {RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<Order>> itemResponse =
-                restTemplate.exchange(ORDER_BASE_URL+"/",
+                restTemplate.exchange(ORDER_BASE_URL+"/locale/"+locale.getLanguage() + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Order>>() {
                         });
         List<Order> result = itemResponse.getBody();

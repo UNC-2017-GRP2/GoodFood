@@ -4,8 +4,14 @@
             return 'Роль изменена.';
         case 'item_added':
             return 'Товар добавлен.';
-        case 'payment_error':
-            return 'Во время оплаты произошла ошибка.';
+        case 'user_created':
+            return 'Пользователь создан.';
+        case 'user_deleted':
+            return 'Пользователь удален.';
+        case 'item_deleted':
+            return 'Продукт удален.';
+        case 'order_deleted':
+            return 'Заказ удален.';
     }
 }
 function getErrorString(stringId) {
@@ -44,5 +50,96 @@ function getErrorString(stringId) {
             return 'Пароли не совпадают.';
         case 'password_confirmation_must_not_be_empty':
             return 'Поле не может быть пустым.';
+        case 'payment_error':
+            return 'Во время оплаты произошла ошибка.';
+        case 'user_not_created':
+            return 'Пользователь не был создан.';
+        case 'user_not_deleted':
+            return 'Пользователь не был удален.';
+        case 'role_not_changed':
+            return 'Роль не была изменена.';
+        case 'no_results':
+            return 'Ничего не найдено.';
+        case 'data_error':
+            return 'Ошибка данных.';
+        case 'item_not_deleted':
+            return 'Продукт не был удален.';
+        case 'order_not_deleted':
+            return 'Заказ не был удален.';
+    }
+}
+
+function getLocStrings(stringId) {
+    switch (stringId) {
+        case 'addresses':
+            return 'Адреса';
+        case 'ROLE_COURIER':
+            return 'Курьер';
+        case 'ROLE_ADMIN':
+            return 'Администратор';
+        case 'ROLE_USER':
+            return 'Пользователь';
+        case 'change_role':
+            return 'Изменить роль';
+        case 'del_user':
+            return 'Удалить';
+        case 'product_order_statistics':
+            return 'Статистика заказа товара';
+        case 'revenue_day':
+            return 'Доход по дням недели';
+        case 'revenue_last_days':
+            return 'Доход за последние 10 дней';
+        case 'revenue':
+            return 'Доход';
+        case 'day_of_the_week':
+            return 'День недели';
+        case 'day':
+            return 'День';
+        case 'order_paid':
+            return 'Заказ оплачен';
+        case 'order_not_paid':
+            return 'Заказ не оплачен';
+        case 'items_count':
+            return 'шт';
+        case 'rub':
+            return '₽';
+        case 'multiplication_sign':
+            return '×';
+        case 'search':
+            return 'Поиск:';
+        case 'show':
+            return "Показать";
+        case 'entries':
+            return 'записей';
+        case 'no_records found':
+            return 'Совпадений не найдено';
+        case 'showing_page':
+            return 'Показана страница';
+        case 'page_of':
+            return 'из';
+        case 'no_records_available':
+            return 'Нет доступных записей';
+        case 'filtered_from':
+            return 'отфильтровано из';
+        case 'total_records':
+            return 'записей';
+        case 'processing':
+            return 'Выполняется обработка';
+        case 'loading_records':
+            return 'Загрузка';
+        case 'empty_table':
+            return 'Пустая таблица';
+        case 'previous':
+            return 'Предыдущая';
+        case 'next':
+            return 'Следующая';
+        case 'first':
+            return 'Первая';
+        case 'last':
+            return 'Последняя';
+        case 'sort_ascending':
+            return 'Сортировать по возрастанию';
+        case 'sort_descending':
+            return 'Сортировать по убыванию';
     }
 }

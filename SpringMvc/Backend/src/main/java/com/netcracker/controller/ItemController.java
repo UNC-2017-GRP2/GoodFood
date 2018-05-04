@@ -13,13 +13,13 @@ import java.util.Locale;
 
 @RestController
 //@SessionAttributes(value = {"username", "basketItems"})
-@RequestMapping("/{locale}/items")
+@RequestMapping("/items")
 public class ItemController {
 
     @Autowired
     private ItemService itemService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/{locale}", method = RequestMethod.GET)
     public List<Item> findAll(@PathVariable String locale){
         Locale thisLocale = new Locale(locale);
         return itemService.getAllItems(thisLocale);
@@ -27,7 +27,7 @@ public class ItemController {
 
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{locale}/{id}", method = RequestMethod.GET)
     public Item findItem(
             @PathVariable BigInteger id,
             @PathVariable String locale
@@ -37,15 +37,26 @@ public class ItemController {
     }
 //    TODO: реализовать добавление, изменение и замену, если это будет необходимо
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void removeItemById(
+            @PathVariable BigInteger id
+    ){
+        itemService.removeItemById(id);
+    }
 
-
-    @RequestMapping(value = "/category/{category}", method = RequestMethod.GET)
+    @RequestMapping(value = "/locale/{locale}/category/{category}", method = RequestMethod.GET)
     public List<Item> getItemsByCategory (
             @PathVariable String category,
             @PathVariable String locale
     ){
         Locale thisLocale = new Locale(locale);
         return itemService.getItemsByCategory(category, thisLocale);
+    }
+
+    @RequestMapping(value = "/category/", method = RequestMethod.GET)
+    public List<String> getALLCategories (
+    ){
+        return itemService.getAllCategories();
     }
 
 /*

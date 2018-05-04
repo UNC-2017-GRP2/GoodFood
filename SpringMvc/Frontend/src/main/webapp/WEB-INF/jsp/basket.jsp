@@ -44,7 +44,7 @@
             setPhoneValue('${userPhone}');
 
             if (${paymentError != null}){
-                $.notify(getNotificationString('payment_error'), "error");
+                $.notify(getErrorString('payment_error'), "error");
                 //$.notify('${paymentError}', "wrong");
             }
         });

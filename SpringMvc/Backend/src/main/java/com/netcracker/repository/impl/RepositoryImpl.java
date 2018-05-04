@@ -6,6 +6,7 @@ import com.netcracker.model.Entity;
 import com.netcracker.model.MapParameter;
 import com.netcracker.repository.Repository;
 import org.postgresql.geometric.PGpoint;
+import org.springframework.cache.support.NullValue;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
@@ -454,7 +455,7 @@ public class RepositoryImpl implements Repository {
         try {
             if (checkAttribute(objectId, attrId)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_DATE_PARAMETERS);
-                preparedStatement.setTimestamp(1, (parameter != null) ? new Timestamp(parameter.getTime()) : null);
+                preparedStatement.setTimestamp(1, (parameter != null) ? new java.sql.Timestamp(parameter.getTime()) : null);
                 preparedStatement.setObject(2, objectId, numericType);
                 preparedStatement.setLong(3, attrId);
                 preparedStatement.executeUpdate();

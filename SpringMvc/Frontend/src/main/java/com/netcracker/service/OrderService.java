@@ -14,7 +14,7 @@ import java.util.Locale;
 @Service
 public interface OrderService {
     BigInteger totalOrder(ArrayList<Item> items);
-    void checkout(BigInteger orderId,ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException;
+    void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException;
     //List<Order> getAllFreeOrders();
     List<Order> getAllFreeOrders(Locale locale);
     //List<Order> getAllOrdersByUser(String username);
@@ -28,6 +28,7 @@ public interface OrderService {
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
     List<Order> getAllOrders(Locale locale);
-    List<Order> getOrdersByUsername(String username);
+    List<Order> getOrdersByUsername(String username, Locale locale);
     BigInteger getObjectId();
-};
+    void removeOrderById(BigInteger orderId);
+}

@@ -206,4 +206,26 @@ public class UserServiceImpl implements UserService {
                 HttpMethod.PUT, request, new ParameterizedTypeReference<User>() {
                 });
     }
+
+    @Override
+    public void removeUserById(BigInteger userId) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Object> userResponse =
+                restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/",
+                        HttpMethod.DELETE, null, new ParameterizedTypeReference<Object>() {
+                        });
+    }
+
+    @Override
+    public BigInteger getObjectId() {
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<BigInteger> itemResponse =
+                restTemplate.exchange(USER_BASE_URL+"/object/id",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<BigInteger>() {
+                        });
+        BigInteger result = itemResponse.getBody();
+        return result;
+    }
 }

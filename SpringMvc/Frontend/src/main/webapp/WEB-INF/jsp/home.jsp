@@ -5,6 +5,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title><spring:message code="general.projectName"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home-style.css">
@@ -182,6 +185,10 @@
     <img class="btl" src="${pageContext.request.contextPath}/resources/img/beverages/bottle.png" height="30%" width="auto">
     </a>
 </c:if>
+<c:if test="${car == 1}">
+    <img class="car" src="${pageContext.request.contextPath}/resources/img/alcohol/Car-icon.png" height="30%" width="auto" onclick="callDriver();" class="menu_links">
+</c:if>
+
 <div class="Features-section paddingTB60 bg-dgrey ">
     <div class="container">
         <div class="row text-center ">

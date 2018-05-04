@@ -1,7 +1,6 @@
 package com.netcracker.repository.impl;
 
 import com.netcracker.config.Constant;
-
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
@@ -241,6 +240,27 @@ public class AbstractRepositoryImpl{
         }
     }
 
+    protected void removeObjectById(BigInteger objectId){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_OBJECT);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.executeUpdate();
+            removeParametersByObjId(objectId);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    protected void removeParametersByObjId(BigInteger objectId){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_ALL_PARAMETERS_BY_OBJ_ID);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     protected void updateTextParameter(BigInteger objectId, long attrId, String parameter){
         try {
             //если параметр был, то обновляем,иначе добавим
@@ -263,7 +283,7 @@ public class AbstractRepositoryImpl{
             //если парметр был, то обновляем,иначе добавим
             if (checkAttribute(objectId, attrId)) {
                 PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_DATE_PARAMETERS);
-                preparedStatement.setTimestamp(1, (parameter!=null)?new Timestamp(parameter.getTime()):null);
+                preparedStatement.setTimestamp(1, (parameter!=null)?new java.sql.Timestamp(parameter.getTime()):null);
                 preparedStatement.setObject(2,objectId, numericType);
                 preparedStatement.setLong(3, attrId);
                 preparedStatement.executeUpdate();

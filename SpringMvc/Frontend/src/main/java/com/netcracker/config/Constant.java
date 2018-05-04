@@ -1,6 +1,42 @@
 package com.netcracker.config;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constant {
+
+    public static Map<String, Long> ROLES;
+    static {
+        Map<String, Long> map = new HashMap<>();
+        map.put("ROLE_ADMIN", Constant.ROLE_ADMIN_ENUM_ID);
+        map.put("ROLE_USER", Constant.ROLE_USER_ENUM_ID);
+        map.put("ROLE_COURIER", Constant.ROLE_COURIER_ENUM_ID);
+        ROLES = Collections.unmodifiableMap(map);
+    }
+
+    /*public static Map<String, Long> STATUSES;
+    static {
+        Map<String, Long> map = new HashMap<>();
+        map.put("Created", Constant.STATUS_CREATED_ENUM_ID);
+        map.put("Linked with courier", Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
+        map.put("Delivered", Constant.STATUS_DELIVERED_ENUM_ID);
+        map.put("Expired", Constant.STATUS_EXPIRED_ENUM_ID);
+        map.put("Cancelled", Constant.STATUS_CANCELLED_ENUM_ID);
+        STATUSES = Collections.unmodifiableMap(map);
+    }*/
+    public static Map<Long, String> STATUSES;
+    static {
+        Map<Long, String> map = new HashMap<>();
+        map.put(Constant.STATUS_CREATED_ENUM_ID, "Created");
+        map.put(Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID, "Linked with courier");
+        map.put(Constant.STATUS_DELIVERED_ENUM_ID, "Delivered");
+        map.put(Constant.STATUS_EXPIRED_ENUM_ID, "Expired");
+        map.put(Constant.STATUS_CANCELLED_ENUM_ID, "Cancelled");
+        STATUSES = Collections.unmodifiableMap(map);
+    }
+
+
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_COURIER = "ROLE_COURIER";
@@ -106,6 +142,7 @@ public class Constant {
     public static final String SQL_SELECT_TEXT_VAL_BY_OBJ_ID_AND_ATTR_ID = "select \"TEXT_VALUE\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"OBJECT_ID\" = ? ";
     public static final String SQL_SELECT_OBJ_ID_BY_ATTR_AND_ENUM = "select \"OBJECT_ID\" from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"ENUM_VALUE\" = ?";
 
+    public static final String SQL_SELECT_ENUMS_BY_TYPE_ID = "select * from \"ENUMS\" where \"ENUM_TYPE_ID\" = ?";
     public static final String SQL_SELECT_ENUMS = "select * from \"ENUMS\" where \"ENUM_ID\" = ?";
     public static final String SQL_SELECT_ENUM_NAME_BY_ID = "select \"NAME\" from \"ENUMS\" where \"ENUM_ID\" = ?";
     public static final String SQL_SELECT_ENUM_ID_BY_ENUM_VALUE = "select \"ENUM_ID\" from \"ENUMS\" where \"NAME\" = ?";
@@ -125,7 +162,8 @@ public class Constant {
     public static final String SQL_UPDATE_POINT_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"POINT_VALUE\"=point(?,?) WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     //public static final String SQL_UPDATE_NULL_POINT_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"POINT_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     public static final String SQL_DELETE_FROM_PARAMETERS = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
-
+    public static final String SQL_DELETE_ALL_PARAMETERS_BY_OBJ_ID = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
+    public static final String SQL_DELETE_OBJECT = "delete from \"OBJECTS\" where \"OBJECT_ID\" = ?";
 
     public static final String BASE_URL_REST = "http://127.0.0.1:8080/rest";
 }

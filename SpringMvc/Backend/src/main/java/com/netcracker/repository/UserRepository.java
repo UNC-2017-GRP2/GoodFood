@@ -20,4 +20,6 @@ public interface UserRepository {
     boolean isEqualsPassword(String password, BigInteger userId);
     void updatePassword(BigInteger userId, String password);
     void updateAddresses(BigInteger userId, List<Address> addresses);
+    void removeUserById(BigInteger userId);
+    BigInteger getObjectId();
 }

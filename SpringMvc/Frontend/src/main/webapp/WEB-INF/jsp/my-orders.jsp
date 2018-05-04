@@ -76,6 +76,12 @@
                                                     </li>
                                                     <li>
                                                         <p>
+                                                            <span class="glyphicon glyphicon-earphone"></span>
+                                                            <span>${order.orderPhone}</span>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p>
                                                             <span class="glyphicon glyphicon-ruble"></span>
                                                             <span>${order.paymentType}</span>
                                                         </p>

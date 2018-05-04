@@ -14,7 +14,7 @@ public interface AbstractRepository {
     ResultSet getParametersByObjectId(BigInteger objectId);
     ResultSet getLocStringsByObjectId(BigInteger objectId, long langId);
     void saveObject(String name, BigInteger objectId, BigInteger parentId, long objTypeId);
-    void updateObjectName(BigInteger objectId, String newName);
+    void updateObjectName (BigInteger objectId, String newName);
     void saveTextParameter(BigInteger objectId, long attrId, String parameter);
     void saveDateParameter(BigInteger objectId, long attrId, Timestamp parameter);
     void saveEnumValue(BigInteger objectId, long attrId, long parameter);

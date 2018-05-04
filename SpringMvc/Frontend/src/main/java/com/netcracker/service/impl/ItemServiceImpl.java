@@ -1,6 +1,7 @@
 package com.netcracker.service.impl;
 
 import com.netcracker.config.Constant;
+import com.netcracker.model.Entity;
 import com.netcracker.model.Item;
 import com.netcracker.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ItemServiceImpl implements ItemService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<Item>> itemResponse =
-                restTemplate.exchange(Constant.BASE_URL_REST+"/"+ locale.getLanguage() +"/items/",
+                restTemplate.exchange(Constant.BASE_URL_REST +"/items/"+ locale.getLanguage()+"/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Item>>() {
                         });
         List<Item> result = itemResponse.getBody();
@@ -37,7 +38,7 @@ public class ItemServiceImpl implements ItemService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<Item> itemResponse =
-                restTemplate.exchange(Constant.BASE_URL_REST+"/"+ locale.getLanguage() +"/items/" + itemId + "/",
+                restTemplate.exchange(Constant.BASE_URL_REST+"/items/"+ locale.getLanguage()+"/" + itemId + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<Item>() {
                         });
         Item result = itemResponse.getBody();
@@ -50,14 +51,41 @@ public class ItemServiceImpl implements ItemService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<Item>> itemResponse =
-                restTemplate.exchange(Constant.BASE_URL_REST+"/" + locale.getLanguage() + "/items/category/" + category,
+                restTemplate.exchange(Constant.BASE_URL_REST  + "/items/"+"locale/"+ locale.getLanguage() +"/category/"+ category+"/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Item>>() {
                         });
         List<Item> result = itemResponse.getBody();
 
         return result;
     }
-//    public List<Item> getAllItems() {
+
+    @Override
+    public void removeItemById(BigInteger itemId) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Object> itemResponse =
+                restTemplate.exchange(Constant.BASE_URL_REST+"/items/" + itemId + "/",
+                        HttpMethod.DELETE, null, new ParameterizedTypeReference<Object>() {
+                        });
+        //Item result = itemResponse.getBody();
+
+        //return result;
+    }
+
+    @Override
+    public List<String> getAllCategories() {
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<List<String>> itemResponse =
+                restTemplate.exchange(Constant.BASE_URL_REST+"/items/category/",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {
+                        });
+        List<String> result = itemResponse.getBody();
+
+        return result;
+    }
+
+    //    public List<Item> getAllItems() {
 //        return itemRepository.getAllItems();
 //    }
 //

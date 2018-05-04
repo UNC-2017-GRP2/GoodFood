@@ -9,6 +9,8 @@ import java.util.Locale;
 public interface ItemRepository {
     List<Item> getAllItems();
     Item getItemById(BigInteger itemId);
-    List<Item> getItemsByCategory(String category);
+    List<Item> getItemsByCategory (String category);
     Item getLocalizedItem(Item item, Locale locale);
+    void removeItemById(BigInteger itemId);
+    List<String> getAllCategories();
 }
