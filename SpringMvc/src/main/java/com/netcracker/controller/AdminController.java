@@ -246,7 +246,7 @@ public class AdminController {
         itemService.removeItemById(itemId);
     }
 
-    @RequestMapping(value = {"/getLocItemsInfo"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/getLocItemsInfo"}, method = RequestMethod.GET, produces = { "application/json; charset=utf-8" })
     public @ResponseBody String getLocItemsInfo(@RequestParam BigInteger itemId, Locale locale) throws IOException {
         Gson gson = new Gson();
         Item itemEn = itemService.getItemById(itemId, new Locale("en"));
