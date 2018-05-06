@@ -12,10 +12,13 @@ import com.netcracker.model.User;
 import com.netcracker.service.ItemService;
 import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -283,7 +286,7 @@ public class AdminController{
     @RequestMapping(value = "/admin/createItems", method = RequestMethod.POST)
     public @ResponseBody void createItems(@RequestParam MultipartFile file) throws IOException {
         //String fileLocation;
-        InputStream in = file.getInputStream();
+/*        InputStream in = file.getInputStream();
         Workbook workbook = new XSSFWorkbook(in);
         Sheet sheet = workbook.getSheetAt(0);
         for (Row row : sheet) {
@@ -295,6 +298,41 @@ public class AdminController{
                     default: System.out.println("default");
                 }
             }
+        }*/
+
+        InputStream ExcelFileToRead = file.getInputStream();
+        XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);
+
+        XSSFWorkbook test = new XSSFWorkbook();
+
+        XSSFSheet sheet = wb.getSheetAt(0);
+        XSSFRow row;
+        XSSFCell cell;
+
+        Iterator rows = sheet.rowIterator();
+
+        while (rows.hasNext())
+        {
+            row=(XSSFRow) rows.next();
+            Iterator cells = row.cellIterator();
+            while (cells.hasNext())
+            {
+                cell=(XSSFCell) cells.next();
+
+                if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
+                {
+                    System.out.print(cell.getStringCellValue()+" ");
+                }
+                else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
+                {
+                    System.out.print(cell.getNumericCellValue()+" ");
+                }
+                else
+                {
+                    //U Can Handel Boolean, Formula, Errors
+                }
+            }
+            System.out.println();
         }
 
         /*File currDir = new File(".");
@@ -309,34 +347,6 @@ public class AdminController{
         f.close();*/
     }
 
-    @RequestMapping(value = "/admin/uploadFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody void uploadFile(@RequestParam MultipartFile file) {
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                // Creating the directory to store file
-                String rootPath = System.getProperty("catalina.home");
-                File dir = new File(rootPath + File.separator + "tmpFiles");
-                if (!dir.exists())
-                    dir.mkdirs();
-
-                // Create the file on server
-                /*File serverFile = new File(dir.getAbsolutePath()
-                        + File.separator + name);
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(serverFile));
-                stream.write(bytes);
-                stream.close();*/
-
-                //return "You successfully uploaded file=" + name;
-            } catch (Exception e) {
-                //return "You failed to upload " + name + " => " + e.getMessage();
-            }
-        } else {
-            //return "You failed to upload " + name
-                //    + " because the file was empty.";
-        }
-    }
 
     @Autowired
     ServletContext servletContext;

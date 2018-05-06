@@ -518,18 +518,11 @@
                         <h3 class="panel-title"><spring:message code="admin.item.add_items"/></h3>
                     </div>
                     <div class="panel-body">
-                        <%--<form id="add-item-form" action="/admin/createItems" method="post" enctype="multipart/form-data">
+                        <form id="add-item-form" action="/admin/createItems" method="post" enctype="multipart/form-data">
                             <input type="file" name="file" accept=".xls,.xlsx" />
                             <button type="submit" class="btn btn-default">Upload</button>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
-
-                        <form method="post" action="/admin/uploadFile" enctype="multipart/form-data">
-                            File to upload: <input type="file" id="file" name="file"><br />
-                            Name:<br /> <br />
-                            <button type="submit" class="btn btn-default">Upl</button> Press here to upload the file!
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        </form>--%>
 
                             <form method="POST" action="${pageContext.request.contextPath}/upload" enctype="multipart/form-data">
                                 <input type="file" name="file" /><br/>
