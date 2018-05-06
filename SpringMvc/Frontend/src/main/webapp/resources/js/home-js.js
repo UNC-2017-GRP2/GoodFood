@@ -12,12 +12,18 @@ function addToCart(productId, countId) {
     $.ajax({
         url: 'addBasket',
         type: 'GET',
+        contentType: 'application/json',
+        mimeType: 'application/json',
         data: ({
             id: productId,
             count: $('#' + countId).val()
         }),
         success: function (data) {
+            $("#cart-badge").text(data);
             $.notify(getNotificationString('item_added'), "success");
+        },
+        error: function () {
+            $.notify(getErrorString('data_error'), "error");
         }
     });
 }

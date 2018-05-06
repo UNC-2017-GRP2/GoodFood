@@ -1,8 +1,11 @@
 <%@ page import="com.netcracker.config.Constant" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.netcracker.model.Item" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page session="true" %>
 
 <html>
 <head>
@@ -32,7 +35,13 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-            <%--<li><a href="${pageContext.request.contextPath}/basket"><span class="glyphicon glyphicon-cart"></span></a></li>--%>
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <sec:authorize access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')">
+                    <li><a href="${pageContext.request.contextPath}/basket">
+                        <span class="glyphicon glyphicon-shopping-cart" id="icon-cart"></span><span id="cart-badge" class="badge">${cartSize}<%--<%=((ArrayList<Item>)session.getAttribute("basketItems")).size()%>--%><%--<%=(session.getAttribute("cartSize")!=null)?session.getAttribute("cartSize"):0%>--%></span></a>
+                    </li>
+                </sec:authorize>
+            </c:if>
             <c:choose>
                 <c:when test="${pageContext.request.userPrincipal.name != null}">
                     <li class="dropdown">

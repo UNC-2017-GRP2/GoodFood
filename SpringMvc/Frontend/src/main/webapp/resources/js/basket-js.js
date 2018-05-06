@@ -132,8 +132,9 @@ $(document).ready(function () {
                 itemId: itemId,
                 newQuantity: count
             }),
-            success: function () {
-                //alert(data);
+            dataType: 'json',
+            success: function (data) {
+                $("#cart-badge").text(data.cartSize);
             }
         });
         return false;
@@ -165,7 +166,9 @@ $(document).ready(function () {
                 itemId: itemId,
                 newQuantity: count
             }),
-            success: function () {
+            dataType: 'json',
+            success: function (data) {
+                $("#cart-badge").text(data.cartSize);
             }
         });
         return false;
@@ -177,16 +180,19 @@ $(document).ready(function () {
         $.ajax({
             url: 'removeItem',
             type: 'GET',
-            contentType: 'application/json',
-            mimeType: 'application/json',
+            dataType:'json',
             data: ({
                 itemId: itemId
             }),
             success: function (data) {
-                $(".total-order-cost").text(data);
+                $(".total-order-cost").text(data.sum);
+                $("#cart-badge").text(data.cartSize);
                 if (data === "0") {
                     disabledInputFieldsForCheckout();
                 }
+            },
+            error: function () {
+                $.notify(getErrorString('data_error'), "error");
             }
         });
 
@@ -335,7 +341,9 @@ $(document).ready(function () {
                     itemId: itemId,
                     newQuantity: count
                 }),
-                success: function () {
+                dataType: 'json',
+                success: function (data) {
+                    $("#cart-badge").text(data.cartSize);
                 }
             });
         }

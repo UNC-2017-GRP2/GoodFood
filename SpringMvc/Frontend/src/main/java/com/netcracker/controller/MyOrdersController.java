@@ -2,6 +2,7 @@ package com.netcracker.controller;
 
 import com.netcracker.config.Constant;
 import com.netcracker.model.Entity;
+import com.netcracker.model.Item;
 import com.netcracker.model.Order;
 import com.netcracker.model.User;
 import com.netcracker.service.OrderService;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Controller
+@SessionAttributes(value = {"username","basketItems"})
 public class MyOrdersController {
     @Autowired
     private OrderService orderService;
@@ -33,7 +35,7 @@ public class MyOrdersController {
     private UserService userService;
 
     @RequestMapping(value = {"/my-orders/{pageId}"}, method = RequestMethod.GET)
-    public ModelAndView myOrdersPageId(Principal principal, @PathVariable int pageId, Locale locale){
+    public ModelAndView myOrdersPageId(Principal principal, @PathVariable int pageId, Locale locale, HttpSession httpSession){
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = null;
         List<Order> ordersForShow;
@@ -67,6 +69,11 @@ public class MyOrdersController {
             pageCount = (int)Math.ceil(((double)allOrders.size())/((double)Constant.ORDERS_QUANTITY_ON_PAGE));
             model.addObject("pageCount", pageCount);
         }
+        int val = 0;
+        for (Item item:(List<Item>) httpSession.getAttribute("basketItems")){
+            val+=item.getProductQuantity();
+        }
+        model.addObject("cartSize", val);
         model.setViewName("my-orders");
         return model;
     }

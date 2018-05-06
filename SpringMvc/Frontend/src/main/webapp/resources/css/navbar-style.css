@@ -7,6 +7,20 @@
     letter-spacing: 1px;
     box-sizing: border-box;
 }
+#cart-badge {
+    font-size: 14px;
+    padding: 1px 7px 2px;
+    background: #e8500e;
+    color: #fff;
+    vertical-align: top;
+}
+#icon-cart {
+    font-size: 1.5em;
+    color: #535353;
+}
+#icon-cart:hover{
+    color: #343434;
+}
 
 .navbar{
     margin-bottom: 0;

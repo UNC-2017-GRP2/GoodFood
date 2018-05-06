@@ -62,38 +62,38 @@
                                                                    type="both"/>
                                                     <li>
                                                         <p>
-                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                            <span class="glyphicon glyphicon-calendar glyphicon-order"></span>
                                                             <fmt:formatDate pattern="dd.MM.yyyy   HH:mm"
                                                                             value="${ parsedDateTime }"/>
                                                         </p>
                                                     </li>
                                                     <li>
                                                         <p>
-                                                            <span class="glyphicon glyphicon-home"></span>
+                                                            <span class="glyphicon glyphicon-home glyphicon-order"></span>
                                                             <span id="address${order.orderId}">
                                                             </span>
                                                         </p>
                                                     </li>
                                                     <li>
                                                         <p>
-                                                            <span class="glyphicon glyphicon-earphone"></span>
+                                                            <span class="glyphicon glyphicon-earphone glyphicon-order"></span>
                                                             <span>${order.orderPhone}</span>
                                                         </p>
                                                     </li>
                                                     <li>
                                                         <p>
-                                                            <span class="glyphicon glyphicon-ruble"></span>
+                                                            <span class="glyphicon glyphicon-ruble glyphicon-order"></span>
                                                             <span>${order.paymentType}</span>
                                                         </p>
                                                     </li>
                                                     <li>
                                                         <p>
                                                             <c:if test="${order.paid eq true}">
-                                                                <span class="glyphicon glyphicon-ok"></span>
+                                                                <span class="glyphicon glyphicon-ok glyphicon-order"></span>
                                                                 <span><spring:message code="orders.paid"></spring:message></span>
                                                             </c:if>
                                                             <c:if test="${order.paid eq false}">
-                                                                <span class="glyphicon glyphicon-remove"></span>
+                                                                <span class="glyphicon glyphicon-remove glyphicon-order"></span>
                                                                 <span><spring:message code="orders.notPaid"></spring:message></span>
                                                             </c:if>
                                                         </p>

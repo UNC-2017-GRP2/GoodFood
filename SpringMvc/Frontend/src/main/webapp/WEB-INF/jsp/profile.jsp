@@ -64,15 +64,15 @@
                                     <div class="avatar-flip">
                                         <img class="img-circle" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg">
                                     </div>
-                                    <h2>${user.login}<i class="glyphicon glyphicon-edit" data-toggle="modal"
+                                    <h2>${user.login}<i class="glyphicon glyphicon-edit glyphicon-profile" data-toggle="modal"
                                                         data-target="#formEditProfileModal"></i></h2>
                                     <div class="text-center">
                                         <ul class="details text-left" id="user-data-list">
-                                            <li><p><span class="glyphicon glyphicon-user one"></span>${user.fio}</p></li>
-                                            <li><p><span class="glyphicon glyphicon-earphone one"></span>${user.phoneNumber}</p></li>
-                                            <li><p><span class="glyphicon glyphicon-envelope one"></span>${user.email}</p></li>
+                                            <li><p><span class="glyphicon glyphicon-user one glyphicon-profile"></span>${user.fio}</p></li>
+                                            <li><p><span class="glyphicon glyphicon-earphone one glyphicon-profile"></span>${user.phoneNumber}</p></li>
+                                            <li><p><span class="glyphicon glyphicon-envelope one glyphicon-profile"></span>${user.email}</p></li>
                                             <fmt:parseDate value="${user.birthday}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
-                                            <li><p><span class="glyphicon glyphicon-calendar one"></span><fmt:formatDate pattern="dd.MM.yyyy" value="${ parsedDate }" /></p></li>
+                                            <li><p><span class="glyphicon glyphicon-calendar one glyphicon-profile"></span><fmt:formatDate pattern="dd.MM.yyyy" value="${ parsedDate }" /></p></li>
                                             <hr>
                                         </ul>
                                     </div>

@@ -42,11 +42,18 @@ public class BasketController {
             BigInteger sum = orderService.totalOrder((ArrayList<Item>) basketItems);
             model.addObject("totalOrder", sum);
         }
+        int val = 0;
+        for (Item item:basketItems){
+            val+=item.getProductQuantity();
+        }
+        model.addObject("cartSize", val);
+
         model.addObject("userAddresses", httpSession.getAttribute("userAddresses"));
 
         if (message != null){
             model.addObject("paymentError", "paymentError");
         }
+
         model.setViewName("basket");
         return model;
     }
@@ -113,7 +120,7 @@ public class BasketController {
     }
 
     @RequestMapping(value = "/updateBasket", method = RequestMethod.GET)
-    public @ResponseBody void updateBasket(@RequestParam BigInteger itemId, @RequestParam int newQuantity, HttpSession httpSession){
+    public @ResponseBody String updateBasket(@RequestParam BigInteger itemId, @RequestParam int newQuantity, HttpSession httpSession){
 
         List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
         for(Item itemInBasket : curItems){
@@ -123,6 +130,14 @@ public class BasketController {
             }
         }
         httpSession.setAttribute("basketItems", curItems);
+        Map<String, String> orderParams = new HashMap<>();
+        int val = 0;
+        for (Item item:curItems){
+            val+=item.getProductQuantity();
+        }
+        orderParams.put("cartSize", String.valueOf(val));
+        Gson gson = new Gson();
+        return gson.toJson(orderParams);
     }
 
     @RequestMapping(value = "/removeItem", method = RequestMethod.GET)
@@ -136,7 +151,15 @@ public class BasketController {
         }
         httpSession.setAttribute("basketItems", curItems);
         BigInteger sum = orderService.totalOrder((ArrayList<Item>) curItems);
-        return sum.toString();
+        Map<String, String> orderParams = new HashMap<>();
+        orderParams.put("sum", sum.toString());
+        int val = 0;
+        for (Item item:(List<Item>) httpSession.getAttribute("basketItems")){
+            val+=item.getProductQuantity();
+        }
+        orderParams.put("cartSize", String.valueOf(val));
+        Gson gson = new Gson();
+        return gson.toJson(orderParams);
     }
 
     @RequestMapping(value = "/isBasketEmpty", method = RequestMethod.GET)

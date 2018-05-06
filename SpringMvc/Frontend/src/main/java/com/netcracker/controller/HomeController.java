@@ -38,7 +38,18 @@ public class HomeController {
             if (!user.getRole().equals(Constant.ROLE_COURIER)){
                 if (httpSession.getAttribute("basketItems") == null){
                     httpSession.setAttribute("basketItems", new ArrayList<Item>());
+                    model.addObject("cartSize", 0);
+                    /*httpSession.setAttribute("cartSize", ((ArrayList<Item>)httpSession.getAttribute("basketItems")).size());*/
+                }else{
+                    int val = 0;
+                    for (Item item:(List<Item>) httpSession.getAttribute("basketItems")){
+                        val+=item.getProductQuantity();
+                    }
+                    model.addObject("cartSize", val);
                 }
+                /*if (httpSession.getAttribute("cartSize") == null){
+                    httpSession.setAttribute("cartSize", 0);
+                }*/
             }
             if (httpSession.getAttribute("userAddresses") == null){
                 httpSession.setAttribute("userAddresses", user.getAddresses());
@@ -50,10 +61,6 @@ public class HomeController {
                 model.setViewName("redirect:/my-orders/1");
                 return model;
             }
-            /*if (user.getRole().equals(Constant.ROLE_ADMIN)) {
-                model.setViewName("redirect:/admin");
-                return model;
-            }*/
         }
 
         List<Item> currentItems = itemService.getItemsByCategory(value, locale);
@@ -80,9 +87,56 @@ public class HomeController {
     }
 
 
-    @RequestMapping(value = { "/addBasket"}, method = RequestMethod.GET)
-    public String addItemInBasket(@RequestParam BigInteger id, @RequestParam int count, Locale locale, HttpSession httpSession) throws IOException {
+    /*@RequestMapping(value = { "/addBasket"}, method = RequestMethod.GET)
+    public String addBasket(ModelAndView model, @RequestParam BigInteger id, @RequestParam int count, Locale locale, HttpSession httpSession) throws IOException {
         Item item = itemService.getItemById(id, locale);
+        int val = 0;
+        if (item != null){
+            if (httpSession.getAttribute("basketItems") == null){
+                httpSession.setAttribute("basketItems", new ArrayList<Item>());
+            }
+            *//*if (httpSession.getAttribute("cartSize") == null){
+                httpSession.setAttribute("cartSize", 0);
+            }*//*
+            List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
+            boolean itemIsInBasket = false;
+            for(Item itemInBasket : curItems){
+                if(itemInBasket.getProductId().equals(item.getProductId())){
+                    itemInBasket.setProductQuantity(itemInBasket.getProductQuantity() + count);
+                    itemIsInBasket = true;
+                    break;
+                }
+            }
+            if(!itemIsInBasket){
+                item.setProductQuantity(count);
+                curItems.add(item);
+            }
+            httpSession.setAttribute("basketItems", curItems);
+            //httpSession.removeAttribute("cartSize");
+            //int newSize = (int) httpSession.getAttribute("cartSize");
+            //Integer newSize = (Integer)httpSession.getAttribute("cartSize");
+            *//*
+            newSize = val;*//*
+            //newSize = new Integer(newSize.intValue() + val);
+            //httpSession.removeAttribute("cartSize");
+
+            //httpSession.setAttribute("cartSize", newSize);
+            *//*httpSession.setAttribute("cartSize", ((ArrayList<Item>)httpSession.getAttribute("basketItems")).size());*//*
+
+            for (Item curItem:curItems){
+                val+=curItem.getProductQuantity();
+            }
+            model.addObject("cartSize", val);
+        }
+        model.setViewName("redirect:/home");
+        String v = String.valueOf(val);
+        return "hello";
+    }*/
+
+    @RequestMapping(value = "/addBasket", method = RequestMethod.GET)
+    public @ResponseBody String addBasket(@RequestParam BigInteger id, @RequestParam int count, Locale locale, HttpSession httpSession){
+        Item item = itemService.getItemById(id, locale);
+        int val = 0;
         if (item != null){
             if (httpSession.getAttribute("basketItems") == null){
                 httpSession.setAttribute("basketItems", new ArrayList<Item>());
@@ -101,9 +155,11 @@ public class HomeController {
                 curItems.add(item);
             }
             httpSession.setAttribute("basketItems", curItems);
+            for (Item curItem:curItems){
+                val+=curItem.getProductQuantity();
+            }
         }
-        return "redirect:/home";
+        return String.valueOf(val);
     }
-
 }
 
