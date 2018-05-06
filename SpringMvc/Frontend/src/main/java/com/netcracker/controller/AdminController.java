@@ -19,6 +19,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ResourceLoaderAware;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,9 +37,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletContext;
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,7 +52,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Controller
-public class AdminController {
+public class AdminController{
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -246,7 +257,7 @@ public class AdminController {
         itemService.removeItemById(itemId);
     }
 
-    @RequestMapping(value = {"/getLocItemsInfo"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/getLocItemsInfo"}, method = RequestMethod.GET, produces = { "application/json; charset=utf-8" })
     public @ResponseBody String getLocItemsInfo(@RequestParam BigInteger itemId, Locale locale) throws IOException {
         Gson gson = new Gson();
         Item itemEn = itemService.getItemById(itemId, new Locale("en"));
@@ -324,6 +335,25 @@ public class AdminController {
         } else {
             //return "You failed to upload " + name
                 //    + " because the file was empty.";
+        }
+    }
+
+    @Autowired
+    ServletContext servletContext;
+
+    @PostMapping("/upload")
+    public void singleFileUpload(@RequestParam("file") MultipartFile file) {
+        String webappRoot = servletContext.getRealPath("/");
+        String relativeFolder = File.separator + "resources" + File.separator
+                + "img" + File.separator;
+        String filename = webappRoot + relativeFolder
+                + file.getOriginalFilename();
+        try {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(filename);
+            Files.write(path, bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

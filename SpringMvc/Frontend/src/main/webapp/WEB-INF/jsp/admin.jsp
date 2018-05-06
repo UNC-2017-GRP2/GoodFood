@@ -531,6 +531,14 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>--%>
 
+                            <form method="POST" action="${pageContext.request.contextPath}/upload" enctype="multipart/form-data">
+                                <input type="file" name="file" /><br/>
+                                <input type="submit" value="Submit" />
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            </form>
+                            <%--<img class="media-object img-rounded img-responsive"
+                                 src="${pageContext.request.contextPath}/resources/img/mysterion.jpg">--%>
+
                     </div>
                 </div>
             </div>
