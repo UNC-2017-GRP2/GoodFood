@@ -96,7 +96,6 @@
                                 </div>
 
                                 <div class="style">
-
                                     <c:choose>
                                         <c:when test="${pageContext.request.userPrincipal.name != null}">
                                             <button type="button" onclick="addToCart('${item.productId}', 'count-${item.productId}');" class="btn btn-primary">
@@ -109,7 +108,6 @@
                                                 <spring:message code="general.addToCart"/></button>
                                         </c:when>
                                     </c:choose>
-
                                 </div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

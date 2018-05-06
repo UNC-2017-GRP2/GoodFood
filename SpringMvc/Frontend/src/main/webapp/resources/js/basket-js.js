@@ -8,9 +8,6 @@ var form;
 
 function addressSelection(address) {
     $("#input-address").val(address);
-    /*$(".to-order-btn").prop('disabled', false);
-    $("#address-valid").text("");*/
-    //alert(address + " addressSelection");
     geocode(address);
 }
 
@@ -51,15 +48,10 @@ function geocode(address) {
         if (error) {
             addressFlag = false;
             setErrorValidMessage($("#input-address"), $("#address-valid"), error);
-            /*$("#address-valid").text(error);
-            $(".to-order-btn").prop('disabled', true);*/
 
         } else {
             addressFlag = true;
             setSuccessValid($("#input-address"), $("#address-valid"));
-            //alert(address + " addressGeocodeSuccess");
-            /*$(".to-order-btn").prop('disabled', false);
-            $("#address-valid").text("");*/
             $("#input-address-latitude").val(coords[0]);
             $("#input-address-longitude").val(coords[1]);
         }
@@ -122,7 +114,6 @@ $(document).ready(function () {
         $input.val(count);
         $input.change();
         var itemId = $(this).attr("item-id");
-
         var itemCost = $(this).attr("item-cost");
         var newValue = count * itemCost;
         var $final = $(this).parent().parent().parent().parent().parent().find('.final-item-cost-span');
@@ -137,8 +128,6 @@ $(document).ready(function () {
         $.ajax({
             url: 'updateBasket',
             type: 'GET',
-            /*contentType: 'application/json',
-            mimeType: 'application/json',*/
             data: ({
                 itemId: itemId,
                 newQuantity: count
@@ -151,20 +140,6 @@ $(document).ready(function () {
     });
 
     $('.plus').click(function () {
-
-        /*  var n = new noty({
-              type: 'success',
-              layout: 'top',
-              text: 'bla bla bla :)'
-          }).show();
-  */
-        /* noty({
-             text: 'yee!',
-             layout: 'center',
-             timeout: 500,
-             type: 'success'
-         });*/
-
         var $input = $(this).parent().find('input');
         var count = parseInt($input.val()) + 1;
         var previousCount = parseInt($input.val());
@@ -186,25 +161,13 @@ $(document).ready(function () {
         $.ajax({
             url: 'updateBasket',
             type: 'GET',
-            /*contentType: 'application/json',
-            mimeType: 'application/json',*/
             data: ({
                 itemId: itemId,
                 newQuantity: count
             }),
             success: function () {
-                //alert(data);
             }
         });
-
-
-        /*$.getJSON("updateBasket", { itemId: itemId})
-            .done(function (data) {
-                alert(data);
-            })
-            .fail(function () {
-                alert("Error GetUsersRoute");
-            });*/
         return false;
     });
 
@@ -221,7 +184,7 @@ $(document).ready(function () {
             }),
             success: function (data) {
                 $(".total-order-cost").text(data);
-                if (data == "0") {
+                if (data === "0") {
                     disabledInputFieldsForCheckout();
                 }
             }
@@ -233,13 +196,6 @@ $(document).ready(function () {
             contentType: 'application/json',
             mimeType: 'application/json',
             success: function (data) {
-                /*alert(data);
-                if (data == "true"){
-                    alert("true");
-                    $('.to-order').prop("disabled", false);
-                }else{
-                    alert("false");
-                }*/
             }
         });
     });
@@ -248,38 +204,19 @@ $(document).ready(function () {
         var address = $("#input-address").val();
         if (address != "") {
             $("#my-address-list").css("display", "none");
-            /*$(".ul-my-addresses").css('visibility', 'hidden');
-            $(".ul-my-addresses").css('height', '0');*/
         }
         geocode(address);
-        /*var value = $("#input-address").val();
-        if (value == ""){
-            $(".ul-my-addresses").css('visibility', 'visible');
-            $(".ul-my-addresses").css('height', 'auto');
-            $("#address-valid").text("Address field must not be empty.");
-            $(".to-order-btn").prop('disabled',true);
-
-        }else{
-            $(".ul-my-addresses").css('visibility', 'hidden');
-            $(".ul-my-addresses").css('height', '0');
-            //$("#address-valid").text("");
-            geocode(value);
-        }*/
     });
 
     $("#input-address").focus(function () {
         var value = $("#input-address").val();
         if (value == "") {
             $("#my-address-list").css("display", "block");
-            /*$(".ul-my-addresses").css('visibility', 'visible');
-            $(".ul-my-addresses").css('height', 'auto');*/
         }
     });
     $("#input-address").blur(function () {
         setTimeout(function () {
             $("#my-address-list").css("display", "none");
-            /*$(".ul-my-addresses").css('visibility', 'hidden');
-            $(".ul-my-addresses").css('height', '0');*/
         }, 200);
     });
 
@@ -372,9 +309,45 @@ $(document).ready(function () {
         form.submit();
     }
 
+    var previousItemCount;
+    $('.quantity').focus(function () {
+        previousItemCount = $(this).val();
+        $(this).val("");
+    }).blur(function () {
+        var count = $(this).val();
+        if (count === ""){
+            $(this).val(previousItemCount)
+        }else{
+            var itemId = $(this).attr("item-id");
+            var itemCost = $(this).attr("item-cost");
+            var newValue = count * itemCost;
+            var $final = $(this).parent().parent().parent().parent().parent().find('.final-item-cost-span');
+            $final.text(newValue);
+            var $totalCostElem = $(".total-order-cost");
+            var previousItemsCost = previousItemCount * itemCost;
+            var totalCost = parseInt($totalCostElem.text());
+            totalCost = totalCost - previousItemsCost + newValue;
+            $totalCostElem.text(totalCost);
+            $.ajax({
+                url: 'updateBasket',
+                type: 'GET',
+                data: ({
+                    itemId: itemId,
+                    newQuantity: count
+                }),
+                success: function () {
+                }
+            });
+        }
+    });
+
     $('.quantity').keyup(function () {
-        if ($(this).val() == ""){
+        var count = $(this).val();
+        if (count === "0"){
             $(this).val("1");
+        }
+        if (count === " "){
+            $(this).val("");
         }
         var testText = $(this).val();
         if (testText*1 + 0 != $(this).val()){

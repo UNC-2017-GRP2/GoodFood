@@ -10,9 +10,9 @@ function openDetails(name, image, description, cost, rub) {
 
 function addToCart(productId, countId) {
     $.ajax({
-        url : 'addBasket',
+        url: 'addBasket',
         type: 'GET',
-        data : ({
+        data: ({
             id: productId,
             count: $('#' + countId).val()
         }),
@@ -65,17 +65,12 @@ $(document).ready(function () {
         return false;
     });
 
-    /*$('.quantity').keyup(function () {
-        var text = $('.quantity').val();
-        var testText = text;
-        if(testText*1 + 0  !=  text){
-            $('.quantity').val(testText.substring(0, testText.length - 1));
-        }
-    });*/
-
     $('.quantity').keyup(function () {
-        if ($(this).val() == ""){
+        if ($(this).val() === "0"){
             $(this).val("1");
+        }
+        if ($(this).val() === " "){
+            $(this).val("");
         }
         var testText = $(this).val();
         if (testText*1 + 0 != $(this).val()){
@@ -83,4 +78,14 @@ $(document).ready(function () {
         }
     });
 
+    var previousItemCount;
+    $('.quantity').focus(function () {
+        previousItemCount = $(this).val();
+        $(this).val("");
+    }).blur(function () {
+        var count = $(this).val();
+        if (count === ""){
+            $(this).val(previousItemCount)
+        }
+    });
 });

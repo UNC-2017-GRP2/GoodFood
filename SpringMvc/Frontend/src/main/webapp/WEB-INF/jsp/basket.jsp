@@ -88,7 +88,7 @@
                                                                           item-cost="${item.productCost}">-</span>
                                                                     <input type="text" class="quantity" id="count"
                                                                            name="count" value="${item.productQuantity}"
-                                                                           size="5"/>
+                                                                           size="5" item-id="${item.productId}" item-cost="${item.productCost}"/>
                                                                     <span class="plus" item-id="${item.productId}"
                                                                           item-cost="${item.productCost}">+</span>
                                                                 </div>
