@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
+    public void saveUser(User user){
         userRepository.saveUser(user);
     }
 
@@ -99,5 +100,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeRole(BigInteger userId, String role) {
         userRepository.changeRole(userId, role);
+    }
+
+    @Override
+    public void saveUserImage(BigInteger userId, String imageName) throws SQLException {
+        userRepository.saveUserImage(userId, imageName);
     }
 }

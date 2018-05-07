@@ -11,12 +11,18 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profile-style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/grey-button-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.date.extensions.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.date.extensions.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 
     <script type="text/javascript">
@@ -24,6 +30,7 @@
     </script>
     <script type="text/javascript">
         ymaps.ready(getUserAddresses);
+
         function getUserAddresses() {
             <c:forEach items="${userAddresses}" var="address">
             getAddressByCoordinates(${address.latitude}, ${address.longitude});
@@ -43,6 +50,11 @@
         }
 
     </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getUserAddresses();
+        });
+    </script>
 
 </head>
 <body>
@@ -61,18 +73,43 @@
                             <div class="border text-center"></div>
                             <div class="content">
                                 <div class="container container-prof text-center">
-                                    <div class="avatar-flip">
-                                        <img class="img-circle" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg">
-                                    </div>
-                                    <h2>${user.login}<i class="glyphicon glyphicon-edit glyphicon-profile" data-toggle="modal"
+                                    <form method="post" action="${pageContext.request.contextPath}/uploadUserImage" enctype="multipart/form-data">
+                                        <div class="box-body">
+                                            <div align="center" class="avatar-flip">
+                                                <c:if test="${user.image == null}">
+                                                    <img src="${pageContext.request.contextPath}/resources/img/avatars/default.jpg"
+                                                         id="profile-image" class="img-circle img-responsive">
+                                                    <input id="profile-image-upload" class="hidden" type="file" name="file">
+                                                </c:if>
+                                                <c:if test="${user.image != null}">
+                                                    <img src="${pageContext.request.contextPath}${user.image}"
+                                                         id="profile-image" class="img-circle img-responsive">
+                                                    <input id="profile-image-upload" class="hidden" type="file" name="file">
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-default" id="btn-save-img"><spring:message code="profile.saveImage"/></button>
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    </form>
+                                    <h2>${user.login}<i class="glyphicon glyphicon-edit glyphicon-profile"
+                                                        data-toggle="modal"
                                                         data-target="#formEditProfileModal"></i></h2>
                                     <div class="text-center">
                                         <ul class="details text-left" id="user-data-list">
-                                            <li><p><span class="glyphicon glyphicon-user one glyphicon-profile"></span>${user.fio}</p></li>
-                                            <li><p><span class="glyphicon glyphicon-earphone one glyphicon-profile"></span>${user.phoneNumber}</p></li>
-                                            <li><p><span class="glyphicon glyphicon-envelope one glyphicon-profile"></span>${user.email}</p></li>
-                                            <fmt:parseDate value="${user.birthday}" pattern="yyyy-MM-dd" var="parsedDate" type="date" />
-                                            <li><p><span class="glyphicon glyphicon-calendar one glyphicon-profile"></span><fmt:formatDate pattern="dd.MM.yyyy" value="${ parsedDate }" /></p></li>
+                                            <li><p><span
+                                                    class="glyphicon glyphicon-user one glyphicon-profile"></span>${user.fio}
+                                            </p></li>
+                                            <li><p><span
+                                                    class="glyphicon glyphicon-earphone one glyphicon-profile"></span>${user.phoneNumber}
+                                            </p></li>
+                                            <li><p><span
+                                                    class="glyphicon glyphicon-envelope one glyphicon-profile"></span>${user.email}
+                                            </p></li>
+                                            <fmt:parseDate value="${user.birthday}" pattern="yyyy-MM-dd"
+                                                           var="parsedDate" type="date"/>
+                                            <li><p><span
+                                                    class="glyphicon glyphicon-calendar one glyphicon-profile"></span><fmt:formatDate
+                                                    pattern="dd.MM.yyyy" value="${ parsedDate }"/></p></li>
                                             <hr>
                                         </ul>
                                     </div>
@@ -87,8 +124,6 @@
 </div>
 
 
-
-
 <div class="modal fade" id="formEditProfileModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -100,17 +135,20 @@
             </div>
             <div class="well">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#editProfile" data-toggle="tab"><spring:message code="profile.basicInfo"/></a></li>
+                    <li class="active"><a href="#editProfile" data-toggle="tab"><spring:message
+                            code="profile.basicInfo"/></a></li>
                     <li><a href="#editPassword" data-toggle="tab"><spring:message code="users.password"/></a></li>
                     <li><a href="#editAddress" data-toggle="tab"><spring:message code="users.addresses"/></a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active in" id="editProfile">
-                        <form:form action="/edit" method="POST" modelAttribute="userForUpdate" class="form-horizontal edit-forms"
+                        <form:form action="/edit" method="POST" modelAttribute="userForUpdate"
+                                   class="form-horizontal edit-forms"
                                    id="editProfileForm" role="form">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="login" class="col-xs-4 control-label"><spring:message code="users.username"/>:<span class="required-field"> *</span></label>
+                                    <label for="login" class="col-xs-4 control-label"><spring:message
+                                            code="users.username"/>:<span class="required-field"> *</span></label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='login' path="login"
                                                     class="form-control"></form:input>
@@ -119,7 +157,8 @@
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="login-validation-message">
                                 </div>
                                 <div class="form-group">
-                                    <label for="fio" class="col-xs-4 control-label"><spring:message code="users.fullname"/>:<span class="required-field"> *</span></label>
+                                    <label for="fio" class="col-xs-4 control-label"><spring:message
+                                            code="users.fullname"/>:<span class="required-field"> *</span></label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='fio' path="fio" class="form-control"></form:input>
                                     </div>
@@ -127,7 +166,8 @@
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="fio-validation-message">
                                 </div>
                                 <div class="form-group">
-                                    <label for="email" class="col-xs-4 control-label"><spring:message code="users.email"/>:<span class="required-field"> *</span></label>
+                                    <label for="email" class="col-xs-4 control-label"><spring:message
+                                            code="users.email"/>:<span class="required-field"> *</span></label>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='email' path="email"
                                                     class="form-control"></form:input>
@@ -136,16 +176,19 @@
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="email-validation-message">
                                 </div>
                                 <div class="form-group">
-                                    <label for="phoneNumber1" class="col-xs-4 control-label"><spring:message code="users.phoneNumber"/>:</label>
+                                    <label for="phoneNumber1" class="col-xs-4 control-label"><spring:message
+                                            code="users.phoneNumber"/>:</label>
                                     <div class="col-xs-6">
-                                        <form:input path="phoneNumber" type='text' id='phoneNumber1' class="form-control"></form:input>
+                                        <form:input path="phoneNumber" type='text' id='phoneNumber1'
+                                                    class="form-control"></form:input>
                                     </div>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8 validationMessage" id="phone-validation-message">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="birth" class="col-xs-4 control-label"><spring:message code="users.birthday"/>:</label>
+                                    <label for="birth" class="col-xs-4 control-label"><spring:message
+                                            code="users.birthday"/>:</label>
                                     <spring:message code="enter.birthday" var="placeholder"/>
                                     <div class="col-xs-6">
                                         <form:input type='text' id='birth' path="birthday"
@@ -156,52 +199,72 @@
                                 </div>
                             </div>
                             <div class="modal-footer row">
-                                <div class="col-sm-offset-6 col-sm-3"><button type="button" class="btn grey-button reset-forms" data-dismiss="modal"><spring:message code="general.cancel"/></button></div>
-                                <div class="col-sm-3"><button type="submit" class="btn btn-primary btn-block" id="btn-save-user-data"><spring:message code="profile.save"/></button></div>
+                                <div class="col-sm-offset-6 col-sm-3">
+                                    <button type="button" class="btn grey-button reset-forms" data-dismiss="modal">
+                                        <spring:message code="general.cancel"/></button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-primary btn-block" id="btn-save-user-data">
+                                        <spring:message code="profile.save"/></button>
+                                </div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
                     </div>
                     <div class="tab-pane fade" id="editPassword">
-                        <form:form action="/editPassword" method="POST" class="form-horizontal edit-forms" id="editPasswordForm"
+                        <form:form action="/editPassword" method="POST" class="form-horizontal edit-forms"
+                                   id="editPasswordForm"
                                    role="form" modelAttribute="userForUpdate">
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="oldPassword" class="col-xs-5 control-label"><spring:message code="profile.oldPassword"/>:</label>
+                                    <label for="oldPassword" class="col-xs-5 control-label"><spring:message
+                                            code="profile.oldPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <input type='password' id='oldPassword' name="oldPassword" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-5 col-xs-7 validationMessage" id="old-password-validation-message">
+                                <div class="col-xs-offset-5 col-xs-7 validationMessage"
+                                     id="old-password-validation-message">
                                 </div>
                                 <div class="form-group">
-                                    <label for="passwordHash" class="col-xs-5 control-label"><spring:message code="profile.newPassword"/>:</label>
+                                    <label for="passwordHash" class="col-xs-5 control-label"><spring:message
+                                            code="profile.newPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='password' id='passwordHash' path="passwordHash"
                                                     class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-5 col-xs-7 validationMessage" id="password-validation-message">
+                                <div class="col-xs-offset-5 col-xs-7 validationMessage"
+                                     id="password-validation-message">
                                 </div>
                                 <div class="form-group">
-                                    <label for="confirmPassword" class="col-xs-5 control-label"><spring:message code="users.confirmPassword"/>:</label>
+                                    <label for="confirmPassword" class="col-xs-5 control-label"><spring:message
+                                            code="users.confirmPassword"/>:</label>
                                     <div class="col-xs-6">
                                         <form:input type='password' id='confirmPassword' path="confirmPassword"
                                                     class="form-control"></form:input>
                                     </div>
                                 </div>
-                                <div class="col-xs-offset-5 col-xs-7 validationMessage" id="confirmPassword-validation-message">
+                                <div class="col-xs-offset-5 col-xs-7 validationMessage"
+                                     id="confirmPassword-validation-message">
                                 </div>
                             </div>
                             <div class="modal-footer row">
-                                <div class="col-sm-offset-6 col-sm-3"><button type="button" class="btn grey-button reset-forms" data-dismiss="modal"><spring:message code="general.cancel"/></button></div>
-                                <div class=" col-sm-3"><button type="submit" class="btn btn-primary btn-block" id="btn-save-user-password" disabled="disabled"><spring:message code="profile.save"/></button></div>
+                                <div class="col-sm-offset-6 col-sm-3">
+                                    <button type="button" class="btn grey-button reset-forms" data-dismiss="modal">
+                                        <spring:message code="general.cancel"/></button>
+                                </div>
+                                <div class=" col-sm-3">
+                                    <button type="submit" class="btn btn-primary btn-block" id="btn-save-user-password"
+                                            disabled="disabled"><spring:message code="profile.save"/></button>
+                                </div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
                     </div>
                     <div class="tab-pane fade" id="editAddress">
-                        <form:form action="/editAddresses" method="GET" class="form-horizontal edit-forms" id="editAddressForm"
+                        <form:form action="/editAddresses" method="GET" class="form-horizontal edit-forms"
+                                   id="editAddressForm"
                                    role="form">
                             <div class="modal-body">
                                 <div class="list-group">
@@ -216,7 +279,8 @@
                                                   placeholder='${placeholder}'></textarea>
                                     </div>
                                     <div class="col-xs-4 col-sm-4" style="position: absolute; bottom: 0; right: 0;">
-                                        <button type="button" class="btn grey-button" onclick="addAddress();"><spring:message code="profile.addAddress"/></button>
+                                        <button type="button" class="btn grey-button" onclick="addAddress();">
+                                            <spring:message code="profile.addAddress"/></button>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -226,8 +290,14 @@
                                 </div>
                             </div>
                             <div class="modal-footer row">
-                                <div class="col-sm-offset-6 col-sm-3"><button type="button" class="btn grey-button reset-forms" data-dismiss="modal"><spring:message code="general.cancel"/></button></div>
-                                <div class="col-sm-3"><button type="submit" class="btn btn-primary btn-block"><spring:message code="profile.save"/></button></div>
+                                <div class="col-sm-offset-6 col-sm-3">
+                                    <button type="button" class="btn grey-button reset-forms" data-dismiss="modal">
+                                        <spring:message code="general.cancel"/></button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="submit" class="btn btn-primary btn-block"><spring:message
+                                            code="profile.save"/></button>
+                                </div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form:form>
@@ -241,6 +311,6 @@
 
 <jsp:include page="footer.jsp"/>
 
-<script>getUserAddresses();</script>
+
 </body>
 </html>

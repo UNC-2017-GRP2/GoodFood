@@ -20,11 +20,11 @@ public class User {
     private String email;
     private List<Address> addresses;
     private String role;
+    private String image;
 
     public User (){}
 
-
-    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, LocalDate birthday, String email, List<Address> addresses, String role) {
+    public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, LocalDate birthday, String email, List<Address> addresses, String role, String image) {
         this.userId = userId;
         this.fio = fio;
         this.login = login;
@@ -35,7 +35,9 @@ public class User {
         this.email = email;
         this.addresses = addresses;
         this.role = role;
+        this.image = image;
     }
+
 
     public BigInteger getUserId() {
         return userId;
@@ -73,9 +75,12 @@ public class User {
         return addresses;
     }
 
-
     public String getRole() {
         return role;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public void setUserId(BigInteger userId) {
@@ -116,6 +121,10 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

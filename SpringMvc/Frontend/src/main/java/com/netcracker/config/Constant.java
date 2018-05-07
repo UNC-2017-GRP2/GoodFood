@@ -1,5 +1,6 @@
 package com.netcracker.config;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,16 +16,6 @@ public class Constant {
         ROLES = Collections.unmodifiableMap(map);
     }
 
-    /*public static Map<String, Long> STATUSES;
-    static {
-        Map<String, Long> map = new HashMap<>();
-        map.put("Created", Constant.STATUS_CREATED_ENUM_ID);
-        map.put("Linked with courier", Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID);
-        map.put("Delivered", Constant.STATUS_DELIVERED_ENUM_ID);
-        map.put("Expired", Constant.STATUS_EXPIRED_ENUM_ID);
-        map.put("Cancelled", Constant.STATUS_CANCELLED_ENUM_ID);
-        STATUSES = Collections.unmodifiableMap(map);
-    }*/
     public static Map<Long, String> STATUSES;
     static {
         Map<Long, String> map = new HashMap<>();
@@ -36,7 +27,8 @@ public class Constant {
         STATUSES = Collections.unmodifiableMap(map);
     }
 
-
+    public static String USER_IMAGE_PATH = File.separator + "resources" + File.separator
+            + "img" + File.separator + "avatars" + File.separator;
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_COURIER = "ROLE_COURIER";
@@ -73,10 +65,11 @@ public class Constant {
     public static final long ADDRESS_ATTR_ID = 410;
     public static final long ORDER_PAID_ATTR_ID = 411;
     public static final long ORDER_ATTR_ID = 412;
+    public static final long USER_IMAGE_ATTR_ID = 413;
     public static final long ITEM_DESCRIPTION_ATTR_ID = 414;
     public static final long ITEM_ATTR_ID = 415;
-    public static final long STATUS_ATTR_ID = 417;
     public static final long COURIER_ATTR_ID = 416;
+    public static final long STATUS_ATTR_ID = 417;
     public static final long ITEM_IMAGE_ATTR_ID = 418;
     public static final long ORDER_PAYMENT_TYPE_ATTR_ID = 419;
     public static final long ORDER_CREATION_DATE_ATTR_ID = 421;
@@ -165,5 +158,6 @@ public class Constant {
     public static final String SQL_DELETE_ALL_PARAMETERS_BY_OBJ_ID = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_DELETE_OBJECT = "delete from \"OBJECTS\" where \"OBJECT_ID\" = ?";
 
-    public static final String BASE_URL_REST = "http://127.0.0.1:8080/rest";
+    /*public static final String BASE_URL_REST = "http://127.0.0.1:8080/rest";*/
+    public static final String BASE_URL_REST = "http://localhost:8085";
 }

@@ -24,6 +24,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         return super.getObjectId();
     }
 
+
     @Override
     public User getUserByUsername(String username) {
         ResultSet resultSet = null;
@@ -55,6 +56,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         String phone = null;
         LocalDate birthday = null;
         List<Address> addresses = new ArrayList<>();
+        String image = null;
         ResultSet resultSet = null;
             try{
                 if (userId != null && !userId.equals(0)) {
@@ -87,13 +89,17 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                             PGpoint address = (PGpoint)resultSet.getObject("POINT_VALUE");
                             addresses.add( new Address(address.x, address.y));
                         }
+                        if(curAttrId == Constant.USER_IMAGE_ATTR_ID){
+                            BigInteger imgValue = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
+                            image = getObjNameByObjId(imgValue);
+                        }
                     }
                 }
                 else{
                     System.out.println("userId, pass, role == 0");
                 }
                 if (!password.equals("") && !role.equals("")){
-                    user = new User(userId, fio, username, password, password, phone, birthday, email, addresses, role);
+                    user = new User(userId, fio, username, password, password, phone, birthday, email, addresses, role, image);
                 }else{
                     System.out.println("pass or role is empty!");
                 }
@@ -124,11 +130,12 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     }
 
     @Override
-    public void saveUser(User user) {
+    public void saveUser(User user){
         BigInteger userId;
         try {
             userId = (user.getUserId() != null)?user.getUserId() : getObjectId();
             if (userId != null){
+                connection.setAutoCommit(false);
                 //Сохраняем юзера в объектах
                 saveObject(user.getLogin(), userId, new BigInteger("0"), Constant.USER_OBJ_TYPE_ID);
                 //ДОБАВЛЯЕМ ПАРАМЕТРЫ ЮЗЕРА
@@ -138,9 +145,15 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                 saveTextParameter(userId, Constant.EMAIL_ATTR_ID, user.getEmail());
                 saveTextParameter(userId, Constant.PHONE_NUMBER_ATTR_ID, user.getPhoneNumber());
                 saveEnumValue(userId, Constant.USER_ROLE_ATTR_ID, Constant.ROLES.get(user.getRole()));
+                connection.commit();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
@@ -304,7 +317,21 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
 
     @Override
     public void removeUserById(BigInteger userId) {
-
         removeObjectById(userId);
+    }
+
+    @Override
+    public void saveUserImage(BigInteger userId, String imageName) throws SQLException {
+        try{
+            connection.setAutoCommit(false);
+            removeRefParameterAndThisObject(userId, Constant.USER_IMAGE_ATTR_ID);
+            BigInteger imageId = getObjectId();
+            saveObject(imageName, imageId, new BigInteger("0"), Constant.IMAGE_OBJ_TYPE_ID);
+            saveReferenceParameter(userId, Constant.USER_IMAGE_ATTR_ID, imageId);
+            connection.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            connection.rollback();
+        }
     }
 }

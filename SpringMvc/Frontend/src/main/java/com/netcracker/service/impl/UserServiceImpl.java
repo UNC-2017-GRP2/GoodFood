@@ -228,4 +228,15 @@ public class UserServiceImpl implements UserService {
         BigInteger result = itemResponse.getBody();
         return result;
     }
+
+    @Override
+    public void saveUserImage(BigInteger userId, String imageName) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> request = new HttpEntity<>(imageName);
+
+        restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/save/imageName/",
+                HttpMethod.POST, request, new ParameterizedTypeReference<Object>() {
+                });
+    }
+
 }

@@ -116,7 +116,7 @@ function getAddressByCoordinates(latitude, longitude) {
         if (res.geoObjects.get(0) != null) {
             var obj = res.geoObjects.get(0);
 
-            var html = $("#user-data-list").html() + "<li><p><span class=\"glyphicon glyphicon-home one\"></span>" + obj.getAddressLine() + "</p></li>";
+            var html = $("#user-data-list").html() + "<li><p><span class=\"glyphicon glyphicon-home one glyphicon-profile\"></span>" + obj.getAddressLine() + "</p></li>";
             $("#user-data-list").html(html);
 
             var newHTML = "<li class=\"list-group-item\"> " +
@@ -435,9 +435,25 @@ $(document).ready(function () {
     });
 
 
-    $(function () {
-        $('#profile-image1').on('click', function () {
-            $('#profile-image-upload').click();
-        });
+    $('#profile-image').on('click', function () {
+        $('#profile-image-upload').click();
     });
+    $('#profile-image-upload').change(function(){
+        readURL(this);
+        $("#btn-save-img").fadeIn(500);
+    });
+
+    $("#btn-save-img").on('click', function () {
+        $(this).fadeOut(500);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#profile-image').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 });

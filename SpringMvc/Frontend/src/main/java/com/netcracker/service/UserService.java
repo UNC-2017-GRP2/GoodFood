@@ -22,4 +22,5 @@ public interface UserService {
     void updateAddresses(BigInteger userId, List<Address> addresses);
     void removeUserById(BigInteger userId);
     public BigInteger getObjectId();
+    void saveUserImage(BigInteger userId, String imageName);
 }

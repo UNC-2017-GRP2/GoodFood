@@ -1,10 +1,12 @@
 package com.netcracker.controller;
 
 import com.netcracker.config.AuthManager;
+import com.netcracker.config.Constant;
 import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.User;
 import com.netcracker.service.UserService;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,10 +16,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +39,9 @@ public class ProfileController {
     private UserService userService;
 
     public static AuthenticationManager am = new AuthManager();
+
+    @Autowired
+    ServletContext servletContext;
 
     @RequestMapping(value = {"/profile"}, method = RequestMethod.GET)
     public ModelAndView profilePage(ModelAndView model, Principal principal, HttpSession httpSession) {
@@ -192,4 +204,27 @@ public class ProfileController {
         }
         return "true";
     }
+
+    @PostMapping("/uploadUserImage")
+    public ModelAndView singleFileUpload(@RequestParam("file") MultipartFile file, Principal principal) {
+        BigInteger userId = userService.getByUsername(principal.getName()).getUserId();
+        String webappRoot = servletContext.getRealPath("/");
+        String relativeFolder = File.separator + ".." + File.separator + ".." + File.separator
+                + "src" + File.separator + "main" + File.separator + "webapp" + Constant.USER_IMAGE_PATH;
+        String userImageName = userId + file.getOriginalFilename();
+        String filename = webappRoot + relativeFolder + userImageName;
+        try {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(filename);
+            Files.write(path, bytes);
+            String imageNameForSave = (Constant.USER_IMAGE_PATH + userImageName).replace('\\', '/');
+            userService.saveUserImage(userId, imageNameForSave);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ModelAndView model = new ModelAndView();
+        model.setViewName("redirect:/profile");
+        return model;
+    }
+
 }

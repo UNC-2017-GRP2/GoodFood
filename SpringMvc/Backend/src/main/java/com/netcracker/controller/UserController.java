@@ -9,6 +9,7 @@ import com.netcracker.model.User;
 import com.netcracker.service.UserService;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -114,5 +115,10 @@ public class UserController {
     @RequestMapping(value = "/object/id", method = RequestMethod.GET)
     public BigInteger getObjectId(){
         return  userService.getObjectId();
+    }
+
+    @RequestMapping(value = "/id/{id}/save/imageName", method = RequestMethod.POST)
+    public void saveUserImage(@PathVariable( "id" ) BigInteger userId, @RequestBody String imageName) throws SQLException {
+        userService.saveUserImage(userId, imageName);
     }
 }

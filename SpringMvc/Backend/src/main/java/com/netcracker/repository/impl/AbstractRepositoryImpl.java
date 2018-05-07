@@ -61,6 +61,21 @@ public class AbstractRepositoryImpl{
         }
     }
 
+    protected String getObjNameByObjId(BigInteger objectId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_NAME_BY_OBJECT_ID);
+            preparedStatement.setObject(1, objectId, numericType);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getString("NAME");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
     protected ResultSet getObjectIdByAttrIdAndTextVal(long attrId, String textVal){
         PreparedStatement preparedStatement;
         try {
@@ -80,6 +95,19 @@ public class AbstractRepositoryImpl{
         try {
             preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_PARAMETERS_BY_OBJECT_ID);
             preparedStatement.setObject(1, objectId, numericType);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    protected ResultSet getParameter(BigInteger objectId, long attrId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_PARAMETERS_BY_OBJ_ATTR);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet;
         } catch (SQLException e) {
@@ -256,6 +284,33 @@ public class AbstractRepositoryImpl{
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_ALL_PARAMETERS_BY_OBJ_ID);
             preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.executeUpdate();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    protected void removeParameter(BigInteger objectId, long attrId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_FROM_PARAMETERS);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    protected void removeRefParameterAndThisObject(BigInteger objectId, long attrId){
+        try{
+            ResultSet param = getParameter(objectId, attrId);
+            BigInteger refId = null;
+            while (param.next()){
+                refId = new BigInteger(param.getString("REFERENCE_VALUE"));
+            }
+            if (refId != null){
+                removeObjectById(refId);
+                removeParameter(objectId, attrId);
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

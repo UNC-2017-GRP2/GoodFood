@@ -81,53 +81,6 @@ public class HomeController {
         return model;
     }
 
-
-    /*@RequestMapping(value = { "/addBasket"}, method = RequestMethod.GET)
-    public String addBasket(ModelAndView model, @RequestParam BigInteger id, @RequestParam int count, Locale locale, HttpSession httpSession) throws IOException {
-        Item item = itemService.getItemById(id, locale);
-        int val = 0;
-        if (item != null){
-            if (httpSession.getAttribute("basketItems") == null){
-                httpSession.setAttribute("basketItems", new ArrayList<Item>());
-            }
-            *//*if (httpSession.getAttribute("cartSize") == null){
-                httpSession.setAttribute("cartSize", 0);
-            }*//*
-            List<Item> curItems = (List<Item>) httpSession.getAttribute("basketItems");
-            boolean itemIsInBasket = false;
-            for(Item itemInBasket : curItems){
-                if(itemInBasket.getProductId().equals(item.getProductId())){
-                    itemInBasket.setProductQuantity(itemInBasket.getProductQuantity() + count);
-                    itemIsInBasket = true;
-                    break;
-                }
-            }
-            if(!itemIsInBasket){
-                item.setProductQuantity(count);
-                curItems.add(item);
-            }
-            httpSession.setAttribute("basketItems", curItems);
-            //httpSession.removeAttribute("cartSize");
-            //int newSize = (int) httpSession.getAttribute("cartSize");
-            //Integer newSize = (Integer)httpSession.getAttribute("cartSize");
-            *//*
-            newSize = val;*//*
-            //newSize = new Integer(newSize.intValue() + val);
-            //httpSession.removeAttribute("cartSize");
-
-            //httpSession.setAttribute("cartSize", newSize);
-            *//*httpSession.setAttribute("cartSize", ((ArrayList<Item>)httpSession.getAttribute("basketItems")).size());*//*
-
-            for (Item curItem:curItems){
-                val+=curItem.getProductQuantity();
-            }
-            model.addObject("cartSize", val);
-        }
-        model.setViewName("redirect:/home");
-        String v = String.valueOf(val);
-        return "hello";
-    }*/
-
     @RequestMapping(value = "/addBasket", method = RequestMethod.GET)
     public @ResponseBody String addBasket(@RequestParam BigInteger id, @RequestParam int count, Locale locale, HttpSession httpSession){
         Item item = itemService.getItemById(id, locale);

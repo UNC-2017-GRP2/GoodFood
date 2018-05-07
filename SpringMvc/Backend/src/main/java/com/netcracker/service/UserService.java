@@ -4,6 +4,7 @@ import com.netcracker.model.Address;
 import com.netcracker.model.User;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface UserService {
@@ -22,4 +23,5 @@ public interface UserService {
     void updateAddresses(BigInteger userId, List<Address> addresses);
     void removeUserById(BigInteger userId);
     public BigInteger getObjectId();
+    void saveUserImage(BigInteger userId, String imageName) throws SQLException;
 }

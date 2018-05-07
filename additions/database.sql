@@ -235,6 +235,7 @@ COPY "ATTR_OBJECT_TYPES" ("OBJECT_TYPE_ID", "ATTR_ID") FROM stdin;
 305	417
 306	418
 305	421
+300	413
 \.
 
 
@@ -270,6 +271,7 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 411	Order paid	51
 410	Address	56
 412	Order	53
+413	User image	53
 414	Item description	51
 415	Item	53
 416	Order courier	53
