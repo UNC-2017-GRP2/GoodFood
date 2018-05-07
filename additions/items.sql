@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-=======
-﻿INSERT INTO public."ENUM_TYPES"(
-	"ENUM_TYPE_ID", "NAME")
-	VALUES (702, 'Item category');
-
-INSERT INTO public."ENUMS"(
-	"ENUM_ID", "NAME", "ENUM_TYPE_ID")
-	VALUES (811, 'Pizza', 702),
-    (812, 'Sushi', 702),
-    (813, 'Burgers', 702),
-    (814, 'Salads', 702),
-    (815,'Snacks',702),
-    (816,'Dessert',702),
-    (817, 'Beverages', 702);
-
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 UPDATE public."ATTRIBUTES"
 	SET "ATTR_TYPE_ID"=55
 	WHERE "ATTR_ID"=408;
@@ -57,7 +40,6 @@ INSERT INTO public."OBJECTS"(
 	(1590313064688510045, 'Sprite', 0, 306),
 	(1590313064688510046, 'Orange juice', 0, 306),
 	(1590313064688510047, 'Schweppes', 0, 306),
-<<<<<<< HEAD
 	(1590313064688510048, 'Coca-Cola', 0, 306),
 	(2590313064688510048, 'PILS, KROMBACHER', 0, 306),
 	(3590313064688510048, 'ABSOLUT KURANT', 0, 306),
@@ -65,156 +47,86 @@ INSERT INTO public."OBJECTS"(
 INSERT INTO public."PARAMETERS"(
 	"OBJECT_ID", "ATTR_ID", "TEXT_VALUE", "DATE_VALUE", "REFERENCE_VALUE", "ENUM_VALUE")
 	VALUES (1590313064830067771, 401, 'Meat Pizza', null, 0, 0),   
-=======
-	(1590313064688510048, 'Coca-Cola', 0, 306);
-INSERT INTO public."PARAMETERS"(
-	"OBJECT_ID", "ATTR_ID", "TEXT_VALUE", "DATE_VALUE", "REFERENCE_VALUE", "ENUM_VALUE")
-	VALUES (1590313064830067771, 413, 'Meat Pizza', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064830067771, 408, null, null, 0, 811),
 	(1590313064830067771, 414, 'Chicken fillet, ham, sausages, tomatoes, gherkins, mozzarella cheese, red onions.', null, 0, 0),
 	(1590313064830067771, 409, '450', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064686412860, 401, 'European Pizza', null, 0, 0),   
-=======
-	(1590313064686412860, 413, 'European Pizza', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064686412860, 408, null, null, 0, 811),
 	(1590313064686412860, 414, 'Ham, ham, chicken fillet, Servelat, Bulgarian pepper, Mozzarella cheese, Tomato sauce, "Maggiore" sauce.', null, 0, 0),
 	(1590313064686412860, 409, '420', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461437, 401, 'Pizza Barbecue', null, 0, 0),   
-=======
-	(1590313064687461437, 413, 'Pizza Barbecue', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461437, 408, null, null, 0, 811),
 	(1590313064687461437, 414, 'City Pizza sauce, Mozzarella cheese, chicken, bacon, champignons, Bulgarian pepper, red onion, French onion, barbecue sauce.', null, 0, 0),
 	(1590313064687461437, 409, '490', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461438, 401, 'Pizza Diablo', null, 0, 0),   
-=======
-	(1590313064687461438, 413, 'Pizza Diablo', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461438, 408, null, null, 0, 811),
 	(1590313064687461438, 414, 'Spicy pizza with chicken fillet, pepperoni sausages, tomatoes, red onion, spicy herbs, mozzarella cheese and hot pepper.', null, 0, 0),
 	(1590313064687461438, 409, '350', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461439, 401, 'Peperoni', null, 0, 0),   
-=======
-	(1590313064687461439, 413, 'Peperoni', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461439, 408, null, null, 0, 811),
 	(1590313064687461439, 414, 'Spicy sausages of pepperoni, mozzarella cheese.', null, 0, 0),
 	(1590313064687461439, 409, '340', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461440, 401, 'Vegetarian Pizza', null, 0, 0),   
-=======
-	(1590313064687461440, 413, 'Vegetarian Pizza', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461440, 408, null, null, 0, 811),
 	(1590313064687461440, 414, 'Cheese "Mozzarella", sweet peppers, onions, tomatoes, champignons, olives.', null, 0, 0),
 	(1590313064687461440, 409, '300', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461441, 401, 'California', null, 0, 0),   
-=======
-	(1590313064687461441, 413, 'California', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461441, 408, null, null, 0, 812),
 	(1590313064687461441, 414, 'Snow crab, Masaga caviar, cream cheese, cucumber, sesame.', null, 0, 0),
 	(1590313064687461441, 409, '120', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461442, 401, 'Philadelphia', null, 0, 0),   
-=======
-	(1590313064687461442, 413, 'Philadelphia', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461442, 408, null, null, 0, 812),
 	(1590313064687461442, 414, 'Salmon, cream cheese, cucumber.', null, 0, 0),
 	(1590313064687461442, 409, '190', null, 0, 0),
 	
-<<<<<<< HEAD
 	(1590313064687461443, 401, 'Chicken and cheese', null, 0, 0),   
-=======
-	(1590313064687461443, 413, 'Chicken and cheese', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461443, 408, null, null, 0, 812),
 	(1590313064687461443, 414, 'Chicken fried, steamed vegetables, cream cheese, marbled cheese, sesame.', null, 0, 0),
 	(1590313064687461443, 409, '145', null, 0, 0),
 	
-<<<<<<< HEAD
 	(1590313064687461444, 401, 'Creamy shrimp', null, 0, 0),   
-=======
-	(1590313064687461444, 413, 'Creamy shrimp', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461444, 408, null, null, 0, 812),
 	(1590313064687461444, 414, 'Cream cheese, snow crab, Masaga caviar, cucumber, shrimp.', null, 0, 0),
 	(1590313064687461444, 409, '125', null, 0, 0),
 	
-<<<<<<< HEAD
 	(1590313064687461445, 401, 'Chicken spice', null, 0, 0),   
-=======
-	(1590313064687461445, 413, 'Chicken spice', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461445, 408, null, null, 0, 812),
 	(1590313064687461445, 414, 'Chicken Teriyaki, cream cheese, Spice sauce, Bulgarian pepper, Chinese cabbage, green onions.', null, 0, 0),
 	(1590313064687461445, 409, '130', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461446, 401, 'Burger New York', null, 0, 0),   
-=======
-	(1590313064687461446, 413, 'Burger New York', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461446, 408, null, null, 0, 813),
 	(1590313064687461446, 414, '100% marble beef Black Angus, a special piquant Grill sauce, a slice of Maasdam cheese, an iceberg salad, fresh tomatoes, onions, pickled gherkins, a brioche bun.', null, 0, 0),
 	(1590313064687461446, 409, '470', null, 0, 0),
 	
-<<<<<<< HEAD
 	(1590313064687461447, 401, 'The Texas Burger', null, 0, 0),   
-=======
-	(1590313064687461447, 413, 'The Texas Burger', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461447, 408, null, null, 0, 813),
 	(1590313064687461447, 414, 'Grilled meat grilled meat with Guacamole, piquant sauce Pico De Gallo with Chipotle pepper and Cheddar cheese on fresh Prentzel Bun.', null, 0, 0),
 	(1590313064687461447, 409, '450', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461448, 401, 'Burger with Salmon', null, 0, 0),   
-=======
-	(1590313064687461448, 413, 'Burger with Salmon', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461448, 408, null, null, 0, 813),
 	(1590313064687461448, 414, 'Chopped salmon, seasoned with soy sauce and mayonnaise, with the addition of sesame seeds, is served on a brioche brioche.', null, 0, 0),
 	(1590313064687461448, 409, '500', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461449, 401, 'Burger BBQ', null, 0, 0),   
-=======
-	(1590313064687461449, 413, 'Burger BBQ', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461449, 408, null, null, 0, 813),
 	(1590313064687461449, 414, 'American burger with a marble beef cutlet, onion rings and bbq sauce.', null, 0, 0),
 	(1590313064687461449, 409, '360', null, 0, 0),
 	
-<<<<<<< HEAD
 	(1590313064687461450, 401, 'Cheeseburger', null, 0, 0),   
-=======
-	(1590313064687461450, 413, 'Cheeseburger', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461450, 408, null, null, 0, 813),
 	(1590313064687461450, 414, 'Cutlet from marble beef, cheddar cheese, romano lettuce, tomatoes, red onions, pickles, mayonnaise-mustard sauce.', null, 0, 0),
 	(1590313064687461450, 409, '300', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461451, 401, 'Mexican burger', null, 0, 0),   
-=======
-	(1590313064687461451, 413, 'Mexican burger', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461451, 408, null, null, 0, 813),
 	(1590313064687461451, 414, 'Spicy juicy burger with jalapeno pepper and chopped beef patty with roasted bacon, fresh tomatoes, iceberg salad, crispy pickled cucumbers and barbecue sauce in a brioche bun.', null, 0, 0),
 	(1590313064687461451, 409, '520', null, 0, 0),
@@ -229,169 +141,96 @@ INSERT INTO public."PARAMETERS"(
 	(1590313064687461453, 414, 'An example of an incredibly juicy filling thanks to a cutlet from marble beef bacon poached egg and double cheddar cheese and also the addition of home-made mayonnaise and ketchup red wine. Vegetable base consists of lightly salted cucumbers spicy ruccola leaves romaine lettuce and crunchy red onion rings. Served with French fries and cole slou.', null, 0, 0),
 	(1590313064687461453, 409, '750', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461454, 401, 'Caesar salad', null, 0, 0),   
-=======
-	(1590313064687461454, 413, 'Caesar salad', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461454, 408, null, null, 0, 814),
 	(1590313064687461454, 414, 'Lettuce leaves in the original dressing with roasted chicken fillet, parmesan cheese, fresh tomatoes and crispy croutons.', null, 0, 0),
 	(1590313064687461454, 409, '195', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461455, 401, 'Salad with veal and greens', null, 0, 0),   
-=======
-	(1590313064687461455, 413, 'Salad with veal and greens', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461455, 408, null, null, 0, 814),
 	(1590313064687461455, 414, 'Fried calf meat, cucumbers, tomatoes, eggplant, arugula, cilantro, red onion, honey-balsamic sauce.', null, 0, 0),
 	(1590313064687461455, 409, '490', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461456, 401, 'Vegetable salad with spinach', null, 0, 0),   
-=======
-	(1590313064687461456, 413, 'Vegetable salad with spinach', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461456, 408, null, null, 0, 814),
 	(1590313064687461456, 414, 'Spinach, arugula, Baku tomatoes, cucumbers, bell peppers, dill, Narsharab sauce, olive oil.', null, 0, 0),
 	(1590313064687461456, 409, '590', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461457, 401, 'Greek salad', null, 0, 0),   
-=======
-	(1590313064687461457, 413, 'Greek salad', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461457, 408, null, null, 0, 814),
 	(1590313064687461457, 414, 'Mix of fresh vegetables, Iceberg lettuce, olives and soft cheese with spicy notes of basil and sesame.', null, 0, 0),
 	(1590313064687461457, 409, '175', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461458, 401, 'Tuscany', null, 0, 0),   
-=======
-	(1590313064687461458, 413, 'Tuscany', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461458, 408, null, null, 0, 814),
 	(1590313064687461458, 414, 'Warm salad with pork and fresh vegetables in the original dressing.', null, 0, 0),
 	(1590313064687461458, 409, '245', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461459, 401, 'Nuggets with chicken', null, 0, 0),   
-=======
-	(1590313064687461459, 413, 'Nuggets with chicken', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461459, 408, null, null, 0, 815),
 	(1590313064687461459, 414, 'Deep-fried chicken fillet.', null, 0, 0),
 	(1590313064687461459, 409, '175', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461460, 401, 'Toasted garlic', null, 0, 0),   
-=======
-	(1590313064687461460, 413, 'Toasted garlic', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461460, 408, null, null, 0, 815),
 	(1590313064687461460, 414, 'Aromatic toast with garlic and cream sauce.', null, 0, 0),
 	(1590313064687461460, 409, '95', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461461, 401, 'French fries', null, 0, 0),   
-=======
-	(1590313064687461461, 413, 'French fries', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461461, 408, null, null, 0, 815),
 	(1590313064687461461, 414, 'Crispy potato straw.', null, 0, 0),
 	(1590313064687461461, 409, '95', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461462, 401, 'Rings of squids', null, 0, 0),   
-=======
-	(1590313064687461462, 413, 'Rings of squids', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461462, 408, null, null, 0, 815),
 	(1590313064687461462, 414, 'Appetizing crispy squid rings. Served on Iceberg salad with Ischia sauce.', null, 0, 0),
 	(1590313064687461462, 409, '155', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461463, 401, 'Nuggets cheese', null, 0, 0),   
-=======
-	(1590313064687461463, 413, 'Nuggets cheese', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461463, 408, null, null, 0, 815),
 	(1590313064687461463, 414, 'Crispy cheese sticks with Ischia sauce.', null, 0, 0),
 	(1590313064687461463, 409, '160', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064687461464, 401, 'Cheesecake', null, 0, 0),   
-=======
-	(1590313064687461464, 413, 'Cheesecake', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064687461464, 408, null, null, 0, 816),
 	(1590313064687461464, 414, 'Cake of cream cheese Philadelphia.', null, 0, 0),
 	(1590313064687461464, 409, '175', null, 0, 0),
 
-<<<<<<< HEAD
-	(1590313064687461465, 401, 'Esterh?zy Cake', null, 0, 0),   
-=======
-	(1590313064687461465, 413, 'Esterh?zy Cake', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
+	(1590313064687461465, 401, 'Esterházy Cake', null, 0, 0),
 	(1590313064687461465, 408, null, null, 0, 816),
 	(1590313064687461465, 414, 'Dessert of thin air cakes, hazelnuts and walnut praline.', null, 0, 0),
 	(1590313064687461465, 409, '195', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064688510042, 401, 'Tiramisu', null, 0, 0),   
-=======
-	(1590313064688510042, 413, 'Tiramisu', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064688510042, 408, null, null, 0, 816),
 	(1590313064688510042, 414, 'A classic dessert made of coffee biscuit impregnated with liqueur and espresso, under a layer of airy cheese cream.', null, 0, 0),
 	(1590313064688510042, 409, '185', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064688510043, 401, 'Cheese pancake', null, 0, 0),   
-=======
-	(1590313064688510043, 413, 'Cheese pancake', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064688510043, 408, null, null, 0, 816),
 	(1590313064688510043, 414, 'Cheesecakes with fruit jam and strawberry sauce.', null, 0, 0),
 	(1590313064688510043, 409, '135', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064688510044, 401, 'Fanta', null, 0, 0),   
-=======
-	(1590313064688510044, 413, 'Fanta', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064688510044, 408, null, null, 0, 817),
 	(1590313064688510044, 414, 'Fanta 250 ml', null, 0, 0),
 	(1590313064688510044, 409, '137', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064688510045, 401, 'Sprite', null, 0, 0),   
-=======
-	(1590313064688510045, 413, 'Sprite', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064688510045, 408, null, null, 0, 817),
 	(1590313064688510045, 414, 'Sprite 250 ml', null, 0, 0),
 	(1590313064688510045, 409, '137', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064688510046, 401, 'Orange juice', null, 0, 0),   
-=======
-	(1590313064688510046, 413, 'Orange juice', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064688510046, 408, null, null, 0, 817),
 	(1590313064688510046, 414, 'Orange juice freshly squeezed 500 ml', null, 0, 0),
 	(1590313064688510046, 409, '490', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064688510047, 401, 'Schweppes', null, 0, 0),   
-=======
-	(1590313064688510047, 413, 'Schweppes', null, 0, 0),   
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 	(1590313064688510047, 408, null, null, 0, 817),
 	(1590313064688510047, 414, 'Schweppes 250 ml', null, 0, 0),
 	(1590313064688510047, 409, '140', null, 0, 0),
 
-<<<<<<< HEAD
 	(1590313064688510048, 401, 'Coca-Cola', null, 0, 0),   
 	(1590313064688510048, 408, null, null, 0, 817),
 	(1590313064688510048, 414, 'Coca-Cola 1000 ml', null, 0, 0),
@@ -411,12 +250,6 @@ INSERT INTO public."PARAMETERS"(
 	(4590313064688510048, 408, null, null, 0, 820),
 	(4590313064688510048, 414, 'KENTUCKY GENTLEMAN, 40%, 0.75Л', null, 0, 0),
 	(4590313064688510048, 409, '733', null, 0, 0);
-=======
-	(1590313064688510048, 413, 'Coca-Cola', null, 0, 0),   
-	(1590313064688510048, 408, null, null, 0, 817),
-	(1590313064688510048, 414, 'Coca-Cola 1000 ml', null, 0, 0),
-	(1590313064688510048, 409, '170', null, 0, 0);
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 
 	INSERT INTO public."OBJECTS"(
 "OBJECT_ID",	"NAME",  "PARENT_ID", "OBJECT_TYPE_ID")
@@ -544,7 +377,6 @@ INSERT INTO public."PARAMETERS"(
 (1590313064688510047, 418, null, null, 1590352560633144461, 0),
 (1590313064688510048, 418, null, null, 1590352560633144462, 0);
 
-<<<<<<< HEAD
 	INSERT INTO public."OBJECTS"(
 "OBJECT_ID",		"NAME",  "PARENT_ID", "OBJECT_TYPE_ID")
 	VALUES (2590352560633144458,'/resources/img/alcohol/alcohol_krombacher.jpg', 0, 301),
@@ -559,8 +391,6 @@ INSERT INTO public."PARAMETERS"(
 (4590313064688510048, 418, null, null, 4590352560633144458, 0);
 
 
-=======
->>>>>>> 9394d34dd139ea22054ba1da16997399b79f7068
 UPDATE public."ATTRIBUTES"
 	SET "ATTR_TYPE_ID"=56
 	WHERE "ATTR_ID"=410;
