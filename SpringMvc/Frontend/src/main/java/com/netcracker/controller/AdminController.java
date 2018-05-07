@@ -354,7 +354,10 @@ public class AdminController{
     @PostMapping("/upload")
     public void singleFileUpload(@RequestParam("file") MultipartFile file) {
         String webappRoot = servletContext.getRealPath("/");
-        String relativeFolder = File.separator + "resources" + File.separator
+//        String relativeFolder = File.separator + "resources" + File.separator
+//                + "img" + File.separator;
+        String relativeFolder = File.separator + ".." + File.separator + ".." + File.separator
+                + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "resources" + File.separator
                 + "img" + File.separator;
         String filename = webappRoot + relativeFolder
                 + file.getOriginalFilename();
