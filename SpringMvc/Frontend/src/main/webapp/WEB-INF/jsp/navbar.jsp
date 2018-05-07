@@ -38,7 +38,13 @@
             <c:if test="${pageContext.request.userPrincipal.name != null}">
                 <sec:authorize access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')">
                     <li><a href="${pageContext.request.contextPath}/basket">
-                        <span class="glyphicon glyphicon-shopping-cart" id="icon-cart"></span><span id="cart-badge" class="badge">${cartSize}<%--<%=((ArrayList<Item>)session.getAttribute("basketItems")).size()%>--%><%--<%=(session.getAttribute("cartSize")!=null)?session.getAttribute("cartSize"):0%>--%></span></a>
+                        <%
+                            int cartSize = 0;
+                            for (Item item:(ArrayList<Item>)session.getAttribute("basketItems")){
+                                cartSize += item.getProductQuantity();
+                            }
+                        %>
+                        <span class="glyphicon glyphicon-shopping-cart" id="icon-cart"></span><span id="cart-badge" class="badge"><%=cartSize%></span></a>
                     </li>
                 </sec:authorize>
             </c:if>

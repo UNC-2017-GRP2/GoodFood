@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Controller
-@SessionAttributes(value = {"username","basketItems"})
+@SessionAttributes(value = {"username","basketItems","cartSize1"})
 public class HomeController {
 
     @Autowired
@@ -38,8 +38,6 @@ public class HomeController {
             if (!user.getRole().equals(Constant.ROLE_COURIER)){
                 if (httpSession.getAttribute("basketItems") == null){
                     httpSession.setAttribute("basketItems", new ArrayList<Item>());
-                    model.addObject("cartSize", 0);
-                    /*httpSession.setAttribute("cartSize", ((ArrayList<Item>)httpSession.getAttribute("basketItems")).size());*/
                 }else{
                     int val = 0;
                     for (Item item:(List<Item>) httpSession.getAttribute("basketItems")){
@@ -47,9 +45,6 @@ public class HomeController {
                     }
                     model.addObject("cartSize", val);
                 }
-                /*if (httpSession.getAttribute("cartSize") == null){
-                    httpSession.setAttribute("cartSize", 0);
-                }*/
             }
             if (httpSession.getAttribute("userAddresses") == null){
                 httpSession.setAttribute("userAddresses", user.getAddresses());

@@ -42,12 +42,6 @@ public class BasketController {
             BigInteger sum = orderService.totalOrder((ArrayList<Item>) basketItems);
             model.addObject("totalOrder", sum);
         }
-        int val = 0;
-        for (Item item:basketItems){
-            val+=item.getProductQuantity();
-        }
-        model.addObject("cartSize", val);
-
         model.addObject("userAddresses", httpSession.getAttribute("userAddresses"));
 
         if (message != null){

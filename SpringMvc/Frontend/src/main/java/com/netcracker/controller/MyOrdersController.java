@@ -69,11 +69,6 @@ public class MyOrdersController {
             pageCount = (int)Math.ceil(((double)allOrders.size())/((double)Constant.ORDERS_QUANTITY_ON_PAGE));
             model.addObject("pageCount", pageCount);
         }
-        int val = 0;
-        for (Item item:(List<Item>) httpSession.getAttribute("basketItems")){
-            val+=item.getProductQuantity();
-        }
-        model.addObject("cartSize", val);
         model.setViewName("my-orders");
         return model;
     }
