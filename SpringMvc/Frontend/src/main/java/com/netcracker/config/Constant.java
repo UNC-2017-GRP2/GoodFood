@@ -27,7 +27,7 @@ public class Constant {
         STATUSES = Collections.unmodifiableMap(map);
     }
 
-    public static String USER_IMAGE_PATH = File.separator + "resources" + File.separator
+    public static String USER_IMAGE_PATH = "resources" + File.separator
             + "img" + File.separator + "avatars" + File.separator;
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";

@@ -210,14 +210,16 @@ public class ProfileController {
         BigInteger userId = userService.getByUsername(principal.getName()).getUserId();
         String webappRoot = servletContext.getRealPath("/");
         String relativeFolder = File.separator + ".." + File.separator + ".." + File.separator
-                + "src" + File.separator + "main" + File.separator + "webapp" + Constant.USER_IMAGE_PATH;
+                + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + Constant.USER_IMAGE_PATH;
         String userImageName = userId + file.getOriginalFilename();
         String filename = webappRoot + relativeFolder + userImageName;
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(filename);
             Files.write(path, bytes);
-            String imageNameForSave = (Constant.USER_IMAGE_PATH + userImageName).replace('\\', '/');
+            Path targetPath = Paths.get(webappRoot + Constant.USER_IMAGE_PATH + userImageName);
+            Files.write(targetPath, bytes);
+            String imageNameForSave = (File.separator + Constant.USER_IMAGE_PATH + userImageName).replace('\\', '/');
             userService.saveUserImage(userId, imageNameForSave);
         } catch (IOException e) {
             e.printStackTrace();
