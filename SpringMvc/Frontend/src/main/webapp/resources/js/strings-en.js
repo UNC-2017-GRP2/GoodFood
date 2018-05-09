@@ -69,6 +69,8 @@ function getErrorString(stringId) {
             return 'Item was not deleted.';
         case 'order_not_deleted':
             return 'Order was nod deleted.';
+        case 'invalid_file':
+            return 'That ain\'t no .xls or .xlsx file.';
     }
 }
 

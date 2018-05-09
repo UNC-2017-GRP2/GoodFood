@@ -66,6 +66,8 @@ function getErrorString(stringId) {
             return 'Продукт не был удален.';
         case 'order_not_deleted':
             return 'Заказ не был удален.';
+        case 'invalid_file':
+            return 'Это не файл .xls или .xlsx.';
     }
 }
 

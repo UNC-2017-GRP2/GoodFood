@@ -299,18 +299,23 @@ public class AdminController{
                 }
             }
         }*/
+        switch (file.getContentType()){
+            case Constant.XLSX_TYPE:
+                parseXLSX(file);
+                break;
+            case Constant.XLS_TYPE:
+                parseXLS(file);
+                break;
+        }
+    }
 
-        InputStream ExcelFileToRead = file.getInputStream();
-        XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);
-
-        XSSFWorkbook test = new XSSFWorkbook();
-
-        XSSFSheet sheet = wb.getSheetAt(0);
+    private void parseXLSX(MultipartFile file) throws IOException {
+        InputStream inputStream = file.getInputStream();
+        XSSFWorkbook  workBook = new XSSFWorkbook(inputStream);
+        XSSFSheet sheet = workBook.getSheetAt(0);
         XSSFRow row;
         XSSFCell cell;
-
         Iterator rows = sheet.rowIterator();
-
         while (rows.hasNext())
         {
             row=(XSSFRow) rows.next();
@@ -318,7 +323,6 @@ public class AdminController{
             while (cells.hasNext())
             {
                 cell=(XSSFCell) cells.next();
-
                 if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
                 {
                     System.out.print(cell.getStringCellValue()+" ");
@@ -334,17 +338,9 @@ public class AdminController{
             }
             System.out.println();
         }
+    }
+    private void parseXLS(MultipartFile file){
 
-        /*File currDir = new File(".");
-        String path = currDir.getAbsolutePath();
-        fileLocation = path.substring(0, path.length() - 1) + file.getOriginalFilename();
-        FileOutputStream f = new FileOutputStream(fileLocation);
-        int ch = 0;
-        while ((ch = in.read()) != -1) {
-            f.write(ch);
-        }
-        f.flush();
-        f.close();*/
     }
 
 

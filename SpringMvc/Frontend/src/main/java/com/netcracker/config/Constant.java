@@ -27,8 +27,12 @@ public class Constant {
         STATUSES = Collections.unmodifiableMap(map);
     }
 
-    public static String USER_IMAGE_PATH = "resources" + File.separator
+    public static final String USER_IMAGE_PATH = "resources" + File.separator
             + "img" + File.separator + "avatars" + File.separator;
+
+    public static final String XLSX_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    public static final String XLS_TYPE = "application/vnd.ms-excel";
+
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_COURIER = "ROLE_COURIER";

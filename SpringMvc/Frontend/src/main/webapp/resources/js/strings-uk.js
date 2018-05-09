@@ -67,6 +67,8 @@ function getErrorString(stringId) {
             return 'Елемент не був видалений.';
         case 'order_not_deleted':
             return 'Замовлення не був видалений.';
+        case 'invalid_file':
+            return 'Це не файл .xls або .xlsx.';
     }
 }
 

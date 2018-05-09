@@ -431,6 +431,40 @@ $(document).ready(function () {
         }
     });
 
+  /*  $("#my-file-selector").onchange = function () {
+        var fileName = this.value;
+        var fileExtension = fileName.substr(fileName.length - 4);
+
+        console.log(fileExtension);
+        if (fileExtension !== ".xls") {
+            alert("That ain't no .xls file!");
+        }else{
+            $('#upload-file-info').html(fileName)
+        }
+    };*/
+
+    $("#my-file-selector").change(function () {
+        var fileName = this.files[0].name;
+        var fileType = this.files[0].type;
+        if (fileType !== "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && fileType !== "application/vnd.ms-excel") {
+            $.notify(getErrorString('invalid_file'), "error");
+            this.value = "";
+            $('#upload-file-info').html("");
+        } else {
+            $('#upload-file-info').html(fileName);
+        }
+    });
+
+    $( "#add-item-form" ).submit(function( event ) {
+        if ( $("#my-file-selector").val() === "" ) {
+            $.notify(getErrorString('invalid_file'), "error");
+            event.preventDefault();
+        }else{
+            $( "#add-item-form" ).submit();
+        }
+    });
+
+
     /*CHARTS*/
 });
 

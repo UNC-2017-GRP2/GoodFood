@@ -10,10 +10,13 @@
 <head>
     <title><spring:message code="general.adminPanel"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin-style.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/datatables/1.10.12/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/datatables/1.10.12/css/dataTables.material.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/webjars/datatables/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/webjars/datatables/1.10.12/css/dataTables.material.min.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
@@ -21,8 +24,10 @@
             src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -436,14 +441,19 @@
                                     <td data-toggle="modal" data-target="#order-info-modal">${order.orderId}</td>
                                     <td data-toggle="modal" data-target="#order-info-modal">${order.userId}</td>
                                     <td data-toggle="modal" data-target="#order-info-modal">${order.status}</td>
-                                    <td data-toggle="modal" data-target="#order-info-modal"><c:forEach items="${order.orderItems}" var="item">
+                                    <td data-toggle="modal" data-target="#order-info-modal"><c:forEach
+                                            items="${order.orderItems}" var="item">
                                         ${item.productName}<br/>
                                         <%--${item.productCost} ₽<br/>--%>
                                     </c:forEach>
                                     </td>
-                                    <td data-toggle="modal" data-target="#order-info-modal">${order.orderCreationDate.toString()}</td>
-                                    <td id="creation-date-until-td" data-toggle="modal" data-target="#order-info-modal">${order.orderCreationDate.until(now, chr)}</td>
-                                    <td id="order-cost-td" data-toggle="modal" data-target="#order-info-modal">${order.orderCost} ₽</td>
+                                    <td data-toggle="modal"
+                                        data-target="#order-info-modal">${order.orderCreationDate.toString()}</td>
+                                    <td id="creation-date-until-td" data-toggle="modal"
+                                        data-target="#order-info-modal">${order.orderCreationDate.until(now, chr)}</td>
+                                    <td id="order-cost-td" data-toggle="modal"
+                                        data-target="#order-info-modal">${order.orderCost} ₽
+                                    </td>
                                     <td class="text-center td-for-items-btns">
                                         <a href="#" class="btn btn-danger btn-xs"
                                            onclick="removeOrder(this, '${order.orderId}');">
@@ -498,7 +508,8 @@
                                     <td>${item.productDescription}</td>
                                     <td>${item.productCost} ₽</td>
                                     <td class="text-center td-for-items-btns">
-                                        <a class="btn btn-info btn-xs btn-for-item" href="#"  data-toggle="modal" data-target="#edit-item-modal" onclick="editItem('${item.productId}');" >
+                                        <a class="btn btn-info btn-xs btn-for-item" href="#" data-toggle="modal"
+                                           data-target="#edit-item-modal" onclick="editItem('${item.productId}');">
                                             <span class="glyphicon glyphicon-edit"></span><spring:message
                                                 code="admin.item.edit"/>
                                         </a><br><br>
@@ -518,20 +529,25 @@
                         <h3 class="panel-title"><spring:message code="admin.item.add_items"/></h3>
                     </div>
                     <div class="panel-body">
-                        <form id="add-item-form" action="/admin/createItems" method="post" enctype="multipart/form-data">
-                            <input type="file" name="file" accept=".xls,.xlsx" />
-                            <button type="submit" class="btn btn-default">Upload</button>
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        </form>
-
-                            <form method="POST" action="${pageContext.request.contextPath}/upload" enctype="multipart/form-data">
-                                <input type="file" name="file" /><br/>
-                                <input type="submit" value="Submit" />
+                        <form id="add-item-form" action="${pageContext.request.contextPath}/admin/createItems"
+                              method="post" enctype="multipart/form-data">
+                            <div id="add-item-content">
+                                <%--<input type="file" name="file" accept=".xls,.xlsx" class="btn btn-default form-control"/>--%>
+                                <label class="btn btn-default form-control" for="my-file-selector">
+                                    <input id="my-file-selector" type="file" name="file" accept=".xls,.xlsx">
+                                    <spring:message code="admin.file.browse"/>
+                                </label>
+                                <span id="upload-file-info"></span>
+                                <button type="submit" class="btn btn-default form-control" id = "upload-excel-btn"><spring:message code="admin.file.upload"/>
+                                </button>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            </form>
-                            <%--<img class="media-object img-rounded img-responsive"
-                                 src="${pageContext.request.contextPath}/resources/img/mysterion.jpg">--%>
-
+                            </div>
+                        </form>
+                        <%--   <form method="POST" action="${pageContext.request.contextPath}/upload" enctype="multipart/form-data">
+                               <input type="file" name="file" /><br/>
+                               <input type="submit" value="Submit" />
+                               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                           </form>--%>
                     </div>
                 </div>
             </div>
@@ -573,7 +589,7 @@
                                 <p class="row">
                                     <span class="col-sm-1"></span>
                                     <span class="col-sm-4"><spring:message
-                                    code="users.role"/></span>
+                                            code="users.role"/></span>
                                     <span id="data-role" class="col-sm-6 user-value"></span>
                                 </p>
                             </li>
@@ -655,11 +671,11 @@
                         </div>--%>
                         <div class="row text-left">
                             <div class="col-sm-5"><spring:message code="orders.deliveryTo"/></div>
-                            <div class="col-sm-7 order-value" id = "order-address"></div>
+                            <div class="col-sm-7 order-value" id="order-address"></div>
                         </div>
                         <div class="row text-left">
                             <div class="col-sm-5"><spring:message code="orders.phone"/></div>
-                            <div class="col-sm-7 order-value" id = "order-phone"></div>
+                            <div class="col-sm-7 order-value" id="order-phone"></div>
                         </div>
                         <div class="row text-left">
                             <div class="col-sm-5"><spring:message code="orders.paymentType"/></div>
@@ -761,45 +777,52 @@
                         </div>
 
                         <div class="row text-left edit-item-row">
-                            <label for="item-name-en" class="col-xs-4 control-label"><spring:message code="admin.item.name_en"/>:</label>
+                            <label for="item-name-en" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.name_en"/>:</label>
                             <div class="col-xs-6">
                                 <input type="text" id='item-name-en' class="form-control item-param">
                             </div>
                         </div>
                         <div class="row text-left edit-item-row">
-                            <label for="item-name-ru" class="col-xs-4 control-label"><spring:message code="admin.item.name_ru"/>:</label>
+                            <label for="item-name-ru" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.name_ru"/>:</label>
                             <div class="col-xs-6">
                                 <input type="text" id='item-name-ru' class="form-control item-param">
                             </div>
                         </div>
                         <div class="row text-left edit-item-row">
-                            <label for="item-name-uk" class="col-xs-4 control-label"><spring:message code="admin.item.name_uk"/>:</label>
+                            <label for="item-name-uk" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.name_uk"/>:</label>
                             <div class="col-xs-6">
                                 <input type="text" id='item-name-uk' class="form-control item-param">
                             </div>
                         </div>
 
                         <div class="row text-left edit-item-row">
-                            <label for="item-description-en" class="col-xs-4 control-label"><spring:message code="admin.item.description_en"/>:</label>
+                            <label for="item-description-en" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.description_en"/>:</label>
                             <div class="col-xs-6">
                                 <textarea id='item-description-en' class="form-control item-param"></textarea>
                             </div>
                         </div>
                         <div class="row text-left edit-item-row">
-                            <label for="item-description-ru" class="col-xs-4 control-label"><spring:message code="admin.item.description_ru"/>:</label>
+                            <label for="item-description-ru" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.description_ru"/>:</label>
                             <div class="col-xs-6">
                                 <textarea id='item-description-ru' class="form-control item-param"></textarea>
                             </div>
                         </div>
                         <div class="row text-left edit-item-row">
-                            <label for="item-description-uk" class="col-xs-4 control-label"><spring:message code="admin.item.description_uk"/>:</label>
+                            <label for="item-description-uk" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.description_uk"/>:</label>
                             <div class="col-xs-6">
                                 <textarea id='item-description-uk' class="form-control item-param"></textarea>
                             </div>
                         </div>
 
                         <div class="row text-left edit-item-row">
-                            <label for="item-cost" class="col-xs-4 control-label"><spring:message code="admin.item.cost"/>:</label>
+                            <label for="item-cost" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.cost"/>:</label>
                             <div class="col-xs-6">
                                 <input type='text' id='item-cost'
                                        class="form-control item-param">
@@ -811,7 +834,8 @@
                         </ul>
 
                         <div class="row text-left edit-item-row">
-                            <label for="item-image" class="col-xs-4 control-label"><spring:message code="admin.item.image"/>:</label>
+                            <label for="item-image" class="col-xs-4 control-label"><spring:message
+                                    code="admin.item.image"/>:</label>
                             <div class="media col-xs-6">
                                 <img id="item-image" class="media-object img-rounded img-responsive"
                                      src="${pageContext.request.contextPath}">
@@ -821,7 +845,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary"><spring:message code="profile.save"></spring:message></button>
+                <button type="button" class="btn btn-primary"><spring:message
+                        code="profile.save"></spring:message></button>
             </div>
         </div>
     </div>
