@@ -21,6 +21,14 @@ public class Item {
         this.productQuantity = productQuantity;
     }
 
+    public Item(String productName, String productDescription, String productCategory, BigInteger productCost, int productQuantity) {
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.productCategory = productCategory;
+        this.productCost = productCost;
+        this.productQuantity = productQuantity;
+    }
+
     public Item(){}
 
 

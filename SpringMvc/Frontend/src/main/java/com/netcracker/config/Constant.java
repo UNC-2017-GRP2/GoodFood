@@ -27,12 +27,27 @@ public class Constant {
         STATUSES = Collections.unmodifiableMap(map);
     }
 
+    public static Map<String, Long> CATEGORIES;
+    static {
+        Map<String, Long> map = new HashMap<>();
+        map.put("Pizza", Constant.CATEGORY_PIZZA);
+        map.put("Sushi", Constant.CATEGORY_SUSHI);
+        map.put("Burgers", Constant.CATEGORY_BURGERS);
+        map.put("Salads", Constant.CATEGORY_SALADS);
+        map.put("Snacks", Constant.CATEGORY_SNACKS);
+        map.put("Dessert", Constant.CATEGORY_DESSERT);
+        map.put("Beverages", Constant.CATEGORY_BEVERAGES);
+        map.put("Alcohol", Constant.CATEGORY_ALCOHOL);
+        CATEGORIES = Collections.unmodifiableMap(map);
+    }
+
+
     public static final String USER_IMAGE_PATH = "resources" + File.separator
             + "img" + File.separator + "avatars" + File.separator;
 
     public static final String XLSX_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     public static final String XLS_TYPE = "application/vnd.ms-excel";
-
+    public static final long COLUMN_NUMBER_IN_EXCEL_DOC = 8;
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
     public static final String ROLE_COURIER = "ROLE_COURIER";

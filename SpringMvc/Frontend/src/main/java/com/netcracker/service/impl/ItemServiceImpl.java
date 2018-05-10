@@ -3,9 +3,11 @@ package com.netcracker.service.impl;
 import com.netcracker.config.Constant;
 import com.netcracker.model.Entity;
 import com.netcracker.model.Item;
+import com.netcracker.model.User;
 import com.netcracker.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -77,12 +79,21 @@ public class ItemServiceImpl implements ItemService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<String>> itemResponse =
-                restTemplate.exchange(Constant.BASE_URL_REST+"/items/category/",
+                restTemplate.exchange(Constant.BASE_URL_REST + "/items/category/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {
                         });
         List<String> result = itemResponse.getBody();
 
         return result;
+    }
+
+    @Override
+    public void saveItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<Item> request = new HttpEntity<>(item);
+        restTemplate.exchange(Constant.BASE_URL_REST + "/items/saveItem/" + nameRu + "/" + nameUk + "/" + descriptionRu + "/" + descriptionUk,
+                HttpMethod.POST, request, new ParameterizedTypeReference<Item>() {
+                });
     }
 
     //    public List<Item> getAllItems() {

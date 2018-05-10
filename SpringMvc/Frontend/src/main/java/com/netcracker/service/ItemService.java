@@ -15,4 +15,5 @@ public interface ItemService {
     List<Item> getItemsByCategory(String category, Locale locale);
     void removeItemById(BigInteger itemId);
     List<String>getAllCategories();
+    void saveItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk);
 }

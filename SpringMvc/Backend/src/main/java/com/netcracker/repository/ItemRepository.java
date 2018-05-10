@@ -13,4 +13,5 @@ public interface ItemRepository {
     Item getLocalizedItem(Item item, Locale locale);
     void removeItemById(BigInteger itemId);
     List<String> getAllCategories();
+    void saveItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk);
 }

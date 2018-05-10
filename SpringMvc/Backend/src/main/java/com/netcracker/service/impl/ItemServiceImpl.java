@@ -83,6 +83,11 @@ public class ItemServiceImpl implements ItemService {
     public List<String> getAllCategories() {
         return itemRepository.getAllCategories();
     }
+
+    @Override
+    public void saveItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk) {
+        itemRepository.saveItem(item, nameRu, nameUk, descriptionRu, descriptionUk);
+    }
 //    public List<Item> getAllItems() {
 //        return itemRepository.getAllItems();
 //    }

@@ -59,6 +59,16 @@ public class ItemController {
         return itemService.getAllCategories();
     }
 
+    @RequestMapping(value = "/saveItem/{nameRu}/{nameUk}/{descrRu}/{descrUk}", method = RequestMethod.POST)
+    public void saveItem(
+            @RequestBody Item item,
+            @PathVariable("nameRu") String nameRu,
+            @PathVariable("nameUk") String nameUk,
+            @PathVariable("descrRu") String descrRu,
+            @PathVariable("descrUk") String descrUk ){
+        itemService.saveItem(item, nameRu, nameUk, descrRu, descrUk);
+    }
+
 /*
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

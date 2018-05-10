@@ -55,7 +55,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Controller
-public class AdminController{
+public class AdminController {
     @Autowired
     private OrderService orderService;
     @Autowired
@@ -63,7 +63,7 @@ public class AdminController{
     @Autowired
     private ItemService itemService;
 
-    @RequestMapping(value = { "/admin"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
     public ModelAndView adminPanel(Locale locale) throws IOException {
 
         /*File myFile = new File("/resources/Items.xlsx");
@@ -104,7 +104,7 @@ public class AdminController{
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();
-        List<Item> items =  itemService.getAllItems(locale);
+        List<Item> items = itemService.getAllItems(locale);
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
 
@@ -154,7 +154,7 @@ public class AdminController{
         }
 
         for (Order o : allOrders)
-            if(o.getOrderCreationDate().isAfter(LocalDateTime.now().minusDays(10))) {
+            if (o.getOrderCreationDate().isAfter(LocalDateTime.now().minusDays(10))) {
                 String s = o.getOrderCreationDate().format(dateTimeFormatter);
                 newRevenue = revenuePerDayMap.get(o.getOrderCreationDate().format(dateTimeFormatter)) + o.getOrderCost().intValue();
                 revenuePerDayMap.replace(o.getOrderCreationDate().format(dateTimeFormatter), newRevenue);
@@ -163,13 +163,13 @@ public class AdminController{
 
         //LineChartEnd---------------------------------------------------
         model.setViewName("admin");
-        if (allOrders != null){
+        if (allOrders != null) {
             model.addObject("orders", allOrders);
         }
-        if (allUsers != null){
+        if (allUsers != null) {
             model.addObject("users", allUsers);
         }
-        if (items != null){
+        if (items != null) {
             model.addObject("items", items);
         }
         if (pieDataMap != null) {
@@ -178,7 +178,7 @@ public class AdminController{
         if (coreChartDataMap != null) {
             model.addObject("coreChartDataMap", coreChartDataMap);
         }
-        if ( revenuePerDayMap != null) {
+        if (revenuePerDayMap != null) {
             model.addObject("revenuePerDayMap", revenuePerDayMap);
         }
         model.addObject("weekDays", weekDays);
@@ -189,7 +189,7 @@ public class AdminController{
         return model;
     }
 
-    @RequestMapping(value = { "/admin/actualize"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/admin/actualize"}, method = RequestMethod.POST)
     public ModelAndView markOrderAsExpired(Locale locale) throws IOException {
         List<Order> allOrders = orderService.getAllOrders(locale);
         for (Order order : allOrders) {
@@ -207,13 +207,14 @@ public class AdminController{
 
     @RequestMapping(value = "/changeRole", method = RequestMethod.GET)
     public @ResponseBody
-    String changeRole(@RequestParam BigInteger userId, @RequestParam String role){
+    String changeRole(@RequestParam BigInteger userId, @RequestParam String role) {
         userService.changeRole(userId, role);
         return "redirect:/admin";
     }
 
     @RequestMapping(value = {"/getUserInfo"}, method = RequestMethod.GET)
-    public @ResponseBody String getUserInfo(@RequestParam BigInteger userId) throws IOException {
+    public @ResponseBody
+    String getUserInfo(@RequestParam BigInteger userId) throws IOException {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
         Gson gson = builder.create();
@@ -222,12 +223,13 @@ public class AdminController{
 
     @RequestMapping(value = "/removeUser", method = RequestMethod.GET)
     public @ResponseBody
-    void removeUser(@RequestParam BigInteger userId){
+    void removeUser(@RequestParam BigInteger userId) {
         userService.removeUserById(userId);
     }
 
     @RequestMapping(value = {"/createUser"}, method = RequestMethod.GET)
-    public @ResponseBody String sendEntity(@RequestParam String jsonUser) throws Exception {
+    public @ResponseBody
+    String sendEntity(@RequestParam String jsonUser) throws Exception {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
         Gson gson = builder.create();
@@ -240,7 +242,8 @@ public class AdminController{
     }
 
     @RequestMapping(value = {"/getOrderInfo"}, method = RequestMethod.GET)
-    public @ResponseBody String getOrderInfo(@RequestParam BigInteger orderId) throws IOException {
+    public @ResponseBody
+    String getOrderInfo(@RequestParam BigInteger orderId) throws IOException {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
         Gson gson = builder.create();
@@ -248,7 +251,8 @@ public class AdminController{
     }
 
     @RequestMapping(value = {"/getItemInfo"}, method = RequestMethod.GET)
-    public @ResponseBody String getItemInfo(@RequestParam BigInteger itemId, Locale locale) throws IOException {
+    public @ResponseBody
+    String getItemInfo(@RequestParam BigInteger itemId, Locale locale) throws IOException {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(BigInteger.class, new BigIntegerAdapter());
         Gson gson = builder.create();
@@ -256,12 +260,13 @@ public class AdminController{
     }
 
     @RequestMapping(value = "/delItem", method = RequestMethod.GET)
-    public void delItem(@RequestParam BigInteger itemId){
+    public void delItem(@RequestParam BigInteger itemId) {
         itemService.removeItemById(itemId);
     }
 
-    @RequestMapping(value = {"/getLocItemsInfo"}, method = RequestMethod.GET, produces = { "application/json; charset=utf-8" })
-    public @ResponseBody String getLocItemsInfo(@RequestParam BigInteger itemId, Locale locale) throws IOException {
+    @RequestMapping(value = {"/getLocItemsInfo"}, method = RequestMethod.GET, produces = {"application/json; charset=utf-8"})
+    public @ResponseBody
+    String getLocItemsInfo(@RequestParam BigInteger itemId, Locale locale) throws IOException {
         Gson gson = new Gson();
         Item itemEn = itemService.getItemById(itemId, new Locale("en"));
         Item itemRu = itemService.getItemById(itemId, new Locale("ru"));
@@ -277,14 +282,15 @@ public class AdminController{
     }
 
     @RequestMapping(value = "/delOrder", method = RequestMethod.GET)
-    public @ResponseBody void delOrder(@RequestParam BigInteger orderId){
+    public @ResponseBody
+    void delOrder(@RequestParam BigInteger orderId) {
         orderService.removeOrderById(orderId);
     }
 
 
-
     @RequestMapping(value = "/admin/createItems", method = RequestMethod.POST)
-    public @ResponseBody void createItems(@RequestParam MultipartFile file) throws IOException {
+    public @ResponseBody
+    ModelAndView createItems(@RequestParam MultipartFile file) throws IOException {
         //String fileLocation;
 /*        InputStream in = file.getInputStream();
         Workbook workbook = new XSSFWorkbook(in);
@@ -299,7 +305,7 @@ public class AdminController{
                 }
             }
         }*/
-        switch (file.getContentType()){
+        switch (file.getContentType()) {
             case Constant.XLSX_TYPE:
                 parseXLSX(file);
                 break;
@@ -307,40 +313,80 @@ public class AdminController{
                 parseXLS(file);
                 break;
         }
+        ModelAndView model = new ModelAndView();
+        model.setViewName("redirect:/admin");
+        return model;
     }
 
-    private void parseXLSX(MultipartFile file) throws IOException {
-        InputStream inputStream = file.getInputStream();
-        XSSFWorkbook  workBook = new XSSFWorkbook(inputStream);
-        XSSFSheet sheet = workBook.getSheetAt(0);
-        XSSFRow row;
-        XSSFCell cell;
-        Iterator rows = sheet.rowIterator();
-        while (rows.hasNext())
-        {
-            row=(XSSFRow) rows.next();
-            Iterator cells = row.cellIterator();
-            while (cells.hasNext())
-            {
-                cell=(XSSFCell) cells.next();
-                if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
-                {
-                    System.out.print(cell.getStringCellValue()+" ");
+    private void parseXLSX(MultipartFile file){
+        try {
+            InputStream inputStream = file.getInputStream();
+            XSSFWorkbook workBook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workBook.getSheetAt(0);
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    continue;
                 }
-                else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
-                {
-                    System.out.print(cell.getNumericCellValue()+" ");
-                }
-                else
-                {
-                    //U Can Handel Boolean, Formula, Errors
+                if (isCorrectColumnCount(row.getLastCellNum()) && isCorrectCategory(row.getCell(3).getStringCellValue()) && isCorrectCostCellType(row.getCell(7).getCellType())) {
+
+                    int cost = (int)row.getCell(7).getNumericCellValue();
+                    Item item = new Item(
+                            row.getCell(0).getStringCellValue(),
+                            row.getCell(4).getStringCellValue(),
+                            row.getCell(3).getStringCellValue(),
+                            new BigInteger(String.valueOf(cost)),
+                            1);
+                    itemService.saveItem(
+                            item,
+                            row.getCell(1).getStringCellValue(),
+                            row.getCell(2).getStringCellValue(),
+                            row.getCell(5).getStringCellValue(),
+                            row.getCell(6).getStringCellValue());
+                } else {
+                    throw new Exception();
                 }
             }
-            System.out.println();
+            /*Iterator rows = sheet.rowIterator();
+            while (rows.hasNext()) {
+                Row row = (XSSFRow) rows.next();
+            *//*Item itemEn = new Item(row.getCell(0).getStringCellValue(),
+                    row.getCell());*//*
+
+                Iterator cells = row.cellIterator();
+
+                while (cells.hasNext()) {
+                    Cell cell = (XSSFCell) cells.next();
+                    int cellType = cell.getCellType();
+                    switch (cellType) {
+                        case XSSFCell.CELL_TYPE_STRING:
+                            System.out.print(cell.getStringCellValue() + " ");
+                            break;
+                        case XSSFCell.CELL_TYPE_NUMERIC:
+                            System.out.print(cell.getNumericCellValue() + " ");
+                            break;
+                    }
+                }
+                System.out.println();
+            }*/
+        } catch (Exception ex) {
+
         }
     }
-    private void parseXLS(MultipartFile file){
 
+    private List<Item> parseXLS(MultipartFile file) {
+        return null;
+    }
+
+    private boolean isCorrectColumnCount(int count) {
+        return count == Constant.COLUMN_NUMBER_IN_EXCEL_DOC;
+    }
+
+    private boolean isCorrectCategory(String category) {
+        return Constant.CATEGORIES.containsKey(category);
+    }
+
+    private boolean isCorrectCostCellType(int cellType) {
+        return cellType == XSSFCell.CELL_TYPE_NUMERIC;
     }
 
 

@@ -238,4 +238,30 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         }
         return result;
     }
+
+    @Override
+    public void saveItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk) {
+        BigInteger itemId = getObjectId();
+        try {
+            connection.setAutoCommit(false);
+            saveObject(item.getProductName(), itemId, new BigInteger("0"), Constant.ITEM_OBJ_TYPE_ID);
+            saveTextParameter(itemId, Constant.NAME_ATTR_ID, item.getProductName());
+            saveTextParameter(itemId, Constant.ITEM_DESCRIPTION_ATTR_ID, item.getProductDescription());
+            saveEnumValue(itemId, Constant.ITEM_CATEGORY_ATTR_ID, Constant.CATEGORIES.get(item.getProductCategory()));
+            saveTextParameter(itemId, Constant.ITEMS_COST_ATTR_ID, item.getProductCost().toString());
+            saveLocObject(itemId, Constant.NAME_ATTR_ID, Constant.LANG_RUSSIAN, nameRu);
+            saveLocObject(itemId, Constant.NAME_ATTR_ID, Constant.LANG_UKRAINIAN, nameUk);
+            saveLocObject(itemId, Constant.ITEM_DESCRIPTION_ATTR_ID, Constant.LANG_RUSSIAN, descriptionRu);
+            saveLocObject(itemId, Constant.ITEM_DESCRIPTION_ATTR_ID, Constant.LANG_UKRAINIAN, descriptionUk);
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+    }
 }

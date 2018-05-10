@@ -36,6 +36,20 @@ public class Constant {
         STATUSES = Collections.unmodifiableMap(map);
     }
 
+    public static Map<String, Long> CATEGORIES;
+    static {
+        Map<String, Long> map = new HashMap<>();
+        map.put("Pizza", Constant.CATEGORY_PIZZA);
+        map.put("Sushi", Constant.CATEGORY_SUSHI);
+        map.put("Burgers", Constant.CATEGORY_BURGERS);
+        map.put("Salads", Constant.CATEGORY_SALADS);
+        map.put("Snacks", Constant.CATEGORY_SNACKS);
+        map.put("Dessert", Constant.CATEGORY_DESSERT);
+        map.put("Beverages", Constant.CATEGORY_BEVERAGES);
+        map.put("Alcohol", Constant.CATEGORY_ALCOHOL);
+        CATEGORIES = Collections.unmodifiableMap(map);
+    }
+
 
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
@@ -152,6 +166,7 @@ public class Constant {
     public static final String SQL_INSERT_INTO_OBJECTS = "insert into \"OBJECTS\" (\"NAME\",\"OBJECT_ID\", \"PARENT_ID\", \"OBJECT_TYPE_ID\") values(?,?,?,?)";
     //public static final String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\", \"POINT_VALUE\") values(?,?,?,?,?,?,?)";
     public static final String SQL_INSERT_INTO_PARAMETERS = "insert into \"PARAMETERS\" (\"OBJECT_ID\",\"ATTR_ID\", \"TEXT_VALUE\", \"DATE_VALUE\", \"REFERENCE_VALUE\", \"ENUM_VALUE\", \"POINT_VALUE\") values(?,?,?,?,?,?,point(?,?))";
+    public static final String SQL_INSERT_INTO_LOC = "insert into \"LOC_STRINGS\" (\"OBJECT_ID\", \"ATTR_ID\", \"LANG_ID\", \"LOC_TEXT_VALUE\") values(?,?,?,?)";
 
     public static final String SQL_UPDATE_OBJECT = "UPDATE \"OBJECTS\" SET \"NAME\"=?, \"OBJECT_ID\"=?, \"PARENT_ID\"=?, \"OBJECT_TYPE_ID\"=? WHERE \"OBJECT_ID\"=? and \"NAME\"=? ";
     public static final String SQL_UPDATE_OBJECT_NAME = "UPDATE \"OBJECTS\" SET \"NAME\"=? WHERE \"OBJECT_ID\"=?";

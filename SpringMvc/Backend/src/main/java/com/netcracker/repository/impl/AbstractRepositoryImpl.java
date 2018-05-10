@@ -159,6 +159,19 @@ public class AbstractRepositoryImpl{
         }
     }
 
+    protected void saveLocObject(BigInteger objectId, long attrId, long langId, String textValue){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_LOC);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.setLong(2, attrId);
+            preparedStatement.setLong(3, langId);
+            preparedStatement.setString(4, textValue);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected void updateObjectName (BigInteger objectId, String newName){
         PreparedStatement preparedStatement = null;
         try {

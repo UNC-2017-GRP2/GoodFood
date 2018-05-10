@@ -233,7 +233,6 @@ public class UserServiceImpl implements UserService {
     public void saveUserImage(BigInteger userId, String imageName) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> request = new HttpEntity<>(imageName);
-
         restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/save/imageName/",
                 HttpMethod.POST, request, new ParameterizedTypeReference<Object>() {
                 });
