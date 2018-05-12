@@ -184,7 +184,7 @@
     </a>
 </c:if>
 <c:if test="${car == 1}">
-    <img class="car" src="${pageContext.request.contextPath}/resources/img/alcohol/Car-icon.png" height="30%" width="auto" onclick="callDriver();" class="menu_links">
+    <a href="/drunk"><img class="car" src="${pageContext.request.contextPath}/resources/img/alcohol/Car-icon.png" height="30%" width="auto" class="menu_links"></a>
 </c:if>
 
 <div class="Features-section paddingTB60 bg-dgrey ">
