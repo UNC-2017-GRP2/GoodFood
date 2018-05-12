@@ -41,6 +41,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -350,8 +351,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin/itemsToDoc", method = RequestMethod.POST)
-    public @ResponseBody
-    ModelAndView itemsToDoc(){
+    public void itemsToDoc(HttpServletResponse response){
         try{
             Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
         /* CreationHelper helps us create instances for various things like DataFormat,
@@ -400,7 +400,8 @@ public class AdminController {
             }
 
             // Write the output to a file
-            try (FileOutputStream outputStream = new FileOutputStream("items_good_food.xlsx")) {
+            String webappRoot = servletContext.getRealPath("/");
+            try (FileOutputStream outputStream = new FileOutputStream(webappRoot + File.separator + "items_good_food.xlsx")) {
                 workbook.write(outputStream);
             }catch (Exception e){
                 e.printStackTrace();
@@ -413,9 +414,19 @@ public class AdminController {
             workbook.close();
         }catch (Exception e){
         }
-        ModelAndView model = new ModelAndView();
-        model.setViewName("redirect:/admin");
-        return model;
+
+        try {
+            String webappRoot = servletContext.getRealPath("/");
+            String file = webappRoot + File.separator + "items_good_food.xlsx";
+            InputStream is = new BufferedInputStream(new FileInputStream(file));
+            response.setContentType("application/xlsx");
+            response.setHeader("Content-Disposition", "attachment; filename=\"items_good_food.xlsx\"");
+            org.apache.commons.io.IOUtils.copy(is, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException ex) {
+//            log.info("Error writing file to output stream. Filename was '{}'", fileName, ex);
+            throw new RuntimeException("IOError writing file to output stream");
+        }
     }
 
     private String getLocItemName(List<Item> locItems, BigInteger itemId){
