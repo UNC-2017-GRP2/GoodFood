@@ -67,50 +67,17 @@ public class AdminController {
     ServletContext servletContext;
 
     @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
-    public ModelAndView adminPanel(Locale locale) throws IOException {
+    public ModelAndView adminPanel(
+            Locale locale,
+            @RequestParam(value = "invalidDoc", required = false) String invalidDoc,
+            @RequestParam(value = "itemsSave", required = false) String itemsSave) throws IOException {
 
-        /*File myFile = new File("/resources/Items.xlsx");
-        FileInputStream fis = new FileInputStream(myFile);
-        XSSFWorkbook myWorkBook = new XSSFWorkbook (fis);
-
-        // Return first sheet from the XLSX workbook
-        XSSFSheet mySheet = myWorkBook.getSheetAt(0);
-
-        // Get iterator to all the rows in current sheet
-        Iterator<Row> rowIterator = mySheet.iterator();
-
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            // For each row, iterate through each columns
-            Iterator<Cell> cellIterator = row.cellIterator();
-            while (cellIterator.hasNext()) {
-                Cell cell = cellIterator.next();
-
-                switch (cell.getCellType()) {
-                    case Cell.CELL_TYPE_STRING:
-                        System.out.print(cell.getStringCellValue() + "\t");
-                        break;
-                    case Cell.CELL_TYPE_NUMERIC:
-                        System.out.print(cell.getNumericCellValue() + "\t");
-                        break;
-                    case Cell.CELL_TYPE_BOOLEAN:
-                        System.out.print(cell.getBooleanCellValue() + "\t");
-                        break;
-                    default:
-                }
-            }
-        }
-
-
-
-*/
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();
         List<Item> items = itemService.getAllItems(locale);
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
-
 
         Map<String, Integer> pieDataMap = new HashMap<>();
 
@@ -189,6 +156,12 @@ public class AdminController {
         model.addObject("itemForm", new Item());
         List<String> categories = itemService.getAllCategories();
         model.addObject("categories", categories);
+        if (invalidDoc != null){
+            model.addObject("invalidDoc", true);
+        }
+        if (itemsSave != null){
+            model.addObject("itemsSave", true);
+        }
         return model;
     }
 
@@ -290,24 +263,9 @@ public class AdminController {
         orderService.removeOrderById(orderId);
     }
 
-
     @RequestMapping(value = "/admin/createItems", method = RequestMethod.POST)
     public @ResponseBody
     ModelAndView createItems(@RequestParam MultipartFile file) throws IOException {
-        //String fileLocation;
-/*        InputStream in = file.getInputStream();
-        Workbook workbook = new XSSFWorkbook(in);
-        Sheet sheet = workbook.getSheetAt(0);
-        for (Row row : sheet) {
-            for (Cell cell : row) {
-                switch (cell.getCellTypeEnum()) {
-                    case STRING: System.out.println(cell.getStringCellValue() + " "); break;
-                    case NUMERIC: System.out.println(cell.getNumericCellValue() + " "); break;
-                    case BOOLEAN: System.out.println(cell.getBooleanCellValue() + " "); break;
-                    default: System.out.println("default");
-                }
-            }
-        }*/
         ModelAndView model = new ModelAndView();
         try{
             switch (file.getContentType()) {
@@ -318,75 +276,67 @@ public class AdminController {
                     parseXLS(file);
                     break;
             }
-
+            model.setViewName("redirect:/admin?itemsSave=true");
         }catch (Exception e){
-            model.setViewName("redirect:/admin");
+            e.printStackTrace();
+            model.setViewName("redirect:/admin?invalidDoc=true");
         }
-        model.setViewName("redirect:/admin");
         return model;
     }
 
-    private void parseXLSX(MultipartFile file){
-        try {
-            InputStream inputStream = file.getInputStream();
-            XSSFWorkbook workBook = new XSSFWorkbook(inputStream);
-            XSSFSheet sheet = workBook.getSheetAt(0);
-            for (Row row : sheet) {
-                if (row.getRowNum() == 0) {
-                    continue;
-                }
-                if (isCorrectColumnCount(row.getLastCellNum()) && isCorrectCategory(row.getCell(3).getStringCellValue()) && isCorrectCostCellType(row.getCell(7).getCellType())) {
-                    int cost = (int)row.getCell(7).getNumericCellValue();
-                    Item item = new Item(
-                            row.getCell(0).getStringCellValue(),
-                            row.getCell(4).getStringCellValue(),
-                            row.getCell(3).getStringCellValue(),
-                            new BigInteger(String.valueOf(cost)),
-                            1);
-                    itemService.saveItem(
-                            item,
-                            row.getCell(1).getStringCellValue(),
-                            row.getCell(2).getStringCellValue(),
-                            row.getCell(5).getStringCellValue(),
-                            row.getCell(6).getStringCellValue());
-                } else {
-                    throw new Exception();
-                }
+    private void parseXLSX(MultipartFile file) throws Exception{
+        InputStream inputStream = file.getInputStream();
+        XSSFWorkbook workBook = new XSSFWorkbook(inputStream);
+        XSSFSheet sheet = workBook.getSheetAt(0);
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) {
+                continue;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            if (isCorrectColumnCount(row.getLastCellNum()) && isCorrectCategory(row.getCell(3).getStringCellValue()) && isCorrectCostCellType(row.getCell(7).getCellType())) {
+                int cost = (int) row.getCell(7).getNumericCellValue();
+                Item item = new Item(
+                        row.getCell(0).getStringCellValue(),
+                        row.getCell(4).getStringCellValue(),
+                        row.getCell(3).getStringCellValue(),
+                        new BigInteger(String.valueOf(cost)),
+                        1);
+                itemService.saveItem(
+                        item,
+                        row.getCell(1).getStringCellValue(),
+                        row.getCell(2).getStringCellValue(),
+                        row.getCell(5).getStringCellValue(),
+                        row.getCell(6).getStringCellValue());
+            } else {
+                throw new Exception();
+            }
         }
     }
 
-    private void parseXLS(MultipartFile file) {
-        try {
-            InputStream inputStream = file.getInputStream();
-            HSSFWorkbook  workBook = new HSSFWorkbook (inputStream);
-            HSSFSheet sheet = workBook.getSheetAt(0);
-            for (Row row : sheet) {
-                if (row.getRowNum() == 0) {
-                    continue;
-                }
-                if (isCorrectColumnCount(row.getLastCellNum()) && isCorrectCategory(row.getCell(3).getStringCellValue()) && isCorrectCostCellType(row.getCell(7).getCellType())) {
-                    int cost = (int)row.getCell(7).getNumericCellValue();
-                    Item item = new Item(
-                            row.getCell(0).getStringCellValue(),
-                            row.getCell(4).getStringCellValue(),
-                            row.getCell(3).getStringCellValue(),
-                            new BigInteger(String.valueOf(cost)),
-                            1);
-                    itemService.saveItem(
-                            item,
-                            row.getCell(1).getStringCellValue(),
-                            row.getCell(2).getStringCellValue(),
-                            row.getCell(5).getStringCellValue(),
-                            row.getCell(6).getStringCellValue());
-                } else {
-                    throw new Exception();
-                }
+    private void parseXLS(MultipartFile file) throws Exception {
+        InputStream inputStream = file.getInputStream();
+        HSSFWorkbook workBook = new HSSFWorkbook(inputStream);
+        HSSFSheet sheet = workBook.getSheetAt(0);
+        for (Row row : sheet) {
+            if (row.getRowNum() == 0) {
+                continue;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            if (isCorrectColumnCount(row.getLastCellNum()) && isCorrectCategory(row.getCell(3).getStringCellValue()) && isCorrectCostCellType(row.getCell(7).getCellType())) {
+                int cost = (int) row.getCell(7).getNumericCellValue();
+                Item item = new Item(
+                        row.getCell(0).getStringCellValue(),
+                        row.getCell(4).getStringCellValue(),
+                        row.getCell(3).getStringCellValue(),
+                        new BigInteger(String.valueOf(cost)),
+                        1);
+                itemService.saveItem(
+                        item,
+                        row.getCell(1).getStringCellValue(),
+                        row.getCell(2).getStringCellValue(),
+                        row.getCell(5).getStringCellValue(),
+                        row.getCell(6).getStringCellValue());
+            } else {
+                throw new Exception();
+            }
         }
     }
 

@@ -12,6 +12,8 @@
             return 'Продукт удален.';
         case 'order_deleted':
             return 'Заказ удален.';
+        case 'items_was_saved':
+            return 'Элементы успешно сохранены.';
     }
 }
 function getErrorString(stringId) {
@@ -68,6 +70,8 @@ function getErrorString(stringId) {
             return 'Заказ не был удален.';
         case 'invalid_file':
             return 'Это не файл .xls или .xlsx.';
+        case 'invalid_format_file':
+            return 'Неверный формат документа или его данных.';
     }
 }
 

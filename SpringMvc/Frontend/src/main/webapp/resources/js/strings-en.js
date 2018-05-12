@@ -12,6 +12,8 @@
             return 'Item deleted.';
         case 'order_deleted':
             return 'Order deleted.';
+        case 'items_was_saved':
+            return 'Items successfully saved.';
     }
 }
 
@@ -71,6 +73,8 @@ function getErrorString(stringId) {
             return 'Order was nod deleted.';
         case 'invalid_file':
             return 'That ain\'t no .xls or .xlsx file.';
+        case 'invalid_format_file':
+            return 'Invalid document format or its data.';
     }
 }
 

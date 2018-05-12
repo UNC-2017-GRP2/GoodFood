@@ -52,6 +52,16 @@
         });
     </script>
     <script type="text/javascript">
+        $(document).ready(function () {
+            if (${invalidDoc == true}){
+                $.notify(getErrorString('invalid_format_file',"error"));
+            }else{
+                if (${itemsSave == true})
+                $.notify(getNotificationString('items_was_saved'),"success");
+            }
+        });
+    </script>
+    <script type="text/javascript">
         google.charts.load('current', {'packages': ['corechart']});
         google.charts.setOnLoadCallback(drawPieChart);
 

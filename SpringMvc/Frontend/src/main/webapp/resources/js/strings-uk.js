@@ -12,6 +12,8 @@
             return 'Продукт видалений.';
         case 'order_deleted':
             return 'Замовлення видалений.';
+        case 'items_was_saved':
+            return 'Елементи успішно збережені.';
     }
 }
 
@@ -69,6 +71,8 @@ function getErrorString(stringId) {
             return 'Замовлення не був видалений.';
         case 'invalid_file':
             return 'Це не файл .xls або .xlsx.';
+        case 'invalid_format_file':
+            return 'Невірний формат документа або його даних.';
     }
 }
 
