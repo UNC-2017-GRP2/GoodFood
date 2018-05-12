@@ -10,8 +10,8 @@
 <head>
     <title><spring:message code="general.adminPanel"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">
+    <%--<link rel="stylesheet"
+          href="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.css">--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin-style.css">
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/webjars/datatables/1.10.12/css/dataTables.bootstrap.min.css">
@@ -22,8 +22,8 @@
             src="${pageContext.request.contextPath}/webjars/datetimepicker/2.3.4/jquery.datetimepicker.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript"
-            src="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.js"></script>
+    <%--<script type="text/javascript"
+            src="${pageContext.request.contextPath}/webjars/bootstrap-select/1.4.2/bootstrap-select.min.js"></script>--%>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript"
@@ -416,7 +416,7 @@
                     </div>
                     <div class="panel-body">
                         <div style="margin-bottom: 10px;">
-                            <form id="actualize-form" action="/admin/actualize" method="post">
+                            <form id="actualize-form" action="${pageContext.request.contextPath}/admin/actualize" method="post">
                                 <button type="submit" class="btn btn-default btn-xs form-control"><spring:message
                                         code="admin.actualize"/></button>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -746,108 +746,120 @@
 
 <div class="modal fade" id="edit-item-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><strong><spring:message code="admin.editing_item"/></strong></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="reset-values">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container-item text-center">
-                    <div class="text-left item-info">
-                        <div class="row text-left edit-item-row">
-                            <label for="item-id" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.itemId"/>:</label>
-                            <div class="col-xs-6">
-                                <input type='text' id='item-id' class="form-control" disabled="disabled">
-                            </div>
-                        </div>
+        <form id="update-item-form" action="${pageContext.request.contextPath}/updateItem" method="post" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><strong><spring:message code="admin.editing_item"/></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="reset-values">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
-                        <div class="row text-left edit-item-row">
-                            <label for="item-category" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.category"/>:</label>
-                            <div class="col-xs-6">
-                                <select id='item-category' class="form-control">
-                                    <c:forEach items="${categories}" var="category">
-                                        <option value="${category}">${category}</option>
-                                    </c:forEach>
-                                </select>
+                    <div class="container-item text-center">
+                        <div class="text-left item-info">
+                            <div class="row text-left edit-item-row">
+                                <label for="item-id" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.itemId"/>:</label>
+                                <div class="col-xs-6">
+                                    <input type='text' id='item-id' class="form-control item-id"
+                                           disabled="disabled">
+                                    <input type='hidden' name="itemId" class="form-control item-id">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row text-left edit-item-row">
-                            <label for="item-name-en" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.name_en"/>:</label>
-                            <div class="col-xs-6">
-                                <input type="text" id='item-name-en' class="form-control item-param">
+                            <div class="row text-left edit-item-row">
+                                <label for="item-category" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.category"/>:</label>
+                                <div class="col-xs-6">
+                                    <select id='item-category' name="category" class="form-control">
+                                        <c:forEach items="${categories}" var="category">
+                                            <option value="${category}">${category}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row text-left edit-item-row">
-                            <label for="item-name-ru" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.name_ru"/>:</label>
-                            <div class="col-xs-6">
-                                <input type="text" id='item-name-ru' class="form-control item-param">
-                            </div>
-                        </div>
-                        <div class="row text-left edit-item-row">
-                            <label for="item-name-uk" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.name_uk"/>:</label>
-                            <div class="col-xs-6">
-                                <input type="text" id='item-name-uk' class="form-control item-param">
-                            </div>
-                        </div>
 
-                        <div class="row text-left edit-item-row">
-                            <label for="item-description-en" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.description_en"/>:</label>
-                            <div class="col-xs-6">
-                                <textarea id='item-description-en' class="form-control item-param"></textarea>
+                            <div class="row text-left edit-item-row">
+                                <label for="item-name-en" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.name_en"/>:</label>
+                                <div class="col-xs-6">
+                                    <input type="text" id='item-name-en' name="nameEn" class="form-control item-param">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row text-left edit-item-row">
-                            <label for="item-description-ru" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.description_ru"/>:</label>
-                            <div class="col-xs-6">
-                                <textarea id='item-description-ru' class="form-control item-param"></textarea>
+                            <div class="row text-left edit-item-row">
+                                <label for="item-name-ru" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.name_ru"/>:</label>
+                                <div class="col-xs-6">
+                                    <input type="text" id='item-name-ru' name="nameRu" class="form-control item-param">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row text-left edit-item-row">
-                            <label for="item-description-uk" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.description_uk"/>:</label>
-                            <div class="col-xs-6">
-                                <textarea id='item-description-uk' class="form-control item-param"></textarea>
+                            <div class="row text-left edit-item-row">
+                                <label for="item-name-uk" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.name_uk"/>:</label>
+                                <div class="col-xs-6">
+                                    <input type="text" id='item-name-uk' name="nameUk" class="form-control item-param">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row text-left edit-item-row">
-                            <label for="item-cost" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.cost"/>:</label>
-                            <div class="col-xs-6">
-                                <input type='text' id='item-cost'
-                                       class="form-control item-param">
+                            <div class="row text-left edit-item-row">
+                                <label for="item-description-en" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.description_en"/>:</label>
+                                <div class="col-xs-6">
+                                    <textarea id='item-description-en' name="descriptionEn"
+                                              class="form-control item-param"></textarea>
+                                </div>
                             </div>
-                        </div>
+                            <div class="row text-left edit-item-row">
+                                <label for="item-description-ru" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.description_ru"/>:</label>
+                                <div class="col-xs-6">
+                                    <textarea id='item-description-ru' name="descriptionRu"
+                                              class="form-control item-param"></textarea>
+                                </div>
+                            </div>
+                            <div class="row text-left edit-item-row">
+                                <label for="item-description-uk" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.description_uk"/>:</label>
+                                <div class="col-xs-6">
+                                    <textarea id='item-description-uk' name="descriptionUk"
+                                              class="form-control item-param"></textarea>
+                                </div>
+                            </div>
 
-                        <ul class="details text-left">
-                            <hr>
-                        </ul>
+                            <div class="row text-left edit-item-row">
+                                <label for="item-cost" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.cost"/>:</label>
+                                <div class="col-xs-6">
+                                    <input type='text' id='item-cost' name="cost"
+                                           class="form-control item-param">
+                                </div>
+                            </div>
 
-                        <div class="row text-left edit-item-row">
-                            <label for="item-image" class="col-xs-4 control-label"><spring:message
-                                    code="admin.item.image"/>:</label>
-                            <div class="media col-xs-6">
-                                <img id="item-image" class="media-object img-rounded img-responsive"
-                                     src="${pageContext.request.contextPath}">
+                            <ul class="details text-left">
+                                <hr>
+                            </ul>
+
+                            <div class="row text-left edit-item-row">
+                                <label for="item-image" class="col-xs-4 control-label"><spring:message
+                                        code="admin.item.image"/>:</label>
+                                <div class="media col-xs-6">
+                                    <img id="item-image" class="media-object img-rounded img-responsive"
+                                         src="${pageContext.request.contextPath}">
+                                    <input id="item-image-upload" class="hidden" type="file" name="image">
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary"><spring:message
+                            code="profile.save"></spring:message></button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary"><spring:message
-                        code="profile.save"></spring:message></button>
-            </div>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
         </div>
     </div>
 </div>

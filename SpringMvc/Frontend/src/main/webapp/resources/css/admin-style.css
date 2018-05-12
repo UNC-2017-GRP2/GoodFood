@@ -599,6 +599,10 @@ input.hidden {position: absolute;left: -9999px;}
     display: none;
 }
 
+#item-image{
+    cursor: pointer;
+}
+
 /*.file-upload {
     position: relative;
     height: 32px;

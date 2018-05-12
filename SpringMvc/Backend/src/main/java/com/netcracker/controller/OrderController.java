@@ -94,7 +94,7 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public void removeOrderById(@PathVariable BigInteger id){
+    public void removeOrderById(@PathVariable BigInteger id) throws SQLException {
         orderService.removeOrderById(id);
     }
 

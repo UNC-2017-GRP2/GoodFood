@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +64,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void removeItemById(BigInteger itemId) {
+    public void removeItemById(BigInteger itemId) throws SQLException {
         itemRepository.removeItemById(itemId);
         for (Order order: orderService.getAllOrders(new Locale("en"))){
             boolean flag = false;
@@ -88,6 +89,12 @@ public class ItemServiceImpl implements ItemService {
     public void saveItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk) {
         itemRepository.saveItem(item, nameRu, nameUk, descriptionRu, descriptionUk);
     }
+
+    @Override
+    public void updateItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk) {
+        itemRepository.updateItem(item, nameRu, nameUk, descriptionRu, descriptionUk);
+    }
+
 //    public List<Item> getAllItems() {
 //        return itemRepository.getAllItems();
 //    }

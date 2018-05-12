@@ -14,4 +14,5 @@ public interface ItemRepository {
     void removeItemById(BigInteger itemId);
     List<String> getAllCategories();
     void saveItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk);
+    void updateItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk);
 }

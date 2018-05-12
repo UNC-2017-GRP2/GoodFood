@@ -12,6 +12,7 @@ import com.netcracker.model.User;
 import com.netcracker.service.ItemService;
 import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -62,6 +63,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private ItemService itemService;
+    @Autowired
+    ServletContext servletContext;
 
     @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
     public ModelAndView adminPanel(Locale locale) throws IOException {
@@ -260,7 +263,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/delItem", method = RequestMethod.GET)
-    public void delItem(@RequestParam BigInteger itemId) {
+    public @ResponseBody void delItem(@RequestParam BigInteger itemId) {
         itemService.removeItemById(itemId);
     }
 
@@ -305,15 +308,20 @@ public class AdminController {
                 }
             }
         }*/
-        switch (file.getContentType()) {
-            case Constant.XLSX_TYPE:
-                parseXLSX(file);
-                break;
-            case Constant.XLS_TYPE:
-                parseXLS(file);
-                break;
-        }
         ModelAndView model = new ModelAndView();
+        try{
+            switch (file.getContentType()) {
+                case Constant.XLSX_TYPE:
+                    parseXLSX(file);
+                    break;
+                case Constant.XLS_TYPE:
+                    parseXLS(file);
+                    break;
+            }
+
+        }catch (Exception e){
+            model.setViewName("redirect:/admin");
+        }
         model.setViewName("redirect:/admin");
         return model;
     }
@@ -328,7 +336,6 @@ public class AdminController {
                     continue;
                 }
                 if (isCorrectColumnCount(row.getLastCellNum()) && isCorrectCategory(row.getCell(3).getStringCellValue()) && isCorrectCostCellType(row.getCell(7).getCellType())) {
-
                     int cost = (int)row.getCell(7).getNumericCellValue();
                     Item item = new Item(
                             row.getCell(0).getStringCellValue(),
@@ -346,35 +353,41 @@ public class AdminController {
                     throw new Exception();
                 }
             }
-            /*Iterator rows = sheet.rowIterator();
-            while (rows.hasNext()) {
-                Row row = (XSSFRow) rows.next();
-            *//*Item itemEn = new Item(row.getCell(0).getStringCellValue(),
-                    row.getCell());*//*
-
-                Iterator cells = row.cellIterator();
-
-                while (cells.hasNext()) {
-                    Cell cell = (XSSFCell) cells.next();
-                    int cellType = cell.getCellType();
-                    switch (cellType) {
-                        case XSSFCell.CELL_TYPE_STRING:
-                            System.out.print(cell.getStringCellValue() + " ");
-                            break;
-                        case XSSFCell.CELL_TYPE_NUMERIC:
-                            System.out.print(cell.getNumericCellValue() + " ");
-                            break;
-                    }
-                }
-                System.out.println();
-            }*/
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
     }
 
-    private List<Item> parseXLS(MultipartFile file) {
-        return null;
+    private void parseXLS(MultipartFile file) {
+        try {
+            InputStream inputStream = file.getInputStream();
+            HSSFWorkbook  workBook = new HSSFWorkbook (inputStream);
+            HSSFSheet sheet = workBook.getSheetAt(0);
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    continue;
+                }
+                if (isCorrectColumnCount(row.getLastCellNum()) && isCorrectCategory(row.getCell(3).getStringCellValue()) && isCorrectCostCellType(row.getCell(7).getCellType())) {
+                    int cost = (int)row.getCell(7).getNumericCellValue();
+                    Item item = new Item(
+                            row.getCell(0).getStringCellValue(),
+                            row.getCell(4).getStringCellValue(),
+                            row.getCell(3).getStringCellValue(),
+                            new BigInteger(String.valueOf(cost)),
+                            1);
+                    itemService.saveItem(
+                            item,
+                            row.getCell(1).getStringCellValue(),
+                            row.getCell(2).getStringCellValue(),
+                            row.getCell(5).getStringCellValue(),
+                            row.getCell(6).getStringCellValue());
+                } else {
+                    throw new Exception();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private boolean isCorrectColumnCount(int count) {
@@ -389,27 +402,45 @@ public class AdminController {
         return cellType == XSSFCell.CELL_TYPE_NUMERIC;
     }
 
-
-    @Autowired
-    ServletContext servletContext;
-
-    @PostMapping("/upload")
-    public void singleFileUpload(@RequestParam("file") MultipartFile file) {
-        String webappRoot = servletContext.getRealPath("/");
-//        String relativeFolder = File.separator + "resources" + File.separator
-//                + "img" + File.separator;
-        String relativeFolder = File.separator + ".." + File.separator + ".." + File.separator
-                + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "resources" + File.separator
-                + "img" + File.separator;
-        String filename = webappRoot + relativeFolder
-                + file.getOriginalFilename();
-        try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(filename);
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
+    @RequestMapping(value = "/updateItem", method = RequestMethod.POST, produces = {"application/json; charset=utf-8"})
+    public ModelAndView updateItem(
+            @RequestParam("itemId") BigInteger itemId,
+            @RequestParam("category") String category,
+            @RequestParam("nameEn") String nameEn,
+            @RequestParam("nameRu") String nameRu,
+            @RequestParam("nameUk") String nameUk,
+            @RequestParam("descriptionEn") String descriptionEn,
+            @RequestParam("descriptionRu") String descriptionRu,
+            @RequestParam("descriptionUk") String descriptionUk,
+            @RequestParam("cost") BigInteger cost,
+            @RequestParam("image") MultipartFile image
+    ) {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("redirect:/admin");
+        String imageNameForSave = "";
+        if (!image.getOriginalFilename().equals("")){
+            String webappRoot = servletContext.getRealPath("/");
+            String relativeFolder = File.separator + ".." + File.separator + ".." + File.separator
+                    + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + Constant.ITEM_IMAGE_PATH + category.toLowerCase() + File.separator;
+            String itemImageName = itemId + image.getOriginalFilename();
+            String filename = webappRoot + relativeFolder + itemImageName;
+            try {
+                byte[] bytes = image.getBytes();
+                Path path = Paths.get(filename);
+                Files.write(path, bytes);
+                Path targetPath = Paths.get(webappRoot + Constant.ITEM_IMAGE_PATH + category.toLowerCase() + File.separator + itemImageName);
+                Files.write(targetPath, bytes);
+                imageNameForSave = (File.separator + Constant.ITEM_IMAGE_PATH + category.toLowerCase() + File.separator + itemImageName).replace('\\', '/');
+            } catch (IOException e) {
+                e.printStackTrace();
+                return model;
+            }
+        }else{
+            imageNameForSave = itemService.getItemById(itemId, new Locale("en")).getProductImage();
         }
-    }
+        Item item = new Item(itemId, nameEn, descriptionEn, category, cost, imageNameForSave, 1);
+        itemService.updateItem(item, nameRu, nameUk, descriptionRu, descriptionUk);
 
+        return model;
+    }
 }

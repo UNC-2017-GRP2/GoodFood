@@ -213,7 +213,19 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
 
     @Override
     public void removeItemById(BigInteger itemId){
-        removeObjectById(itemId);
+        try {
+            connection.setAutoCommit(false);
+            removeObjectById(itemId);
+            removeLocStringsByObjId(itemId);
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -262,6 +274,36 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
                 e1.printStackTrace();
             }
         }
+    }
 
+    @Override
+    public void updateItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk) {
+        try {
+            connection.setAutoCommit(false);
+            /*update item info*/
+            updateObjectName(item.getProductId(), item.getProductName());
+            updateTextParameter(item.getProductId(), Constant.NAME_ATTR_ID, item.getProductName());
+            updateTextParameter(item.getProductId(), Constant.ITEM_DESCRIPTION_ATTR_ID, item.getProductDescription());
+            updateEnumParameter(item.getProductId(), Constant.ITEM_CATEGORY_ATTR_ID, Constant.CATEGORIES.get(item.getProductCategory()));
+            updateTextParameter(item.getProductId(), Constant.ITEMS_COST_ATTR_ID, item.getProductCost().toString());
+            /*update item image*/
+            removeRefParameterAndThisObject(item.getProductId(), Constant.ITEM_IMAGE_ATTR_ID);
+            BigInteger imageId = getObjectId();
+            saveObject(item.getProductImage(), imageId, new BigInteger("0"), Constant.IMAGE_OBJ_TYPE_ID);
+            saveReferenceParameter(item.getProductId(), Constant.ITEM_IMAGE_ATTR_ID, imageId);
+            /*update loc strings*/
+            updateLocStrings(item.getProductId(), Constant.NAME_ATTR_ID, Constant.LANG_RUSSIAN, nameRu);
+            updateLocStrings(item.getProductId(), Constant.NAME_ATTR_ID, Constant.LANG_UKRAINIAN, nameUk);
+            updateLocStrings(item.getProductId(), Constant.ITEM_DESCRIPTION_ATTR_ID, Constant.LANG_RUSSIAN, descriptionRu);
+            updateLocStrings(item.getProductId(), Constant.ITEM_DESCRIPTION_ATTR_ID, Constant.LANG_UKRAINIAN, descriptionUk);
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 }

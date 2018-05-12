@@ -281,14 +281,17 @@ public class AbstractRepositoryImpl{
         }
     }
 
-    protected void removeObjectById(BigInteger objectId){
+    protected void removeObjectById(BigInteger objectId) throws SQLException {
         try{
+            connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_OBJECT);
             preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.executeUpdate();
             removeParametersByObjId(objectId);
+            connection.commit();
         }catch (Exception e){
             System.out.println(e.getMessage());
+            connection.rollback();
         }
     }
 
@@ -301,6 +304,17 @@ public class AbstractRepositoryImpl{
             System.out.println(e.getMessage());
         }
     }
+
+    protected void removeLocStringsByObjId(BigInteger objectId){
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_LOC_STRINGS);
+            preparedStatement.setObject(1, objectId, numericType);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     protected void removeParameter(BigInteger objectId, long attrId) {
         try {
@@ -384,6 +398,19 @@ public class AbstractRepositoryImpl{
             preparedStatement.executeUpdate();
         }catch (Exception e){
             System.out.println(e.getMessage());
+        }
+    }
+
+    protected void updateLocStrings(BigInteger objectId, long attrId, long langId, String textValue){
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_UPDATE_LOC_STRING);
+            preparedStatement.setString(1, textValue);
+            preparedStatement.setObject(2, objectId, numericType);
+            preparedStatement.setLong(3, attrId);
+            preparedStatement.setLong(4, langId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

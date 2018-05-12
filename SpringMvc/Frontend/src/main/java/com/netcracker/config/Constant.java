@@ -44,6 +44,8 @@ public class Constant {
 
     public static final String USER_IMAGE_PATH = "resources" + File.separator
             + "img" + File.separator + "avatars" + File.separator;
+    public static final String ITEM_IMAGE_PATH = "resources" + File.separator
+            + "img" + File.separator;
 
     public static final String XLSX_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     public static final String XLS_TYPE = "application/vnd.ms-excel";

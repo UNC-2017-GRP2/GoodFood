@@ -296,7 +296,7 @@ function editItem(itemId) {
         }),
         dataType:'json',
         success: function (data) {
-            $("#item-id").val(data.productId);
+            $(".item-id").val(data.productId);
             $("#item-category").val(data.productCategory);
             $("#item-cost").val(data.productCost);
             $("#item-image").attr('src', pageContext + data.productImage);
@@ -463,6 +463,31 @@ $(document).ready(function () {
             $( "#add-item-form" ).submit();
         }
     });
+
+    /*item image*/
+
+    $('#item-image').on('click', function () {
+        $('#item-image-upload').click();
+    });
+    $('#item-image-upload').change(function(){
+        readURL(this);
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#item-image').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#edit-item-modal").on("hide.bs.modal", function () {
+        $("#update-item-form").trigger('reset');
+    });
+
+
 
 
     /*CHARTS*/

@@ -53,7 +53,7 @@ public class ItemServiceImpl implements ItemService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<Item>> itemResponse =
-                restTemplate.exchange(Constant.BASE_URL_REST  + "/items/"+"locale/"+ locale.getLanguage() +"/category/"+ category+"/",
+                restTemplate.exchange(Constant.BASE_URL_REST  + "/items/" + "locale/" + locale.getLanguage() + "/category/" + category + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Item>>() {
                         });
         List<Item> result = itemResponse.getBody();
@@ -64,14 +64,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void removeItemById(BigInteger itemId) {
         RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<Object> itemResponse =
-                restTemplate.exchange(Constant.BASE_URL_REST+"/items/" + itemId + "/",
+        restTemplate.exchange(Constant.BASE_URL_REST + "/items/" + "id/" +  itemId + "/",
                         HttpMethod.DELETE, null, new ParameterizedTypeReference<Object>() {
                         });
-        //Item result = itemResponse.getBody();
-
-        //return result;
     }
 
     @Override
@@ -83,7 +78,6 @@ public class ItemServiceImpl implements ItemService {
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {
                         });
         List<String> result = itemResponse.getBody();
-
         return result;
     }
 
@@ -92,6 +86,15 @@ public class ItemServiceImpl implements ItemService {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Item> request = new HttpEntity<>(item);
         restTemplate.exchange(Constant.BASE_URL_REST + "/items/saveItem/" + nameRu + "/" + nameUk + "/" + descriptionRu + "/" + descriptionUk,
+                HttpMethod.POST, request, new ParameterizedTypeReference<Item>() {
+                });
+    }
+
+    @Override
+    public void updateItem(Item item, String nameRu, String nameUk, String descriptionRu, String descriptionUk) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<Item> request = new HttpEntity<>(item);
+        restTemplate.exchange(Constant.BASE_URL_REST + "/items/updateItem/" + nameRu + "/" + nameUk + "/" + descriptionRu + "/" + descriptionUk,
                 HttpMethod.POST, request, new ParameterizedTypeReference<Item>() {
                 });
     }

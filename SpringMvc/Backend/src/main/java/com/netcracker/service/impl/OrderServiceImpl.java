@@ -213,7 +213,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void removeOrderById(BigInteger orderId) {
+    public void removeOrderById(BigInteger orderId) throws SQLException {
         orderRepository.removeOrderById(orderId);
     }
 

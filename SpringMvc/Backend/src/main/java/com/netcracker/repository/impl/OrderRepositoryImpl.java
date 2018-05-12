@@ -222,7 +222,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     }
 
     @Override
-    public void removeOrderById(BigInteger orderId){
+    public void removeOrderById(BigInteger orderId) throws SQLException {
         removeObjectById(orderId);
     }
 }

@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeUserById(BigInteger userId) {
+    public void removeUserById(BigInteger userId) throws SQLException {
         for (Order order: orderService.getAllOrders(new Locale("en"))){
             if (order.getUserId().equals(userId))
             orderService.removeOrderById(order.getOrderId());

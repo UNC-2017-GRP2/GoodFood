@@ -21,7 +21,7 @@ public interface UserService {
     boolean isEqualsPassword(String password, BigInteger userId);
     void updatePassword(BigInteger userId, String password);
     void updateAddresses(BigInteger userId, List<Address> addresses);
-    void removeUserById(BigInteger userId);
+    void removeUserById(BigInteger userId) throws SQLException;
     public BigInteger getObjectId();
     void saveUserImage(BigInteger userId, String imageName) throws SQLException;
 }

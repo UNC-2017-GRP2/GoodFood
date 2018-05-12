@@ -176,10 +176,13 @@ public class Constant {
     public static final String SQL_UPDATE_REFERENCE_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"REFERENCE_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     public static final String SQL_UPDATE_ENUM_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"ENUM_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     public static final String SQL_UPDATE_POINT_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"POINT_VALUE\"=point(?,?) WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
+    public static final String SQL_UPDATE_LOC_STRING = "UPDATE \"LOC_STRINGS\" SET \"LOC_TEXT_VALUE\"=? WHERE \"OBJECT_ID\" =? and \"ATTR_ID\"=? and \"LANG_ID\"=?";
     //public static final String SQL_UPDATE_NULL_POINT_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"POINT_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     public static final String SQL_DELETE_FROM_PARAMETERS = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
     public static final String SQL_DELETE_ALL_PARAMETERS_BY_OBJ_ID = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_DELETE_OBJECT = "delete from \"OBJECTS\" where \"OBJECT_ID\" = ?";
+    public static final String SQL_DELETE_LOC_STRINGS = "delete from \"LOC_STRINGS\" where \"OBJECT_ID\" = ?";
+
 
     /*public static final String BASE_URL_REST = "http://127.0.0.1:8080/rest";*/
     public static final String BASE_URL_REST = "http://localhost:8085";

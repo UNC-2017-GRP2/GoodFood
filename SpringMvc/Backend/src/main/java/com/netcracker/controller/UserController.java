@@ -108,7 +108,7 @@ public class UserController {
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void renoveUserById(@PathVariable("id")BigInteger userId){
+    public void renoveUserById(@PathVariable("id")BigInteger userId) throws SQLException {
         userService.removeUserById(userId);
     }
 

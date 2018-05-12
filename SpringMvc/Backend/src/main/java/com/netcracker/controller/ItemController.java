@@ -8,6 +8,7 @@ import com.netcracker.model.Item;
 import com.netcracker.service.ItemService;
 
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,10 +38,9 @@ public class ItemController {
     }
 //    TODO: реализовать добавление, изменение и замену, если это будет необходимо
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void removeItemById(
-            @PathVariable BigInteger id
-    ){
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void removeItemById(@PathVariable("id") BigInteger id) throws SQLException {
         itemService.removeItemById(id);
     }
 
@@ -67,6 +67,15 @@ public class ItemController {
             @PathVariable("descrRu") String descrRu,
             @PathVariable("descrUk") String descrUk ){
         itemService.saveItem(item, nameRu, nameUk, descrRu, descrUk);
+    }
+    @RequestMapping(value = "/updateItem/{nameRu}/{nameUk}/{descrRu}/{descrUk}", method = RequestMethod.POST)
+    public void updateItem(
+            @RequestBody Item item,
+            @PathVariable("nameRu") String nameRu,
+            @PathVariable("nameUk") String nameUk,
+            @PathVariable("descrRu") String descrRu,
+            @PathVariable("descrUk") String descrUk ){
+        itemService.updateItem(item, nameRu, nameUk, descrRu, descrUk);
     }
 
 /*
