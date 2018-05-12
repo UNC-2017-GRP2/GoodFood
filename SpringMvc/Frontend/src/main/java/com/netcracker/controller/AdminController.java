@@ -14,10 +14,7 @@ import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -350,6 +347,93 @@ public class AdminController {
 
     private boolean isCorrectCostCellType(int cellType) {
         return cellType == XSSFCell.CELL_TYPE_NUMERIC;
+    }
+
+    @RequestMapping(value = "/admin/itemsToDoc", method = RequestMethod.POST)
+    public @ResponseBody
+    ModelAndView itemsToDoc(){
+        try{
+            Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
+        /* CreationHelper helps us create instances for various things like DataFormat,
+           Hyperlink, RichTextString etc, in a format (HSSF, XSSF) independent way */
+            CreationHelper createHelper = workbook.getCreationHelper();
+
+            // Create a Sheet
+            Sheet sheet = workbook.createSheet("Items");
+
+            // Create a Row
+            Row headerRow = sheet.createRow(0);
+            // Creating cells
+            for(int i = 0; i < Constant.COLUMNS_FOR_EXCEL.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(Constant.COLUMNS_FOR_EXCEL[i]);
+            }
+            // Create Other rows and cells with employees data
+            int rowNum = 1;
+            List<Item>itemsEn = itemService.getAllItems(new Locale("en"));
+            List<Item>itemsRu = itemService.getAllItems(new Locale("ru"));
+            List<Item>itemsUk = itemService.getAllItems(new Locale("uk"));
+
+            for(Item item: itemsEn) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0)
+                        .setCellValue(item.getProductName());
+                row.createCell(1)
+                        .setCellValue(getLocItemName(itemsRu, item.getProductId()));
+                row.createCell(2)
+                        .setCellValue(getLocItemName(itemsUk, item.getProductId()));
+                row.createCell(3)
+                        .setCellValue(item.getProductCategory());
+                row.createCell(4)
+                        .setCellValue(item.getProductDescription());
+                row.createCell(5)
+                        .setCellValue(getLocItemDescription(itemsRu, item.getProductId()));
+                row.createCell(6)
+                        .setCellValue(getLocItemDescription(itemsUk, item.getProductId()));
+                row.createCell(7)
+                        .setCellValue(Double.valueOf(item.getProductCost().toString()));
+            }
+
+            // Resize all columns to fit the content size
+            for(int i = 0; i < Constant.COLUMNS_FOR_EXCEL.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Write the output to a file
+            try (FileOutputStream outputStream = new FileOutputStream("items_good_food.xlsx")) {
+                workbook.write(outputStream);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            /*FileOutputStream fileOut = new FileOutputStream("items-good-food.xlsx");
+            workbook.write(fileOut);*/
+            //fileOut.close();
+            // Closing the workbook
+            workbook.close();
+        }catch (Exception e){
+        }
+        ModelAndView model = new ModelAndView();
+        model.setViewName("redirect:/admin");
+        return model;
+    }
+
+    private String getLocItemName(List<Item> locItems, BigInteger itemId){
+        for (Item item : locItems){
+            if (item.getProductId().equals(itemId)){
+                return item.getProductName();
+            }
+        }
+        return null;
+    }
+
+    private String getLocItemDescription(List<Item> locItems, BigInteger itemId){
+        for (Item item : locItems){
+            if (item.getProductId().equals(itemId)){
+                return item.getProductDescription();
+            }
+        }
+        return null;
     }
 
     @RequestMapping(value = "/updateItem", method = RequestMethod.POST, produces = {"application/json; charset=utf-8"})

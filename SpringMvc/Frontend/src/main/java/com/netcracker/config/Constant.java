@@ -41,6 +41,8 @@ public class Constant {
         CATEGORIES = Collections.unmodifiableMap(map);
     }
 
+    public static final String[] COLUMNS_FOR_EXCEL = {"Name(En)", "Name(Ru)", "Name(Uk)", "Category", "Description(En)","Description(Ru)","Description(Uk)", "Cost"};
+
 
     public static final String USER_IMAGE_PATH = "resources" + File.separator
             + "img" + File.separator + "avatars" + File.separator;

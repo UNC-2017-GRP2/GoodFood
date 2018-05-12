@@ -534,6 +534,7 @@
                         </table>
                     </div>
                 </div>
+
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title"><spring:message code="admin.item.add_items"/></h3>
@@ -553,11 +554,28 @@
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             </div>
                         </form>
-                        <%--   <form method="POST" action="${pageContext.request.contextPath}/upload" enctype="multipart/form-data">
-                               <input type="file" name="file" /><br/>
-                               <input type="submit" value="Submit" />
-                               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                           </form>--%>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><spring:message code="admin.item.get_items"/></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form id="get-item-form" action="${pageContext.request.contextPath}/admin/itemsToDoc"
+                              method="post" <%--enctype="multipart/form-data"--%>>
+                            <div id="get-item-content">
+                                <%--<input type="file" name="file" accept=".xls,.xlsx" class="btn btn-default form-control"/>--%>
+                                <%--<label class="btn btn-default form-control" for="my-file-selector">
+                                    <input id="my-file-selector" type="file" name="file" accept=".xls,.xlsx">
+                                    <spring:message code="admin.file.browse"/>
+                                </label>
+                                <span id="upload-file-info"></span>--%>
+                                <button type="submit" class="btn btn-default form-control" id = "download-excel-btn"><spring:message code="admin.file.download_doc"/>
+                                </button>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
