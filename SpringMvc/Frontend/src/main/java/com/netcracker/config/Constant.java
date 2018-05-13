@@ -183,4 +183,5 @@ public class Constant {
 
     /*public static final String BASE_URL_REST = "http://127.0.0.1:8080/rest";*/
     public static final String BASE_URL_REST = "http://localhost:8085";
+    public static final String SOBER_DRIVER_URL = "http://185.246.65.240:8080/app/vendor/orders";
 }

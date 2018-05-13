@@ -178,13 +178,15 @@
         </div>--%>
     </div>
 </div>
-<c:if test="${bottle == 1}">
-    <a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_ALCOHOL%>">
-    <img class="btl" src="${pageContext.request.contextPath}/resources/img/beverages/bottle.png" height="30%" width="auto">
-    </a>
-</c:if>
-<c:if test="${car == 1}">
-    <a href="/drunk"><img class="car" src="${pageContext.request.contextPath}/resources/img/alcohol/Car-icon.png" height="30%" width="auto" class="menu_links"></a>
+<c:if test="${pageContext.request.userPrincipal.name != null}">
+    <c:if test="${bottle == 1}">
+        <a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_ALCOHOL%>">
+            <img class="btl" src="${pageContext.request.contextPath}/resources/img/beverages/bottle.png" height="30%" width="auto">
+        </a>
+    </c:if>
+    <c:if test="${car == 1}">
+        <a href="/drunk"><img class="car" src="${pageContext.request.contextPath}/resources/img/alcohol/Car-icon.png" height="30%" width="auto" class="menu_links"></a>
+    </c:if>
 </c:if>
 
 <div class="Features-section paddingTB60 bg-dgrey ">
