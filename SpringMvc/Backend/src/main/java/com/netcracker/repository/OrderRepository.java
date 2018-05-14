@@ -17,4 +17,5 @@ public interface OrderRepository {
     List<Order> getOrdersByUserId(BigInteger userId);
     BigInteger getObjectId();
     void removeOrderById(BigInteger orderId) throws SQLException;
+    void updateOrderPaid(BigInteger orderId, int isPaid);
 }

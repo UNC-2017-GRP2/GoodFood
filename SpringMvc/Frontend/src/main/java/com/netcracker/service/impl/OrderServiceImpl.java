@@ -65,6 +65,14 @@ public class OrderServiceImpl implements OrderService {
                         });
     }
 
+    @Override
+    public void updateOrderPaid(BigInteger orderId, int isPaid) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.exchange(ORDER_BASE_URL+"/updateIsPaid/" + orderId + "/isPaid/" + isPaid,
+                HttpMethod.PUT, null, new ParameterizedTypeReference<Object>() {
+                });
+    }
+
     /*
     @Override
     public List<Order> getAllFreeOrders() {

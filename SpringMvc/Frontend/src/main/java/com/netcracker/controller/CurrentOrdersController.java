@@ -72,6 +72,7 @@ public class CurrentOrdersController {
     public String markOrderAsDelivered(@PathVariable BigInteger id) throws IOException {
         Order order = orderService.getOrderById(id);
         if (order != null){
+            orderService.updateOrderPaid(id,1);
             orderService.changeOrderStatus(id, Constant.STATUS_DELIVERED_ENUM_ID); //delivered
         }
         return "redirect:/current-orders";

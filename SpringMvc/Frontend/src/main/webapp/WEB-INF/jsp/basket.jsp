@@ -147,6 +147,7 @@
                                                                         <input id="change-from" name="change-from" type="text" class="form-control text-right">
                                                                         <span class="input-group-addon"><i class="glyphicon glyphicon-ruble"></i></span>
                                                                     </div>
+                                                                    <div class="validationMessage" id="change-validation-message"></div>
                                                                 </div>
                                                                 <div id="card-tab" class="tab-pane fade">
                                                                     <div id="card-element">

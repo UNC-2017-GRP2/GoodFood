@@ -247,4 +247,9 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             connection.rollback();
         }
     }
+
+    @Override
+    public void updateOrderPaid(BigInteger orderId, int isPaid) {
+        updateTextParameter(orderId, Constant.ORDER_PAID_ATTR_ID, String.valueOf(isPaid));
+    }
 }

@@ -114,6 +114,12 @@ public class OrderController {
     public void removeOrderById(@PathVariable BigInteger id) throws SQLException {
         orderService.removeOrderById(id);
     }
+    @RequestMapping(value = "/updateIsPaid/{id}/isPaid/{isPaid}",method = RequestMethod.PUT)
+    public void removeOrderById(@PathVariable BigInteger id, @PathVariable int isPaid) throws SQLException {
+        orderService.updateOrderPaid(id, isPaid);
+    }
+
+
 
 
     /*

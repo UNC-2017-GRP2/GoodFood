@@ -72,6 +72,8 @@ function getErrorString(stringId) {
             return 'Это не файл .xls или .xlsx.';
         case 'invalid_format_file':
             return 'Неверный формат документа или его данных.';
+        case 'change_must_be_greater':
+            return 'Значение поля должно превышать общую стоимость заказа';
     }
 }
 

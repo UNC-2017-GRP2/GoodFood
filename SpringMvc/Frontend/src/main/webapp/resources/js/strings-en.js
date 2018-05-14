@@ -75,6 +75,8 @@ function getErrorString(stringId) {
             return 'That ain\'t no .xls or .xlsx file.';
         case 'invalid_format_file':
             return 'Invalid document format or its data.';
+        case 'change_must_be_greater':
+            return 'The field value must exceed the order total cost';
     }
 }
 

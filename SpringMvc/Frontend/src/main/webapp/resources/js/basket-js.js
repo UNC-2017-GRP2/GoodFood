@@ -1,4 +1,4 @@
-var phone = false, addressFlag = false;
+var phone = false, addressFlag = false, change = true;
 
 var stripe;
 var elements;
@@ -69,7 +69,7 @@ function getAddressByCoordinates(latitude, longitude) {
 }
 
 function checkAllFieldsForCheckout() {
-    if (phone && addressFlag) {
+    if (phone && addressFlag && change) {
         $(".to-order-btn").prop('disabled', false);
     } else {
         $(".to-order-btn").prop('disabled', true);
@@ -361,5 +361,28 @@ $(document).ready(function () {
         if (testText*1 + 0 != $(this).val()){
             $(this).val(testText.substring(0, testText.length - 1));
         }
+    });
+
+    $('#change-from').keyup(function () {
+        var count = $(this).val();
+        if (count === "0"){
+            $(this).val("");
+        }
+        if (count === " "){
+            $(this).val("");
+        }
+        var testText = $(this).val();
+        if (testText*1 + 0 != $(this).val()){
+            $(this).val(testText.substring(0, testText.length - 1));
+        }
+
+        if (parseInt(count) <= parseInt($(".total-order-cost").text())) {
+            change = false;
+            setErrorValidMessage(this, $('#change-validation-message'), getErrorString('change_must_be_greater'));
+        } else {
+            change = true;
+            setSuccessValid(this, $('#change-validation-message'));
+        }
+        checkAllFieldsForCheckout();
     });
 });

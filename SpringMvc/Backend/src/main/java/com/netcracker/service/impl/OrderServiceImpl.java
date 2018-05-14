@@ -218,5 +218,10 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.removeOrderById(orderId);
     }
 
+    @Override
+    public void updateOrderPaid(BigInteger orderId, int isPaid) {
+        orderRepository.updateOrderPaid(orderId, isPaid);
+    }
+
 
 }

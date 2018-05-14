@@ -32,4 +32,5 @@ public interface OrderService {
     List<Order> getOrdersByUsername(String username, Locale locale);
     BigInteger getObjectId();
     void removeOrderById(BigInteger orderId) throws SQLException;
+    void updateOrderPaid(BigInteger orderId, int isPaid);
 }

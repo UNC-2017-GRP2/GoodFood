@@ -189,7 +189,7 @@
     </c:if>
 </c:if>
 
-<div class="Features-section paddingTB60 bg-dgrey ">
+<%--<div class="Features-section paddingTB60 bg-dgrey ">
     <div class="container">
         <div class="row text-center ">
             <div class="col-sm-6 col-md-4">
@@ -236,7 +236,7 @@
             </div> <!-- End Col -->
         </div>
     </div>
-</div>
+</div>--%>
 <%--<div class="footer-section">
     &lt;%&ndash;<div class="footer-top">
         <div class="container">
