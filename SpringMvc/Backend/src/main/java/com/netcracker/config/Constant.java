@@ -94,6 +94,7 @@ public class Constant {
     public static final long STATUS_ATTR_ID = 417;
     public static final long ITEM_IMAGE_ATTR_ID = 418;
     public static final long ORDER_PAYMENT_TYPE_ATTR_ID = 419;
+    public static final long CHANGE_ATTR_ID = 420;
     public static final long ORDER_CREATION_DATE_ATTR_ID = 421;
 
     /**Table enum_types**/
@@ -179,6 +180,7 @@ public class Constant {
     public static final String SQL_UPDATE_LOC_STRING = "UPDATE \"LOC_STRINGS\" SET \"LOC_TEXT_VALUE\"=? WHERE \"OBJECT_ID\" =? and \"ATTR_ID\"=? and \"LANG_ID\"=?";
     //public static final String SQL_UPDATE_NULL_POINT_PARAMETERS = "UPDATE \"PARAMETERS\" SET \"POINT_VALUE\"=? WHERE \"OBJECT_ID\"=? and \"ATTR_ID\"=?";
     public static final String SQL_DELETE_FROM_PARAMETERS = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ? and \"ATTR_ID\" = ?";
+    public static final String SQL_DELETE_REF_VAL_FROM_PARAMETERS = "delete from \"PARAMETERS\" where \"ATTR_ID\" = ? and \"REFERENCE_VALUE\"=?";
     public static final String SQL_DELETE_ALL_PARAMETERS_BY_OBJ_ID = "delete from \"PARAMETERS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_DELETE_OBJECT = "delete from \"OBJECTS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_DELETE_LOC_STRINGS = "delete from \"LOC_STRINGS\" where \"OBJECT_ID\" = ?";

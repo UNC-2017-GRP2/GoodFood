@@ -60,9 +60,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void removeOrderById(BigInteger orderId) {
         RestTemplate restTemplate = new RestTemplate();
-
-        Object itemResponse =
-                restTemplate.exchange(ORDER_BASE_URL+"/" + orderId + "/",
+        restTemplate.exchange(ORDER_BASE_URL+"/removeOrder/" + orderId + "/",
                         HttpMethod.DELETE, null, new ParameterizedTypeReference<Object>() {
                         });
     }
@@ -108,8 +106,8 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException {
-        Order order = new Order(orderId, userService.getByUsername(username).getUserId(), totalOrder(items), null, orderAddress, inputPhone, items, null, String.valueOf(paymentType), isPaid);
+    public void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid, BigInteger changeFrom) throws SQLException {
+        Order order = new Order(orderId, userService.getByUsername(username).getUserId(), totalOrder(items), null, orderAddress, inputPhone, items, null, String.valueOf(paymentType), isPaid, changeFrom);
         RestTemplate restTemplate = new RestTemplate();
 
         /*
@@ -227,7 +225,7 @@ public class OrderServiceImpl implements OrderService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<Order> itemResponse =
-                restTemplate.exchange(ORDER_BASE_URL+"/" + orderId + "/",
+                restTemplate.exchange(ORDER_BASE_URL+"/getOrderById/" + orderId + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<Order>() {
                         });
         Order result = itemResponse.getBody();

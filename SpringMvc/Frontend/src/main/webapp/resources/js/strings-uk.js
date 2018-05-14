@@ -148,5 +148,7 @@ function getLocStrings(stringId) {
             return 'Сортувати по зростанню';
         case 'sort_descending':
             return 'Сортувати по спадаючій';
+        case 'change_from':
+            return 'Потрібна здача з';
     }
 }

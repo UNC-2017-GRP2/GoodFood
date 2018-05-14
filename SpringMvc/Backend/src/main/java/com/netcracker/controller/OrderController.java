@@ -43,7 +43,7 @@ public class OrderController {
         return  orderService.getObjectId();
     }
 
-    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/checkout", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void checkout(@RequestBody Order order) throws SQLException{
         //TODO: разобраться, что прилетает в джейсоне и почему принимаются нули
@@ -66,6 +66,23 @@ public class OrderController {
             //TODO; вернуть что-то обратно, или просто вывести в логи. Думаю, надо вернуть
             System.out.print(e.getMessage());
         }
+    }*/
+
+    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void checkout(@RequestBody Order order) throws SQLException{
+        //TODO: разобраться, что прилетает в джейсоне и почему принимаются нули
+
+        if (order.getPaid() == null){
+            order.setPaid(false);
+        }
+        try{
+            orderService.checkout(order);
+        }
+        catch (Exception e){
+            //TODO; вернуть что-то обратно, или просто вывести в логи. Думаю, надо вернуть
+            System.out.print(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/free", method = RequestMethod.GET)
@@ -73,7 +90,7 @@ public class OrderController {
         return orderService.getAllFreeOrders(locale);
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/getOrderById/{id}",method = RequestMethod.GET)
     public Order getOrderById(@PathVariable BigInteger id){
         return orderService.getOrderById(id);
     }
@@ -93,7 +110,7 @@ public class OrderController {
         orderService.setCourier(id,courierName);
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/removeOrder/{id}",method = RequestMethod.DELETE)
     public void removeOrderById(@PathVariable BigInteger id) throws SQLException {
         orderService.removeOrderById(id);
     }

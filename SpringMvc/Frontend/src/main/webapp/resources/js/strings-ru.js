@@ -147,5 +147,7 @@ function getLocStrings(stringId) {
             return 'Сортировать по возрастанию';
         case 'sort_descending':
             return 'Сортировать по убыванию';
+        case 'change_from':
+            return 'Нужна сдача с';
     }
 }

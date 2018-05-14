@@ -31,7 +31,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     }
 
     @Override
-    public void checkout(Order order, long paymentType) throws SQLException {
+    public void checkout(Order order) throws SQLException {
         try{
             //order.setOrderId(getObjectId());
             connection.setAutoCommit(false); //начало транзакции, вроде бы
@@ -58,9 +58,11 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
             //дата создания
             saveDateParameter(order.getOrderId(),Constant.ORDER_CREATION_DATE_ATTR_ID, new java.sql.Timestamp(System.currentTimeMillis()));
             //Тип оплаты
-            saveEnumValue(order.getOrderId(), Constant.ORDER_PAYMENT_TYPE_ATTR_ID, paymentType);
+            saveEnumValue(order.getOrderId(), Constant.ORDER_PAYMENT_TYPE_ATTR_ID, Long.valueOf(order.getPaymentType()));
             //Оплачен ли заказ
             saveTextParameter(order.getOrderId(), Constant.ORDER_PAID_ATTR_ID, (order.getPaid())?"1":"0");
+            //Сдача с
+            saveTextParameter(order.getOrderId(), Constant.CHANGE_ATTR_ID, order.getChangeFrom()!= null?order.getChangeFrom().toString() : null);
 
             connection.commit();
         } catch (Exception e) {
@@ -119,6 +121,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
         LocalDateTime orderCreationDate = null;
         String paymentType = null;
         Boolean isPaid = false;
+        BigInteger changeFrom = null;
         ResultSet resultSet = null;
 
         try {
@@ -138,6 +141,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 long curAttrId = resultSet.getLong("ATTR_ID");
                 if (curAttrId == Constant.COURIER_ATTR_ID) {
                     courierId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
+                    continue;
                 }
                 if (curAttrId == Constant.ITEM_ATTR_ID) {
                     BigInteger itemId = new BigInteger(resultSet.getString("REFERENCE_VALUE"));
@@ -156,31 +160,42 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                 if (curAttrId == Constant.STATUS_ATTR_ID) {
                     long enumValue = resultSet.getLong("ENUM_VALUE");
                     orderStatus = getEnumNameById(enumValue);
+                    continue;
                 }
                 if (curAttrId == Constant.ORDERS_COST_ATTR_ID) {
                     orderCost = new BigInteger(resultSet.getString("TEXT_VALUE"));
+                    continue;
                 }
                 if (curAttrId == Constant.ADDRESS_ATTR_ID){
                     if (resultSet.getObject("POINT_VALUE") != null){
                         PGpoint address = (PGpoint)resultSet.getObject("POINT_VALUE");
                         orderAddress = new Address(address.x, address.y);
+                        continue;
                     }
                 }
                 if (curAttrId == Constant.PHONE_NUMBER_ATTR_ID){
                     orderPhone = resultSet.getString("TEXT_VALUE");
+                    continue;
                 }
                 if (curAttrId == Constant.ORDER_CREATION_DATE_ATTR_ID) {
                     //System.out.println(resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toString());
                     orderCreationDate = resultSet.getTimestamp("DATE_VALUE").toLocalDateTime();
+                    continue;
                 }
                 if (curAttrId == Constant.ORDER_PAYMENT_TYPE_ATTR_ID){
                     paymentType =  getEnumNameById(resultSet.getLong("ENUM_VALUE"));
+                    continue;
                 }
                 if (curAttrId == Constant.ORDER_PAID_ATTR_ID){
                     isPaid = resultSet.getInt("TEXT_VALUE") == 1;
+                    continue;
+                }
+                if (curAttrId == Constant.CHANGE_ATTR_ID){
+                    String val = resultSet.getString("TEXT_VALUE");
+                    changeFrom =  val != null?new BigInteger(val) : null;
                 }
             }
-            newOrder = new Order(orderId, userId, orderCost, orderStatus, orderAddress, orderPhone, orderItems, orderCreationDate, courierId, paymentType, isPaid);
+            newOrder = new Order(orderId, userId, orderCost, orderStatus, orderAddress, orderPhone, orderItems, orderCreationDate, courierId, paymentType, isPaid, changeFrom);
             if (resultSet != null){
                 resultSet.close();
             }
@@ -223,6 +238,13 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
 
     @Override
     public void removeOrderById(BigInteger orderId) throws SQLException {
-        removeObjectById(orderId);
+        try{
+            connection.setAutoCommit(false);
+            removeObjectById(orderId);
+            removeParameter(Constant.ORDER_ATTR_ID, orderId);
+            connection.commit();
+        }catch (Exception e){
+            connection.rollback();
+        }
     }
 }

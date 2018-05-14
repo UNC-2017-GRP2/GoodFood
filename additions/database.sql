@@ -236,6 +236,7 @@ COPY "ATTR_OBJECT_TYPES" ("OBJECT_TYPE_ID", "ATTR_ID") FROM stdin;
 306	418
 305	421
 300	413
+305	420
 \.
 
 
@@ -278,6 +279,7 @@ COPY "ATTRIBUTES" ("ATTR_ID", "NAME", "ATTR_TYPE_ID") FROM stdin;
 417	Order status	55
 418	Item image	53
 419	Order payment type	55
+420	Change	51
 421	Order creation date	54
 \.
 

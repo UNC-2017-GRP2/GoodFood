@@ -83,7 +83,13 @@
 
                                             <div class="row text-left">
                                                 <div class="col-sm-5"><spring:message code="orders.paymentType"/></div>
-                                                <div class="col-sm-7">${order.paymentType}</div>
+                                                <div class="col-sm-7">${order.paymentType}
+                                                    <c:if test="${order.paymentType eq Constant.PAYMENT_TYPE_CASH}">
+                                                        <c:if test="${order.changeFrom != null}">
+                                                            (<spring:message code="basket.changeFrom"/> ${order.changeFrom}₽)
+                                                        </c:if>
+                                                    </c:if>
+                                                </div>
                                             </div>
 
                                             <div class="row text-left">

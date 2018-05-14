@@ -2,6 +2,8 @@ var pageContext = "";
 /*var costRegex = /^([1-9])([0-9])$/;*/
 var costRegex = /^([1-9])\d*$/;
 var nameEn = true, nameRu = true, nameUk = true, descriptionEn = true, descriptionRu = true, descriptionUk = true, cost = true;
+var paymentTypeCash = "Cash payment";
+var paymentTypeCard = "Payment by card";
 
 function changeRole(userId, buttonId) {
     var newRole = $('#' + buttonId).val();
@@ -163,6 +165,11 @@ function getOrderInfo(orderId) {
             getOrderAddress(data.orderAddress.latitude, data.orderAddress.longitude);
             $("#order-phone").text(data.orderPhone);
             $("#order-payment-type").text(data.paymentType);
+            if (data.paymentType === paymentTypeCash){
+                if (data.changeFrom != null && data.changeFrom !== ""){
+                    $("#order-payment-type").text($("#order-payment-type").text() + " (" + getLocStrings('change_from') + " " + data.changeFrom + getLocStrings('rub') + ")");
+                }
+            }
             if(data.isPaid === true){
                 $("#order-paid").text(getLocStrings('order_paid'));
             }else{

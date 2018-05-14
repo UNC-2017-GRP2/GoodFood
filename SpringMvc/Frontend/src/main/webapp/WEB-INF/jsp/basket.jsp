@@ -144,7 +144,7 @@
                                                                 <div id="cash-tab" class="tab-pane fade in active col-md-6">
                                                                     <label for="change-from" id="change-from-label"><spring:message code="basket.changeFrom"/></label>
                                                                     <div class="input-group">
-                                                                        <input id="change-from" type="text" class="form-control text-right">
+                                                                        <input id="change-from" name="change-from" type="text" class="form-control text-right">
                                                                         <span class="input-group-addon"><i class="glyphicon glyphicon-ruble"></i></span>
                                                                     </div>
                                                                 </div>

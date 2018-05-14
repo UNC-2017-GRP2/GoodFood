@@ -46,16 +46,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException {
-        Order order = new Order(orderId, userService.getByUsername(username).getUserId(), totalOrder(items), null, orderAddress, inputPhone, items, null, null, isPaid);
-        orderRepository.checkout(order, paymentType);
+    public void checkout(Order order) throws SQLException {
+        orderRepository.checkout(order);
     }
 
-    @Override
+ /*   @Override
     public void checkout(BigInteger orderId, ArrayList<Item> items, BigInteger userId, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException {
         Order order = new Order(orderId, userId, totalOrder(items), null, orderAddress, inputPhone, items, null, null, isPaid);
         orderRepository.checkout(order, paymentType);
-    }
+    }*/
 
 
     @Override
@@ -78,7 +77,8 @@ public class OrderServiceImpl implements OrderService {
                         order.getOrderCreationDate(),
                         order.getCourierId(),
                         order.getPaymentType(),
-                        order.getPaid());
+                        order.getPaid(),
+                        order.getChangeFrom());
                 orderLocalizedItems = localizedOrder.getOrderItems();
                 for (Item item :  order.getOrderItems()) {
                     orderLocalizedItems.add(itemRepository.getLocalizedItem(item, locale));
@@ -113,7 +113,8 @@ public class OrderServiceImpl implements OrderService {
                         order.getOrderCreationDate(),
                         order.getCourierId(),
                         order.getPaymentType(),
-                        order.getPaid());
+                        order.getPaid(),
+                        order.getChangeFrom());
                 orderLocalizedItems = localizedOrder.getOrderItems();
                 for (Item item :  order.getOrderItems()) {
                     orderLocalizedItems.add(itemRepository.getLocalizedItem(item, locale));

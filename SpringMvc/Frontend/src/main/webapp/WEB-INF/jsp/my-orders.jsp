@@ -83,7 +83,13 @@
                                                     <li>
                                                         <p>
                                                             <span class="glyphicon glyphicon-ruble glyphicon-order"></span>
-                                                            <span>${order.paymentType}</span>
+                                                            <span>${order.paymentType}
+                                                                <c:if test="${order.paymentType eq Constant.PAYMENT_TYPE_CASH}">
+                                                                    <c:if test="${order.changeFrom != null}">
+                                                                         (<spring:message code="basket.changeFrom"/> ${order.changeFrom}₽)
+                                                                    </c:if>
+                                                                </c:if>
+                                                            </span>
                                                         </p>
                                                     </li>
                                                     <li>

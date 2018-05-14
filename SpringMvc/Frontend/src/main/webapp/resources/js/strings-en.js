@@ -150,5 +150,7 @@ function getLocStrings(stringId) {
             return 'Sort ascending';
         case 'sort_descending':
             return 'Sort descending';
+        case 'change_from':
+            return 'Need a change from';
     }
 }

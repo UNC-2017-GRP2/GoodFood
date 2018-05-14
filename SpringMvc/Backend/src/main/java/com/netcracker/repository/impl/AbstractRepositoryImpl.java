@@ -326,6 +326,16 @@ public class AbstractRepositoryImpl{
             System.out.println(e.getMessage());
         }
     }
+    protected void removeParameter(long attrId, BigInteger value) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_DELETE_REF_VAL_FROM_PARAMETERS);
+            preparedStatement.setLong(1, attrId);
+            preparedStatement.setObject(2, value, numericType);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     protected void removeRefParameterAndThisObject(BigInteger objectId, long attrId){
         try{

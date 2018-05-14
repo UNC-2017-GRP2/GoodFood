@@ -61,6 +61,9 @@ public class Constant {
     public static final long END_EXPIRATION_TIME = 12;
     public static final int ORDERS_QUANTITY_ON_PAGE = 4;
 
+    public static final String PAYMENT_TYPE_CASH = "Cash payment";
+    public static final String PAYMENT_TYPE_CARD = "Payment by card";
+
     /**Languages**/
     public static final long LANG_RUSSIAN = 81;
     public static final long LANG_UKRAINIAN = 82;
@@ -95,6 +98,7 @@ public class Constant {
     public static final long STATUS_ATTR_ID = 417;
     public static final long ITEM_IMAGE_ATTR_ID = 418;
     public static final long ORDER_PAYMENT_TYPE_ATTR_ID = 419;
+    public static final long CHANGE_ATTR_ID = 420;
     public static final long ORDER_CREATION_DATE_ATTR_ID = 421;
 
     /**Table enum_types**/

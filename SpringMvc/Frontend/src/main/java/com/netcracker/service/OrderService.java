@@ -14,7 +14,7 @@ import java.util.Locale;
 @Service
 public interface OrderService {
     BigInteger totalOrder(ArrayList<Item> items);
-    void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid) throws SQLException;
+    void checkout(BigInteger orderId, ArrayList<Item> items, String username, Address orderAddress, String inputPhone, long paymentType, Boolean isPaid, BigInteger changeFrom) throws SQLException;
     //List<Order> getAllFreeOrders();
     List<Order> getAllFreeOrders(Locale locale);
     //List<Order> getAllOrdersByUser(String username);
