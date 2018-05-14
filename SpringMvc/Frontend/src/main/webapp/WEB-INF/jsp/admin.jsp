@@ -882,7 +882,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"><spring:message
+                    <button type="submit" class="btn btn-primary" id="save-item-info-btn"><spring:message
                             code="profile.save"></spring:message></button>
                 </div>
             </div>

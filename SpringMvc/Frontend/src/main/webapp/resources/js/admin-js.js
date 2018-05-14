@@ -1,6 +1,7 @@
 var pageContext = "";
 /*var costRegex = /^([1-9])([0-9])$/;*/
 var costRegex = /^([1-9])\d*$/;
+var nameEn = true, nameRu = true, nameUk = true, descriptionEn = true, descriptionRu = true, descriptionUk = true, cost = true;
 
 function changeRole(userId, buttonId) {
     var newRole = $('#' + buttonId).val();
@@ -26,71 +27,6 @@ function changeRole(userId, buttonId) {
 function selectOption(elementId, value) {
     document.getElementById(elementId).value = value;
 }
-
-/*$(function () {
-    $('.navbar-toggle-sidebar').click(function () {
-        $('.navbar-nav').toggleClass('slide-in');
-        $('.side-body').toggleClass('body-slide-in');
-        $('#search').removeClass('in').addClass('collapse').slideUp(200);
-    });
-
-    $('#search-trigger').click(function () {
-        $('.navbar-nav').removeClass('slide-in');
-        $('.side-body').removeClass('body-slide-in');
-        $('.search-input').focus();
-    });
-});
-
-/!*ДЛЯ ПОИСКА*!/
-(function(){
-    'use strict';
-    var $ = jQuery;
-    $.fn.extend({
-        filterTable: function(){
-            return this.each(function(){
-                $(this).on('keyup', function(e){
-                    $('.filterTable_no_results').remove();
-                    var $this = $(this),
-                        search = $this.val().toLowerCase(),
-                        target = $this.attr('data-filters'),
-                        $target = $(target),
-                        $rows = $target.find('tbody tr');
-
-                    if(search === '') {
-                        $rows.show();
-                    } else {
-                        $rows.each(function(){
-                            var $this = $(this);
-                            $this.text().toLowerCase().indexOf(search) === -1 ? $this.hide() : $this.show();
-                        });
-                        if($target.find('tbody tr:visible').size() === 0) {
-                            var col_count = $target.find('tr').first().find('td').size();
-                            var no_results = $('<tr class="filterTable_no_results"><td colspan="'+col_count+'">' + getErrorString('no_results') + '</td></tr>');
-                            $target.find('tbody').append(no_results);
-                        }
-                    }
-                });
-            });
-        }
-    });
-    $('[data-action="filter"]').filterTable();
-})(jQuery);
-
-$(function(){
-    // attach table filter plugin to inputs
-    $('[data-action="filter"]').filterTable();
-
-    $('.container').on('click', '.panel-heading span.filter', function(e){
-        var $this = $(this),
-            $panel = $this.parents('.panel');
-
-        $panel.find('.panel-body').slideToggle();
-        if($this.css('display') != 'none') {
-            $panel.find('.panel-body input').focus();
-        }
-    });
-    $('[data-toggle="tooltip"]').tooltip();
-});*/
 
 function getUserInfo(userId) {
     $.ajax({
@@ -119,8 +55,6 @@ function getUserInfo(userId) {
         }
     });
 }
-
-
 
 function getAddressByCoordinates(latitude, longitude, index) {
     var coords = [latitude, longitude];
@@ -370,6 +304,14 @@ function removeOrder(thisElem, orderId) {
     });
 }
 
+function checkEditItemsFields() {
+    if (nameEn && nameRu && nameUk && descriptionEn && descriptionRu && descriptionUk && cost) {
+        $("#save-item-info-btn").prop('disabled', false);
+    } else {
+        $("#save-item-info-btn").prop('disabled', true);
+    }
+}
+
 $(document).ready(function () {
 
     var languageTableParams = {
@@ -431,18 +373,6 @@ $(document).ready(function () {
         }
     });
 
-  /*  $("#my-file-selector").onchange = function () {
-        var fileName = this.value;
-        var fileExtension = fileName.substr(fileName.length - 4);
-
-        console.log(fileExtension);
-        if (fileExtension !== ".xls") {
-            alert("That ain't no .xls file!");
-        }else{
-            $('#upload-file-info').html(fileName)
-        }
-    };*/
-
     $("#my-file-selector").change(function () {
         var fileName = this.files[0].name;
         var fileType = this.files[0].type;
@@ -487,10 +417,71 @@ $(document).ready(function () {
         $("#update-item-form").trigger('reset');
     });
 
+    /*Item validate*/
 
-
-
-    /*CHARTS*/
+    $('#item-name-en').keyup(function () {
+        //$('#fio').css("box-shadow", "none");
+        if ($('#item-name-en').val() == "") {
+            nameEn = false;
+        } else {
+            nameEn = true;
+        }
+        checkEditItemsFields();
+    });
+    $('#item-name-ru').keyup(function () {
+        //$('#fio').css("box-shadow", "none");
+        if ($('#item-name-ru').val() == "") {
+            nameRu = false;
+        } else {
+            nameRu = true;
+        }
+        checkEditItemsFields();
+    });
+    $('#item-name-uk').keyup(function () {
+        //$('#fio').css("box-shadow", "none");
+        if ($('#item-name-uk').val() == "") {
+            nameUk = false;
+        } else {
+            nameUk = true;
+        }
+        checkEditItemsFields();
+    });
+    $('#item-description-en').keyup(function () {
+        //$('#fio').css("box-shadow", "none");
+        if ($('#item-description-en').val() == "") {
+            descriptionEn = false;
+        } else {
+            descriptionEn = true;
+        }
+        checkEditItemsFields();
+    });
+    $('#item-description-ru').keyup(function () {
+        //$('#fio').css("box-shadow", "none");
+        if ($('#item-description-ru').val() == "") {
+            descriptionRu = false;
+        } else {
+            descriptionRu = true;
+        }
+        checkEditItemsFields();
+    });
+    $('#item-description-uk').keyup(function () {
+        //$('#fio').css("box-shadow", "none");
+        if ($('#item-description-uk').val() == "") {
+            descriptionUk = false;
+        } else {
+            descriptionUk = true;
+        }
+        checkEditItemsFields();
+    });
+    $('#item-cost').keyup(function () {
+        //$('#fio').css("box-shadow", "none");
+        if ($('#item-cost').val() == "") {
+            cost = false;
+        } else {
+            cost = true;
+        }
+        checkEditItemsFields();
+    });
 });
 
 
