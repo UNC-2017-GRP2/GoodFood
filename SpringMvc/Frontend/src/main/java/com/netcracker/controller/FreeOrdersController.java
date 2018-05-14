@@ -28,7 +28,7 @@ public class FreeOrdersController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = { "/free-orders"}, method = RequestMethod.GET)
+    @RequestMapping(value = { "/free-orders"}, method = RequestMethod.GET, produces = {"application/json; charset=utf-8"})
     public ModelAndView freeOrdersPage(Locale locale) throws IOException {
         ModelAndView model = new ModelAndView();
         model.addObject("now", LocalDateTime.now());

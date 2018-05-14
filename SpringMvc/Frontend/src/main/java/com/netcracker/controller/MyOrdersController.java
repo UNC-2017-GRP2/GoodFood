@@ -34,7 +34,7 @@ public class MyOrdersController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = {"/my-orders/{pageId}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/my-orders/{pageId}"}, method = RequestMethod.GET, produces = {"application/json; charset=utf-8"})
     public ModelAndView myOrdersPageId(Principal principal, @PathVariable int pageId, Locale locale, HttpSession httpSession){
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = null;

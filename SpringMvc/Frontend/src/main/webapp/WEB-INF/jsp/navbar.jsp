@@ -40,8 +40,10 @@
                     <li><a href="${pageContext.request.contextPath}/basket">
                         <%
                             int cartSize = 0;
-                            for (Item item:(ArrayList<Item>)session.getAttribute("basketItems")){
-                                cartSize += item.getProductQuantity();
+                            if (session.getAttribute("basketItems") != null){
+                                for (Item item:(ArrayList<Item>)session.getAttribute("basketItems")){
+                                    cartSize += item.getProductQuantity();
+                                }
                             }
                         %>
                         <span class="glyphicon glyphicon-shopping-cart" id="icon-cart"></span><span id="cart-badge" class="badge"><%=cartSize%></span></a>

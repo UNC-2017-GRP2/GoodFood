@@ -30,7 +30,7 @@ public class CurrentOrdersController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = {"/current-orders"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/current-orders"}, method = RequestMethod.GET, produces = {"application/json; charset=utf-8"})
     public ModelAndView currentOrders(ModelAndView model, Principal principal, Locale locale) throws IOException {
 
         List<Order> allOrders = null;
