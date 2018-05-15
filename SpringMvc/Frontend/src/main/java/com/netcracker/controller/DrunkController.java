@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.netcracker.config.Constant;
 import com.netcracker.model.Entity;
-import com.netcracker.model.Item;
+import com.netcracker.model.MapParameter;
 import com.netcracker.model.User;
 import com.netcracker.service.DrunkService;
 import com.netcracker.service.UserService;
@@ -88,19 +88,40 @@ public class DrunkController {
         String token = "Base " + Base64.getEncoder().encodeToString(originalInput.getBytes());
         headers.add("Authorization", token);
 //        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 //        restTemplate.getMessageConverters()
 //                .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
-        List<JsonObject> jsons = new ArrayList<>();
+        List<Entity> entityList = new ArrayList<>();
         for (BigInteger i : list) {
-            ResponseEntity<String> userResponse = restTemplate.exchange(Constant.SOBER_DRIVER_URL + "/" + i, HttpMethod.GET, entity, String.class);
+            ResponseEntity<String> userResponse = restTemplate.exchange(Constant.SOBER_DRIVER_URL + "/" + i, HttpMethod.GET, httpEntity, String.class);
             String result = userResponse.getBody();
             JsonObject jobj = new Gson().fromJson(result, JsonObject.class);
-            jsons.add(jobj);
+
+            String phoneNumber= jobj.get("clientPhoneNumber").getAsString();
+            String address = jobj.get("address").getAsString();
+            String geoData = jobj.get("geoData").getAsString();
+            String destGeoData = jobj.get("destinationGeoData").getAsString();
+            String startTime = jobj.get("orderStartTime").getAsString();
+            String endTime = jobj.get("orderEndTime").getAsString();
+            String statusOrder = jobj.get("statusOrder").getAsString();
+            List<MapParameter> mapParameters = new ArrayList<>();
+            mapParameters.add(new MapParameter(1, phoneNumber));
+            mapParameters.add(new MapParameter(2, address));
+            mapParameters.add(new MapParameter(3, geoData));
+            mapParameters.add(new MapParameter(4, destGeoData));
+            mapParameters.add(new MapParameter(5, startTime));
+            mapParameters.add(new MapParameter(6, endTime));
+            mapParameters.add(new MapParameter(7, statusOrder));
+            Entity entity = new Entity(i, 1, "name", mapParameters);
+            entityList.add(entity);
+//            model.addObject(entity);
         }
-        model.addObject(jsons);
-//        BigInteger orderId = jobj.get("id").getAsBigInteger();
+        model.addObject(entityList);
+//        User usr  = userService.getByUsername(principal.getName());
+//        model.addObject(usr);
+
 //        drunkService.addSobOrder(principal.getName(), orderId);
+
         model.setViewName("sober_list");
         return model;
     }

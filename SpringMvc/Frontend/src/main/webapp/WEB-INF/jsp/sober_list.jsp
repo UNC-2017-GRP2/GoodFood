@@ -13,7 +13,52 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/my-orders-js.js"></script>
+    <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+    <script type="text/javascript">
+        <%--<%@include file="/resources/js/sober-list-js.js" %>--%>
+        if ('${pageContext.response.locale}' == 'uk') {
+            <%@include file="/resources/js/strings-uk.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'ru') {
+            <%@include file="/resources/js/strings-ru.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'en') {
+            <%@include file="/resources/js/strings-en.js" %>
+        }
+    </script>
+    <script type="text/javascript">
+        function getAddressByCoordinates(orderId, latitude, longitude){
+            var coords = [latitude, longitude];
+            ymaps.geocode(coords).then(function(res){
+                if (res.geoObjects.get(0) != null){
+                    var obj = res.geoObjects.get(0);
+                    $("#address"+orderId).text(obj.getAddressLine());
+                }
+            });
+        }
+
+        function getDestAddressByCoordinates(orderId, latitude, longitude){
+            var coords = [latitude, longitude];
+            ymaps.geocode(coords).then(function(res){
+                if (res.geoObjects.get(0) != null){
+                    var obj = res.geoObjects.get(0);
+                    $("#dest-address"+orderId).text(obj.getAddressLine());
+                }
+            });
+        }
+
+        function getOrderAddresses() {
+            <c:forEach items="${entityList}" var="entity">
+            var array = "${entity.getParameterByAttrId(3).value}".split(',');
+            getAddressByCoordinates('${entity.objectId}', array[0], array[1]);
+            array = "${entity.getParameterByAttrId(4).value}".split(',');
+            getDestAddressByCoordinates('${entity.objectId}', array[0], array[1]);
+            </c:forEach>
+        }
+        ymaps.ready(getOrderAddresses);
+
+    </script>
+
 </head>
 <body>
 
@@ -30,10 +75,17 @@
                             <div class="border text-center"></div>
                             <div class="content">
                                 <table class="table">
-                                    <c:forEach items="${jsons}" var="order">
-                                            <tr>
-                                                <td>Order ${order.get("id").getAsBigInteger()}</td>
-                                            </tr>
+                                    <c:forEach items="${entityList}" var="entity">
+                                                <td>${entity.getParameterByAttrId(1).value}</td>
+                                                <%--<td>Order ${entity.getParameterByAttrId(2).value}</td>--%>
+                                                <td id="address${entity.objectId}">
+                                                    </td>
+                                        <td id="dest-address${entity.objectId}">
+                                        </td>
+
+                                                <td>${entity.getParameterByAttrId(5).value}</td>
+                                                <td>${entity.getParameterByAttrId(6).value}</td>
+                                                <td>${entity.getParameterByAttrId(7).value}</td>
                                     </c:forEach>
                                 </table>
                                     </div>

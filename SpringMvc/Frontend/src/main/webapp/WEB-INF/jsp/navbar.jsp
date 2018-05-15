@@ -98,6 +98,11 @@
                                     <li><a href="<c:url value='/profile'/>"><spring:message code="general.profile"/></a></li>
                                 </sec:authorize>
                             </c:if>
+                            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                                <sec:authorize access="hasAnyRole('ROLE_USER')">
+                                    <li><a href="<c:url value='/sober_list'/>">Sober driver orders</a></li>
+                                </sec:authorize>
+                            </c:if>
                             <li role="separator" class="divider"></li>
                             <p align="center">
                                 <a href="?lang=en"><img src="${pageContext.request.contextPath}/resources/img/flags/United-Kingdom.png" border="1"></a>

@@ -32,7 +32,6 @@
         }
     </script>
     <script type="text/javascript">
-        ymaps.ready(getUserAddresses);
         ymaps.ready(getUserDestAddresses);
 
         function getUserAddresses() {
