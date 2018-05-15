@@ -78,11 +78,11 @@ function destGeocode(address) {
         }
         if (error) {
             destAddressFlag = false;
-            setErrorValidMessage($("#input-dest-address"), $("#address-valid"), error);
+            setErrorValidMessage($("#input-dest-address"), $("#address-dest-valid"), error);
 
         } else {
             destAddressFlag = true;
-            setSuccessValid($("#input-dest-address"), $("#address-valid"));
+            setSuccessValid($("#input-dest-address"), $("#address-dest-valid"));
             $("#input-address-dest-latitude").val(coords[0]);
             $("#input-address-dest-longitude").val(coords[1]);
         }

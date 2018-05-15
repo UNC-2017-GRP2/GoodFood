@@ -12,21 +12,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Locale;
 
 @Service
 public class DrunkServiceImpl implements DrunkService {
 
     @Override
-    public void callDriver(User user) {
+    public void addSobOrder(String username, BigInteger orderId) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> request = new HttpEntity<>("");
+        restTemplate.exchange(Constant.BASE_URL_REST + "/sober/add/" + username + "/" + orderId,
+                HttpMethod.GET, request, String.class);
+    }
+
+    @Override
+    public List<BigInteger> getSobOrdersByUsername(String username) {
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpEntity<User> request = new HttpEntity<>(user);
-
-        restTemplate.exchange(Constant.BASE_URL_REST + "/drunk_receive",
-                HttpMethod.POST, request, new ParameterizedTypeReference<User>() {
-                });
-        System.out.println(Constant.BASE_URL_REST + "/drunk_receive");
-//        return user;
+        ResponseEntity<List<BigInteger>> response =
+                restTemplate.exchange(Constant.BASE_URL_REST + "/sober/" + username,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<BigInteger>>() {
+                        });
+        List<BigInteger> result = response.getBody();
+        return result;
     }
 }

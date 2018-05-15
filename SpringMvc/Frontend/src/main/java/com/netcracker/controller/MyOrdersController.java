@@ -92,7 +92,6 @@ public class MyOrdersController {
         return result;
     }
 
-
     @RequestMapping(value = { "/my-orders/remove/{id}"}, method = RequestMethod.POST)
     public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
         Order order = orderService.getOrderById(id);

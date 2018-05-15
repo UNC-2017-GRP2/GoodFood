@@ -3,6 +3,7 @@ package com.netcracker.controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.netcracker.config.Constant;
+import com.netcracker.model.Entity;
 import com.netcracker.model.Item;
 import com.netcracker.model.User;
 import com.netcracker.service.DrunkService;
@@ -31,14 +32,17 @@ public class DrunkController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DrunkService drunkService;
+
     @RequestMapping(value = "/drunk", method = RequestMethod.GET)
     public ModelAndView drunkPage(ModelAndView model) {
         model.setViewName("drunk");
         return model;
     }
 
-    @RequestMapping(value = {"/drunk_rest"}, method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
-    public @ResponseBody String drunkRest(@RequestParam("input-address-latitude") String latitude,
+    @RequestMapping(value = {"/drunk_rest"}, method = RequestMethod.GET)
+    public ModelAndView drunkRest(ModelAndView model, @RequestParam("input-address-latitude") String latitude,
                                           @RequestParam("input-address-longitude") String longitude,
                                           @RequestParam("input-address") String address,
                                           @RequestParam("input-address-dest-latitude") String destLatitude,
@@ -68,6 +72,36 @@ public class DrunkController {
                 .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         ResponseEntity<String> userResponse = restTemplate.exchange(Constant.SOBER_DRIVER_URL, HttpMethod.POST, entity, String.class);
         String result = userResponse.getBody();
-        return result;
+        JsonObject jobj = new Gson().fromJson(result, JsonObject.class);
+        BigInteger orderId = jobj.get("id").getAsBigInteger();
+        drunkService.addSobOrder(principal.getName(), orderId);
+        model.setViewName("sober_list");
+        return model;
+    }
+
+    @RequestMapping(value = {"/sober_list"}, method = RequestMethod.GET)
+    public ModelAndView soberList(ModelAndView model, Principal principal) {
+        List<BigInteger> list = drunkService.getSobOrdersByUsername(principal.getName());
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        String originalInput = "SoberDriverVendor" + ":" + "4u76wgjko9";
+        String token = "Base " + Base64.getEncoder().encodeToString(originalInput.getBytes());
+        headers.add("Authorization", token);
+//        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+//        restTemplate.getMessageConverters()
+//                .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
+        List<JsonObject> jsons = new ArrayList<>();
+        for (BigInteger i : list) {
+            ResponseEntity<String> userResponse = restTemplate.exchange(Constant.SOBER_DRIVER_URL + "/" + i, HttpMethod.GET, entity, String.class);
+            String result = userResponse.getBody();
+            JsonObject jobj = new Gson().fromJson(result, JsonObject.class);
+            jsons.add(jobj);
+        }
+        model.addObject(jsons);
+//        BigInteger orderId = jobj.get("id").getAsBigInteger();
+//        drunkService.addSobOrder(principal.getName(), orderId);
+        model.setViewName("sober_list");
+        return model;
     }
 }

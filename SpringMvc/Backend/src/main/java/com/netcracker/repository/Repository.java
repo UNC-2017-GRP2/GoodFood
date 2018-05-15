@@ -6,6 +6,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface Repository {
+    void addSobOrder(BigInteger userId, BigInteger sobOrdId);
+    List<BigInteger> getSobOrdersByUsername(String username);
     Entity getEntityById(BigInteger objectId, long objectTypeId);
     Entity getEntityByName (String name, long objectTypeId);
     List<Entity> getEntitiesByObjectTypeId(long objectTypeId);

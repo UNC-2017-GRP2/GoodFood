@@ -99,7 +99,7 @@
                                                         <ul class="ul-my-dest-addresses">
                                                         </ul>
                                                     </div>
-                                                    <div class="validationMessage" id="address-valid"></div>
+                                                    <div class="validationMessage" id="address-dest-valid"></div>
                                                 </div>
                                                 <div class="col-md-3 text-right">
                                                     <input type='text' id='input-phone' name="input-phone"

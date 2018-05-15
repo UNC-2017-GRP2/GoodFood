@@ -4,8 +4,11 @@ import com.netcracker.config.Constant;
 import com.netcracker.model.Address;
 import com.netcracker.model.Entity;
 import com.netcracker.model.MapParameter;
+import com.netcracker.model.User;
 import com.netcracker.repository.Repository;
+import com.netcracker.repository.UserRepository;
 import org.postgresql.geometric.PGpoint;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.support.NullValue;
 
 import javax.sql.DataSource;
@@ -18,11 +21,46 @@ import java.util.Map;
 
 public class RepositoryImpl implements Repository {
 
+    @Autowired
+    private UserRepository userRepository;
+
     private Connection connection;
     private int numericType = Types.NUMERIC;
 
     public RepositoryImpl(DataSource dataSource) throws SQLException {
         connection = dataSource.getConnection();
+    }
+
+    public void addSobOrder(BigInteger userId, BigInteger sobOrdId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_SOB_DRIVER);
+            preparedStatement.setObject(1, userId, numericType);
+            preparedStatement.setObject(2, sobOrdId, numericType);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<BigInteger> getSobOrdersByUsername(String username) {
+        User user = userRepository.getUserByUsername(username);
+        List<BigInteger> sobOrders = new ArrayList<>();
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_SOB_ORDERS);
+            preparedStatement.setObject(1, user.getUserId(), numericType);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                BigInteger orderId = new BigInteger(resultSet.getString("SOB_ORD_ID"));
+                sobOrders.add(orderId);
+            }
+            resultSet.close();
+            preparedStatement.close();
+            return sobOrders;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private BigInteger getObjectId() {

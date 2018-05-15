@@ -185,6 +185,8 @@ public class Constant {
     public static final String SQL_DELETE_OBJECT = "delete from \"OBJECTS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_DELETE_LOC_STRINGS = "delete from \"LOC_STRINGS\" where \"OBJECT_ID\" = ?";
 
+    public static final String SQL_INSERT_INTO_SOB_DRIVER = "insert into \"SOB_DRIVER\" (\"USER_ID\",\"SOB_ORD_ID\") values(?,?)";
+    public static final String SQL_SELECT_SOB_ORDERS = "select * from \"SOB_DRIVER\" where \"USER_ID\" = ?";
 
     /*public static final String BASE_URL_REST = "http://127.0.0.1:8080/rest";*/
     public static final String BASE_URL_REST = "http://localhost:8085";

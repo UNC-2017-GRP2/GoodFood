@@ -1,7 +1,9 @@
 package com.netcracker.service;
 
-import com.netcracker.model.User;
+import java.math.BigInteger;
+import java.util.List;
 
 public interface DrunkService {
-    public void callDriver(User user);
+    void addSobOrder(String username, BigInteger sobOrdId);
+    List<BigInteger> getSobOrdersByUsername(String username);
 }

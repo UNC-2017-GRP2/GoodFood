@@ -1,32 +1,35 @@
 package com.netcracker.service.impl;
 
-import com.netcracker.config.Constant;
-import com.netcracker.model.Item;
 import com.netcracker.model.User;
 import com.netcracker.service.DrunkService;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import com.netcracker.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.netcracker.repository.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigInteger;
-import java.util.Locale;
+import java.util.List;
 
 @Service
 public class DrunkServiceImpl implements DrunkService {
 
+    @Autowired
+    private Repository repository;
+
+    @Autowired
+    private UserService userService;
+
     @Override
-    public void callDriver(User user) {
-        RestTemplate restTemplate = new RestTemplate();
+    public void addSobOrder(String username, BigInteger sobOrdId) {
+        User user = userService.getByUsername(username);
+        repository.addSobOrder(user.getUserId(), sobOrdId);
+    }
 
-        HttpEntity<User> request = new HttpEntity<>(user);
-
-        restTemplate.exchange(Constant.BASE_URL_REST + "/drunk_receive",
-                HttpMethod.POST, request, new ParameterizedTypeReference<User>() {
-                });
-        System.out.println(Constant.BASE_URL_REST + "/drunk_receive");
-//        return user;
+    @Override
+    public List<BigInteger> getSobOrdersByUsername(String username) {
+        List<BigInteger> allOrders;
+        allOrders = repository.getSobOrdersByUsername(username);
+        return allOrders;
     }
 }
