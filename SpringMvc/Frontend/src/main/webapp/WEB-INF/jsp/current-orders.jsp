@@ -18,12 +18,40 @@
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 
     <script type="text/javascript">
+        var ordersPoints = [];
         ymaps.ready(getOrderAddresses);
         function getOrderAddresses() {
             <c:forEach items="${orders}" var="order">
             getAddressByCoordinates('${order.orderId}',${order.orderAddress.latitude}, ${order.orderAddress.longitude});
+            ordersPoints.push([${order.orderAddress.latitude}, ${order.orderAddress.longitude}]);
             </c:forEach>
         }
+
+        ymaps.ready(function () {
+            createRoute(ordersPoints);
+        });
+        /*function init(){
+            var myMap = new ymaps.Map("map", {
+                center: [51.6720400, 39.1843000],
+                zoom: 12
+            });
+            var points = [];
+            points.push([55.734876, 37.59308]);
+            points.push([55.354876, 37.111108]);
+            var multiRoute = new ymaps.multiRouter.MultiRoute({
+                // Описание опорных точек мультимаршрута.
+                referencePoints: points,
+                // Параметры маршрутизации.
+                params: {
+                    // Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
+                    results: 2
+                }
+            }, {
+                // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+                boundsAutoApply: true
+            });
+            myMap.geoObjects.add(multiRoute);
+        }*/
     </script>
 </head>
 <body>

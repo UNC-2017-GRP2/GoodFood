@@ -39,6 +39,11 @@ function getUserInfo(userId) {
         }),
         dataType:'json',
         success: function (data) {
+            if (data.image !== null && data.image !== "" && typeof data.image !== "undefined"){
+                $("#data-user-image").attr('src', pageContext + data.image);
+            }else{
+                $("#data-user-image").attr('src', pageContext + "/resources/img/avatars/default.jpg");
+            }
             $("#data-role").text(data.role);
             $("#data-user-id").text(data.userId);
             $("#data-login").text(data.login);

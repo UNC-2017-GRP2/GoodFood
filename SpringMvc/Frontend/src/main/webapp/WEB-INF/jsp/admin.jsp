@@ -601,8 +601,8 @@
             <div class="content user-content">
                 <div class="container container-prof text-center">
                     <div class="avatar-flip">
-                        <img class="img-circle"
-                             src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg">
+                        <img class="img-circle" id="data-user-image"
+                             src="${pageContext.request.contextPath}/resources/img/avatars/default.jpg">
                     </div>
                     <div class="text-center">
                         <ul class="details text-left" id="user-data-list">
