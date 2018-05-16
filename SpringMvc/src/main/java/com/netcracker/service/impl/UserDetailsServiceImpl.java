@@ -17,8 +17,6 @@ import java.util.Arrays;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private Repository repository;
@@ -26,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Entity user = repository.getEntityByName(username, Constant.USER_OBJ_TYPE_ID);
         UserDetails userDetails = null;
-        if (user != null){
+        if (user != null) {
             GrantedAuthority authority = new SimpleGrantedAuthority(user.getParameterValueByAttrId(Constant.USER_ROLE_ATTR_ID).toString());
             userDetails = new org.springframework.security.core.userdetails.User(
                     user.getParameterValueByAttrId(Constant.NAME_ATTR_ID).toString(),
@@ -34,9 +32,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     Arrays.asList(authority));
         }
 
-        /*User user = userRepository.getUserByUsername(username);
-        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPasswordHash(), Arrays.asList(authority));*/
-        return userDetails;
+//User user = userRepository.getUserByUsername(username);
+//        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
+//        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPasswordHash(), Arrays.asList(authority));
+
+      return userDetails;
     }
+
+
 }

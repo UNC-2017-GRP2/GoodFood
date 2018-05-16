@@ -1,6 +1,7 @@
 package com.netcracker.controller;
 
 import com.netcracker.config.AuthManager;
+import com.netcracker.form.MyUserAccountForm;
 import com.netcracker.model.User;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +11,32 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@EnableWebMvc
 public class RegistrationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ConnectionFactoryLocator connectionFactoryLocator;
+
+    @Autowired
+    private UsersConnectionRepository connectionRepository;
 
     public static AuthenticationManager am = new AuthManager();
 
@@ -45,6 +62,73 @@ public class RegistrationController {
             return model;
         }
     }
+
+//    // User login via Social,
+//    // but not allow access basic info.
+//    // webapp will redirect to /signin.
+//    @RequestMapping(value = { "/signin" }, method = RequestMethod.GET)
+//    public String signInPage(Model model) {
+//        return "redirect:/login";
+//    }
+//
+//    @RequestMapping(value = { "/signup" }, method = RequestMethod.GET)
+//    public String signupPage(WebRequest request, Model model) {
+//
+//        ProviderSignInUtils providerSignInUtils //
+//                = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
+//
+//        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+//
+//        //
+//        MyUserAccountForm myForm = null;
+//        //
+//        if (connection != null) {
+//            myForm = new MyUserAccountForm(connection);
+//        } else {
+//            myForm = new MyUserAccountForm();
+//        }
+//        model.addAttribute("myForm", myForm);
+//        return "signup";
+//    }
+//
+//    @RequestMapping(value = { "/signup" }, method = RequestMethod.POST)
+//    public String signupSave(WebRequest request, //
+//                             Model model, //
+//                             @ModelAttribute("userForm") @Validated User userForm, //
+//                             BindingResult result, //
+//                             final RedirectAttributes redirectAttributes) {
+//
+//        // If validation has error.
+//        if (result.hasErrors()) {
+//            return "signup";
+//        }
+//
+//
+//
+//        try {
+//            userService.saveUser(userForm);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            model.addAttribute("errorMessage", "Error " + ex.getMessage());
+//            return "signup";
+//        }
+//
+//        User registered = userService.getByUsername(userForm.getLogin());
+//
+//        if (userForm.getSignInProvider() != null) {
+//            ProviderSignInUtils providerSignInUtils //
+//                    = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
+//
+//            // If the user is signing in by using a social provider, this method
+//            // call stores the connection to the UserConnection table.
+//            // Otherwise, this method does not do anything.
+//            providerSignInUtils.doPostSignUp(registered.getId(), request);
+//        }
+//        // After register, Logs the user in.
+//        SecurityUtil.logInUser(registered);
+//
+//        return "redirect:/userInfo";
+//    }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error) {
@@ -85,5 +169,7 @@ public class RegistrationController {
             return "false";
         }
     }
+
+
 }
 

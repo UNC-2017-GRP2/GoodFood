@@ -1,5 +1,6 @@
 package com.netcracker.config;
 
+import com.netcracker.service.impl.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -8,13 +9,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsServiceImpl;
 
     @Autowired
     private ApplicationContextConfig context;
@@ -22,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-        auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
+        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(encoder);
     }
 
 
@@ -57,6 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .tokenRepository(context.persistentTokenRepository())
                         .key("rem-me-key")
                         .tokenValiditySeconds(86400);
+
+/*        http.apply(new SpringSocialConfigurer())
+                .signupUrl("/registration");*/
 
     }
 
