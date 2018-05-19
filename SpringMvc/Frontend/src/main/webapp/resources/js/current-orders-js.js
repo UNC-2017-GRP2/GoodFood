@@ -461,7 +461,7 @@ function getRouteTime(pointSequence){
 
 
 function finalRoute(finPoints) {
-    ymaps.route(
+    /*ymaps.route(
         finPoints, {
             mapStateAutoApply: true,
             boundsAutoApply: true,
@@ -473,7 +473,24 @@ function finalRoute(finPoints) {
         });
         // добавляем маршрут на карту
         map.geoObjects.add(route);
+    });*/
+
+    var route = new ymaps.multiRouter.MultiRoute({
+        referencePoints: finPoints
+    }, {
+        editorDrawOver: false,
+        wayPointDraggable: true,
+        viaPointDraggable: true,
+        // Задаем собственное оформление линий мультимаршрута.
+        routeStrokeColor: "000088",
+        routeActiveStrokeColor: "ff0000",
+        pinIconFillColor: "ff0000",
+        boundsAutoApply: true,
+        zoomMargin: 30,
+        activeRouteAutoSelection: true
     });
+    map.geoObjects.add(route);
+
     getRouteTime(resultPointsSequence);
 }
 //-----------------------------------------------

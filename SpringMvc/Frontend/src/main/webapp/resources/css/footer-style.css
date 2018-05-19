@@ -9,6 +9,14 @@
 }
 
 /* Footer */
+
+.footer-section{
+    /*position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;*/
+}
+
 .footer {
     position: relative;
     background-color: #3d3d3d;

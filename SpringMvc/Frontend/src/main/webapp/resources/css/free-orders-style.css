@@ -9,6 +9,11 @@
 }
 
 /*--------------Content----------*/
+
+.blog-section{
+    min-height: 500px;
+}
+
 .site-heading{
     margin-top: 5%;
 }
