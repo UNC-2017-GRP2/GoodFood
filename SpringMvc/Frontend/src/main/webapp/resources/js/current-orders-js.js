@@ -26,9 +26,11 @@ function getAddressByCoordinates(orderId, latitude, longitude){
     });
 }
 
+
 //-------------------ROUTE----------------------------
 var map = null;
 var pointsAll;
+var addressAll = [];
 function createRoute(points) {
     pointsAll = points;
     map = new ymaps.Map("map", {
@@ -44,10 +46,35 @@ function createRoute(points) {
         firstPoints = points;
         for(var i = 0; i < points.length; i++){
             pointSequence.push(i);
+            addressAll.push("");
         }
+        getRouteAddress(pointsAll);
         getRoute(points);
     }, function (error) {
         $.notify(getErrorString('data_error'), "error");
+    });
+}
+
+
+function getRouteAddress(points){
+    for (var i = 0; i < points.length; i++){
+        //alert("point " + points[i] + "  i = " + i);
+        getAddress(points[i], i);
+       // alert(addressAll[i]);
+    }
+}
+
+function getAddress(point, i){
+    ymaps.geocode(point).then(function(res){
+        if (res.geoObjects.get(0) != null){
+            var obj = res.geoObjects.get(0);
+            console.log("point: " + i + "  address: " + obj.getAddressLine());
+            addressAll[i] = obj.getAddressLine();
+            //alert("idx = " + i + "  address: " + addressAll[i]);
+            //alert("addre in getAddress " + obj.getAddressLine());
+            //return obj.getAddressLine();
+            //alert("" + latitude + " " + longitude + " " + obj.getAddressLine());
+        }
     });
 }
 
@@ -111,7 +138,9 @@ function checkRoutes() {
         matrixRoutes[v.point.i][v.point.j] = v.time;
         matrixRoutes[v.point.j][v.point.i] = v.time;
     });
-
+    console.log("////////////time matrix");
+    console.log(matrixRoutes);
+    console.log("/////////");
     /*получили матрицу с временем*/
     var newMatrix = getMatrixWithIndexes(matrixRoutes);
     //var testM = [[null, 90,80,40,100],[60,null,40,50,70],[50,30,null,60,20],[10,70,20,null,50],[20,40,50,20,null]];
@@ -283,13 +312,19 @@ function getPoint(matrix){
             console.log(resultPoints);
         }*/
     }else{
-        console.log(resultPoints);
+        //console.log(resultPoints);
         removePoint(resultPoints);
-        console.log(resultPoints);
+        //console.log(resultPoints);
         getPointSequence(resultPoints, 0);
-        console.log(firstPoints);
+        //console.log(firstPoints);
         pointsForRouteFromSequence(resultPointsSequence);
-        console.log(resultPointsForRoute);
+
+        console.log("///first point sequence");
+        console.log(pointSequence);
+        console.log("//////");
+        console.log("//////result point sequence");
+        console.log(resultPointsSequence);
+        console.log("//////");
         finalRoute(resultPointsForRoute);
     }
 }
@@ -377,15 +412,23 @@ function pointsForRouteFromSequence(sequence){
 }
 
 function getRouteTime(pointSequence){
+    for (var j = 0; j < addressAll.length; j++){
+
+    }
     //console.log(pointSequence);
     var time = 0;
+    var curTime;
     for (var i = 0; i < pointSequence.length - 1; i++){
-        time += matrixRoutes[pointSequence[i]][pointSequence[i + 1]];
-        //console.log("route:" + pointSequence[i] + "->" + pointSequence[i + 1] + " time:" + time);
+        curTime = matrixRoutes[pointSequence[i]][pointSequence[i + 1]];
+        time += curTime;
+        console.log("route:" + pointSequence[i] + "->" + pointSequence[i + 1] + " time:" + curTime);
+        //alert(addressAll[i] + "  " + addressAll[i + 1]);
+        //console.log("route:" + addressAll[i] + "->" + addressAll[i + 1] + " time:" + curTime);
     }
-    time += matrixRoutes[pointSequence[pointSequence.length - 1]][pointSequence[0]];
-    //console.log("route:" + pointSequence[pointSequence.length - 1] + "->" + pointSequence[0] + " time:" + time);
-    return time;
+    /*time += matrixRoutes[pointSequence[pointSequence.length - 1]][pointSequence[0]];
+    console.log("route:" + pointSequence[pointSequence.length - 1] + "->" + pointSequence[0] + " time:" + time);*/
+    console.log("Time total:" + time);
+    //return time;
 }
 
 
@@ -425,13 +468,13 @@ function finalRoute(finPoints) {
             avoidTrafficJams: true
         }).then(function (route) {
         route.getPaths().options.set({
-            balloonContentBodyLayout: 'fvfvfv',
             strokeColor: '0000ffff',
             opacity: 0.9
         });
         // добавляем маршрут на карту
         map.geoObjects.add(route);
     });
+    getRouteTime(resultPointsSequence);
 }
 //-----------------------------------------------
 $(document).ready(function () {
