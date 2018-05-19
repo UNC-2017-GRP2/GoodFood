@@ -6,7 +6,7 @@ import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.User;
 import com.netcracker.service.UserService;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+//import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
