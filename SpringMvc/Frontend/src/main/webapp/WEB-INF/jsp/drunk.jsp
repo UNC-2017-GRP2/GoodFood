@@ -62,7 +62,7 @@
                 <div class="site-heading">
                     <div class="container">
                         <div class="row">
-                            <h1 class="text-center">Sober driver calling</h1>
+                            <h1 class="text-center"><spring:message code="general.soberDriverCalling"/></h1>
                             <div class="border text-center"></div>
                             <div class="well">
                                 <div class="list-group">
@@ -113,7 +113,7 @@
                                                         <button type="submit" disabled="disabled"
                                                                 class="btn btn-primary to-order-btn">
                                                             <span class="glyphicon glyphicon-check"></span>
-                                                            Call</button>
+                                                            <spring:message code="general.soberDriverCalling"/></button>
                                                     </p>
                                                 </div>
                                             </li>

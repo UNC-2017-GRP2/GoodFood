@@ -1,11 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Viktoria
-  Date: 06.03.2018
-  Time: 0:43
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <link rel="stylesheet" href="/resources/css/footer-style.css">
@@ -27,8 +21,8 @@
     <div class="footer">
         <div class="container">
             <div class="col-md-3 footer-one">
-                <h5>About Us </h5>
-                <p>Cras sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                <h5><spring:message code="general.aboutUs"/></h5>
+                <p><spring:message code="general.aboutUsText"/></p>
             </div>
             <div class="col-md-3 footer-two">
                 <%--<h5>Information </h5>
@@ -41,10 +35,10 @@
                 </ul>--%>
             </div>
             <div class="col-md-3 footer-three">
-                <h5>Contacts </h5>
+                <h5><spring:message code="general.contacts"/></h5>
                 <ul>
-                    <li>Address: ------/-------/-----/----</li>
-                    <li>Phone: ----/-----/-----/-----/-----</li>
+                    <li><spring:message code="general.address"/>: ------/------/------/------/</li>
+                    <li><spring:message code="general.phone"/>: ------/------/------/------/</li>
                 </ul>
                 <%--<ul>
                     <li><a href="maintenance.html">Maintenance Tips</a></li>
@@ -72,7 +66,7 @@
             <div class="row">
                 <div class="col-sm-6 ">
                     <div class="copyright-text">
-                        <p>CopyRight © 2018 Netcracker</p>
+                        <p>© 2018 <spring:message code="general.goodFood"/></p>
                     </div>
                 </div> <!-- End Col -->
                 <%--<div class="col-sm-6 ">

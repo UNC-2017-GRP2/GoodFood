@@ -34,8 +34,8 @@ public class MyOrdersController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = {"/my-orders/{pageId}"}, method = RequestMethod.GET, produces = {"application/json; charset=utf-8"})
-    public ModelAndView myOrdersPageId(Principal principal, @PathVariable int pageId, Locale locale, HttpSession httpSession){
+    @RequestMapping(value = {"/my-orders/{pageId}", "/my-orders"}, method = RequestMethod.GET, produces = {"application/json; charset=utf-8"})
+    public ModelAndView myOrdersPageId(Principal principal, @PathVariable(required = false) Integer pageId, Locale locale, HttpSession httpSession){
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = null;
         List<Order> ordersForShow;
@@ -60,11 +60,14 @@ public class MyOrdersController {
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
         model.addObject("start_exp_time", Constant.START_EXPIRATION_TIME);
+        if(pageId == null){
+            pageId = 1;
+        }
         model.addObject("page", pageId);
 
         if (allOrders != null && allOrders.size()!=0){
             Collections.sort(allOrders, Order.COMPARE_BY_DATE);
-            ordersForShow = getOrdersRange(Constant.ORDERS_QUANTITY_ON_PAGE * (pageId-1), allOrders);
+            ordersForShow = getOrdersRange(Constant.ORDERS_QUANTITY_ON_PAGE * (pageId -1), allOrders);
             model.addObject("orders", ordersForShow);
             pageCount = (int)Math.ceil(((double)allOrders.size())/((double)Constant.ORDERS_QUANTITY_ON_PAGE));
             model.addObject("pageCount", pageCount);

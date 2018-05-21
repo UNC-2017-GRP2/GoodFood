@@ -100,7 +100,7 @@
                             </c:if>
                             <c:if test="${pageContext.request.userPrincipal.name != null}">
                                 <sec:authorize access="hasAnyRole('ROLE_USER')">
-                                    <li><a href="<c:url value='/sober_list'/>">Sober driver orders</a></li>
+                                    <li><a href="<c:url value='/sober_list'/>"><spring:message code="general.soberDriverOrders"/></a></li>
                                 </sec:authorize>
                             </c:if>
                             <li role="separator" class="divider"></li>

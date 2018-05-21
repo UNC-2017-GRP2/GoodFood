@@ -37,7 +37,16 @@
                 <div class="site-heading">
                     <div class="container">
                         <div class="row">
-                            <h1 class="text-center"><spring:message code="general.myOrders"/></h1>
+                            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                                <sec:authorize access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')">
+                                    <h1 class="text-center"><spring:message code="general.myOrders"/></h1>
+                                </sec:authorize>
+                            </c:if>
+                            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                                <sec:authorize access="hasAnyRole('ROLE_COURIER')">
+                                    <h1 class="text-center"><spring:message code="general.completedOrders"/></h1>
+                                </sec:authorize>
+                            </c:if>
                             <div class="border text-center"></div>
                             <div class="content">
                                 <c:forEach items="${orders}" var="order">

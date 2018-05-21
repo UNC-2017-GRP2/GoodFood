@@ -42,8 +42,8 @@
     <div class="container text-center">
         <div class="col-md-12">
             <div class="banner-heading ">
-                <h2>Enjoy Food Order and dine-out </h2>
-                <P>Find food for you, specials, and shares</P>
+                <h2><spring:message code="general.firstHeader"/></h2>
+                <P><spring:message code="general.secondHeader"/></P>
             </div>
         </div>
     </div>
