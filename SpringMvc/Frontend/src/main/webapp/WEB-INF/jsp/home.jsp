@@ -27,16 +27,12 @@
             <%@include file="/resources/js/strings-en.js" %>
         }
     </script>
-
 </head>
 <body>
-
-<!------ Include the above in your HEAD tag ---------->
 <c:url value="/logout" var="logoutUrl"/>
 <form id="logout" action="${logoutUrl}" method="post">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
-
 <jsp:include page="navbar.jsp"/>
 <div class= "banner-sektion banner-overlay ">
     <div class="container text-center">

@@ -40,19 +40,6 @@ public class User {
         this.image = image;
     }
 
-    /*public User(BigInteger userId, String fio, String login, String passwordHash, String confirmPassword, String phoneNumber, LocalDate birthday, String email, List<Address> addresses, String role) {
-        this.userId = userId;
-        this.fio = fio;
-        this.login = login;
-        this.passwordHash = passwordHash;
-        this.confirmPassword = confirmPassword;
-        this.phoneNumber = phoneNumber;
-        this.birthday = birthday;
-        this.email = email;
-        this.addresses = addresses;
-        this.role = role;
-    }*/
-
     public BigInteger getUserId() {
         return userId;
     }

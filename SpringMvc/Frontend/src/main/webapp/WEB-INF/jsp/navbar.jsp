@@ -119,7 +119,7 @@
                     <%--<li><a href="login"><span class="glyphicon glyphicon-log-in"></span>Login / Sign Up</a></li>--%>
                     <li>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a  href="<c:url value='/login'/>" ><span class="glyphicon glyphicon-log-in"></span> Login | Sign Up</a></li>
+                            <li><a  href="<c:url value='/login'/>" ><span class="glyphicon glyphicon-log-in"></span> <spring:message code="general.logSign"/> </a></li>
                             <li role="separator" class="divider"></li>
                             <p align="center">
                                 <a href="?lang=en"><img src="${pageContext.request.contextPath}/resources/img/flags/United-Kingdom.png" border="1"></a>
