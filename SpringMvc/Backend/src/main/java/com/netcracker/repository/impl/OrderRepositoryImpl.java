@@ -6,6 +6,7 @@ import com.netcracker.model.Item;
 import com.netcracker.model.Order;
 import com.netcracker.repository.ItemRepository;
 import com.netcracker.repository.OrderRepository;
+import com.netcracker.repository.Repository;
 import org.postgresql.geometric.PGpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,11 +16,14 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class OrderRepositoryImpl extends AbstractRepositoryImpl implements OrderRepository {
 
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private Repository repository;
 
     public OrderRepositoryImpl(DataSource dataSource) throws SQLException {
         super(dataSource);
@@ -183,7 +187,7 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
                     continue;
                 }
                 if (curAttrId == Constant.ORDER_PAYMENT_TYPE_ATTR_ID){
-                    paymentType =  getEnumNameById(resultSet.getLong("ENUM_VALUE"));
+                    paymentType = getEnumNameById(resultSet.getLong("ENUM_VALUE"));
                     continue;
                 }
                 if (curAttrId == Constant.ORDER_PAID_ATTR_ID){
@@ -251,5 +255,37 @@ public class OrderRepositoryImpl extends AbstractRepositoryImpl implements Order
     @Override
     public void updateOrderPaid(BigInteger orderId, int isPaid) {
         updateTextParameter(orderId, Constant.ORDER_PAID_ATTR_ID, String.valueOf(isPaid));
+    }
+
+    @Override
+    public String getLocEnumValue(long enumId, Locale locale, String origValue){
+        long langId;
+        if (locale.toString().equals("ru")) {
+            langId = Constant.LANG_RUSSIAN;
+        }
+        else if (locale.toString().equals("uk")) {
+            langId = Constant.LANG_UKRAINIAN;
+        }
+        else {
+            return "Error";
+        }
+        String string = "error";
+        long valueId = repository.getEnumIdByValue(origValue);
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_LOC_ENUM_VALUE);
+            preparedStatement.setLong(1, valueId);
+            preparedStatement.setLong(2, langId);
+            preparedStatement.setLong(3, enumId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                string = resultSet.getString("LOC_TEXT_VALUE");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return string;
     }
 }

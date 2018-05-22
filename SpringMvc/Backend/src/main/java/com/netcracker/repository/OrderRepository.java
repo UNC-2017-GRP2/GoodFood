@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public interface OrderRepository {
     void checkout(Order order) throws SQLException;
@@ -18,4 +19,5 @@ public interface OrderRepository {
     BigInteger getObjectId();
     void removeOrderById(BigInteger orderId) throws SQLException;
     void updateOrderPaid(BigInteger orderId, int isPaid);
+    String getLocEnumValue(long enumId, Locale locale, String origValue);
 }

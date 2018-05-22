@@ -1,8 +1,10 @@
 package com.netcracker.service.impl;
 
+import com.netcracker.config.Constant;
 import com.netcracker.model.Address;
 import com.netcracker.model.Item;
 import com.netcracker.model.Order;
+import com.netcracker.repository.AbstractRepository;
 import com.netcracker.repository.ItemRepository;
 import com.netcracker.repository.OrderRepository;
 import com.netcracker.repository.UserRepository;
@@ -32,8 +34,6 @@ public class OrderServiceImpl implements OrderService {
     public BigInteger getObjectId(){
         return orderRepository.getObjectId();
     }
-
-
 
     @Override
     public BigInteger totalOrder(ArrayList<Item> items) {
@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
                         new ArrayList<Item>(),
                         order.getOrderCreationDate(),
                         order.getCourierId(),
-                        order.getPaymentType(),
+                        orderRepository.getLocEnumValue(Constant.ORDER_PAYMENT_TYPE_ENUM_TYPE_ID, locale, order.getPaymentType()),
                         order.getPaid(),
                         order.getChangeFrom());
                 orderLocalizedItems = localizedOrder.getOrderItems();
@@ -112,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
                         new ArrayList<Item>(),
                         order.getOrderCreationDate(),
                         order.getCourierId(),
-                        order.getPaymentType(),
+                        orderRepository.getLocEnumValue(Constant.ORDER_PAYMENT_TYPE_ENUM_TYPE_ID, locale, order.getPaymentType()),
                         order.getPaid(),
                         order.getChangeFrom());
                 orderLocalizedItems = localizedOrder.getOrderItems();

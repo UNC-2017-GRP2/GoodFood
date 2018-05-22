@@ -4,6 +4,7 @@ import com.netcracker.config.Constant;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
+import java.util.Locale;
 
 public class AbstractRepositoryImpl{
     protected Connection connection;

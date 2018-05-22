@@ -14,10 +14,7 @@ import org.springframework.cache.support.NullValue;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RepositoryImpl implements Repository {
 
@@ -297,7 +294,8 @@ public class RepositoryImpl implements Repository {
         }
     }
 
-    private long getEnumIdByValue(Object enumValue) {
+    @Override
+    public long getEnumIdByValue(Object enumValue) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_ENUM_ID_BY_ENUM_VALUE);
             preparedStatement.setString(1, (String) enumValue);

@@ -13,4 +13,5 @@ public interface Repository {
     List<Entity> getEntitiesByObjectTypeId(long objectTypeId);
     void saveEntity(Entity entity);
     void updateEntity (Entity oldEntity, Entity newEntity);
+    long getEnumIdByValue(Object enumValue);
 }
