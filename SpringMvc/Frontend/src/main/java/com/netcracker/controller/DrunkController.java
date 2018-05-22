@@ -42,16 +42,16 @@ public class DrunkController {
     }
 
     @RequestMapping(value = {"/drunk_rest"}, method = RequestMethod.GET)
-    public ModelAndView drunkRest(ModelAndView model, @RequestParam("input-address-latitude") String latitude,
-                                          @RequestParam("input-address-longitude") String longitude,
-                                          @RequestParam("input-address") String address,
-                                          @RequestParam("input-address-dest-latitude") String destLatitude,
-                                          @RequestParam("input-address-dest-longitude") String destLongitude,
-                                          @RequestParam("input-phone") String inputPhone,
-                                          Principal principal) {
+    public String drunkRest(@RequestParam("input-address-latitude") String latitude,
+                            @RequestParam("input-address-longitude") String longitude,
+                            @RequestParam("input-address") String address,
+                            @RequestParam("input-address-dest-latitude") String destLatitude,
+                            @RequestParam("input-address-dest-longitude") String destLongitude,
+                            @RequestParam("input-phone") String inputPhone,
+                            Principal principal) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        String originalInput = "SoberDriverVendor" + ":" + "4u76wgjko9";
+        String originalInput = Constant.SOBER_DRIVER_LOGIN  + ":" + Constant.SOBER_DRIVER_PASS;
         String token = "Base " + Base64.getEncoder().encodeToString(originalInput.getBytes());
         headers.add("Authorization", token);
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -75,8 +75,7 @@ public class DrunkController {
         JsonObject jobj = new Gson().fromJson(result, JsonObject.class);
         BigInteger orderId = jobj.get("id").getAsBigInteger();
         drunkService.addSobOrder(principal.getName(), orderId);
-        model.setViewName("sober_list");
-        return model;
+        return "redirect:/sober_list";
     }
 
     @RequestMapping(value = {"/sober_list"}, method = RequestMethod.GET)
@@ -84,13 +83,10 @@ public class DrunkController {
         List<BigInteger> list = drunkService.getSobOrdersByUsername(principal.getName());
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        String originalInput = "SoberDriverVendor" + ":" + "4u76wgjko9";
+        String originalInput = Constant.SOBER_DRIVER_LOGIN  + ":" + Constant.SOBER_DRIVER_PASS;
         String token = "Base " + Base64.getEncoder().encodeToString(originalInput.getBytes());
         headers.add("Authorization", token);
-//        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-//        restTemplate.getMessageConverters()
-//                .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         List<Entity> entityList = new ArrayList<>();
         for (BigInteger i : list) {
             ResponseEntity<String> userResponse = restTemplate.exchange(Constant.SOBER_DRIVER_URL + "/" + i, HttpMethod.GET, httpEntity, String.class);
@@ -114,14 +110,8 @@ public class DrunkController {
             mapParameters.add(new MapParameter(7, statusOrder));
             Entity entity = new Entity(i, 1, "name", mapParameters);
             entityList.add(entity);
-//            model.addObject(entity);
         }
         model.addObject(entityList);
-//        User usr  = userService.getByUsername(principal.getName());
-//        model.addObject(usr);
-
-//        drunkService.addSobOrder(principal.getName(), orderId);
-
         model.setViewName("sober_list");
         return model;
     }

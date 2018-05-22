@@ -71,11 +71,23 @@
                 <div class="site-heading">
                     <div class="container">
                         <div class="row">
-                            <h1 class="text-center"><spring:message code="general.myOrders"/></h1>
+                            <h1 class="text-center"><spring:message code="general.soberDriverOrders"/></h1>
                             <div class="border text-center"></div>
                             <div class="content">
                                 <table class="table">
+                                    <thead>
+                                    <%--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>--%>
+                                    <tr>
+                                        <th><spring:message code="users.phoneNumber"/></th>
+                                        <th><spring:message code="sober.pos"/></th>
+                                        <th><spring:message code="sober.dest"/></th>
+                                        <th><spring:message code="orders.orderCreationDate"/></th>
+                                        <th><spring:message code="sober.orderEnd"/></th>
+                                        <th><spring:message code="orders.status"/></th>
+                                    </tr>
+                                    </thead>
                                     <c:forEach items="${entityList}" var="entity">
+                                        <tr>
                                                 <td>${entity.getParameterByAttrId(1).value}</td>
                                                 <%--<td>Order ${entity.getParameterByAttrId(2).value}</td>--%>
                                                 <td id="address${entity.objectId}">
@@ -86,6 +98,7 @@
                                                 <td>${entity.getParameterByAttrId(5).value}</td>
                                                 <td>${entity.getParameterByAttrId(6).value}</td>
                                                 <td>${entity.getParameterByAttrId(7).value}</td>
+                                        </tr>
                                     </c:forEach>
                                 </table>
                                     </div>
