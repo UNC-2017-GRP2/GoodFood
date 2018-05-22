@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Locale;
 
 public interface AbstractRepository {
     BigInteger getObjectId();
@@ -25,4 +26,5 @@ public interface AbstractRepository {
     void updateReferenceParameter(BigInteger objectId, long attrId, BigInteger parameter);
     void updateEnumParameter(BigInteger objectId, long attrId, long parameter);
     boolean isReferenceParameterExist(BigInteger objectId, long attrId);
+    String getLocEnumValue(long enumId, Locale locale, String origValue);
 }

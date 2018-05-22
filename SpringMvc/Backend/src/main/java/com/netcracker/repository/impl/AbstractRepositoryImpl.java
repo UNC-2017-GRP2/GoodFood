@@ -1,6 +1,9 @@
 package com.netcracker.repository.impl;
 
 import com.netcracker.config.Constant;
+import com.netcracker.repository.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.sql.*;
@@ -11,9 +14,42 @@ public class AbstractRepositoryImpl{
 
     protected int numericType = Types.NUMERIC;
 
+    @Autowired
+    private Repository repository;
 
     public AbstractRepositoryImpl(DataSource dataSource) throws SQLException {
         connection = dataSource.getConnection();
+    }
+
+    public String getLocEnumValue(long enumId, Locale locale, String origValue){
+        long langId;
+        if (locale.toString().equals("ru")) {
+            langId = Constant.LANG_RUSSIAN;
+        }
+        else if (locale.toString().equals("uk")) {
+            langId = Constant.LANG_UKRAINIAN;
+        }
+        else {
+            return "Error";
+        }
+        String string = "error";
+        long valueId = repository.getEnumIdByValue(origValue);
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_LOC_ENUM_VALUE);
+            preparedStatement.setLong(1, valueId);
+            preparedStatement.setLong(2, langId);
+            preparedStatement.setLong(3, enumId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                string = resultSet.getString("LOC_TEXT_VALUE");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return string;
     }
 
     protected BigInteger getObjectId() {

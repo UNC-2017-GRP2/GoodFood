@@ -188,6 +188,7 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
         }
         String itemName = item.getProductName();
         String itemDescription = item.getProductDescription();
+        String itemCategory = item.getProductCategory();
         try {
             ResultSet resultSet = getLocStringsByObjectId(item.getProductId(), langId);
             while(resultSet.next()){
@@ -205,9 +206,11 @@ public class ItemRepositoryImpl extends AbstractRepositoryImpl implements ItemRe
             if (resultSet != null){
                 resultSet.close();
             }
-        }catch (Exception e){
+        } catch (Exception e){
             System.out.println(e.getMessage());
         }
+        itemCategory = getLocEnumValue(Constant.ITEM_CATEGORY_ENUM_TYPE_ID, locale, itemCategory);
+        item.setProductCategory(itemCategory);
         return item;
     }
 
