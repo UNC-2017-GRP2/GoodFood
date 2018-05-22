@@ -1,5 +1,6 @@
 package com.netcracker.service.impl;
 
+import com.netcracker.form.MyUserAccountForm;
 import com.netcracker.model.Address;
 import com.netcracker.model.Order;
 import com.netcracker.model.User;
@@ -94,6 +95,11 @@ public class UserServiceImpl implements UserService {
             orderService.removeOrderById(order.getOrderId());
         }
         userRepository.removeUserById(userId);
+    }
+
+    @Override
+    public User registerNewUserAccount(MyUserAccountForm userAccountForm) {
+        return  userRepository.registerNewUserAccount(userAccountForm);
     }
 
     @Override

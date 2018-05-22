@@ -169,6 +169,37 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         return user;
     }
 
+    public User registerNewUserAccount(MyUserAccountForm accountForm) {
+        String sql = "Insert into User_Accounts "//
+                + " (id, email,user_name,first_name,last_name,password,role) "//
+                + " values (?,?,?,?,?,?,?) ";
+
+        // Random string with 36 characters.
+        String id = UUID.randomUUID().toString();
+
+        saveUser(new User(
+                null,
+                accountForm.getFirstName() + ' ' + accountForm.getLastName(),
+                accountForm.getUserName(),
+                "123456Admin",
+                "123456Admin",
+                "",
+                null,
+                accountForm.getEmail(),
+                null,
+                "ROLE_USER")
+        );
+
+        return getUserByUsername(accountForm.getUserName());
+
+
+//        this.getJdbcTemplate().update(sql, id, accountForm.getEmail(), //
+//                accountForm.getUserName(), //
+//                accountForm.getFirstName(), accountForm.getLastName(), //
+//                accountForm.getPassword(), MyUserAccount.ROLE_USER);
+//        return findById(id);
+    }
+
     @Override
     public List<User> getAllUsers() {
         List<User> result = new ArrayList<>();
@@ -224,11 +255,11 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
         String userName = this.findAvailableUserName(userName_prefix);
 
         saveUser(new User(
-                new BigInteger(id),
+                null,
                 userProfile.getFirstName() + ' ' + userProfile.getLastName(),
                 userName,
-                "123",
-                "123",
+                "123456Admin",
+                "123456Admin",
                 "",
                 null,
                 email,
@@ -236,7 +267,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
                 "ROLE_USER")
         );
 
-        return getUserById(new BigInteger(id));
+        return getUserByUsername(userName);
     }
 
 /*    @Override

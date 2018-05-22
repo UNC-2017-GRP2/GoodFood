@@ -35,17 +35,10 @@
             <form class="form-signin mg-btm" action="<c:url value='/login' />" method="post" id="loginForm">
                 <h3 class="heading-desc"><spring:message code="general.signInForm"></spring:message></h3>
                 <div class="social-box">
-                    <div class="row mg-btm">
-                        <div class="col-md-12">
-                            <a href="#" class="btn btn-primary btn-block">
-                                <i class="icon-facebook"></i>    Login with Facebook
-                            </a>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="#" class="btn btn-info btn-block" >
-                                <i class="icon-twitter"></i>    Login with Twitter
+                            <a href="${pageContext.request.contextPath}/auth/google" class="btn btn-info btn-block" >
+                                <i class="icon-google"></i>    Login with Google
                             </a>
                         </div>
                     </div>
@@ -85,7 +78,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
 
-            <form:form action="${pageContext.request.contextPath}/registration" method="POST" modelAttribute="userForm" class="form-signup mg-btm"
+            <form:form action="${pageContext.request.contextPath}/registration"  method="POST" modelAttribute="userForm" class="form-signup mg-btm"
                        id="registrationForm" role="form">
                 <h3 class="heading-desc"><spring:message code="general.signUpForm"></spring:message></h3>
                 <div class="main">

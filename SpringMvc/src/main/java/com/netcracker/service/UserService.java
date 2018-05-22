@@ -1,5 +1,6 @@
 package com.netcracker.service;
 
+import com.netcracker.form.MyUserAccountForm;
 import com.netcracker.model.Address;
 import com.netcracker.model.User;
 
@@ -21,5 +22,6 @@ public interface UserService {
     void updatePassword(BigInteger userId, String password);
     void updateAddresses(BigInteger userId, List<Address> addresses);
     void removeUserById(BigInteger userId);
+    User registerNewUserAccount(MyUserAccountForm userAccountForm);
     public BigInteger getObjectId();
 }

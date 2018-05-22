@@ -6,6 +6,7 @@ import com.netcracker.signup.MyConnectionSignUp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -19,8 +20,10 @@ import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
+import org.springframework.social.connect.web.ReconnectFilter;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -28,7 +31,7 @@ import javax.sql.DataSource;
 @EnableSocial
 @PropertySource("classpath:social-cfg.properties")
 public class SocialConfig implements SocialConfigurer{
-    private boolean autoSignUp = false;
+    private boolean autoSignUp = true;
 
     @Autowired
     private DataSource dataSource;
@@ -83,4 +86,11 @@ public class SocialConfig implements SocialConfigurer{
                                                ConnectionRepository connectionRepository) {
         return new ConnectController(connectionFactoryLocator, connectionRepository);
     }
+
+    @Bean
+    public ReconnectFilter apiExceptionHandler(UsersConnectionRepository usersConnectionRepository,
+                                               UserIdSource userIdSource) {
+        return new ReconnectFilter(usersConnectionRepository, userIdSource);
+    }
+
 }

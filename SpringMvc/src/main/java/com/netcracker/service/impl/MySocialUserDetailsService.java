@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.social.security.SocialUserDetails;
 import org.springframework.social.security.SocialUserDetailsService;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 
+@Service("socialUserDetailsService")
 public class MySocialUserDetailsService implements SocialUserDetailsService {
     @Autowired
     private UserRepository userRepository;

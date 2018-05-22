@@ -4,6 +4,7 @@ import com.netcracker.config.AuthManager;
 import com.netcracker.form.MyUserAccountForm;
 import com.netcracker.model.User;
 import com.netcracker.service.UserService;
+import com.netcracker.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -63,72 +64,71 @@ public class RegistrationController {
         }
     }
 
-//    // User login via Social,
-//    // but not allow access basic info.
-//    // webapp will redirect to /signin.
-//    @RequestMapping(value = { "/signin" }, method = RequestMethod.GET)
-//    public String signInPage(Model model) {
-//        return "redirect:/login";
-//    }
+    // User login via Social,
+    // but not allow access basic info.
+    // webapp will redirect to /signin.
+    @RequestMapping(value = { "/signin" }, method = RequestMethod.GET)
+    public String signInPage(Model model) {
+        return "redirect:/login";
+    }
+
+//   @RequestMapping(value = { "/signup" }, method = RequestMethod.GET)
+//   public String signupPage(WebRequest request, Model model) {
 //
-//    @RequestMapping(value = { "/signup" }, method = RequestMethod.GET)
-//    public String signupPage(WebRequest request, Model model) {
+//       ProviderSignInUtils providerSignInUtils //
+//               = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
 //
-//        ProviderSignInUtils providerSignInUtils //
-//                = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
+//       Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
 //
-//        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+//       //
+//       MyUserAccountForm myForm = null;
+//       //
+//       if (connection != null) {
+//           myForm = new MyUserAccountForm(connection);
+//       } else {
+//           myForm = new MyUserAccountForm();
+//       }
+//       model.addAttribute("myForm", myForm);
+//       return "signup";
+//   }
 //
-//        //
-//        MyUserAccountForm myForm = null;
-//        //
-//        if (connection != null) {
-//            myForm = new MyUserAccountForm(connection);
-//        } else {
-//            myForm = new MyUserAccountForm();
-//        }
-//        model.addAttribute("myForm", myForm);
-//        return "signup";
-//    }
+//   @RequestMapping(value = { "/signup" }, method = RequestMethod.POST)
+//   public String signupSave(WebRequest request, //
+//                            Model model, //
+//                            @ModelAttribute("userForm") @Validated MyUserAccountForm userForm, //
+//                            BindingResult result, //
+//                            final RedirectAttributes redirectAttributes) {
 //
-//    @RequestMapping(value = { "/signup" }, method = RequestMethod.POST)
-//    public String signupSave(WebRequest request, //
-//                             Model model, //
-//                             @ModelAttribute("userForm") @Validated User userForm, //
-//                             BindingResult result, //
-//                             final RedirectAttributes redirectAttributes) {
-//
-//        // If validation has error.
-//        if (result.hasErrors()) {
-//            return "signup";
-//        }
+//       // If validation has error.
+//       if (result.hasErrors()) {
+//           return "signup";
+//       }
 //
 //
+//       try {
+//           userService.registerNewUserAccount(userForm);
+//       } catch (Exception ex) {
+//           ex.printStackTrace();
+//           model.addAttribute("errorMessage", "Error " + ex.getMessage());
+//           return "signup";
+//       }
 //
-//        try {
-//            userService.saveUser(userForm);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            model.addAttribute("errorMessage", "Error " + ex.getMessage());
-//            return "signup";
-//        }
+//       User registered = userService.getByUsername(userForm.getUserName());
 //
-//        User registered = userService.getByUsername(userForm.getLogin());
+//       if (userForm.getSignInProvider() != null) {
+//           ProviderSignInUtils providerSignInUtils //
+//                   = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
 //
-//        if (userForm.getSignInProvider() != null) {
-//            ProviderSignInUtils providerSignInUtils //
-//                    = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
+//           // If the user is signing in by using a social provider, this method
+//           // call stores the connection to the UserConnection table.
+//           // Otherwise, this method does not do anything.
+//           providerSignInUtils.doPostSignUp(registered.getUserId().toString(), request);
+//       }
+//       // After register, Logs the user in.
+//       SecurityUtil.logInUser(registered);
 //
-//            // If the user is signing in by using a social provider, this method
-//            // call stores the connection to the UserConnection table.
-//            // Otherwise, this method does not do anything.
-//            providerSignInUtils.doPostSignUp(registered.getId(), request);
-//        }
-//        // After register, Logs the user in.
-//        SecurityUtil.logInUser(registered);
-//
-//        return "redirect:/userInfo";
-//    }
+//       return "redirect:/home";
+//   }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error) {

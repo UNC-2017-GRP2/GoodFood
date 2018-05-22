@@ -14,7 +14,7 @@ public interface UserRepository {
     User getUserByUsername(String username);
     User getUserById(BigInteger userId);
     User createUserAccount(Connection<?> connection);
-   // User registerNewUserAccount(MyUserAccountForm accountForm);
+    User registerNewUserAccount(MyUserAccountForm accountForm);
     User findByEmail(String email) throws SQLException;
     List<User> getAllUsers();
     void saveUser(User user);

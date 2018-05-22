@@ -7,7 +7,7 @@ public class MvcWebApplicationInitializer extends
 
 
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { ApplicationContextConfig.class };
+        return new Class[] { ApplicationContextConfig.class, SecurityConfig.class, SocialConfig.class };
     }
 
     protected Class<?>[] getServletConfigClasses() {
