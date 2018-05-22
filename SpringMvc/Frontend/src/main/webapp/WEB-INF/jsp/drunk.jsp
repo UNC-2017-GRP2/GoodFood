@@ -6,6 +6,7 @@
     <title>Drunk page</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/basket-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/drunk-style.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.js"></script>
@@ -69,6 +70,14 @@
                                     <form action="/drunk_rest" method="GET" id="payment-form">
                                         <ul>
                                             <li class="list-group-item list-group-address">
+                                                <div class="col-md-5">
+                                                    <div id="first-map" class="maps">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div id="second-map" class="maps">
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-5 text-left">
                                                     <spring:message code="enter.address" var="placeholder"/>
                                                     <textarea type='text' id='input-address'
@@ -79,13 +88,13 @@
                                                            name="input-address-latitude">
                                                     <input type='hidden' id="input-address-longitude"
                                                            name="input-address-longitude">
-                                                    <div class="list-group" id="my-address-list">
+                                                    <%--<div class="list-group" id="my-address-list">
                                                         <ul class="ul-my-addresses">
                                                         </ul>
-                                                    </div>
+                                                    </div>--%>
                                                     <div class="validationMessage" id="address-valid"></div>
                                                 </div>
-                                                <div class="col-md-5 text-center">
+                                                <div class="col-md-5 text-left">
                                                     <spring:message code="enter.address" var="placeholder"/>
                                                     <textarea type='text' id='input-dest-address' class="form-control"
                                                               class="dropdown-toggle" data-toggle="dropdown"
