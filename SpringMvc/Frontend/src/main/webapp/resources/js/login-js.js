@@ -85,7 +85,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function () {
-                    alert("error checkUsername Registration");
+                    $.notify(getErrorString('data_error'), "error");
                 }
             });
         }
@@ -120,7 +120,7 @@ $(document).ready(function () {
                         }
                     },
                     error: function () {
-                        alert("error checkEmail Registration");
+                        $.notify(getErrorString('data_error'), "error");
                     }
                 });
             }
