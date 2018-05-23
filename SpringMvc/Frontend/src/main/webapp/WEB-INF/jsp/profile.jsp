@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/profile-style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/grey-button-style.css">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/jquery-ui/1.9.2/js/jquery-ui-1.9.2.custom.min.js"></script>
@@ -23,7 +24,6 @@
             src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 
     <script type="text/javascript">
         <%@include file="/resources/js/profile-js.js" %>
@@ -33,7 +33,7 @@
 
         function getUserAddresses() {
             <c:forEach items="${userAddresses}" var="address">
-            getAddressByCoordinates(${address.latitude}, ${address.longitude});
+                getAddressByCoordinates(${address.latitude}, ${address.longitude});
             </c:forEach>
         }
 

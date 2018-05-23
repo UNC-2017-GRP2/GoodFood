@@ -1,9 +1,15 @@
-var fio = true, login = true, email = true, phone = true, birthday = true, oldPassword = false, password = false,
-    confirmPassword = false;
-var mailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/; //От 6 символов, наличие одной заглавной буквы, наличие одной строчной буквы и одной цифры
-var checkUserBasicData = "data";
-var checkUserPassword = "password";
+var fio = true,
+    login = true,
+    email = true,
+    phone = true,
+    birthday = true,
+    oldPassword = false,
+    password = false,
+    confirmPassword = false,
+    mailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/,
+    passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/, //От 6 символов, наличие одной заглавной буквы, наличие одной строчной буквы и одной цифры
+    checkUserBasicData = "data",
+    checkUserPassword = "password";
 
 
 function ToOpenEditModal() {
@@ -25,12 +31,13 @@ function addAddress() {
 }
 
 function geocode(address) {
+    alert("geocode");
     ymaps.geocode(address).then(function (res) {
-        var geoAddress;
+        var geoAddress = res.geoObjects.get(0);
+        alert("geo  " +  geoAddress);
         var error;
 
-        if (res.geoObjects.get(0) != null) {
-            geoAddress = res.geoObjects.get(0);
+        if (geoAddress != null) {
             var coords = geoAddress.geometry.getCoordinates();
             switch (geoAddress.properties.get('metaDataProperty.GeocoderMetaData.precision')) {
                 case 'exact':
@@ -38,18 +45,19 @@ function geocode(address) {
                 case 'number':
                 case 'near':
                 case 'range':
-                    error = getString('clarify_address');
+                    error = getErrorString('clarify_address');
                     break;
                 case 'street':
-                    error = getString('clarify_address');
+                    error = getErrorString('clarify_address');
                     break;
                 case 'other':
                 default:
-                    error = getString('clarify_address');
+                    error = getErrorString('clarify_address');
             }
         } else {
-            error = getString('address_is_not_found');
+            error = getErrorString('address_is_not_found');
         }
+
         if (error) {
             $("#addressValid").text(error);
         } else {
@@ -64,6 +72,13 @@ function geocode(address) {
                 success: function (data) {
                     if (data === "success") {
                         $("#input-address").val("");
+                        if (geoAddress != null) {
+                            alert("" + geoAddress.getAddressLine() + " " + coords[0] + " " + coords[1]);
+                            var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + geoAddress.getAddressLine() + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" onclick=\"removeAddress('" + coords[0] + "','" + coords[1] + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";
+                            $(".forNewAddress").replaceWith(newHTML);
+                            //alert(obj.getAddressLine());
+                        }
+                        /*
                         ymaps.geocode([coords[0], coords[1]]).then(function (res) {
                             if (res.geoObjects.get(0) != null) {
                                 var obj = res.geoObjects.get(0);
@@ -72,17 +87,22 @@ function geocode(address) {
                                 //alert(obj.getAddressLine());
                             }
                         });
+                        */
                         /*var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + inputAddress + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" address=\"" + inputAddress + "\" onclick=\"removeAddress('" + inputAddress + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";*/
                     } else {
-                        $("#addressValid").text(getString('address_is_already_exists'));
+                        alert("exists");
+                        $("#addressValid").text(getErrorString('address_is_already_exists'));
                     }
                 },
                 error: function () {
-                    alert("error");
+                    $.notify(getErrorString('data_error'), "error");
                 }
             });
 
         }
+    }, function (error) {
+        $.notify(getErrorString('data_error'), "error");
+        //console.log(error.toString());
     });
 }
 
@@ -98,7 +118,7 @@ function removeAddress(latitude, longitude, thisElem) {
             $(thisElem).parent().parent().remove();
         },
         error: function () {
-            alert("error");
+            $.notify(getErrorString('data_error'), "error");
         }
     });
 }
@@ -111,6 +131,7 @@ function clearEditPasswordInputs() {
 /*----------------------------------------------------Get Address By Coordinates--------------------------------------------------*/
 
 function getAddressByCoordinates(latitude, longitude) {
+    //alert(latitude + " " + longitude);
     var coords = [latitude, longitude];
     ymaps.geocode(coords).then(function (res) {
         if (res.geoObjects.get(0) != null) {
@@ -183,7 +204,38 @@ $(document).ready(function () {
 
     clearEditPasswordInputs();
 
-    $(".reset-forms").click(function () {
+    $("#formEditProfileModal").on("hide.bs.modal", function () {
+        $(".edit-forms").trigger('reset');
+        clearEditPasswordInputs();
+        $(".form-control").css("border", "1px solid #ccc");
+        $(".form-control").css("box-shadow", "inset 0 1px 1px rgba(0, 0, 0, 0.075)");
+        $(".validationMessage").css("display", "none");
+
+        $(".form-control").focus( function() {
+            $(this).css("border-color", "#66afe9");
+            $(this).css("box-shadow", "inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6)");
+        });
+
+        $(".form-control").blur( function() {
+            $(this).css("border", "1px solid #ccc");
+            $(this).css("box-shadow", "inset 0 1px 1px rgba(0, 0, 0, 0.075)");
+        });
+
+        $.ajax({
+            url: 'resetNewAddress',
+            type: 'GET',
+            success: function () {
+                $(".new-address-list").remove();
+                $("#addressValid").text("");
+                $("#input-address").val("");
+            },
+            error: function () {
+                $.notify(getErrorString('data_error'), "error");
+            }
+        });
+    });
+
+    /*$(".reset-forms").click(function () {
         //location.reload();
         $(".edit-forms").trigger('reset');
         clearEditPasswordInputs();
@@ -210,10 +262,10 @@ $(document).ready(function () {
                 $("#input-address").val("");
             },
             error: function () {
-                alert("error");
+                $.notify(getErrorString('data_error'), "error");
             }
         });
-    });
+    });*/
 
 
     /*----------------------------------------------------Edit profile Validation--------------------------------------------------*/
@@ -221,8 +273,7 @@ $(document).ready(function () {
         $('#fio').css("box-shadow", "none");
         if ($('#fio').val() == "") {
             fio = false;
-            setErrorValidMessage(this, $('#fio-validation-message'), getString('full_name_must_not_be_empty'), checkUserBasicData);
-
+            setErrorValidMessage(this, $('#fio-validation-message'), getErrorString('full_name_must_not_be_empty'), checkUserBasicData);
         } else {
             fio = true;
             setSuccessValid(this, $('#fio-validation-message'), checkUserBasicData);
@@ -232,11 +283,11 @@ $(document).ready(function () {
     $('#login').keyup(function () {
         $('#login').css("box-shadow", "none");
         var username = $('#login').val();
-        if (username == "") {
+        if (username === "") {
             login = false;
-            setErrorValidMessage(this, $('#login-validation-message'), getString('login_must_not_be_empty'), checkUserBasicData);
-
+            setErrorValidMessage(this, $('#login-validation-message'), getErrorString('login_must_not_be_empty'), checkUserBasicData);
         } else {
+            //alert("pered ajax");
             $.ajax({
                 url: 'checkUsernameForUpdate',
                 type: 'GET',
@@ -245,16 +296,16 @@ $(document).ready(function () {
                 }),
                 dataType: "text",
                 success: function (data) {
-                    if (data == "true") {
+                    if (data === "true") {
                         login = false;
-                        setErrorValidMessage($('#login'), $('#login-validation-message'), getString('login_is_already_in_use'), checkUserBasicData);
+                        setErrorValidMessage($('#login'), $('#login-validation-message'), getErrorString('login_is_already_in_use'), checkUserBasicData);
                     } else {
                         login = true;
                         setSuccessValid($('#login'), $('#login-validation-message'), checkUserBasicData);
                     }
                 },
                 error: function () {
-                    alert("error checkUsernameForUpdate");
+                    $.notify(getErrorString('data_error'), "error");
                 }
             });
         }
@@ -265,12 +316,12 @@ $(document).ready(function () {
         var emailInput = $('#email').val();
         if (emailInput == "") {
             email = false;
-            setErrorValidMessage(this, $('#email-validation-message'), getString('email_must_not_be_empty'), checkUserBasicData);
+            setErrorValidMessage(this, $('#email-validation-message'), getErrorString('email_must_not_be_empty'), checkUserBasicData);
 
         } else {
             if (!mailRegex.test(emailInput)) {
                 email = false;
-                setErrorValidMessage(this, $('#email-validation-message'),getString('email_is_not_valid'), checkUserBasicData);
+                setErrorValidMessage(this, $('#email-validation-message'),getErrorString('email_is_not_valid'), checkUserBasicData);
             } else {
                 $.ajax({
                     url: 'checkEmailForUpdate',
@@ -282,14 +333,14 @@ $(document).ready(function () {
                     success: function (data) {
                         if (data == "true") {
                             email = false;
-                            setErrorValidMessage($('#email'), $('#email-validation-message'), getString('email_is_already_in_use'), checkUserBasicData);
+                            setErrorValidMessage($('#email'), $('#email-validation-message'), getErrorString('email_is_already_in_use'), checkUserBasicData);
                         } else {
                             email = true;
                             setSuccessValid($('#email'), $('#email-validation-message'), checkUserBasicData);
                         }
                     },
                     error: function () {
-                        alert("error checkEmailForUpdate");
+                        $.notify(getErrorString('data_error'), "error");
                     }
                 });
             }
@@ -314,7 +365,7 @@ $(document).ready(function () {
                 var curDate = new Date(inputValue);
                 if (today < curDate || curDate == 'Invalid Date' || (dateArray[0] != curDate.getFullYear()) || (dateArray[1] - 1 != curDate.getMonth()) || (dateArray[2] != curDate.getDate())) {
                     birthday = false;
-                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), getString('birthday_is_not_valid'), checkUserBasicData);
+                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), getErrorString('birthday_is_not_valid'), checkUserBasicData);
                 } else {
                     birthday = true;
                     setSuccessValid($('#birth'), $('#birth-validation-message'), checkUserBasicData);
@@ -326,7 +377,7 @@ $(document).ready(function () {
                     setSuccessValid($('#birth'), $('#birth-validation-message'), checkUserBasicData);
                 } else {
                     birthday = false;
-                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), getString('birthday_is_not_valid'), checkUserBasicData);
+                    setErrorValidMessage($('#birth'), $('#birth-validation-message'), getErrorString('birthday_is_not_valid'), checkUserBasicData);
                 }
             }
         }
@@ -373,7 +424,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function () {
-                    alert("error checkPassword Edit profile");
+                    $.notify(getErrorString('data_error'), "error");
                 }
             });
         }

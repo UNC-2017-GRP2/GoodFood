@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
         ResponseEntity<Boolean> response =
                 restTemplate.exchange(USER_BASE_URL+"/validate/login/" + login + "/",
-                        HttpMethod.GET, request, new ParameterizedTypeReference<Boolean>() {
+                        HttpMethod.POST, request, new ParameterizedTypeReference<Boolean>() {
                         });
         boolean result = response.getBody();
 

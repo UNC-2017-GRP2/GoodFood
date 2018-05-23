@@ -92,7 +92,7 @@ public class UserController {
     {return userService.isEmailExist(email);}
 
     @RequestMapping(value = "/validate/login/{login}",method = RequestMethod.POST)
-    public boolean sYourLoginForUpdateUser(@PathVariable("login") String login, @RequestBody(required = true) String password)
+    public boolean isYourLoginForUpdateUser(@PathVariable("login") String login, @RequestBody(required = true) String password)
     {return userService.isYourLoginForUpdateUser(login, password);}
 
     @RequestMapping(value = "/validate/email/{email}",method = RequestMethod.POST)

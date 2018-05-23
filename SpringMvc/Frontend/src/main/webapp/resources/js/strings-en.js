@@ -23,8 +23,6 @@ function getErrorString(stringId) {
             return 'Inaccurate address, clarification required.';
         case 'address_is_not_found':
             return 'The address is not found.';
-        case 'phone_is_not_valid':
-            return 'Phone is not valid.';
         case 'address_is_already_exists':
             return 'The address is already exists.';
         case 'full_name_must_not_be_empty':

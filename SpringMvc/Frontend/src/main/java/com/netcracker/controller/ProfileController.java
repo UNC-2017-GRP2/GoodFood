@@ -60,9 +60,9 @@ public class ProfileController {
                 if (httpSession.getAttribute("userAddresses") == null) {
                     httpSession.setAttribute("userAddresses", user.getAddresses());
                 }
-                if (httpSession.getAttribute("newAddresses") == null) {
+                //if (httpSession.getAttribute("newAddresses") == null) {
                     httpSession.setAttribute("newAddresses", new ArrayList<>(user.getAddresses()));
-                }
+                //}
             }
             model.addObject("nullParameter", "None");
             model.setViewName("profile");
@@ -175,9 +175,12 @@ public class ProfileController {
     String checkUsername(@RequestParam String username, Principal principal) {
         if (userService.isLoginExist(username)) {
             User user = userService.getByUsername(principal.getName());
-            if (!userService.isYourLoginForUpdateUser(username, user.getPasswordHash())) {
+            if (!user.getLogin().equals(username)){
                 return "true";
             }
+            /*if (!userService.isYourLoginForUpdateUser(username, user.getPasswordHash())) {
+                return "true";
+            }*/
         }
         return "false";
     }
@@ -187,9 +190,12 @@ public class ProfileController {
     String checkEmail(@RequestParam String email, Principal principal) {
         if (userService.isEmailExist(email)) {
             User user = userService.getByUsername(principal.getName());
-            if (!userService.isYourEmailForUpdateUser(email, user.getPasswordHash())) {
+            if (!user.getEmail().equals(email)){
                 return "true";
             }
+            /*if (!userService.isYourEmailForUpdateUser(email, user.getPasswordHash())) {
+                return "true";
+            }*/
         }
         return "false";
     }
