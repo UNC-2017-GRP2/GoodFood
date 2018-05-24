@@ -1,0 +1,17 @@
+* {
+    font-family: "Roboto";
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+}
+.bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0}
+.well{
+    background: #ffffff;
+}
+.main-container{
+    width: 70%;
+}
+

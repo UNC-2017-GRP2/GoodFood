@@ -1,0 +1,89 @@
+.list-group-item {
+    height:auto;
+    min-height: 130px;
+}
+.list-group-item:hover{
+    color: currentColor;
+}
+
+.list-group-total-order{
+    min-height: 120px!important;
+}
+.container{
+    width: 70%;
+}
+
+* {
+    font-family: "Roboto";
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+}
+
+.right-block{
+    position: relative;
+}
+.remove-item{
+    position: absolute;
+    top:0;
+    right: 0;
+    font-size: large;
+    cursor: pointer;
+}
+.remove-item:hover{
+    color: #bb0000;
+    opacity: 0.6;
+}
+
+.info {
+    font-size: 14px;
+    color: #969696;
+    margin-bottom: 10px;
+}
+
+.quantity{
+    border: 1px solid #b7b7b7;
+    border-radius: 2px;
+}
+.minus, .plus {
+    cursor: pointer;
+}
+.plus{
+    color: #00a100;
+}
+.minus{
+    color: #bb0000;
+}
+.minus:hover, .plus:hover{
+    opacity: 0.6;
+}
+
+.list-group-address{
+    height:auto;
+    min-height: 40px;!important;
+    overflow-y: hidden;
+}
+
+.ul-my-addresses{
+    visibility: hidden;
+    height: 0;
+}
+.list-group-item-address {
+    height:auto;
+    min-height: 10px;!important;
+    overflow-y: auto;
+    cursor: pointer;
+}
+.list-group-item-address:hover{
+    background-color: rgb(245,245,245);
+}
+#address-valid{
+    color: rgb(255,0,0);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
