@@ -1,7 +1,12 @@
 package com.netcracker.config;
 
+import com.netcracker.service.impl.MySocialUserDetailsService;
+import com.netcracker.service.impl.MyUserDetailsService;
+import com.netcracker.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.security.SocialAuthenticationProvider;
+import org.springframework.social.security.SpringSocialConfigurer;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
@@ -16,7 +24,10 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsServiceImpl;
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
 
     @Autowired
     private ApplicationContextConfig context;
@@ -24,12 +35,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         ShaPasswordEncoder encoder = new ShaPasswordEncoder();
-        auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
+        auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(encoder);
+    }
+    @Autowired
+    private UsersConnectionRepository usersConnectionRepository;
+
+    @Autowired
+    private MySocialUserDetailsService mySocialUserDetailsService;
+
+    @Bean
+    public AuthenticationProvider getAuthenticationProvider() {
+        return new SocialAuthenticationProvider(usersConnectionRepository, mySocialUserDetailsService);
     }
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+
         http.authorizeRequests()
                 .antMatchers("/").authenticated()
                 .antMatchers("/home").permitAll()
@@ -61,7 +84,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .rememberMe()
                         .tokenRepository(context.persistentTokenRepository())
                         .key("rem-me-key")
-                        .tokenValiditySeconds(86400);
+                        .tokenValiditySeconds(86400)
+                .and()
+                    .apply(new SpringSocialConfigurer());
 
 
         CharacterEncodingFilter filter = new CharacterEncodingFilter();

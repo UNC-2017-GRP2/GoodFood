@@ -11,6 +11,7 @@ public interface UserService {
     List<User> getAllUsers();
     User getByUsername(String username);
     User getUserById (BigInteger userId);
+    User findByEmail(String email) throws SQLException;
     void saveUser(User user);
     void updateUser(User oldUser, User newUser);
     void changeRole(BigInteger userId, String role);

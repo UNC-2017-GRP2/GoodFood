@@ -144,6 +144,7 @@ public class Constant {
 
     /**SQL QUERIES**/
 
+
     public static final String SQL_SELECT_ID = "select id_generator()";
     public static final String SQL_SELECT_OBJECT_BY_ID = "select * from \"OBJECTS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";

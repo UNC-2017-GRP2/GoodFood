@@ -139,7 +139,7 @@ public class Constant {
     public static final long ITEM_OBJ_TYPE_ID = 306;
 
     /**SQL QUERIES**/
-
+    public static final String SQL_SELECT_OBJECT_ID_BY_EMAIL = "select \"OBJECT_ID\" from \"PARAMETERS\" where  \"ATTR_ID\" = 406 and \"TEXT_VALUE\" = '?";
     public static final String SQL_SELECT_ID = "select id_generator()";
     public static final String SQL_SELECT_OBJECT_BY_ID = "select * from \"OBJECTS\" where \"OBJECT_ID\" = ?";
     public static final String SQL_SELECT_OBJECTS = "select * from \"OBJECTS\" where \"OBJECT_TYPE_ID\" = ?";

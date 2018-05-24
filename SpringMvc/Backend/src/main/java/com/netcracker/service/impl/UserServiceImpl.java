@@ -40,6 +40,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmail(String email) throws SQLException {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public void saveUser(User user){
         userRepository.saveUser(user);
     }

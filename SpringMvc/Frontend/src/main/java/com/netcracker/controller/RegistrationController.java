@@ -11,6 +11,7 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -84,6 +85,10 @@ public class RegistrationController {
         } else {
             return "false";
         }
+    }
+    @RequestMapping(value = { "/signin" }, method = RequestMethod.GET)
+    public String signInPage(Model model) {
+        return "redirect:/login";
     }
 }
 

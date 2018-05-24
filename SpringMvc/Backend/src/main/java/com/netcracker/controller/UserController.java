@@ -42,6 +42,14 @@ public class UserController {
     public  User getUserByUsername(@PathVariable( "username" ) String username){
         return userService.getByUsername(username);
     }
+    @RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
+    public  User getUserByEmail(@PathVariable( "email" ) String email){
+        try {
+            return userService.findByEmail(email);
+        } catch (SQLException e){
+            return null;
+        }
+    }
 
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
     public  User getUserById(@PathVariable( "id" ) BigInteger id){

@@ -334,4 +334,63 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
             connection.rollback();
         }
     }
+    @Override
+    public User findByEmail(String email) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_OBJECT_ID_BY_EMAIL);
+        preparedStatement.setString(1, email);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        BigInteger id = new BigInteger(resultSet.getString("OBJECT_ID"));
+
+        User user = null;
+        String username = null;
+        String password = null;
+        String role = null;
+        String fio = null;
+
+        String phone = null;
+        LocalDate birthday = null;
+        List<Address> addresses = new ArrayList<>();
+        resultSet = null;
+        try {
+            if (id != null && !id.equals(0)) {
+                resultSet = getParametersByObjectId(id);
+                while (resultSet.next()) {
+                    long curAttrId = resultSet.getLong("ATTR_ID");
+                    if (curAttrId == Constant.PASSWORD_HASH_ATTR_ID) {
+                        password = resultSet.getString("TEXT_VALUE");
+                    }
+                    if (curAttrId == Constant.USER_ROLE_ATTR_ID) {
+                        long roleValue = resultSet.getLong("ENUM_VALUE");
+                        role = getEnumNameById(roleValue);
+                    }
+                    if (curAttrId == Constant.NAME_ATTR_ID) {
+                        username = resultSet.getString("TEXT_VALUE");
+                    }
+                    if (curAttrId == Constant.FULL_NAME_ATTR_ID) {
+                        fio = resultSet.getString("TEXT_VALUE");
+                    }
+                    if (curAttrId == Constant.PHONE_NUMBER_ATTR_ID) {
+                        phone = resultSet.getString("TEXT_VALUE");
+                    }
+                    if (curAttrId == Constant.BIRTHDAY_ATTR_ID) {
+                        birthday = (resultSet.getTimestamp("DATE_VALUE") != null) ? resultSet.getTimestamp("DATE_VALUE").toLocalDateTime().toLocalDate() : null;
+                    }
+                    if (curAttrId == Constant.ADDRESS_ATTR_ID) {
+                        PGpoint address = (PGpoint) resultSet.getObject("POINT_VALUE");
+                        addresses.add(new Address(address.x, address.y));
+                    }
+                }
+            }
+            if (!password.equals("") && !role.equals("")) {
+                user = new User(id,fio,username,password,password,phone,birthday,email,addresses,role,null);
+            } else {
+                System.out.println("pass or role is empty!");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + " 111");
+        }
+        return user;
+    }
 }

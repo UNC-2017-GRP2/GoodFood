@@ -24,4 +24,6 @@ public interface UserRepository {
     void removeUserById(BigInteger userId) throws SQLException;
     BigInteger getObjectId();
     void saveUserImage(BigInteger userId, String imageName) throws SQLException;
+   // User registerNewUserAccount(MyUserAccountForm accountForm);
+    User findByEmail(String email) throws SQLException;
 }

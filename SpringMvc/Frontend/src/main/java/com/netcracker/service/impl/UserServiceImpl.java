@@ -1,12 +1,16 @@
 package com.netcracker.service.impl;
 
 import com.netcracker.config.Constant;
+import com.netcracker.form.MyUserAccountForm;
 import com.netcracker.model.Address;
 import com.netcracker.model.User;
 import com.netcracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionKey;
+import org.springframework.social.connect.UserProfile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -14,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigInteger;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -26,7 +31,7 @@ public class UserServiceImpl implements UserService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<User> userResponse =
-                restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/",
+                restTemplate.exchange(USER_BASE_URL + "/id/" + userId + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<User>() {
                         });
         User result = userResponse.getBody();
@@ -35,11 +40,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByUsername(String username){
+    public User getByUsername(String username) {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<User> userResponse =
-                restTemplate.exchange(USER_BASE_URL+"/username/" + username + "/",
+                restTemplate.exchange(USER_BASE_URL + "/username/" + username + "/",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<User>() {
+                        });
+        User result = userResponse.getBody();
+
+        return result;
+    }
+
+    @Override
+    public User findByEmail(String email){
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<User> userResponse =
+                restTemplate.exchange(USER_BASE_URL + "/email/" + email + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<User>() {
                         });
         User result = userResponse.getBody();
@@ -53,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
         HttpEntity<User> request = new HttpEntity<>(user);
 
-        restTemplate.exchange(USER_BASE_URL+"/save/",
+        restTemplate.exchange(USER_BASE_URL + "/save/",
                 HttpMethod.POST, request, new ParameterizedTypeReference<User>() {
                 });
         //TODO:разобраться, что за дерьмо тут происходит
@@ -68,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
         HttpEntity<User> request = new HttpEntity<>(user);
 
-        restTemplate.exchange(USER_BASE_URL+"/username/" + oldUser.getLogin() + "/",
+        restTemplate.exchange(USER_BASE_URL + "/username/" + oldUser.getLogin() + "/",
                 HttpMethod.PUT, request, new ParameterizedTypeReference<User>() {
                 });
     }
@@ -78,7 +96,7 @@ public class UserServiceImpl implements UserService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<Boolean> response =
-                restTemplate.exchange(USER_BASE_URL+"/validate/login/" + login + "/",
+                restTemplate.exchange(USER_BASE_URL + "/validate/login/" + login + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<Boolean>() {
                         });
         boolean result = response.getBody();
@@ -91,7 +109,7 @@ public class UserServiceImpl implements UserService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<List<User>> userResponse =
-                restTemplate.exchange(USER_BASE_URL+"/",
+                restTemplate.exchange(USER_BASE_URL + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<User>>() {
                         });
         List<User> result = userResponse.getBody();
@@ -104,7 +122,7 @@ public class UserServiceImpl implements UserService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<Boolean> response =
-                restTemplate.exchange(USER_BASE_URL+"/validate/email/" + email + "/",
+                restTemplate.exchange(USER_BASE_URL + "/validate/email/" + email + "/",
                         HttpMethod.GET, null, new ParameterizedTypeReference<Boolean>() {
                         });
         boolean result = response.getBody();
@@ -119,7 +137,7 @@ public class UserServiceImpl implements UserService {
         HttpEntity<String> request = new HttpEntity<>(password);
 
         ResponseEntity<Boolean> response =
-                restTemplate.exchange(USER_BASE_URL+"/validate/login/" + login + "/",
+                restTemplate.exchange(USER_BASE_URL + "/validate/login/" + login + "/",
                         HttpMethod.POST, request, new ParameterizedTypeReference<Boolean>() {
                         });
         boolean result = response.getBody();
@@ -137,13 +155,13 @@ public class UserServiceImpl implements UserService {
 
         body.add("password", password);
 
-        HttpHeaders headers=new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
 
 // Note the body object as first parameter!
         //HttpEntity<?> request = new HttpEntity<Object>(body,headers);
         RequestEntity<String> request = RequestEntity
-                .post(URI.create(USER_BASE_URL+"/validate/email/" + email))
+                .post(URI.create(USER_BASE_URL + "/validate/email/" + email))
                 .accept(MediaType.APPLICATION_JSON)
                 .body(password);
 
@@ -154,7 +172,7 @@ public class UserServiceImpl implements UserService {
                         HttpMethod.POST, request, Boolean.class);
         Boolean result = response.getBody();
         */
-        ResponseEntity<Boolean> response = restTemplate.exchange(request,Boolean.class);
+        ResponseEntity<Boolean> response = restTemplate.exchange(request, Boolean.class);
         Boolean result = response.getBody();
         return result;
     }
@@ -166,7 +184,7 @@ public class UserServiceImpl implements UserService {
         HttpEntity<String> request = new HttpEntity<>(password);
 
         ResponseEntity<Boolean> response =
-                restTemplate.exchange(USER_BASE_URL+"/validate/password/id/" + userId + "/",
+                restTemplate.exchange(USER_BASE_URL + "/validate/password/id/" + userId + "/",
                         HttpMethod.POST, request, new ParameterizedTypeReference<Boolean>() {
                         });
         boolean result = response.getBody();
@@ -180,7 +198,7 @@ public class UserServiceImpl implements UserService {
 
         HttpEntity<String> request = new HttpEntity<>(password);
 
-        restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/update/password/",
+        restTemplate.exchange(USER_BASE_URL + "/id/" + userId + "/update/password/",
                 HttpMethod.PUT, request, new ParameterizedTypeReference<User>() {
                 });
     }
@@ -191,7 +209,7 @@ public class UserServiceImpl implements UserService {
 
         HttpEntity<List<Address>> request = new HttpEntity<>(addresses);
 
-        restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/update/addresses/",
+        restTemplate.exchange(USER_BASE_URL + "/id/" + userId + "/update/addresses/",
                 HttpMethod.PUT, request, new ParameterizedTypeReference<User>() {
                 });
     }
@@ -202,7 +220,7 @@ public class UserServiceImpl implements UserService {
 
         HttpEntity<String> request = new HttpEntity<>(role);
 
-        restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/update/role/",
+        restTemplate.exchange(USER_BASE_URL + "/id/" + userId + "/update/role/",
                 HttpMethod.PUT, request, new ParameterizedTypeReference<User>() {
                 });
     }
@@ -212,7 +230,7 @@ public class UserServiceImpl implements UserService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<Object> userResponse =
-                restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/",
+                restTemplate.exchange(USER_BASE_URL + "/id/" + userId + "/",
                         HttpMethod.DELETE, null, new ParameterizedTypeReference<Object>() {
                         });
     }
@@ -222,7 +240,7 @@ public class UserServiceImpl implements UserService {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<BigInteger> itemResponse =
-                restTemplate.exchange(USER_BASE_URL+"/object/id",
+                restTemplate.exchange(USER_BASE_URL + "/object/id",
                         HttpMethod.GET, null, new ParameterizedTypeReference<BigInteger>() {
                         });
         BigInteger result = itemResponse.getBody();
@@ -233,9 +251,80 @@ public class UserServiceImpl implements UserService {
     public void saveUserImage(BigInteger userId, String imageName) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> request = new HttpEntity<>(imageName);
-        restTemplate.exchange(USER_BASE_URL+"/id/" + userId + "/save/imageName/",
+        restTemplate.exchange(USER_BASE_URL + "/id/" + userId + "/save/imageName/",
                 HttpMethod.POST, request, new ParameterizedTypeReference<Object>() {
                 });
     }
 
+    @Override
+    public User registerNewUserAccount(MyUserAccountForm accountForm) {
+
+        saveUser(new User(
+                null,
+                accountForm.getFirstName() + ' ' + accountForm.getLastName(),
+                accountForm.getUserName(),
+                "123456Admin",
+                "123456Admin",
+                "",
+                null,
+                accountForm.getEmail(),
+                null,
+                "ROLE_USER",
+                null)
+        );
+        return getByUsername(accountForm.getUserName());
+    }
+
+
+    @Override
+    public User createUserAccount(Connection<?> connection) {
+        ConnectionKey key = connection.getKey();
+        // (facebook,12345), (google,123) ...
+
+        System.out.println("key= (" + key.getProviderId() + "," + key.getProviderUserId() + ")");
+
+        UserProfile userProfile = connection.fetchUserProfile();
+
+        String email = userProfile.getEmail();
+        User account = findByEmail(email);
+        if (account != null) {
+            return account;
+        }
+
+        String userName_prefix = userProfile.getFirstName().trim().toLowerCase()//
+                + "_" + userProfile.getLastName().trim().toLowerCase();
+
+        String userName = findAvailableUserName(userName_prefix);
+
+        saveUser(new User(
+                null,
+                userProfile.getFirstName() + ' ' + userProfile.getLastName(),
+                userName,
+                "123456Admin",
+                "123456Admin",
+                "",
+                null,
+                email,
+                null,
+                "ROLE_USER",
+                null)
+        );
+
+        return getByUsername(userName);
+    }
+
+    private String findAvailableUserName(String userName_prefix) {
+        User account = getByUsername(userName_prefix);
+        if (account == null) {
+            return userName_prefix;
+        }
+        int i = 0;
+        while (true) {
+            String userName = userName_prefix + "_" + i++;
+            account = getByUsername(userName);
+            if (account == null) {
+                return userName;
+            }
+        }
+    }
 }

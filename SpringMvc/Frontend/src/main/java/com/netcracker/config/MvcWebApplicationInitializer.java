@@ -12,7 +12,11 @@ public class MvcWebApplicationInitializer extends
     private int maxUploadSizeInMb = 5 * 1024 * 1024; //5MB
 
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { ApplicationContextConfig.class };
+        return new Class[] {
+                ApplicationContextConfig.class,
+                SecurityConfig.class,
+                SocialConfig.class
+        };
     }
 
     protected Class<?>[] getServletConfigClasses() {
