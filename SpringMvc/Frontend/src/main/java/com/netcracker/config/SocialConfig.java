@@ -1,6 +1,7 @@
 package com.netcracker.config;
 
 import com.netcracker.service.UserService;
+import com.netcracker.service.impl.UserServiceImpl;
 import com.netcracker.signup.MyConnectionSignUp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -63,7 +64,7 @@ public class SocialConfig implements SocialConfigurer{
             // Config to:
             // After login to social.
             // Automatically create corresponding USER_ACCOUNT if not already.
-            ConnectionSignUp connectionSignUp = new MyConnectionSignUp();
+            ConnectionSignUp connectionSignUp = new MyConnectionSignUp(new UserServiceImpl());
             usersConnectionRepository.setConnectionSignUp(connectionSignUp);
         } else {
             // Config to:
