@@ -14,6 +14,8 @@
             return 'Заказ удален.';
         case 'items_was_saved':
             return 'Элементы успешно сохранены.';
+        case 'courier_appointed':
+            return 'Курьер был назначен.';
     }
 }
 function getErrorString(stringId) {
@@ -151,5 +153,7 @@ function getLocStrings(stringId) {
             return 'Сортировать по убыванию';
         case 'change_from':
             return 'Нужна сдача с';
+        case 'status_with_courier':
+            return 'Принят курьером';
     }
 }

@@ -14,6 +14,8 @@
             return 'Замовлення видалений.';
         case 'items_was_saved':
             return 'Елементи успішно збережені.';
+        case 'courier_appointed':
+            return 'Кур`єр був призначений.';
     }
 }
 
@@ -152,5 +154,7 @@ function getLocStrings(stringId) {
             return 'Сортувати по спадаючій';
         case 'change_from':
             return 'Потрібна здача з';
+        case 'status_with_courier':
+            return 'Прийнято кур`єром';
     }
 }

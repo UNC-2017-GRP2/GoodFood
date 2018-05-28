@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface UserService {
     List<User> getAllUsers();
+    List<User> getAllCouriers();
     User getByUsername(String username);
     User findByEmail(String email) throws SQLException;
     User getUserById(BigInteger userId);

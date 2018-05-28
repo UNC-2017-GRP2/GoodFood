@@ -53,11 +53,16 @@
                             <div class="content">
                                 <c:forEach items="${orders}" var="order">
                                 <c:choose>
-                                <c:when test="${order.status.equals('Delivered')}">
+                                <c:when test="${order.status.equals('Delivered') || order.status.equals('Доставлен') || order.status.equals('Доставлений')}">
                                 <div class="container-order text-center sticker-left sticker-success"
                                      data-sticker="${order.status}">
                                     </c:when>
-                                    <c:when test="${order.status.equals('Created') || order.status.equals('Linked with courier')}">
+                                    <c:when test="${order.status.equals('Created')
+                                    || order.status.equals('В обработке')
+                                    || order.status.equals('В обробці')
+                                    || order.status.equals('Linked with courier')
+                                    || order.status.equals('Принят курьером')
+                                    || order.status.equals('Прийнято кур`єром')}">
                                     <div class="container-order text-center sticker-left sticker-info"
                                          data-sticker="${order.status}">
                                         </c:when>

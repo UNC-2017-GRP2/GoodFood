@@ -11,7 +11,7 @@ function getAddressByCoordinates(orderId, latitude, longitude){
 
 
 $(document).ready(function () {
-    
+
     /*$(".panel-heading").click(function () {
         var $panelBody = $(this).next(".panel-body");
         if ($panelBody.css("display") == "none"){

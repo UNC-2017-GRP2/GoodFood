@@ -63,6 +63,11 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         return userRepository.getAllUsers();
     }
+
+    @Override
+    public List<User> getAllCouriers() {
+        return userRepository.getAllCouriers();
+    }
     @Override
     public boolean isEmailExist(String email) {
         return userRepository.isEmailExist(email);

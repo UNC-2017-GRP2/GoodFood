@@ -53,7 +53,6 @@ public class OrderServiceImpl implements OrderService {
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<Order>>() {
                         });
         List<Order> result = itemResponse.getBody();
-
         return result;
     }
 
@@ -163,8 +162,11 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getAllFreeOrders(Locale locale) {
         List<Order> allOrders = getAllOrders(locale);
         List<Order> allFreeOrders = new ArrayList<>();
+        long createdStatus = Constant.STATUS_CREATED_ENUM_ID;
         for (Order newOrder : allOrders) {
-            if (newOrder.getStatus().equals("Created") || newOrder.getStatus().equals("Without courier")) {
+            if (newOrder.getStatus().equals(Constant.STATUSES.get(createdStatus))
+                    || newOrder.getStatus().equals(Constant.STATUSES_RU.get(createdStatus))
+                    || newOrder.getStatus().equals(Constant.STATUSES_UK.get(createdStatus))) {
                 allFreeOrders.add(newOrder);
             }
         }
@@ -192,8 +194,20 @@ public class OrderServiceImpl implements OrderService {
         BigInteger userId = userService.getByUsername(username).getUserId();
         List<Order> allOrders = getAllOrders(locale);
         List<Order> completedOrders = new ArrayList<>();
+        long deliveryStatus = Constant.STATUS_DELIVERED_ENUM_ID;
+        long expiredStatus = Constant.STATUS_EXPIRED_ENUM_ID;
+        long cancelledStatus = Constant.STATUS_CANCELLED_ENUM_ID;
         for (Order newOrder : allOrders) {
-            if (newOrder.getCourierId().equals(userId) && newOrder.getStatus().equals("Delivered") || newOrder.getStatus().equals("Not delivered") || newOrder.getStatus().equals("Cancelled")) {
+            if (newOrder.getCourierId().equals(userId) &&
+                    (newOrder.getStatus().equals(Constant.STATUSES.get(deliveryStatus))
+                            || newOrder.getStatus().equals(Constant.STATUSES_RU.get(deliveryStatus))
+                            || newOrder.getStatus().equals(Constant.STATUSES_UK.get(deliveryStatus)))
+                    || (newOrder.getStatus().equals(Constant.STATUSES.get(expiredStatus))
+                        || newOrder.getStatus().equals(Constant.STATUSES_RU.get(expiredStatus))
+                        || newOrder.getStatus().equals(Constant.STATUSES_UK.get(expiredStatus)))
+                    || (newOrder.getStatus().equals(Constant.STATUSES.get(cancelledStatus))
+                        || newOrder.getStatus().equals(Constant.STATUSES_RU.get(cancelledStatus))
+                        || newOrder.getStatus().equals(Constant.STATUSES_UK.get(cancelledStatus)))) {
                 completedOrders.add(newOrder);
             }
         }
@@ -206,8 +220,28 @@ public class OrderServiceImpl implements OrderService {
         BigInteger userId = userService.getByUsername(username).getUserId();
         List<Order> allOrders = getAllOrders(locale);
         List<Order> withCourier = new ArrayList<>();
+        long status = Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID;
         for (Order newOrder : allOrders) {
-            if (newOrder.getCourierId().equals(userId) && newOrder.getStatus().equals("Linked with courier")) {
+            if (newOrder.getCourierId().equals(userId) &&
+                    (newOrder.getStatus().equals(Constant.STATUSES.get(status))
+                            || newOrder.getStatus().equals(Constant.STATUSES_RU.get(status))
+                            || newOrder.getStatus().equals(Constant.STATUSES_UK.get(status)))) {
+                withCourier.add(newOrder);
+            }
+        }
+        return withCourier;
+    }
+
+    @Override
+    public List<Order> getNotCompletedOrdersByCourierId(BigInteger courierId, Locale locale) {
+        List<Order> allOrders = getAllOrders(locale);
+        List<Order> withCourier = new ArrayList<>();
+        long status = Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID;
+        for (Order newOrder : allOrders) {
+            if (newOrder.getCourierId().equals(courierId) &&
+                    (newOrder.getStatus().equals(Constant.STATUSES.get(status))
+                    || newOrder.getStatus().equals(Constant.STATUSES_RU.get(status))
+                    || newOrder.getStatus().equals(Constant.STATUSES_UK.get(status)))) {
                 withCourier.add(newOrder);
             }
         }
@@ -254,6 +288,15 @@ public class OrderServiceImpl implements OrderService {
     public void setCourier(BigInteger orderId, String username) {
         RestTemplate restTemplate = new RestTemplate();
 
+        restTemplate.exchange(ORDER_BASE_URL+"/" + orderId + "/courier/" + username + "/" ,
+                HttpMethod.POST, null, new ParameterizedTypeReference<List<Order>>() {
+                });
+    }
+
+    @Override
+    public void setCourier(BigInteger orderId, BigInteger courierId) {
+        String username = userService.getUserById(courierId).getLogin();
+        RestTemplate restTemplate = new RestTemplate();
         restTemplate.exchange(ORDER_BASE_URL+"/" + orderId + "/courier/" + username + "/" ,
                 HttpMethod.POST, null, new ParameterizedTypeReference<List<Order>>() {
                 });

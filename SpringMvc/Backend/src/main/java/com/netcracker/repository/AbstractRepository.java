@@ -13,6 +13,7 @@ public interface AbstractRepository {
     ResultSet getObjectById(BigInteger objectId);
     ResultSet getObjectIdByAttrIdAndTextVal(long attrId, String textVal);
     ResultSet getParametersByObjectId(BigInteger objectId);
+    ResultSet getParameter(BigInteger objectId, long attrId);
     ResultSet getLocStringsByObjectId(BigInteger objectId, long langId);
     void saveObject(String name, BigInteger objectId, BigInteger parentId, long objTypeId);
     void updateObjectName (BigInteger objectId, String newName);

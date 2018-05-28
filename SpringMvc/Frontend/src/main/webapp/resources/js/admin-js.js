@@ -215,7 +215,31 @@ function getOrderInfo(orderId) {
                         $.notify(getErrorString('data_error'));
                     }
             });
-
+            if (data.courierId != null && data.courierId !== 0){
+                $.ajax({
+                    url : 'getUserInfo',
+                    type: 'GET',
+                    data : ({
+                        userId : data.courierId
+                    }),
+                    dataType:'json',
+                    success: function (data) {
+                        $("#courier-role-order").text(data.role);
+                        $("#courier-id-order").text(data.userId);
+                        $("#courier-login-order").text(data.login);
+                        $("#courier-fio-order").text(data.fio);
+                        $("#courier-phone-order").text(data.phoneNumber);
+                        $("#courier-email-order").text(data.email);
+                        $("#courier-birthday-order").text(new Date(data.birthday.year, data.birthday.month - 1, data.birthday.day).toLocaleDateString());
+                        /*$.each(data.addresses, function( index, value ) {
+                            getAddressByCoordinates(value.latitude,value.longitude, index);
+                        });*/
+                    },
+                    error: function () {
+                        $.notify(getErrorString('data_error'));
+                    }
+                });
+            }
         },
         error: function () {
             $.notify(getErrorString('data_error'));
@@ -316,6 +340,53 @@ function removeOrder(thisElem, orderId) {
     });
 }
 
+function setOrderId(orderId) {
+    $("#order-id-for-courier").val(orderId);
+}
+
+function getCouriersNumOrders(courierId){
+    $.ajax({
+        url : 'getNumOfOrders',
+        type: 'GET',
+        data: ({
+            courierId: courierId
+        }),
+        success: function (data) {
+            $("#num-orders-" + courierId).text(data);
+        },
+        error: function () {
+            $.notify(getErrorString('data_error'), "error");
+        }
+    });
+}
+
+function saveSetCourier() {
+    var courierId = $("input[name=courier-choice]:checked").val();
+    var orderId = $("#order-id-for-courier").val();
+    if (typeof courierId !== "undefined" && courierId != null && typeof orderId !== "undefined" && orderId !== null){
+        $.ajax({
+            url : 'setCourier',
+            type: 'GET',
+            data: ({
+                courierId: courierId,
+                orderId: orderId
+            }),
+            success: function () {
+                $('#set-courier-modal').modal('hide');
+                $.notify(getNotificationString('courier_appointed'), "success");
+                $("#order-status-" + orderId).text(getLocStrings('status_with_courier'));
+                $("#order-row-" + orderId).find(".order-courier").text(courierId);
+                $("#order-set-courier-btn-" + orderId).remove();
+                //$("#order-courier-" + courierId).text(courierId);
+            },
+            error: function () {
+                $('#set-courier-modal').modal('hide');
+                $.notify(getErrorString('data_error'), "error");
+            }
+        });
+    }
+}
+
 function checkEditItemsFields() {
     if (nameEn && nameRu && nameUk && descriptionEn && descriptionRu && descriptionUk && cost) {
         $("#save-item-info-btn").prop('disabled', false);
@@ -353,6 +424,7 @@ $(document).ready(function () {
     var ordersTable = $("#orders-table").DataTable(languageTableParams);
     var usersTable = $("#users-table").DataTable(languageTableParams);
     var itemsTable = $("#items-table").DataTable(languageTableParams);
+    var couriersTable = $("#couriers-table").DataTable(languageTableParams);
 
 
     $("#user-info-modal").on("hide.bs.modal", function () {

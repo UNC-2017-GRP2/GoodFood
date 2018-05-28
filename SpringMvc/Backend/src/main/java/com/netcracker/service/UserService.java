@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface UserService {
     List<User> getAllUsers();
+    List<User> getAllCouriers();
     User getByUsername(String username);
     User getUserById (BigInteger userId);
     User findByEmail(String email) throws SQLException;

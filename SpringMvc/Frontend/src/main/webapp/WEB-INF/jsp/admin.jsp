@@ -431,6 +431,16 @@
                                         code="admin.actualize"/></button>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             </form>
+                            <%--<div class="col-sm-6 row">
+                                <label for="statuses" class="col-sm-3">Статус</label>
+                                <select style="margin-top: 5px;" class="form-control col-sm-9" id="statuses">
+                                    <option>1</option>
+                                    <option>1</option>
+                                    <option>1</option>
+                                    <option>1</option>
+                                    <option>1</option>
+                                </select>
+                            </div>--%>
                         </div>
 
                         <table class="table table-hover table-striped table-bordered" id="orders-table">
@@ -443,14 +453,15 @@
                                 <th><spring:message code="orders.orderCreationDate"/></th>
                                 <th><spring:message code="orders.timeSinceCreation"/></th>
                                 <th><spring:message code="orders.cost"/></th>
+                                <th><spring:message code="general.courierId"/></th>
                                 <th><spring:message code="admin.users.actions"/></th>
                             </tr>
                             </thead>
                             <c:forEach items="${orders}" var="order">
-                                <tr class="order-row" onclick="getOrderInfo('<c:out value="${order.orderId}"/>');">
+                                <tr class="order-row" id="order-row-${order.orderId}" onclick="getOrderInfo('<c:out value="${order.orderId}"/>');">
                                     <td data-toggle="modal" data-target="#order-info-modal">${order.orderId}</td>
                                     <td data-toggle="modal" data-target="#order-info-modal">${order.userId}</td>
-                                    <td data-toggle="modal" data-target="#order-info-modal">${order.status}</td>
+                                    <td data-toggle="modal" data-target="#order-info-modal" id="order-status-${order.orderId}">${order.status}</td>
                                     <td data-toggle="modal" data-target="#order-info-modal"><c:forEach
                                             items="${order.orderItems}" var="item">
                                         ${item.productName}<br/>
@@ -464,8 +475,19 @@
                                     <td id="order-cost-td" data-toggle="modal"
                                         data-target="#order-info-modal">${order.orderCost} ₽
                                     </td>
-                                    <td class="text-center td-for-items-btns">
-                                        <a href="#" class="btn btn-danger btn-xs"
+                                    <td data-toggle="modal" data-target="#order-info-modal" class="order-courier">
+                                        ${order.courierId}
+                                    </td>
+                                    <td class="text-center td-for-items-btns ">
+                                            <c:if test="${order.status == Constant.STATUSES.get(Constant.STATUS_CREATED_ENUM_ID)
+                                            || order.status == Constant.STATUSES_RU.get(Constant.STATUS_CREATED_ENUM_ID)
+                                            || order.status == Constant.STATUSES_UK.get(Constant.STATUS_CREATED_ENUM_ID)}">
+                                                <a href="#" class="btn btn-info btn-xs btn-for-item" data-toggle="modal"
+                                                   data-target="#set-courier-modal" id="order-set-courier-btn-${order.orderId}" onclick="setOrderId('${order.orderId}');">
+                                                    <span class="glyphicon glyphicon-edit"></span><spring:message code="admin.setCourier"/>
+                                                </a> <br><br>
+                                            </c:if>
+                                        <a href="#" class="btn btn-danger btn-xs btn-for-item"
                                            onclick="removeOrder(this, '${order.orderId}');">
                                             <span class="glyphicon glyphicon-remove"></span><spring:message
                                                 code="admin.item.del"/>
@@ -666,6 +688,7 @@
 </div>
 
 
+
 <div class="modal fade" id="order-info-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -764,6 +787,44 @@
                         <div class="row text-left">
                             <div class="col-sm-5"><spring:message code="users.birthday"/></div>
                             <div class="col-sm-7 user-value-order" id="user-birthday-order"></div>
+                        </div>
+
+                        <ul class="details text-left">
+                            <hr>
+                        </ul>
+                        <%--USER--%>
+
+                        <div class="row text-left">
+                            <div class="col-sm-12"><strong><spring:message code="couriers.courier_info.title"/></strong></div>
+                        </div>
+
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="general.courierId"/></div>
+                            <div class="col-sm-7 user-value-order" id="courier-id-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.role"/></div>
+                            <div class="col-sm-7 user-value-order" id="courier-role-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.username"/></div>
+                            <div class="col-sm-7 user-value-order" id="courier-login-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.fullname"/></div>
+                            <div class="col-sm-7 user-value-order" id="courier-fio-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.phoneNumber"/></div>
+                            <div class="col-sm-7 user-value-order" id="courier-phone-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.email"/></div>
+                            <div class="col-sm-7 user-value-order" id="courier-email-order"></div>
+                        </div>
+                        <div class="row text-left">
+                            <div class="col-sm-5"><spring:message code="users.birthday"/></div>
+                            <div class="col-sm-7 user-value-order" id="courier-birthday-order"></div>
                         </div>
                     </div>
                 </div>
@@ -891,5 +952,52 @@
         </div>
     </div>
 </div>
+
+<div id="set-courier-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width: 1000px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><strong><spring:message code="admin.setCourier"/></strong></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="reset-values">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-striped table-bordered" id="couriers-table">
+                        <thead>
+                        <tr>
+                            <th><spring:message code="admin.selectCourier"/></th>
+                            <th><spring:message code="general.courierId"/></th>
+                            <th><spring:message code="users.fullname"/></th>
+                            <th><spring:message code="users.phoneNumber"/></th>
+                            <th><spring:message code="admin.courier.num_cur_order"/></th>
+                        </tr>
+                        </thead>
+                        <c:forEach items="${couriers}" var="courier">
+                                <tr class="courier-row">
+                                    <td><input type="radio" name="courier-choice" class="courier-choice" value="${courier.userId}"
+                                               id="radio-${courier.userId}"></td>
+                                    <td><label for="radio-${courier.userId}">${courier.userId}</label></td>
+                                    <td><label for="radio-${courier.userId}">${courier.fio}</label></td>
+                                    <td><label for="radio-${courier.userId}">${courier.phoneNumber}</label></td>
+                                    <td><label for="radio-${courier.userId}" id="num-orders-${courier.userId}">
+                                        <script type="text/javascript">
+                                            getCouriersNumOrders('${courier.userId}');
+                                        </script>
+                                    </label></td>
+                                </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="order-id-for-courier">
+                    <button type="button" class="btn btn-primary" id="save-courier" onclick="saveSetCourier();"><spring:message
+                            code="profile.save"></spring:message></button>
+                </div>
+            </div>
+    </div>
+</div>
+</div>
+
 </body>
 </html>

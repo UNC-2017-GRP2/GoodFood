@@ -25,8 +25,10 @@ public interface OrderService {
     List<Order> getCompletedOrdersByCourier(String username, Locale locale);
     //List<Order> getNotCompletedOrdersByCourier(String username);
     List<Order> getNotCompletedOrdersByCourier(String username, Locale locale);
+    List<Order> getNotCompletedOrdersByCourierId(BigInteger courierId, Locale locale);
     void changeOrderStatus(BigInteger orderId, long statusId);
     void setCourier(BigInteger orderId, String username);
+    void setCourier(BigInteger orderId, BigInteger courierId);
     List<Order> getAllOrders(Locale locale);
     List<Order> getOrdersByUsername(String username, Locale locale);
     BigInteger getObjectId();

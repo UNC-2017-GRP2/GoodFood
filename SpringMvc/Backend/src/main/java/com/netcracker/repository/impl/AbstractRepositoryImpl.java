@@ -140,6 +140,7 @@ public class AbstractRepositoryImpl{
         }
     }
 
+
     protected ResultSet getParameter(BigInteger objectId, long attrId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_SELECT_PARAMETERS_BY_OBJ_ATTR);

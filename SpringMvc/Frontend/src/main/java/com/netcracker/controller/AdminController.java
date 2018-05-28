@@ -73,6 +73,7 @@ public class AdminController {
         ModelAndView model = new ModelAndView();
         List<Order> allOrders = orderService.getAllOrders(locale);
         List<User> allUsers = userService.getAllUsers();
+        List<User> allCouriers = userService.getAllCouriers();
         List<Item> items = itemService.getAllItems(locale);
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
@@ -136,6 +137,9 @@ public class AdminController {
         }
         if (allUsers != null) {
             model.addObject("users", allUsers);
+        }
+        if (allCouriers != null){
+            model.addObject("couriers", allCouriers);
         }
         if (items != null) {
             model.addObject("items", items);
@@ -488,4 +492,22 @@ public class AdminController {
 
         return model;
     }
+
+    @RequestMapping(value = "/getNumOfOrders", method = RequestMethod.GET)
+    public @ResponseBody
+    String getNumOfOrders(@RequestParam BigInteger courierId, Locale locale)
+    {
+        List<Order> orders = orderService.getNotCompletedOrdersByCourierId(courierId, locale);
+        return String.valueOf(orders.size());
+    }
+    @RequestMapping(value = "/setCourier", method = RequestMethod.GET)
+    public @ResponseBody
+    void setCourier(@RequestParam BigInteger courierId, @RequestParam BigInteger orderId)
+    {
+        Order order = orderService.getOrderById(orderId);
+        if (order != null){
+            orderService.setCourier(orderId, courierId);
+        }
+    }
+
 }

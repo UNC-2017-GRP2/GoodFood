@@ -26,32 +26,9 @@
             ordersPoints.push([${order.orderAddress.latitude}, ${order.orderAddress.longitude}]);
             </c:forEach>
         }
-
         ymaps.ready(function () {
             createRoute(ordersPoints);
         });
-        /*function init(){
-            var myMap = new ymaps.Map("map", {
-                center: [51.6720400, 39.1843000],
-                zoom: 12
-            });
-            var points = [];
-            points.push([55.734876, 37.59308]);
-            points.push([55.354876, 37.111108]);
-            var multiRoute = new ymaps.multiRouter.MultiRoute({
-                // Описание опорных точек мультимаршрута.
-                referencePoints: points,
-                // Параметры маршрутизации.
-                params: {
-                    // Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
-                    results: 2
-                }
-            }, {
-                // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
-                boundsAutoApply: true
-            });
-            myMap.geoObjects.add(multiRoute);
-        }*/
     </script>
 </head>
 <body>
@@ -72,7 +49,6 @@
                                     <div class="container-order text-center sticker-left sticker-info"
                                          data-sticker="${order.status}">
                                         <div class="text-center order-info">
-
                                             <div class="row text-left">
                                                 <div class="col-sm-5"><spring:message code="orders.orderId"/></div>
                                                 <div class="col-sm-7">${order.orderId}</div>
@@ -158,7 +134,10 @@
 
                                             <div class="row text-left">
                                                 <div class="col-sm-6 text-center">
-                                                    <c:if test="${role.equals('ROLE_COURIER') && order.status.equals('Linked with courier')}">
+                                                    <c:if test="${role.equals('ROLE_COURIER')}"> <%--&&
+                                                    (order.status.equals('Linked with courier')
+                                                    || order.status.equals('Принят курьером')
+                                                    || order.status.equals('Прийнято кур`єром'))}"--%>
                                                         <form action="/current-orders/markAsDeliv/${order.orderId}"
                                                               method="post">
                                                             <button type="submit"
@@ -171,8 +150,8 @@
                                                     </c:if>
                                                 </div>
                                                 <div class="col-sm-6 text-center">
-                                                    <c:if test="${role.equals('ROLE_COURIER')
-                                && (order.status.equals('Linked with courier') || order.status.equals('Created'))}">
+                                                    <c:if test="${role.equals('ROLE_COURIER')}">
+                                <%--&& (order.status.equals('Linked with courier') || order.status.equals('Created'))}">--%>
                                                         <form action="/current-orders/remove/${order.orderId}"
                                                               method="post">
                                                             <button type="submit"

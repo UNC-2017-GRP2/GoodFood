@@ -11,6 +11,7 @@ public interface UserRepository {
     User getUserByUsername(String username);
     User getUserById(BigInteger userId);
     List<User> getAllUsers();
+    List<User> getAllCouriers();
     void saveUser(User user);
     void updateUser(User oldUser, User newUser);
     void changeRole(BigInteger userId, String role);

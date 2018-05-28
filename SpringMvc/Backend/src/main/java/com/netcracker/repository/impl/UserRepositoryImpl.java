@@ -130,6 +130,35 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl implements UserRe
     }
 
     @Override
+    public List<User> getAllCouriers() {
+        List<User> result = new ArrayList<>();
+        BigInteger userId;
+        long roleValue = 0;
+        try{
+            ResultSet resultSet = getObjectsByObjectTypeId(Constant.USER_OBJ_TYPE_ID);
+            while (resultSet.next()){
+                userId = new BigInteger(resultSet.getString("OBJECT_ID"));
+                if (userId != null){
+                    ResultSet resultRole = getParameter(userId, Constant.USER_ROLE_ATTR_ID);
+                    while (resultRole.next()){
+                        roleValue = resultRole.getLong("ENUM_VALUE");
+                    }
+                    if (roleValue != 0 && roleValue == Constant.ROLE_COURIER_ENUM_ID){
+                        User courier = getUserById(userId);
+                        result.add(courier);
+                    }
+                }
+            }
+            if (resultSet != null){
+                resultSet.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
     public void saveUser(User user){
         BigInteger userId;
         try {

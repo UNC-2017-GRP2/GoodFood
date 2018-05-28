@@ -14,6 +14,8 @@
             return 'Order deleted.';
         case 'items_was_saved':
             return 'Items successfully saved.';
+        case 'courier_appointed':
+            return 'Courier was appointed.';
     }
 }
 
@@ -152,5 +154,7 @@ function getLocStrings(stringId) {
             return 'Sort descending';
         case 'change_from':
             return 'Need a change from';
+        case 'status_with_courier':
+            return 'Linked with courier';
     }
 }

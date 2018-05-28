@@ -27,6 +27,28 @@ public class Constant {
         STATUSES = Collections.unmodifiableMap(map);
     }
 
+    public static Map<Long, String> STATUSES_RU;
+    static {
+        Map<Long, String> map = new HashMap<>();
+        map.put(Constant.STATUS_CREATED_ENUM_ID, "В обработке");
+        map.put(Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID, "Принят курьером");
+        map.put(Constant.STATUS_DELIVERED_ENUM_ID, "Доставлен");
+        map.put(Constant.STATUS_EXPIRED_ENUM_ID, "Просрочен");
+        map.put(Constant.STATUS_CANCELLED_ENUM_ID, "Отменен");
+        STATUSES_RU = Collections.unmodifiableMap(map);
+    }
+
+    public static Map<Long, String> STATUSES_UK;
+    static {
+        Map<Long, String> map = new HashMap<>();
+        map.put(Constant.STATUS_CREATED_ENUM_ID, "В обробці");
+        map.put(Constant.STATUS_LINKED_WITH_COURIER_ENUM_ID, "Прийнято кур`єром");
+        map.put(Constant.STATUS_DELIVERED_ENUM_ID, "Доставлений");
+        map.put(Constant.STATUS_EXPIRED_ENUM_ID, "Прострочений");
+        map.put(Constant.STATUS_CANCELLED_ENUM_ID, "Скасований");
+        STATUSES_UK = Collections.unmodifiableMap(map);
+    }
+
     public static Map<String, Long> CATEGORIES;
     static {
         Map<String, Long> map = new HashMap<>();
@@ -58,7 +80,7 @@ public class Constant {
     public static final String ROLE_USER = "ROLE_USER";
 
     public static final long START_EXPIRATION_TIME = 3;
-    public static final long END_EXPIRATION_TIME = 12;
+    public static final long END_EXPIRATION_TIME = 5;
     public static final int ORDERS_QUANTITY_ON_PAGE = 4;
     public static final int CANCEL_ORDER_MINUTES = 5;
 

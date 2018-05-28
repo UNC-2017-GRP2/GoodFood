@@ -38,6 +38,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @RequestMapping(value = "/getAllCouriers", method = RequestMethod.GET)
+    public List<User> getAllCouriers(){
+        return userService.getAllCouriers();
+    }
+
     @RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
     public  User getUserByUsername(@PathVariable( "username" ) String username){
         return userService.getByUsername(username);

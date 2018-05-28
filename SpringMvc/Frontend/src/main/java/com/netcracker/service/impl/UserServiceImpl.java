@@ -118,6 +118,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAllCouriers() {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<User>> userResponse =
+                restTemplate.exchange(USER_BASE_URL + "/getAllCouriers/",
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<User>>() {
+                        });
+        List<User> result = userResponse.getBody();
+        return result;
+    }
+
+    @Override
     public boolean isEmailExist(String email) {
         RestTemplate restTemplate = new RestTemplate();
 
