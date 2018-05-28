@@ -59,6 +59,7 @@ public class MyOrdersController {
 
         model.addObject("now", LocalDateTime.now());
         model.addObject("chr", ChronoUnit.HOURS);
+        model.addObject("chrMin", ChronoUnit.MINUTES);
         model.addObject("start_exp_time", Constant.START_EXPIRATION_TIME);
         if(pageId == null){
             pageId = 1;
@@ -99,8 +100,12 @@ public class MyOrdersController {
     public String deleteOrder(@PathVariable BigInteger id, Principal principal) throws IOException {
         Order order = orderService.getOrderById(id);
         if (order != null){
-            if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
-                orderService.changeOrderStatus(id, Constant.STATUS_CANCELLED_ENUM_ID); //cancelled
+            if (order.getOrderCreationDate().until(LocalDateTime.now(), ChronoUnit.MINUTES) > Constant.CANCEL_ORDER_MINUTES){
+                return "redirect:/my-orders/1";
+            }else {
+                if (userService.getByUsername(principal.getName()).getRole().equals("ROLE_USER")) {
+                    orderService.changeOrderStatus(id, Constant.STATUS_CANCELLED_ENUM_ID); //cancelled
+                }
             }
         }
         return "redirect:/my-orders/1";

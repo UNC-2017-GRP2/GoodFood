@@ -1,4 +1,6 @@
 <%@ page import="com.netcracker.config.Constant" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.temporal.ChronoUnit" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -139,7 +141,7 @@
 
                                                 <div class="row text-left">
                                                     <div class="col-sm-6 text-center">
-                                                        <c:if test="${role.equals('ROLE_USER')
+                                                        <%--<c:if test="${role.equals('ROLE_USER')
                                 && (order.status.equals('Linked with courier') || order.status.equals('Created'))
                                 && (order.orderCreationDate.until(now, chr) > start_exp_time)}">
                                                             <form action="/my-orders/markAsExp/${order.orderId}"
@@ -150,15 +152,16 @@
                                                                 <input type="hidden" name="${_csrf.parameterName}"
                                                                        value="${_csrf.token}"/>
                                                             </form>
-                                                        </c:if>
+                                                        </c:if>--%>
                                                     </div>
                                                     <div class="col-sm-6 text-center">
                                                         <c:if test="${role.equals('ROLE_USER')
-                                && (order.status.equals('Linked with courier') || order.status.equals('Created'))}">
+                                                            && (order.status.equals('Linked with courier') || order.status.equals('Created'))
+                                                            && order.orderCreationDate.until(LocalDateTime.now(), chrMin) <= Constant.CANCEL_ORDER_MINUTES}">
                                                             <form action="/my-orders/remove/${order.orderId}"
-                                                                  method="post">
+                                                                  method="post" id="cancel-order-form">
                                                                 <button type="submit"
-                                                                        class="btn grey-button grey-btn-danger">
+                                                                        class="btn grey-button grey-btn-danger" id="btn-cancel-order">
                                                                     <spring:message code="orders.cancel"/></button>
                                                                 <input type="hidden" name="${_csrf.parameterName}"
                                                                        value="${_csrf.token}"/>

@@ -60,6 +60,7 @@ public class Constant {
     public static final long START_EXPIRATION_TIME = 3;
     public static final long END_EXPIRATION_TIME = 12;
     public static final int ORDERS_QUANTITY_ON_PAGE = 4;
+    public static final int CANCEL_ORDER_MINUTES = 5;
 
     public static final String PAYMENT_TYPE_CASH = "Cash payment";
     public static final String PAYMENT_TYPE_CARD = "Payment by card";
