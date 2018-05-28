@@ -223,6 +223,7 @@ public class AbstractRepositoryImpl{
 
     protected void saveTextParameter(BigInteger objectId, long attrId, String parameter) {
         try {
+            connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
@@ -233,6 +234,7 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(7,null);
             preparedStatement.setObject(8,null);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
         }
@@ -240,6 +242,7 @@ public class AbstractRepositoryImpl{
 
     protected void saveDateParameter(BigInteger objectId, long attrId, Timestamp parameter) {
         try {
+            connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
@@ -250,6 +253,7 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(7,null);
             preparedStatement.setObject(8,null);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
         }
@@ -257,6 +261,7 @@ public class AbstractRepositoryImpl{
 
     protected void saveReferenceParameter(BigInteger objectId, long attrId, BigInteger parameter) {
         try {
+            connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
@@ -267,6 +272,7 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(7,null);
             preparedStatement.setObject(8,null);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
         }
@@ -275,6 +281,7 @@ public class AbstractRepositoryImpl{
 
     protected void saveEnumValue(BigInteger objectId, long attrId, long parameter){
         try {
+            connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
@@ -285,6 +292,7 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(7,null);
             preparedStatement.setObject(8,null);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (Exception e) {
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
         }
@@ -292,6 +300,7 @@ public class AbstractRepositoryImpl{
 
     protected void savePointParameter(BigInteger objectId, long attrId, Object x, Object y) {
         try {
+            connection.setAutoCommit(false);
             PreparedStatement preparedStatement = connection.prepareStatement(Constant.SQL_INSERT_INTO_PARAMETERS);
             preparedStatement.setObject(1, objectId, numericType);
             preparedStatement.setLong(2, attrId);
@@ -302,6 +311,7 @@ public class AbstractRepositoryImpl{
             preparedStatement.setObject(7, x);
             preparedStatement.setObject(8, y);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (Exception e){
             System.out.println(e.getMessage() + " SAVE_PARAMETER");
         }
