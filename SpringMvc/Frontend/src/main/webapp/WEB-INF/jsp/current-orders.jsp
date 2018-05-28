@@ -15,20 +15,35 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/current-orders-js.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/notify.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-
     <script type="text/javascript">
-        var ordersPoints = [];
-        ymaps.ready(getOrderAddresses);
-        function getOrderAddresses() {
-            <c:forEach items="${orders}" var="order">
-            getAddressByCoordinates('${order.orderId}',${order.orderAddress.latitude}, ${order.orderAddress.longitude});
-            ordersPoints.push([${order.orderAddress.latitude}, ${order.orderAddress.longitude}]);
-            </c:forEach>
+        <%--<%@include file="/resources/js/sober-list-js.js" %>--%>
+        if ('${pageContext.response.locale}' == 'uk') {
+            <%@include file="/resources/js/strings-uk.js" %>
         }
-        ymaps.ready(function () {
-            createRoute(ordersPoints);
+        if ('${pageContext.response.locale}' == 'ru') {
+            <%@include file="/resources/js/strings-ru.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'en') {
+            <%@include file="/resources/js/strings-en.js" %>
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var ordersPoints = [];
+            ymaps.ready(getOrderAddresses);
+            function getOrderAddresses() {
+                <c:forEach items="${orders}" var="order">
+                getAddressByCoordinates('${order.orderId}',${order.orderAddress.latitude}, ${order.orderAddress.longitude});
+                ordersPoints.push([${order.orderAddress.latitude}, ${order.orderAddress.longitude}]);
+                </c:forEach>
+                createRoute(ordersPoints);
+            }
         });
+        /*ymaps.ready(function () {
+            createRoute(ordersPoints);
+        });*/
     </script>
 </head>
 <body>
@@ -177,6 +192,30 @@
         </div>
     </div>
 </div>
+
+
+<div id="set-point-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><strong><spring:message code="admin.setPoint"/></strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="reset-values">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center" >
+                <div id="map-for-set-point" style="height: 500px;width: 700px; margin: auto;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="createRouteWithoutGeolocation();"><spring:message
+                        code="general.ok"></spring:message></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <jsp:include page="footer.jsp"/>
 
 </body>

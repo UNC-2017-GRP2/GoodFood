@@ -24,6 +24,7 @@
             src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/webjars/bootstrap-form-helpers/2.3.0/js/bootstrap-formhelpers-phone.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/notify.js"></script>
 
     <script type="text/javascript">
         <%@include file="/resources/js/profile-js.js" %>

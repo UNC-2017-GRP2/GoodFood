@@ -26,11 +26,14 @@ function getAddressByCoordinates(orderId, latitude, longitude){
     });
 }
 
-
-//-------------------ROUTE----------------------------
-var map = null;
+/*var map = null;
 var pointsAll;
-var addressAll = [];
+var firstSequence = [];
+var routes = [];
+var matrixRoutes = null;
+var routeCount = 0;
+var routeInterval = null;
+
 function createRoute(points) {
     pointsAll = points;
     map = new ymaps.Map("map", {
@@ -42,17 +45,161 @@ function createRoute(points) {
         mapStateAutoApply: true
     }).then(function (result) {
         var yourPoint = result.geoObjects.position;
+        pointsAll.unshift(yourPoint);
+        for(var i = 0; i < pointsAll.length; i++){
+            firstSequence.push(i);
+        }
+        getRoute(pointsAll);
+        /!*firstPoints = points;
+        for(var i = 0; i < points.length; i++){
+            pointSequence.push(i);
+            addressAll.push("");
+        }
+        getRouteAddress(pointsAll);
+        *!/
+    }, function (error) {
+        $.notify(getErrorString('data_error'), "error");
+    });
+}
+
+function getRoute(points) {
+    var count = points.length;
+    routeCount = getRouteCount(count - 1);
+    matrixRoutes = matrixArray(count);
+    for(var i = 0; i < count - 1; i++)
+        for (var j = i + 1; j < count; j++)
+            pushPoint(points, i, j);
+    routeInterval = setInterval(checkRoutes, 100);
+}
+
+function pushPoint(points, i, j) {
+    ymaps.route([
+        points[i],
+        points[j]
+    ],{
+        avoidTrafficJams: true
+    }).then(function (route){
+        var path = route.getPaths().get(0);
+        routes.push({time: path.getJamsTime(), path: path, point: {i: i, j: j}});
+    });
+}
+
+function checkRoutes() {
+    if (routes.length !== routeCount) return;
+    clearInterval(routeInterval);
+    $.each(routes, function (i, v) {
+        matrixRoutes[v.point.i][v.point.j] = v.time;
+        matrixRoutes[v.point.j][v.point.i] = v.time;
+    });
+    console.log("////////////time matrix");
+    console.log(matrixRoutes);
+    console.log("/////////");
+    /!*получили матрицу с временем*!/
+}
+
+function getRouteCount(number) {
+    if (number > 1) return number + getRouteCount(number - 1);
+    return 1;
+}
+
+function matrixArray(size){
+    var arr = [];
+    for(var i = 0; i < size; i++){
+        arr[i] = [];
+        for(var j = 0; j < size; j++){
+            if (i === j){
+                arr[i][j] = null;
+            }else{
+                arr[i][j] = 0;
+            }
+        }
+    }
+    return arr;
+}*/
+
+//-------------------ROUTE------------------------------------------------------------------------------------
+var mapForPoint = null;
+var marker = null;
+var coords;
+var yourPoint = null;
+var map = null;
+var pointsAll;
+var addressAll = [];
+
+function setPoint() {
+    $('#set-point-modal').modal('show');
+    mapForPoint = new ymaps.Map("map-for-set-point", {
+        center: [51.6720400, 39.1843000],
+        zoom: 12
+    });
+
+    mapForPoint.events.add('click', function (e) {
+        coords = e.get('coords');
+        //alert(coords);
+        marker.geometry.setCoordinates(coords);
+        mapForPoint.geoObjects.add(marker);
+    });
+    marker = new ymaps
+        .Placemark([55.753564, 37.621085], { balloonContent: null },
+            {
+                preset: 'islands#greenDotIconWithCaption',
+                draggable: true
+            });
+
+    marker.events
+        .add("dragend", function (event) {
+            coords = self.marker.geometry.getCoordinates();
+            marker.geometry.setCoordinates(coords);
+            mapForPoint.geoObjects.add(marker);
+            //alert(coords);
+        });
+}
+
+function createRoute(points) {
+    pointsAll = points;
+    map = new ymaps.Map("map", {
+        center: [51.6720400, 39.1843000],
+        zoom: 12
+    });
+    ymaps.geolocation.get({
+        provider: 'browser',
+        mapStateAutoApply: true
+    }).then(function (result) {
+        yourPoint = result.geoObjects.position;
+        //alert(yourPoint);
         points.unshift(yourPoint);
         firstPoints = points;
         for(var i = 0; i < points.length; i++){
             pointSequence.push(i);
             addressAll.push("");
         }
+        //finalRoute(firstPoints);
         getRouteAddress(pointsAll);
         getRoute(points);
     }, function (error) {
-        $.notify(getErrorString('data_error'), "error");
+        $.notify(getNotificationString('get_point'), "info");
+        //alert(getErrorString('data_error'));
+
+        setPoint();
+
     });
+}
+
+function createRouteWithoutGeolocation() {
+    $('#set-point-modal').modal('hide');
+    //alert(coords);
+    if (coords != null){
+        pointsAll.unshift(coords);
+        firstPoints = pointsAll;
+        for (var i = 0; i < pointsAll.length; i++) {
+            pointSequence.push(i);
+            addressAll.push("");
+            //alert(i);
+        }
+        //finalRoute(firstPoints);
+        getRouteAddress(pointsAll);
+        getRoute(pointsAll);
+    }
 }
 
 
@@ -145,8 +292,49 @@ function checkRoutes() {
     var newMatrix = getMatrixWithIndexes(matrixRoutes);
     //var testM = [[null, 90,80,40,100],[60,null,40,50,70],[50,30,null,60,20],[10,70,20,null,50],[20,40,50,20,null]];
     //testM = getMatrixWithIndexes(testM);
-    tsp(newMatrix);
+
+
+    //tsp(newMatrix);    // ЭТО ЧЕРЕЗ АЛГОРИТМ, ОН НЕ ОСОБО
+
+// ЭТО ПО МАТРИЦЕ ИДЕМ ПОСТОЯННО К КОРОТКИМ ТОЧКАМ
+    getSeq(matrixRoutes , 0);
+    //alert(seq);
+    pointsForRouteFromSequence(seq);
+    finalRoute(resultPointsForRoute);
 }
+
+
+
+
+var seq = [];
+
+function getSeq(matrix, idx){
+   // alert(idx);
+    seq.push(idx);
+    var min = Number.MAX_VALUE;
+    var idxMin = null;
+    for (var i = 0; i < matrix.length; i++){
+        if (idx !== i){
+            if (matrix[idx][i] != null){
+                if (matrix[idx][i] < min){
+                    min = matrix[idx][i];
+                    idxMin = i;
+                }
+            }
+        }
+    }
+    if (idxMin != null){
+        for (var j = 0; j < matrix.length; j++){
+            matrix[j][idx] = null;
+            matrix[j][idxMin] = null;
+        }
+        getSeq(matrix, idxMin);
+    }
+}
+
+
+
+
 
 function getMatrixWithIndexes(matrix){
     var result = [];
@@ -221,6 +409,7 @@ function getReduceMatrix(matrixRoutes){
 }
 
 function getPoint(matrix){
+    //alert("123");
     if (matrix.length !== 0){
         var i, j, k, m;
         var minInRows = [];
@@ -306,11 +495,12 @@ function getPoint(matrix){
             bottom += newBottom;
             var point = [realI, realJ];
             resultPoints.push(point);
+            //alert("123");
             getPoint(matrix);
-        }/*else{
-            alert("no");
-            console.log(resultPoints);
-        }*/
+        }else{
+            //alert("no");
+            //console.log(resultPoints);
+        }
     }else{
         //console.log(resultPoints);
         removePoint(resultPoints);
@@ -318,7 +508,7 @@ function getPoint(matrix){
         getPointSequence(resultPoints, 0);
         //console.log(firstPoints);
         pointsForRouteFromSequence(resultPointsSequence);
-
+        //alert("fdvdfvfd");
         console.log("///first point sequence");
         console.log(pointSequence);
         console.log("//////");
@@ -461,7 +651,7 @@ function getRouteTime(pointSequence){
 
 
 function finalRoute(finPoints) {
-    /*ymaps.route(
+    ymaps.route(
         finPoints, {
             mapStateAutoApply: true,
             boundsAutoApply: true,
@@ -473,9 +663,9 @@ function finalRoute(finPoints) {
         });
         // добавляем маршрут на карту
         map.geoObjects.add(route);
-    });*/
+    });
 
-    var route = new ymaps.multiRouter.MultiRoute({
+    /*var route = new ymaps.multiRouter.MultiRoute({
         referencePoints: finPoints
     }, {
         editorDrawOver: false,
@@ -489,11 +679,10 @@ function finalRoute(finPoints) {
         zoomMargin: 30,
         activeRouteAutoSelection: true
     });
-    map.geoObjects.add(route);
-
+    map.geoObjects.add(route);*/
     getRouteTime(resultPointsSequence);
 }
-//-----------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 $(document).ready(function () {
 
 });

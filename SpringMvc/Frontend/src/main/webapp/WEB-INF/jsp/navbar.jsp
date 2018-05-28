@@ -11,6 +11,17 @@
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/navbar-style.css">
     <script type="text/javascript"><%@include file="/resources/js/navbar-js.js" %></script>
+    <script type="text/javascript">
+        if ('${pageContext.response.locale}' == 'uk') {
+            <%@include file="/resources/js/strings-uk.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'ru') {
+            <%@include file="/resources/js/strings-ru.js" %>
+        }
+        if ('${pageContext.response.locale}' == 'en') {
+            <%@include file="/resources/js/strings-en.js" %>
+        }
+    </script>
 </head>
 <body>
 

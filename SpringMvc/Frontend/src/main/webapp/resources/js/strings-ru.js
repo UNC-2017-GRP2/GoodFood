@@ -16,6 +16,8 @@
             return 'Элементы успешно сохранены.';
         case 'courier_appointed':
             return 'Курьер был назначен.';
+        case 'get_point':
+            return 'Невозможно получить данные геопозиции, установите точку на карте.';
     }
 }
 function getErrorString(stringId) {

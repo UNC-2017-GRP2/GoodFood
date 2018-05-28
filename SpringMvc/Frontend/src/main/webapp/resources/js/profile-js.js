@@ -31,12 +31,9 @@ function addAddress() {
 }
 
 function geocode(address) {
-    alert("geocode");
     ymaps.geocode(address).then(function (res) {
         var geoAddress = res.geoObjects.get(0);
-        alert("geo  " +  geoAddress);
         var error;
-
         if (geoAddress != null) {
             var coords = geoAddress.geometry.getCoordinates();
             switch (geoAddress.properties.get('metaDataProperty.GeocoderMetaData.precision')) {
@@ -73,7 +70,7 @@ function geocode(address) {
                     if (data === "success") {
                         $("#input-address").val("");
                         if (geoAddress != null) {
-                            alert("" + geoAddress.getAddressLine() + " " + coords[0] + " " + coords[1]);
+                            //alert("" + geoAddress.getAddressLine() + " " + coords[0] + " " + coords[1]);
                             var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + geoAddress.getAddressLine() + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" onclick=\"removeAddress('" + coords[0] + "','" + coords[1] + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";
                             $(".forNewAddress").replaceWith(newHTML);
                             //alert(obj.getAddressLine());
@@ -90,7 +87,7 @@ function geocode(address) {
                         */
                         /*var newHTML = "<li class=\"list-group-item new-address-list\"> <div class=\"col-xs-11 text-left\"> <h4>" + inputAddress + "</h4> </div> <div class=\"col-xs-1 text-right\"> <span aria-hidden=\"true\" class=\"remove-address\" address=\"" + inputAddress + "\" onclick=\"removeAddress('" + inputAddress + "',this);\">&times;</span> </div>  </li> <li class=\"forNewAddress\"></li>";*/
                     } else {
-                        alert("exists");
+                        //alert("exists");
                         $("#addressValid").text(getErrorString('address_is_already_exists'));
                     }
                 },

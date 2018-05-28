@@ -12,6 +12,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery.inputmask/3.1.0/inputmask/jquery.inputmask.date.extensions.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/login-js.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/notify.js"></script>
     <script type="text/javascript">
         if ('${pageContext.response.locale}' == 'uk') {
             <%@include file="/resources/js/strings-uk.js" %>

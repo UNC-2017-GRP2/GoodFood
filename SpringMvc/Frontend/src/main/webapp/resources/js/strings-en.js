@@ -16,6 +16,8 @@
             return 'Items successfully saved.';
         case 'courier_appointed':
             return 'Courier was appointed.';
+        case 'get_point':
+            return 'It is not possible to get geographic data, set the point on the map.';
     }
 }
 
