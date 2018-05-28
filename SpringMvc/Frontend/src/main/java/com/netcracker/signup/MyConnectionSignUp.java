@@ -2,10 +2,13 @@ package com.netcracker.signup;
 
 import com.netcracker.model.User;
 import com.netcracker.service.UserService;
+import com.netcracker.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MyConnectionSignUp implements ConnectionSignUp {
     /*
     @Autowired
@@ -25,8 +28,11 @@ public class MyConnectionSignUp implements ConnectionSignUp {
         return account.getUserId().toString();
     }
     */
-    @Autowired
     private UserService userService;
+    public MyConnectionSignUp(UserService myUserAccountDAO) {
+        this.userService = myUserAccountDAO;
+    }
+
 
     // After login Social.
     // This method is called to create a USER_ACCOUNTS record
