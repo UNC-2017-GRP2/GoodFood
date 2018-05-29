@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.netcracker.config.Constant;
 import com.netcracker.model.Address;
 import com.netcracker.model.Item;
+import com.netcracker.service.ItemService;
 import com.netcracker.service.OrderService;
 import com.netcracker.service.UserService;
 import com.stripe.Stripe;
@@ -21,10 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @SessionAttributes(value = {"basketItems"})
@@ -32,12 +30,17 @@ public class BasketController {
     @Autowired
     private OrderService orderService;
     @Autowired
+    private ItemService itemService;
+    @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/basket", method = RequestMethod.GET)
-    public ModelAndView toBasket(HttpSession httpSession, @RequestParam(value = "message", required = false) String message, ModelAndView model){
+    public ModelAndView toBasket(HttpSession httpSession, @RequestParam(value = "message", required = false) String message, ModelAndView model, Locale locale){
        // ModelAndView model = new ModelAndView();
         List<Item> basketItems = (ArrayList<Item>) httpSession.getAttribute("basketItems");
+        for (Item item : basketItems) {
+            basketItems.set(basketItems.indexOf(item), itemService.getItemById(item.getProductId(), locale));
+        }
         if(basketItems != null && basketItems.size() != 0){
             BigInteger sum = orderService.totalOrder((ArrayList<Item>) basketItems);
             model.addObject("totalOrder", sum);
