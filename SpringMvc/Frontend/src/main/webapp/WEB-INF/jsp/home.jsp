@@ -51,13 +51,13 @@
                 <div class="site-heading ">
                     <nav class="top-menu">
                         <ul class="menu-main">
-                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_PIZZA%>"><spring:message code="item.category.Pizza"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SUSHI%>"><spring:message code="item.category.Sushi"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_BURGERS%>"><spring:message code="item.category.Burgers"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SALADS%>"><spring:message code="item.category.Salads"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SNACKS%>"><spring:message code="item.category.Snacks"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_DESSERT%>"><spring:message code="item.category.Dessert"/></a></li>
-                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_BEVERAGES%>"><spring:message code="item.category.Beverages"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_PIZZA%>"><spring:message code="item.category.${Constant.CATEGORY_PIZZA}"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SUSHI%>"><spring:message code="item.category.${Constant.CATEGORY_SUSHI}"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_BURGERS%>"><spring:message code="item.category.${Constant.CATEGORY_BURGERS}"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SALADS%>"><spring:message code="item.category.${Constant.CATEGORY_SALADS}"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_SNACKS%>"><spring:message code="item.category.${Constant.CATEGORY_SNACKS}"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_DESSERT%>"><spring:message code="item.category.${Constant.CATEGORY_DESSERT}"/></a></li>
+                            <li><a href="${pageContext.request.contextPath}/home?value=<%=Constant.CATEGORY_BEVERAGES%>"><spring:message code="item.category.${Constant.CATEGORY_BEVERAGES}"/></a></li>
                         </ul>
                     </nav>
                     <%--<h3>Popular Food This Month In New Delhi</h3>--%>

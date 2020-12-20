@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.social.security.SocialUserDetails;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
